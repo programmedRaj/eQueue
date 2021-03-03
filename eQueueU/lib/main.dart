@@ -1,0 +1,130 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:eQueue/screens/auth/phoneauth.dart';
+import 'package:eQueue/screens/home_screen.dart';
+import 'package:eQueue/screens/pages/individual_profile.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:page_transition/page_transition.dart';
+
+import 'components/color.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
+  // AndroidInitializationSettings androidInitializationSettings;
+  // IOSInitializationSettings iosInitializationSettings;
+  // InitializationSettings initializationSettings;
+  // final AppLocalizationDelegate _localeOverrideDelegate =
+  //     AppLocalizationDelegate(Locale('en', 'US'));
+
+  // void initializing() async {
+  //   androidInitializationSettings =
+  //       AndroidInitializationSettings('@mipmap/ic_launcher');
+  //   initializationSettings =
+  //       InitializationSettings(android: androidInitializationSettings);
+  //   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //       onSelectNotification: onSelectNotification);
+  // }
+
+  // Future<void> notification(message) async {
+  //   AndroidNotificationDetails androidNotificationDetails =
+  //       AndroidNotificationDetails(
+  //           'Channel ID', 'Channel title', 'channel body',
+  //           priority: Priority.high,
+  //           importance: Importance.max,
+  //           ticker: 'test');
+
+  //   NotificationDetails notificationDetails =
+  //       NotificationDetails(android: androidNotificationDetails);
+  //   await flutterLocalNotificationsPlugin.show(0, message['data']['title'],
+  //       message['data']['message'], notificationDetails);
+  // }
+
+  // Future onSelectNotification(String payLoad) {
+  //   if (payLoad != null) {
+  //     print(payLoad);
+  //   }
+
+  //   // we can set navigator to navigate another screen
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    return MaterialApp(
+      // localizationsDelegates: [
+      //   GlobalCupertinoLocalizations.delegate,
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      //   _localeOverrideDelegate
+      // ],
+      supportedLocales: [
+        const Locale('en', 'US'), //english
+        const Locale('es', 'ES'), // spanish
+        const Locale('ar', 'AR'), // Arabic
+        const Locale('fr', 'FR'), // french
+        const Locale('fa', 'FA'), // farsi
+      ],
+      debugShowCheckedModeBanner: false,
+      title: 'E-Queue',
+      theme: ThemeData(
+        iconTheme: IconThemeData(color: myColor[100]),
+        primaryColor: myColor[100], //white
+        accentColor: myColor[50], //primary blue
+        highlightColor: myColor[200], //darkblue
+        hintColor: myColor[300], //black
+        disabledColor: myColor[400],
+        errorColor: Colors.red,
+      ),
+      home: AnimatedSplashScreen(
+        duration: 3000,
+        splash: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              child: Image.asset(
+                'lib/assets/login.png',
+                height: 180,
+                width: 180,
+              ),
+            ),
+            Container(
+              child: Text('eQueue',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(
+              height: 400,
+            ),
+            Container(
+              child: Text('From Bido Media Inc.',
+                  style: TextStyle(color: Colors.white)),
+            )
+          ],
+        ),
+        splashIconSize: 800,
+        nextScreen: IndividualProfile(),
+        splashTransition: SplashTransition.fadeTransition,
+        pageTransitionType: PageTransitionType.leftToRight,
+        backgroundColor: HexColor('#6e879b'),
+      ),
+    );
+  }
+}
