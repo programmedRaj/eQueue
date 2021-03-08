@@ -1,0 +1,417 @@
+{
+  "@@last_modified": "2020-12-01T00:52:46.258645",
+  "heyWorld": "Hey Farsi",
+  "@heyWorld": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "email": "ایمیل",
+  "@email": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "branches": "شعبات",
+  "@branches": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "کلمه عبور",
+  "@password": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "forgetpassword": "کلمه عبور را  فراموش کرده اید",
+  "@forgetpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createaccount": "ایجاد حساب کاربری",
+  "@createaccount": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterEmail": "لطفا ایمیل خود را  وارد کنید",
+  "@pleaseEnterEmail": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterpassword": "کلمه عبور را وارد کنید",
+  "@enterpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "rememberpassword": "کلمه عبور  را  به خاطر بسپار",
+  "@rememberpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "send": "ارسال",
+  "@send": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "register": "ثبت نام",
+  "@register": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nickname": "نام انتخابی",
+  "@nickname": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "نام",
+  "@name": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobilenumber": "شماره موبایل",
+  "@mobilenumber": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "alreadyacc": "حساب کاربری از قبل موجود است ?",
+  "@alreadyacc": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enternickname": "لطفا نام انتخابی خود را وارد کنید",
+  "@enternickname": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "entername": "لطفا اسم خود را وارد کنید",
+  "@entername": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "entermob": "شماره موبایل باید 10 رقمی باشد",
+  "@entermob": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidemail": "ایمیل معتبر نمیباشد",
+  "@invalidemail": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createtoken": "دریافت شماره",
+  "@createtoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taptocreatenewtoken": "ایجاد شماره جدید",
+  "@taptocreatenewtoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onwait": "در حال انتظار",
+  "@onwait": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onqueue": "در صف",
+  "@onqueue": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "completed": "انجام شد",
+  "@completed": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "recall": "احظار مجدد",
+  "@recall": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notification": "هشدار",
+  "@notification": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taptomarkasread": "ضربه بزنید تا به حالت خوانده تغییر یابد",
+  "@taptomarkasread": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "search": "جستجو",
+  "@search": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "generatetoken": "ایجاد شماره",
+  "@generatetoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "historysearch": "تاریخ جستجو",
+  "@historysearch": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profile": "مشخات",
+  "@profile": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "language": "زبان",
+  "@language": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "termsconditions": "شرایط و قوانین استفاده",
+  "@termsconditions": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "privacypolicy": "قوانین مربوط به حریم خصوصی",
+  "@privacypolicy": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phone": "تلفن",
+  "@phone": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signout": "خروج",
+  "@signout": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "update": "بروز رسانی",
+  "@update": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "بارگذاری",
+  "@loading": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noresults": "نتیجه یافت نشد",
+  "@noresults": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleasewait": "لطفا صبر کنید",
+  "@pleasewait": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "toenterqueue": "برای ورود به صف کلیک کنید",
+  "@toenterqueue": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nocompany": "شرکتی یافت نشد",
+  "@nocompany": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nobranch": "شعبه یافت نشد",
+  "@nobranch": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notokens": "شماره ایجاد نشد",
+  "@notokens": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nohistory": "تاریخ جستجو موجود نمیباشد",
+  "@nohistory": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pincode": "پین کد",
+  "@pincode": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "postalcode": "کد پستی",
+  "@postalcode": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sunday": "یک شنبه",
+  "@sunday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monday": "دو شنبه",
+  "@monday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tuesday": "سه شنبه",
+  "@tuesday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "wednesday": "چهار شنبه",
+  "@wednesday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "thrusday": "پنج شنبه",
+  "@thrusday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "friday": "جمعه",
+  "@friday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "saturday": "شنبه",
+  "@saturday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "location": "آدرس",
+  "@location": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+   "alreadytoken": "شما قبلاً نشانه این شعبه را دارید",
+  "@alreadytoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "آره",
+  "@yes": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "no": "نه",
+  "@no": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectdep": "بخش را انتخاب کنید",
+  "@selectdep": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gotodash": "به DashBoard بروید",
+  "@gotodash": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "choosedep": "لطفا یک بخش را انتخاب کنید",
+  "@choosedep": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "لغو",
+  "@cancel": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "expectedtime": "زمان تخمینی",
+  "@expectedtime": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "queuenotstarted": "صف شما شروع نشده است",
+  "@queuenotstarted": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "queueupdated": "صف به روز می شود",
+  "@queueupdated": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "wearetry": "ما در حال تلاش برای اتصال ...",
+  "@wearetry": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "day": "روز",
+  "@day": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "time": "زمان",
+  "@time": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "ورود",
+  "@login": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  }
+}
