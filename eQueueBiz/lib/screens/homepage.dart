@@ -54,8 +54,8 @@ class _HomePageState extends State<HomePage> {
                                       builder: (context) => Employees(),
                                     ));
                               },
-                              child: _cards(
-                                  "Employees", "Edit/Manage employee details")),
+                              child: _cards(AppLocalization.of(context).email,
+                                  "Edit/Manage employee details")),
                           InkWell(
                               onTap: () {
                                 Navigator.push(

@@ -1,4 +1,5 @@
 import 'package:equeuebiz/constants/appcolor.dart';
+import 'package:equeuebiz/locale/app_localization.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  List<String> languagesList = ["English", "Hindi", "Spanish"];
+  List<String> languagesList = ["English", "Hindi", "Spanish", "French"];
   String _chosenLanguage = "English";
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,12 @@ class _SettingsState extends State<Settings> {
         onChanged: (String value) {
           setState(() {
             _chosenLanguage = value;
+            if (value == "French") {
+              AppLocalization.load(Locale('fr', 'FR'));
+            }
+            if (value == "Spanish") {
+              AppLocalization.load(Locale('es', 'ES'));
+            }
           });
         },
       ),

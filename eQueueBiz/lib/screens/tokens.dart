@@ -9,8 +9,8 @@ class Tokens extends StatefulWidget {
 }
 
 class _TokensState extends State<Tokens> {
-  List<String> tokenStatusList = ["on Wait", "Call", "Cancel"];
-  String tokenStatus = "on Wait";
+  List<String> tokenStatusList = ["Call", "Complete", "Cancel"];
+  String tokenStatus;
   List<String> departmentsList = [
     "Department 1",
     "Department 2",

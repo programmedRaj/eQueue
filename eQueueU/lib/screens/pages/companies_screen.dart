@@ -29,7 +29,7 @@ class _CompanyState extends State<Company> {
         child: Column(
           children: [
             Container(
-              height: height * 0.05,
+              height: height * 0.07,
               width: width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
