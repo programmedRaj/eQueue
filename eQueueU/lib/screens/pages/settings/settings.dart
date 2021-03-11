@@ -17,7 +17,7 @@ class _SettingsState extends State<Settings> {
     var width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: ListView(
           children: [
             Container(
               margin: EdgeInsets.all(8),
@@ -69,7 +69,6 @@ class _SettingsState extends State<Settings> {
               },
               child: Container(
                 margin: EdgeInsets.all(8),
-                height: height * 0.06,
                 width: width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.circular(10),
@@ -92,7 +91,6 @@ class _SettingsState extends State<Settings> {
               },
               child: Container(
                 margin: EdgeInsets.all(8),
-                height: height * 0.06,
                 width: width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.circular(10),
@@ -115,7 +113,6 @@ class _SettingsState extends State<Settings> {
               },
               child: Container(
                 margin: EdgeInsets.all(8),
-                height: height * 0.06,
                 width: width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.circular(10),
@@ -138,7 +135,6 @@ class _SettingsState extends State<Settings> {
               },
               child: Container(
                 margin: EdgeInsets.all(8),
-                height: height * 0.06,
                 width: width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.circular(10),
@@ -161,7 +157,6 @@ class _SettingsState extends State<Settings> {
               },
               child: Container(
                 margin: EdgeInsets.all(8),
-                height: height * 0.06,
                 width: width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.circular(10),
@@ -184,7 +179,6 @@ class _SettingsState extends State<Settings> {
               },
               child: Container(
                 margin: EdgeInsets.all(8),
-                height: height * 0.06,
                 width: width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.circular(10),
@@ -202,7 +196,6 @@ class _SettingsState extends State<Settings> {
             ),
             Container(
               margin: EdgeInsets.all(8),
-              height: height * 0.06,
               width: width,
               decoration: BoxDecoration(
                   borderRadius: BorderRadiusDirectional.circular(10),

@@ -1,4 +1,5 @@
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/screens/auth/verification.dart';
 import 'package:flutter/material.dart';
 
 class Phone extends StatefulWidget {
@@ -63,7 +64,13 @@ class _PhoneState extends State<Phone> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Verification(),
+                    ));
+              },
               child: Center(
                   child: Text(
                 'Get OTP',

@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
                             MaterialPageRoute(builder: (ctx) => Company()));
                       },
                       child: Container(
-                        height: height * 0.05,
+                        height: height * 0.07,
                         width: width * 0.8,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -134,7 +134,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     Container(
-                      height: height * 0.4,
+                      height: height * 0.5,
                       width: width,
                       child: GridView.builder(
                           scrollDirection: Axis.horizontal,

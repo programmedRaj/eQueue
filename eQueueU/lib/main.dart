@@ -1,4 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:eQueue/screens/auth/login.dart';
 import 'package:eQueue/screens/auth/phoneauth.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:eQueue/screens/pages/individual_profile.dart';
@@ -120,7 +121,7 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
         splashIconSize: 800,
-        nextScreen: MyHomePage(),
+        nextScreen: Login(),
         splashTransition: SplashTransition.fadeTransition,
         pageTransitionType: PageTransitionType.leftToRight,
         backgroundColor: HexColor('#6e879b'),

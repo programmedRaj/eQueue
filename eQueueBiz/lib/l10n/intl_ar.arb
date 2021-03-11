@@ -1,0 +1,418 @@
+{
+  "@@last_modified": "2020-12-01T00:52:46.258645",
+  "heyWorld": "Hey Arabi",
+  "@heyWorld": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "branches": "الفروع",
+  "@branches": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+
+  "email": "البريد الالكتروني",
+  "@email": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "كلمة المرور",
+  "@password": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "forgetpassword": "نسيت كلمة المرور",
+  "@forgetpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createaccount": "انشاء حساب جديد",
+  "@createaccount": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterEmail": "يرجي ادخال البريد الالكتروني الخاص بك",
+  "@pleaseEnterEmail": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterpassword": "أدخل كلمة المرور",
+  "@enterpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "rememberpassword": "تذكر كلمة المرور",
+  "@rememberpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "send": "ارسال",
+  "@send": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "register": " تسجيل",
+  "@register": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nickname": "الاسم المستعار",
+  "@nickname": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "الاسم",
+  "@name": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobilenumber": "رقم الجوال",
+  "@mobilenumber": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "alreadyacc": "هل لديك حساب",
+  "@alreadyacc": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enternickname": "الرجاء إدخال الاسم المستعار",
+  "@enternickname": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "entername": "يرجي ادخال الاسم",
+  "@entername": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "entermob": "رقم الجوال تتكون من 10 ارقام",
+  "@entermob": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidemail": "بريد إلكتروني خاطئ",
+  "@invalidemail": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createtoken": "اخذ تذكره",
+  "@createtoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taptocreatenewtoken": "انقر لإنشاء رمز جديد",
+  "@taptocreatenewtoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onwait": "في الانتظار",
+  "@onwait": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onqueue": "امامك",
+  "@onqueue": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "completed": "تم بنجاح",
+  "@completed": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "recall": "اعد الاتصال",
+  "@recall": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notification": "تنبيه",
+  "@notification": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taptomarkasread": "علامة التبويب",
+  "@taptomarkasread": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "search": "بحث",
+  "@search": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "generatetoken": "توليد رمز",
+  "@generatetoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "historysearch": "تاريخ البحث",
+  "@historysearch": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profile": "الملف الشخصي",
+  "@profile": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "language": "لغة",
+  "@language": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "termsconditions": "الشروط و الاحكام",
+  "@termsconditions": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "privacypolicy": "سياسة خاصة",
+  "@privacypolicy": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phone": "الهاتف",
+  "@phone": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signout": "الخروج",
+  "@signout": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "update": "تحديث",
+  "@update": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "إضافات",
+  "@loading": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noresults": "لم يتم العثور على نتائج",
+  "@noresults": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleasewait": "یرجی الانتظار",
+  "@pleasewait": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "toenterqueue": "لدخول قائمة الانتظار ، انقر هنا !!",
+  "@toenterqueue": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nocompany": "لا توجد شركة",
+  "@nocompany": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nobranch": "لم يتم العثور على فرع",
+  "@nobranch": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notokens": "لم يتم إنشاء الرموز المميزة",
+  "@notokens": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nohistory": "لا يوجد سجل متاح",
+  "@nohistory": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pincode": "الرمز السري",
+  "@pincode": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "postalcode": "رمز بريدي",
+  "@postalcode": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sunday": "الاحد",
+  "@sunday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monday": "الاثنين",
+  "@monday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tuesday": "الثلاثاء",
+  "@tuesday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "wednesday": "الاربعاء",
+  "@wednesday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "thrusday": "الخميس",
+  "@thrusday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "friday": "الجمعه",
+  "@friday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "saturday": "السبت",
+  "@saturday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "location": "العنوان",
+  "@location": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+   "alreadytoken": "لديك بالفعل رمز من هذا الفرع",
+  "@alreadytoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "نعم",
+  "@yes": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "no": "لا",
+  "@no": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectdep": "حدد القسم",
+  "@selectdep": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gotodash": "الذهاب إلى لوحة القيادة",
+  "@gotodash": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "choosedep": "الرجاء اختيار القسم",
+  "@choosedep": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "إلغاء",
+  "@cancel": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "expectedtime": "الوقت المتوقع",
+  "@expectedtime": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "queuenotstarted": "لم تبدأ قائمة الانتظار الخاصة بك",
+  "@queuenotstarted": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "queueupdated": "يتم تحديث قائمة الانتظار",
+  "@queueupdated": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "wearetry": "نحن نحاول الاتصال ...",
+  "@wearetry": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "day": "يوم",
+  "@day": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "time": "زمن",
+  "@time": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "دخول",
+  "@login": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  }
+}

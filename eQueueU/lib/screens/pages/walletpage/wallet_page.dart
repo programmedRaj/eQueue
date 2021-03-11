@@ -70,7 +70,7 @@ class _WalletState extends State<Wallet> {
                       children: [
                         Container(
                           child: CircleAvatar(
-                            radius: 40,
+                            radius: 30,
                             backgroundColor: myColor[100],
                             child: Center(
                               child: Icon(
@@ -124,7 +124,7 @@ class _WalletState extends State<Wallet> {
                         ),
                         Container(
                           child: CircleAvatar(
-                            radius: 40,
+                            radius: 30,
                             backgroundColor: myColor[100],
                             child: Center(
                               child: Icon(
@@ -150,7 +150,7 @@ class _WalletState extends State<Wallet> {
             ),
             Container(
               margin: EdgeInsets.all(8),
-              height: height * 0.06,
+              //height: height * 0.07,
               width: width,
               decoration: BoxDecoration(
                   borderRadius: BorderRadiusDirectional.circular(10),
