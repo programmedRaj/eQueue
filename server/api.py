@@ -21,9 +21,11 @@ from werkzeug.utils import secure_filename
 import os
 import jsonpickle
 import numpy as np
-import no_auth_apis as no_auth
 
 import user_apis as user_side
+import eqbiz as eqbiz
+import eqadmin as eqadmin
+import equser as equser
 
 
 CORS(app)
@@ -71,12 +73,12 @@ def check_for_token(param):
 
 # Get current active user
 # @app.route("/user")
-@check_for_token
-def user():
-    token = request.headers["Authorization"]
-    username = jwt.decode(token, app.config["SECRET_KEY"])
-    response = user_side.user(username)
-    return response
+# @check_for_token
+# def user():
+#     token = request.headers["Authorization"]
+#     username = jwt.decode(token, app.config["SECRET_KEY"])
+#     response = user_side.user(username)
+#     return response
 
 
 @app.route("/adminsign_in", methods=["POST"])
@@ -116,16 +118,93 @@ def sign_in():
         conn.close()
 
 
+def allowedd_file(filename):
+    ALLOWED_EXTENSIONS = set(["pdf", "jpg", "jpeg", "png"])
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route("/create_company", methods=["POST"])
 @check_for_admin_token
 def create_company():
     conn = mysql.connect()
-    email = request.json["email"]
-    password = generate_password_hash(request.json["password"])
+    email = request.form["email"]
+    password = generate_password_hash(request.form["password"])
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        check = cur.execute("Select * FROM bizusers WHERE email ='" + str(email) + "';")
+        # if request.files["company_logo"] is None:
+        # resp = jsonify({"message": "NO logo found."})
+        # resp.status_code = 405
+        # return resp
+        company_logo = request.files["company_logo"]
+        filename = secure_filename(company_logo.filename)
+        company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        if request.form["acc_type"] == "booking":
+            name = request.form["name"]
+            desc = request.form["desc"]
+            bank_name = request.form["bankname"]
+            ifsc = request.form["ifsc_code"]
+            account_number = request.form["accountnumber"]
+            account_name = request.form["accountname"]
+            query = (
+                "INSERT INTO company-details(id,name,profile_url,desc,bank_name,ifsc,account_number,account_name,type)"
+                + "VALUES ('"
+                + str(cur.lastrowid)
+                + "','"
+                + str(name)
+                + "',"
+                + str(os.getcwd() + "/uploads/biz-logos" + filename)
+                + "',"
+                + str(desc)
+                + "',"
+                + str(bank_name)
+                + "',"
+                + str(ifsc)
+                + "',"
+                + str(account_number)
+                + "',"
+                + str(account_name)
+                + "','booking');"
+            )
 
+        elif request.form["acc_type"] == "token":
+            name = request.form["name"]
+            desc = request.form["desc"]
+            query = (
+                "INSERT INTO company-details(id,name,profile_url,desc,type)"
+                + "VALUES ('"
+                + str(cur.lastrowid)
+                + "','"
+                + str(name)
+                + "',"
+                + str(os.getcwd() + "/uploads/biz-logos" + filename)
+                + "','"
+                + str(desc)
+                + "','token');"
+            )
+        elif request.form["acc_type"] == "multitoken":
+            name = request.form["name"]
+            desc = request.form["desc"]
+            oneliner = request.json["oneliner"]
+            query = (
+                "INSERT INTO company-details(id,name,profile_url,desc,oneliner,type)"
+                + "VALUES ('"
+                + str(cur.lastrowid)
+                + "','"
+                + str(name)
+                + "',"
+                + str(os.getcwd() + "/uploads/biz-logos" + filename)
+                + "','"
+                + str(desc)
+                + "','"
+                + str(oneliner)
+                + "','multitoken');"
+            )
+        else:
+            resp = jsonify({"message": "INVALID company type."})
+            resp.status_code = 405
+            return resp
+
+        check = cur.execute("Select * FROM bizusers WHERE email ='" + str(email) + "';")
         if check:
             resp = jsonify({"message": "Already taken."})
             resp.status_code = 405
@@ -141,6 +220,7 @@ def create_company():
                 + "1);"
             )
             if check:
+                check = cur.execute(query)
                 resp = jsonify({"message": "successfully added."})
                 resp.status_code = 200
                 conn.commit()
