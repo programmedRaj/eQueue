@@ -130,11 +130,8 @@ def create_company():
     email = request.form["email"]
     password = generate_password_hash(request.form["password"])
     cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        # if request.files["company_logo"] is None:
-        # resp = jsonify({"message": "NO logo found."})
-        # resp.status_code = 405
-        # return resp
         company_logo = request.files["company_logo"]
         filename = secure_filename(company_logo.filename)
         company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
@@ -145,38 +142,33 @@ def create_company():
             ifsc = request.form["ifsc_code"]
             account_number = request.form["accountnumber"]
             account_name = request.form["accountname"]
+            q = "INSERT INTO companydetails(id,name,profile_url,descr,bank_name,ifsc,account_number,account_name,type) VALUES ("
             query = (
-                "INSERT INTO company-details(id,name,profile_url,desc,bank_name,ifsc,account_number,account_name,type)"
-                + "VALUES ('"
-                + str(cur.lastrowid)
-                + "','"
+                "','"
                 + str(name)
-                + "',"
-                + str(os.getcwd() + "/uploads/biz-logos" + filename)
-                + "',"
+                + "','"
+                + str(filename)
+                + "','"
                 + str(desc)
-                + "',"
+                + "','"
                 + str(bank_name)
-                + "',"
+                + "','"
                 + str(ifsc)
-                + "',"
+                + "','"
                 + str(account_number)
-                + "',"
+                + "','"
                 + str(account_name)
                 + "','booking');"
             )
-
         elif request.form["acc_type"] == "token":
             name = request.form["name"]
             desc = request.form["desc"]
+            q = "INSERT INTO companydetails (id,name,profile_url,descr,type) VALUES ('"
             query = (
-                "INSERT INTO company-details(id,name,profile_url,desc,type)"
-                + "VALUES ('"
-                + str(cur.lastrowid)
-                + "','"
+                "','"
                 + str(name)
-                + "',"
-                + str(os.getcwd() + "/uploads/biz-logos" + filename)
+                + "','"
+                + str(str(filename))
                 + "','"
                 + str(desc)
                 + "','token');"
@@ -185,14 +177,12 @@ def create_company():
             name = request.form["name"]
             desc = request.form["desc"]
             oneliner = request.json["oneliner"]
+            q = "INSERT INTO companydetails (id,name,profile_url,descr,oneliner,type) VALUES ("
             query = (
-                "INSERT INTO company-details(id,name,profile_url,desc,oneliner,type)"
-                + "VALUES ('"
-                + str(cur.lastrowid)
-                + "','"
+                ",'"
                 + str(name)
-                + "',"
-                + str(os.getcwd() + "/uploads/biz-logos" + filename)
+                + "','"
+                + str(filename)
                 + "','"
                 + str(desc)
                 + "','"
@@ -219,8 +209,11 @@ def create_company():
                 + "',"
                 + "1);"
             )
+
             if check:
-                check = cur.execute(query)
+                fire = str(q) + str(cur.lastrowid) + str(query)
+                print(fire)
+                check = cur2.execute(fire)
                 resp = jsonify({"message": "successfully added."})
                 resp.status_code = 200
                 conn.commit()
@@ -231,37 +224,8 @@ def create_company():
 
     finally:
         cur.close()
+        cur2.close()
         conn.close()
-
-
-# @app.route("/banners", methods=["POST"])
-# @check_for_token
-# def banners():
-#     conn = mysql.connect()
-#     cur = conn.cursor(pymysql.cursors.DictCursor)
-#     try:
-
-#         if request.json["type"] == "slider":
-#             cur.execute("Select * FROM banners WHERE  type='slider' ;")
-#         if request.json["type"] == "promote":
-#             cur.execute("Select * FROM banners WHERE  type='promote' ;")
-#         else:
-#             resp = jsonify({"message": "INVALID request."})
-#             resp.status_code = 403
-#             return resp
-
-#         banners = cur.fetchall()
-#         if matches:
-#             resp = jsonify({"banners": banners})
-#             resp.status_code = 200
-#             conn.commit()
-#             return resp
-#         resp = jsonify({"message": "No banners."})
-#         resp.status_code = 404  # no banners
-#         return resp
-#     finally:
-#         cur.close()
-#         conn.close()
 
 
 @app.errorhandler(404)
