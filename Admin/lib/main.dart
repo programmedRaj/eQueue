@@ -1,5 +1,7 @@
+import 'package:equeue_admin/pages/login_page.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:equeue_admin/providers/login_prov.dart';
 import 'pages/home/home.dart';
 import 'widgets/color.dart';
 
@@ -11,22 +13,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        iconTheme: IconThemeData(color: myColor[400]),
-        primaryColor: myColor[300], //light indigo
-        accentColor: myColor[100], //white
-        highlightColor: myColor[400], //darkindigo
-        hintColor: myColor[300], //black
-        disabledColor: myColor[400], //grey
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<LoginProv>(create: (context) => LoginProv())
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          iconTheme: IconThemeData(color: myColor[400]),
+          primaryColor: myColor[300], //light indigo
+          accentColor: myColor[100], //white
+          highlightColor: myColor[400], //darkindigo
+          hintColor: myColor[300], //black
+          disabledColor: myColor[400], //grey
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: LoginPage(),
       ),
-      home: Home(),
-      initialRoute: '/',
-      routes: {
-        '/home': (context) => Home(),
-        // '/login': (context) => Login(),
-      },
     );
   }
 }

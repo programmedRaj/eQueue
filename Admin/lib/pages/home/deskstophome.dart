@@ -27,6 +27,7 @@ class _DesktopHomeState extends State<DesktopHome> {
 
   @override
   Widget build(BuildContext context) {
+    print("desktop home");
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     if (width <= 1324) {

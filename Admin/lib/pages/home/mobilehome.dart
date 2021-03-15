@@ -8,6 +8,8 @@ class MobileHome extends StatefulWidget {
 class _MobileHomeState extends State<MobileHome> {
   @override
   Widget build(BuildContext context) {
+    print("mobile view generated");
+
     return Scaffold();
   }
 }

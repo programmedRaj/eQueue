@@ -355,55 +355,6 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: height * 0.01),
-                    height: sizz == 2 ? height * 0.12 : height * 0.08,
-                    width: width,
-                    child: TextFormField(
-                      onChanged: (v) {
-                        setState(() {
-                          password = v;
-                        });
-                      },
-                      validator: (name) {
-                        if (name.isEmpty) {
-                          return "Please enter password ";
-                        } else {
-                          return null;
-                        }
-                      },
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.security,
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        hintText: "Password",
-                        hintStyle: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
                     alignment: Alignment.bottomCenter,
                     child: FlatButton(
                       child: Text(

@@ -10,7 +10,7 @@ class Home extends StatelessWidget {
     return ScreenTypeLayout(
       mobile: MobileHome(),
       desktop: DesktopHome(),
-      tablet: TabHome(),
+      //tablet: TabHome(),
     );
   }
 }
