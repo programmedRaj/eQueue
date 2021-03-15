@@ -1,4 +1,5 @@
 import 'package:equeue_admin/pages/login_page.dart';
+import 'package:equeue_admin/providers/add_company_prov.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:equeue_admin/providers/login_prov.dart';
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<LoginProv>(create: (context) => LoginProv())
+        ChangeNotifierProvider<LoginProv>(create: (context) => LoginProv()),
+        ChangeNotifierProvider<AddCompanyProv>(
+            create: (context) => AddCompanyProv())
       ],
       child: MaterialApp(
         theme: ThemeData(

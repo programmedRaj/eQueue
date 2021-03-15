@@ -176,7 +176,7 @@ def create_company():
         elif request.form["acc_type"] == "multitoken":
             name = request.form["name"]
             desc = request.form["desc"]
-            oneliner = request.json["oneliner"]
+            oneliner = request.form["oneliner"]
             q = "INSERT INTO companydetails (id,name,profile_url,descr,oneliner,type) VALUES ("
             query = (
                 ",'"

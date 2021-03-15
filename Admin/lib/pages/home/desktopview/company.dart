@@ -1,4 +1,4 @@
-import 'package:equeue_admin/pages/add_company.dart';
+import 'package:equeue_admin/pages/add_company_page.dart';
 import 'package:flutter/material.dart';
 
 class Company extends StatefulWidget {
@@ -28,7 +28,7 @@ class _CompanyState extends State<Company> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddCompany(),
+                        builder: (context) => AddCompanyPage(),
                       ));
                 },
                 child: Text(
