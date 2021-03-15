@@ -271,6 +271,126 @@ def change_passw_admin():
         conn.close()
 
 
+@app.route("/companies")
+@check_for_admin_token
+def active_companies():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        check = cur.execute("Select * FROM companydetails;")
+        if check:
+            records = cur.fetchall()
+            check = cur.execute("Select email,status,created_on FROM bizusers;")
+            if check:
+                recordss = cur.fetchall()
+                resp = jsonify({"companies": records, "comp_emails_status": recordss})
+                resp.status_code = 200
+                return resp
+            resp = jsonify({"message": "no companies details found."})
+            resp.status_code = 403
+            return resp
+        resp = jsonify({"message": "no companies found."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/disable_company", methods=["POST"])
+@check_for_admin_token
+def disable_company():
+    conn = mysql.connect()
+    email = request.json["email"]
+    emp_id = request.json["company_id"]
+
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        check = cur.execute(
+            "SELECT * from bizusers"
+            + " WHERE email = '"
+            + str(email)
+            + "' id ="
+            + str(emp_id)
+            + " ;"
+        )
+        if check:
+            check = cur.execute(
+                "UPDATE bizusers SET status = 0 WHERE id =" + str(emp_id) + " ;"
+            )
+            conn.commit()
+            resp = jsonify({"message": "Updated successfully."})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "No Company Found."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/edit_company", methods=["POST"])
+@check_for_admin_token
+def edit_company():
+    conn = mysql.connect()
+    email = request.form["email"]
+    emp_id = request.form["company_id"]
+
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        check = cur.execute(
+            "SELECT * from bizusers"
+            + " WHERE email = '"
+            + str(email)
+            + "' id ="
+            + str(emp_id)
+            + " ;"
+        )
+        if check:
+            check = cur.execute(
+                "UPDATE bizusers SET status = 0 WHERE id =" + str(emp_id) + " ;"
+            )
+            conn.commit()
+            resp = jsonify({"message": "Updated successfully."})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "No Company Found."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+# @app.route("/delete_company", methods=["POST"])
+# @check_for_admin_token
+# def delete_company():
+#     conn = mysql.connect()
+#     emp_id = request.json["emp_id"]
+#     cur = conn.cursor(pymysql.cursors.DictCursor)
+#     try:
+#         check = cur.execute(
+#             "SELECT ename from employee WHERE id =" + str(emp_id) + " ;"
+#         )
+#         if check:
+#             check = cur.execute("DELETE FROM employee WHERE id =" + str(emp_id) + " ;")
+#             conn.commit()
+#             resp = jsonify({"message": "Deleted successfully."})
+#             resp.status_code = 200
+#             return resp
+#         resp = jsonify({"message": "No Company found with this name."})
+#         resp.status_code = 403
+#         return resp
+
+#     finally:
+#         cur.close()
+#         conn.close()
+
+
 @app.errorhandler(404)
 def not_found(error=None):
     message = {
