@@ -1,3 +1,4 @@
+import 'package:equeue_admin/pages/add_company.dart';
 import 'package:flutter/material.dart';
 
 class Company extends StatefulWidget {
@@ -24,7 +25,11 @@ class _CompanyState extends State<Company> {
               child: RaisedButton(
                 color: Theme.of(context).primaryColor,
                 onPressed: () {
-                  // adduser(width, height);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddCompany(),
+                      ));
                 },
                 child: Text(
                   'Add Company',

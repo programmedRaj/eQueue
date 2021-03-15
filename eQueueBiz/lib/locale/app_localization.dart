@@ -42,6 +42,22 @@ class AppLocalization {
     );
   }
 
+  String get branches {
+    return Intl.message(
+      'Branches',
+      name: 'password',
+      desc: 'Simpel word for greeting ',
+    );
+  }
+
+  String get employees {
+    return Intl.message(
+      'Employees',
+      name: 'password',
+      desc: 'Simpel word for greeting ',
+    );
+  }
+
   String get forgetpassword {
     return Intl.message(
       'Forget Password',

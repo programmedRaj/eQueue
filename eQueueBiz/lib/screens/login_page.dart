@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/locale/app_localization.dart';
 import 'package:equeuebiz/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,6 +21,21 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     getlang();
+  }
+
+  executeLogin(String email, String password) async {
+    try {
+      var url = Uri.parse('http://127.0.0.1:5000/adminsign_in');
+      http
+          .post(url,
+              headers: {'Content-Type': 'application/json'},
+              body: jsonEncode({'email': email, 'password': password}))
+          .then((value) {
+        print(jsonDecode(value.body));
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   getlang() async {
@@ -77,11 +95,12 @@ class _LoginPageState extends State<LoginPage> {
                     Flexible(
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
+                          executeLogin("admin@equeue.app", "password");
+                          /* Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => HomePage(),
-                              ));
+                              )); */
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

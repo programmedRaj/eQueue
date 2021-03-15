@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "alreadyacc" : MessageLookupByLibrary.simpleMessage("Vous avez déjà un compte"),
     "alreadytoken" : MessageLookupByLibrary.simpleMessage("Vous avez déjà un jeton de cette succursale"),
+    "branches" : MessageLookupByLibrary.simpleMessage("Branches"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Annuler"),
     "choosedep" : MessageLookupByLibrary.simpleMessage("Veuillez choisir un département"),
     "completed" : MessageLookupByLibrary.simpleMessage("terminé"),

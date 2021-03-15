@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         const Locale('fa', 'FA'), // farsi
       ],
       title: 'Equeue Biz',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,

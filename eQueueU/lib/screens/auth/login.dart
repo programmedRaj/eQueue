@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:eQueue/screens/auth/register.dart';
 import 'package:eQueue/screens/auth/verification.dart';
 import 'package:eQueue/constants/appcolor.dart';
+import 'package:eQueue/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -62,7 +63,7 @@ class _LoginState extends State<Login> {
                           return null;
                       },
                       decoration: InputDecoration(
-                        hintText: "Email",
+                        hintText: "Phone",
                         hintStyle: TextStyle(color: Colors.white),
                         prefixIcon: Icon(
                           Icons.email,
@@ -132,24 +133,8 @@ class _LoginState extends State<Login> {
                             borderSide:
                                 BorderSide(color: Colors.white, width: 2.0),
                           ),
-                          hintText: "Password",
+                          hintText: "OTP",
                           hintStyle: TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomRight,
-                    child: FlatButton(
-                      child: Text(
-                        "Forgot password",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
-                        /* Navigator.of(context).push(PageTransition(
-                            child: Forgetpassword(),
-                            type: PageTransitionType.fade)); */
-                      },
                     ),
                   ),
                   AnimatedContainer(
@@ -168,6 +153,11 @@ class _LoginState extends State<Login> {
                           borderRadius: new BorderRadius.circular(30.0)),
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyHomePage(),
+                            ));
                       },
                       child: type == 0
                           ? Text(

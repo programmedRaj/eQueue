@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "alreadyacc" : MessageLookupByLibrary.simpleMessage("هل لديك حساب"),
     "alreadytoken" : MessageLookupByLibrary.simpleMessage("لديك بالفعل رمز من هذا الفرع"),
+    "branches" : MessageLookupByLibrary.simpleMessage("الفروع"),
     "cancel" : MessageLookupByLibrary.simpleMessage("إلغاء"),
     "choosedep" : MessageLookupByLibrary.simpleMessage("الرجاء اختيار القسم"),
     "completed" : MessageLookupByLibrary.simpleMessage("تم بنجاح"),

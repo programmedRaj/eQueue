@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 
 class TabHome extends StatefulWidget {
   @override
@@ -8,6 +8,8 @@ class TabHome extends StatefulWidget {
 class _TabHomeState extends State<TabHome> {
   @override
   Widget build(BuildContext context) {
+    print("Tb view generated");
     return Scaffold();
   }
 }
+ */

@@ -8,9 +8,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
-      mobile: MobileHome(),
+      mobile: DesktopHome(),
       desktop: DesktopHome(),
-      tablet: TabHome(),
+      tablet: DesktopHome(),
     );
   }
 }
