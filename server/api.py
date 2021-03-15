@@ -228,6 +228,49 @@ def create_company():
         conn.close()
 
 
+@app.route("/change_passw_admin", methods=["POST"])
+@check_for_admin_token
+def change_passw_admin():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    password_entered = request.json["password"]
+    n_password_entered = generate_password_hash(request.json["new_password"])
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["ADMIN_SECRET_KEY"])
+    try:
+        check = cur.execute(
+            "Select * FROM user WHERE email ='"
+            + str(user["email"])
+            + "' AND id = '"
+            + str(user["id"])
+            + "';"
+        )
+        if check:
+            records = cur.fetchall()
+            for r in records:
+                if check_password_hash(r["password"], password_entered):
+                    cur.execute(
+                        "UPDATE user SET password = '"
+                        + str(n_password_entered)
+                        + "' WHERE email = '"
+                        + str(user["email"])
+                        + "';"
+                    )
+                    conn.commit()
+                    resp = jsonify({"message": "success"})
+                    resp.status_code = 200
+                    return resp
+                resp = jsonify({"message": "wrong old password."})
+                resp.status_code = 403
+                return resp
+        resp = jsonify({"message": "No Admin Found."})
+        resp.status_code = 405
+        return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.errorhandler(404)
 def not_found(error=None):
     message = {
