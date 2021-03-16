@@ -342,53 +342,135 @@ def edit_company():
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         check = cur.execute(
-            "SELECT * from bizusers"
+            "SELECT * from companydetails"
             + " WHERE email = '"
             + str(email)
-            + "' id ="
+            + "' AND id = "
             + str(emp_id)
-            + " ;"
+            + ";"
         )
         if check:
-            check = cur.execute(
-                "UPDATE bizusers SET status = 0 WHERE id =" + str(emp_id) + " ;"
-            )
-            conn.commit()
-            resp = jsonify({"message": "Updated successfully."})
-            resp.status_code = 200
+            records = cur.fetchone()
+            print(records["id"])
+            if request.files["company_logo"]:
+                company_logo = request.files["company_logo"]
+                filename = secure_filename(company_logo.filename)
+                company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            company_logo = records["profile_url"]
+
+            if request.form["acc_type"] == "booking":
+                name = request.form["name"]
+                desc = request.form["desc"]
+                bank_name = request.form["bankname"]
+                ifsc = request.form["ifsc_code"]
+                account_number = request.form["accountnumber"]
+                account_name = request.form["accountname"]
+                q = (
+                    "UPDATE companydetails SET name = '"
+                    + str(name)
+                    + "',profile_url = '"
+                    + str(company_logo)
+                    + "',descr = '"
+                    + str(desc)
+                    + "',bank_name='"
+                    + str(bank_name)
+                    + "',ifsc='"
+                    + str(ifsc)
+                    + "',account_number='"
+                    + str(account_number)
+                    + "',account_name='"
+                    + str(account_name)
+                    + "' WHERE id ="
+                    + str(emp_id)
+                    + ";"
+                )
+            elif request.form["acc_type"] == "token":
+                name = request.form["name"]
+                desc = request.form["desc"]
+                q = (
+                    "UPDATE companydetails SET name = '"
+                    + str(name)
+                    + "',profile_url = '"
+                    + str(company_logo)
+                    + "',descr = '"
+                    + str(desc)
+                    + "';"
+                )
+            elif request.form["acc_type"] == "multitoken":
+                name = request.form["name"]
+                desc = request.form["desc"]
+                oneliner = request.form["oneliner"]
+                q = (
+                    "UPDATE companydetails SET name = '"
+                    + str(name)
+                    + "',profile_url = '"
+                    + str(company_logo)
+                    + "',descr = '"
+                    + str(desc)
+                    + "',oneliner = '"
+                    + str(oneliner)
+                    + "';"
+                )
+            else:
+                resp = jsonify({"message": "INVALID company type."})
+                resp.status_code = 405
+                return resp
+
+            if check:
+                print(q)
+                check = cur.execute(q)
+                resp = jsonify({"message": "successfully added."})
+                resp.status_code = 200
+                conn.commit()
+                return resp
+            resp = jsonify({"message": "Error."})
+            resp.status_code = 403
             return resp
-        resp = jsonify({"message": "No Company Found."})
-        resp.status_code = 403
-        return resp
+        else:
+            resp = jsonify({"message": "No Company Found."})
+            resp.status_code = 403
+            return resp
 
     finally:
         cur.close()
         conn.close()
 
 
-# @app.route("/delete_company", methods=["POST"])
-# @check_for_admin_token
-# def delete_company():
-#     conn = mysql.connect()
-#     emp_id = request.json["emp_id"]
-#     cur = conn.cursor(pymysql.cursors.DictCursor)
-#     try:
-#         check = cur.execute(
-#             "SELECT ename from employee WHERE id =" + str(emp_id) + " ;"
-#         )
-#         if check:
-#             check = cur.execute("DELETE FROM employee WHERE id =" + str(emp_id) + " ;")
-#             conn.commit()
-#             resp = jsonify({"message": "Deleted successfully."})
-#             resp.status_code = 200
-#             return resp
-#         resp = jsonify({"message": "No Company found with this name."})
-#         resp.status_code = 403
-#         return resp
+@app.route("/delete_company", methods=["POST"])
+@check_for_admin_token
+def delete_company():
+    conn = mysql.connect()
+    emp_id = request.json["company_id"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        check = cur.execute(
+            "SELECT * from companydetails WHERE id =" + str(emp_id) + " ;"
+        )
+        if check:
+            checkk = cur.execute(
+                "SELECT * from bizusers WHERE id =" + str(emp_id) + " ;"
+            )
+            if checkk:
+                check = cur.execute(
+                    "DELETE FROM companydetails WHERE id =" + str(emp_id) + " ;"
+                )
+                check = cur.execute(
+                    "DELETE FROM bizusers WHERE id =" + str(emp_id) + " ;"
+                )
+                conn.commit()
+                resp = jsonify({"message": "Deleted successfully."})
+                resp.status_code = 200
+                return resp
+            resp = jsonify({"message": "No Company found with this name."})
+            resp.status_code = 403
+            return resp
+        resp = jsonify({"message": "No Company found with this name."})
+        resp.status_code = 403
+        return resp
 
-#     finally:
-#         cur.close()
-#         conn.close()
+    finally:
+        cur.close()
+        conn.close()
 
 
 @app.errorhandler(404)
