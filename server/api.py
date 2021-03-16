@@ -304,6 +304,7 @@ def disable_company():
     conn = mysql.connect()
     email = request.json["email"]
     emp_id = request.json["company_id"]
+    disable = request.json["disable"]
 
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
@@ -311,18 +312,27 @@ def disable_company():
             "SELECT * from bizusers"
             + " WHERE email = '"
             + str(email)
-            + "' id ="
+            + "' AND id ="
             + str(emp_id)
             + " ;"
         )
         if check:
-            check = cur.execute(
-                "UPDATE bizusers SET status = 0 WHERE id =" + str(emp_id) + " ;"
-            )
-            conn.commit()
-            resp = jsonify({"message": "Updated successfully."})
-            resp.status_code = 200
-            return resp
+            if disable == 0:
+                check = cur.execute(
+                    "UPDATE bizusers SET status = 1 WHERE id =" + str(emp_id) + ";"
+                )
+                conn.commit()
+                resp = jsonify({"message": "Updated successfully."})
+                resp.status_code = 200
+                return resp
+            else:
+                check = cur.execute(
+                    "UPDATE bizusers SET status = 0 WHERE id =" + str(emp_id) + ";"
+                )
+                conn.commit()
+                resp = jsonify({"message": "Updated successfully."})
+                resp.status_code = 200
+                return resp
         resp = jsonify({"message": "No Company Found."})
         resp.status_code = 403
         return resp
@@ -336,18 +346,13 @@ def disable_company():
 @check_for_admin_token
 def edit_company():
     conn = mysql.connect()
-    email = request.form["email"]
+    # email = request.form["email"]
     emp_id = request.form["company_id"]
 
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         check = cur.execute(
-            "SELECT * from companydetails"
-            + " WHERE email = '"
-            + str(email)
-            + "' AND id = "
-            + str(emp_id)
-            + ";"
+            "SELECT * from companydetails" + " WHERE id = " + str(emp_id) + ";"
         )
         if check:
             records = cur.fetchone()
@@ -356,7 +361,8 @@ def edit_company():
                 company_logo = request.files["company_logo"]
                 filename = secure_filename(company_logo.filename)
                 company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            company_logo = records["profile_url"]
+            else:
+                filename = records["profile_url"]
 
             if request.form["acc_type"] == "booking":
                 name = request.form["name"]
@@ -369,7 +375,7 @@ def edit_company():
                     "UPDATE companydetails SET name = '"
                     + str(name)
                     + "',profile_url = '"
-                    + str(company_logo)
+                    + str(filename)
                     + "',descr = '"
                     + str(desc)
                     + "',bank_name='"
@@ -391,7 +397,7 @@ def edit_company():
                     "UPDATE companydetails SET name = '"
                     + str(name)
                     + "',profile_url = '"
-                    + str(company_logo)
+                    + str(filename)
                     + "',descr = '"
                     + str(desc)
                     + "';"
@@ -404,7 +410,7 @@ def edit_company():
                     "UPDATE companydetails SET name = '"
                     + str(name)
                     + "',profile_url = '"
-                    + str(company_logo)
+                    + str(filename)
                     + "',descr = '"
                     + str(desc)
                     + "',oneliner = '"
@@ -417,7 +423,6 @@ def edit_company():
                 return resp
 
             if check:
-                print(q)
                 check = cur.execute(q)
                 resp = jsonify({"message": "successfully added."})
                 resp.status_code = 200
@@ -471,6 +476,9 @@ def delete_company():
     finally:
         cur.close()
         conn.close()
+
+
+# BIZ APIs starts here..
 
 
 @app.errorhandler(404)
