@@ -7,6 +7,8 @@ part 'add_company.g.dart';
 class AddCompany {
   String name;
   String desc;
+  String email;
+  String password;
   @JsonKey(name: "bankname")
   String bankName;
   @JsonKey(name: "ifsc_code")
@@ -28,7 +30,9 @@ class AddCompany {
       this.desc,
       this.ifscCode,
       this.name,
-      this.onleLiner});
+      this.onleLiner,
+      this.email,
+      this.password});
 
   factory AddCompany.fromJson(Map<String, dynamic> json) =>
       _$AddCompanyFromJson(json);

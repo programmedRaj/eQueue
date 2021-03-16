@@ -16,6 +16,8 @@ AddCompany _$AddCompanyFromJson(Map<String, dynamic> json) {
     ifscCode: json['ifsc_code'] as String,
     name: json['name'] as String,
     onleLiner: json['oneliner'] as String,
+    email: json['email'] as String,
+    password: json['password'] as String,
   );
 }
 
@@ -23,6 +25,8 @@ Map<String, dynamic> _$AddCompanyToJson(AddCompany instance) =>
     <String, dynamic>{
       'name': instance.name,
       'desc': instance.desc,
+      'email': instance.email,
+      'password': instance.password,
       'bankname': instance.bankName,
       'ifsc_code': instance.ifscCode,
       'accountnumber': instance.accountNo,

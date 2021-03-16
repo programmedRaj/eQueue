@@ -23,7 +23,8 @@ Future<http.Response> httpPostRequest(String url, Map<String, String> headers,
 
 Future<http.Response> httpGetRequest(
     String url, Map<String, String> header) async {
-  http.Response response = await http.get(url, headers: header).timeout(
+  var _uri = Uri.parse(url);
+  http.Response response = await http.get(_uri, headers: header).timeout(
     Duration(seconds: 8),
     onTimeout: () {
       return http.Response.bytes(

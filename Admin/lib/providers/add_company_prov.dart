@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:equeue_admin/constants/api_constants.dart';
 import 'package:equeue_admin/constants/appconstants.dart';
+import 'package:equeue_admin/enums/company_enum.dart';
 import 'package:equeue_admin/models/add_company.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -20,9 +21,9 @@ class AddCompanyProv extends ChangeNotifier {
       ..headers.addAll(header);
     request.files.add(http.MultipartFile.fromBytes('company_logo', comlogoint,
         filename: "company_ka_logo"));
-    request.fields['acc_type'] = "multitoken";
-    request.fields['email'] = "test@gmail.com";
-    request.fields['password'] = "test";
+    request.fields['acc_type'] = companyEnumToString(addCompany.accType);
+    request.fields['email'] = addCompany.email;
+    request.fields['password'] = addCompany.password;
 
     request.fields['name'] = addCompany.name;
     request.fields['desc'] = addCompany.desc;

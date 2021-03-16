@@ -27,6 +27,8 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
   TextEditingController _accNameC = TextEditingController();
   TextEditingController _ifscCodeC = TextEditingController();
   TextEditingController _onleLinerC = TextEditingController();
+  TextEditingController _emailC = TextEditingController();
+  TextEditingController _passwordC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,68 +42,83 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
+          child: Center(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 1200),
+              alignment: Alignment.topCenter,
+              color: Colors.green,
+              child: Column(
                 children: [
-                  uploadedImage != null
-                      ? Image.memory(
-                          uploadedImage,
-                          height: _height * 0.3,
-                          width: _width * 0.2,
-                          fit: BoxFit.fill,
-                        )
-                      : SizedBox(),
+                  Column(
+                    children: [
+                      uploadedImage != null
+                          ? Image.memory(
+                              uploadedImage,
+                              height: _height * 0.3,
+                              width: _width * 0.2,
+                              fit: BoxFit.fill,
+                            )
+                          : SizedBox(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.black)),
+                        onPressed: () async {
+                          _startFilePicker();
+                          /*  String imagePath = await getImage(context);
+                          setState(() {
+                            _logoPath = imagePath;
+//                vm.image = image;
+                          }); */
+                        },
+                        child: Text(
+                          'Upload Logo',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextField(
+                    controller: _nameC,
+                    decoration: InputDecoration(hintText: "Name"),
+                  ),
+                  TextField(
+                    controller: _descC,
+                    decoration: InputDecoration(hintText: "Description"),
+                  ),
+                  TextField(
+                    controller: _emailC,
+                    decoration: InputDecoration(hintText: "Email"),
+                  ),
+                  TextField(
+                    controller: _passwordC,
+                    decoration: InputDecoration(hintText: "Password"),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black)),
-                    onPressed: () async {
-                      _startFilePicker();
-                      /*  String imagePath = await getImage(context);
-                      setState(() {
-                        _logoPath = imagePath;
-//                vm.image = image;
-                      }); */
-                    },
-                    child: Text(
-                      'Upload Logo',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      radioButton("Booking", type: CompanyEnum.Booking),
+                      radioButton("Token", type: CompanyEnum.Token),
+                      radioButton("Multi-Token", type: CompanyEnum.MultiToken)
+                    ],
                   ),
+                  selectedType == null
+                      ? SizedBox()
+                      : selectedType == CompanyEnum.Booking
+                          ? bookingUI()
+                          : selectedType == CompanyEnum.MultiToken
+                              ? multiTokenUI()
+                              : SizedBox(),
+                  selectedType == null ? SizedBox() : createButton()
                 ],
               ),
-              TextField(
-                controller: _nameC,
-                decoration: InputDecoration(hintText: "Name"),
-              ),
-              TextField(
-                controller: _descC,
-                decoration: InputDecoration(hintText: "Description"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  radioButton("Booking", type: CompanyEnum.Booking),
-                  radioButton("Token", type: CompanyEnum.Token),
-                  radioButton("Multi-Token", type: CompanyEnum.MultiToken)
-                ],
-              ),
-              selectedType == null
-                  ? SizedBox()
-                  : selectedType == CompanyEnum.Booking
-                      ? bookingUI()
-                      : selectedType == CompanyEnum.MultiToken
-                          ? multiTokenUI()
-                          : SizedBox(),
-              selectedType == null ? SizedBox() : createButton()
-            ],
+            ),
           ),
         ),
       ),
@@ -215,7 +232,9 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         desc: _descC.text,
         ifscCode: _ifscCodeC.text,
         name: _nameC.text,
-        onleLiner: _onleLinerC.text);
+        onleLiner: _onleLinerC.text,
+        email: _emailC.text,
+        password: _passwordC.text);
   }
 
   Widget createButton() {
