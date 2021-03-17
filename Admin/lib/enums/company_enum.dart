@@ -8,3 +8,13 @@ enum CompanyEnum {
   @JsonValue("multitoken")
   MultiToken
 }
+
+String companyEnumToString(CompanyEnum companyEnum) {
+  Map<CompanyEnum, String> helper = {
+    CompanyEnum.Booking: "booking",
+    CompanyEnum.MultiToken: "multitoken",
+    CompanyEnum.Token: "token"
+  };
+
+  return helper[companyEnum];
+}
