@@ -26,6 +26,8 @@ import user_apis as user_side
 import eqbiz as eqbiz
 import eqadmin as eqadmin
 import equser as equser
+import string
+import random
 
 
 CORS(app)
@@ -69,16 +71,6 @@ def check_for_token(param):
         return param(*args, **kwargs)
 
     return wrapped
-
-
-# Get current active user
-# @app.route("/user")
-# @check_for_token
-# def user():
-#     token = request.headers["Authorization"]
-#     username = jwt.decode(token, app.config["SECRET_KEY"])
-#     response = user_side.user(username)
-#     return response
 
 
 @app.route("/adminsign_in", methods=["POST"])
@@ -201,11 +193,13 @@ def create_company():
             return resp
         else:
             check = cur.execute(
-                "INSERT INTO bizusers (type,email,password,status) VALUES ('company'"
+                "INSERT INTO bizusers (type,email,password,comp_type,status) VALUES ('company'"
                 + ",'"
                 + str(email)
                 + "','"
                 + str(password)
+                + "','"
+                + str(request.form["acc_type"])
                 + "',"
                 + "1);"
             )
@@ -479,7 +473,214 @@ def delete_company():
         conn.close()
 
 
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return "".join(random.choice(chars) for _ in range(size))
+
+
 # BIZ APIs starts here..
+
+
+@app.route("/biz_signin", methods=["POST"])
+def biz_signin():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        username_entered = request.json["email"]
+        password_entered = request.json["password"]
+        check = cur.execute(
+            "Select * FROM bizusers WHERE email ='" + str(username_entered) + "';"
+        )
+        if check:
+            r = cur.fetchall()
+            for i in r:
+                if check_password_hash(i["password"], password_entered):
+                    token = jwt.encode(
+                        {
+                            "email": request.json["email"],
+                            "id": i["id"],
+                            "type": i["type"],
+                            "comp_type": i["comp_type"],
+                            "exp": datetime.datetime.utcnow()
+                            + datetime.timedelta(minutes=43200),
+                        },
+                        app.config["SECRET_KEY"],
+                    )
+                    resp = jsonify(
+                        {
+                            "comp_type": i["comp_type"],
+                            "token": token.decode("utf-8"),
+                            "type": i["type"],
+                        }
+                    )
+                    resp.status_code = 200
+                    return resp
+                else:
+                    resp = jsonify({"message": False})
+                    resp.status_code = 403
+                    return resp
+        return jsonify({"message": "No Bizuser Found."})
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/change_passw_biz", methods=["POST"])
+@check_for_token
+def change_passw_biz():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    password_entered = request.json["password"]
+    n_password_entered = generate_password_hash(request.json["new_password"])
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["ADMIN_SECRET_KEY"])
+    try:
+        check = cur.execute(
+            "Select * FROM bizusers WHERE email ='"
+            + str(user["email"])
+            + "' AND id = '"
+            + str(user["id"])
+            + "';"
+        )
+        if check:
+            records = cur.fetchall()
+            for r in records:
+                if check_password_hash(r["password"], password_entered):
+                    cur.execute(
+                        "UPDATE bizusers SET password = '"
+                        + str(n_password_entered)
+                        + "' WHERE email = '"
+                        + str(user["email"])
+                        + "';"
+                    )
+                    conn.commit()
+                    resp = jsonify({"message": "success"})
+                    resp.status_code = 200
+                    return resp
+                resp = jsonify({"message": "wrong old password."})
+                resp.status_code = 403
+                return resp
+        resp = jsonify({"message": "No BizUser Found."})
+        resp.status_code = 405
+        return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/forgot_passw_biz", methods=["POST"])
+def forgot_passw_biz():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    username_entered = request.json["email"]
+    try:
+        check = cur.execute(
+            "Select * FROM bizusers WHERE email ='" + str(username_entered) + "';"
+        )
+        if check:
+            otp = id_generator()
+            # mail
+            cur.execute(
+                "UPDATE bizusers SET code = '"
+                + str(otp)
+                + "', forgot_password = 1 WHERE email = '"
+                + str(username_entered)
+                + "';"
+            )
+            conn.commit()
+            resp = jsonify({"message": "success"})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "User not found."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/change_fpassw_biz", methods=["POST"])
+def change_fpassw_biz():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    username_entered = request.json["email"]
+    otp = request.json["otp"]
+    new_passw = request.json["new_passw"]
+    try:
+        check = cur.execute(
+            "Select * FROM bizusers WHERE email ='"
+            + str(username_entered)
+            + "' AND code ='"
+            + str(otp)
+            + "';"
+        )
+        if check:
+
+            cur.execute(
+                "UPDATE bizusers SET code = '0',forgot_password = 0, password='"
+                + str(generate_password_hash(new_passw))
+                + "' WHERE email = '"
+                + str(username_entered)
+                + "';"
+            )
+            conn.commit()
+            resp = jsonify({"message": "success"})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "User not found."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/create_employee", methods=["POST"])
+@check_for_token
+def create_employee():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    passw = generate_password_hash(request.json["password"])
+    email = json.dumps(request.json["email"])
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "company":
+            cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
+            r = cur.fetchone()
+            if r["email"]:
+                resp = jsonify({"message": "Email id taken."})
+                resp.status_code = 405
+                return resp
+            else:
+                check = cur.execute(
+                    "INSERT INTO bizusers (email,password,comp_type,status,type) VALUES ('"
+                    + str(email)
+                    + "','"
+                    + str(passw)
+                    + "','"
+                    + str(user["comp_type"])
+                    + "',1,'employee');"
+                )
+                if check:
+                    resp = jsonify(
+                        {"message": "Employee Account Created successfully."}
+                    )
+                    resp.status_code = 200
+                    conn.commit()
+                    return resp
+                resp = jsonify({"message": "Error."})
+                resp.status_code = 403
+                return resp
+
+        resp = jsonify({"message": "ONLY Company can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
 
 
 @app.errorhandler(404)
