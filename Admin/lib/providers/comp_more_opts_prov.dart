@@ -45,4 +45,40 @@ class CompMoreOptsProv extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> deleteCompany(
+      CompanyDets companyDets, CompEmailStatus compEmailStatus) async {
+    var header = {
+      'Content-Type': 'application/json',
+      'Authorization': Token.statToken
+    };
+    var body = {
+      "company_id": companyDets.id,
+    };
+    try {
+      isDisableLoading = true;
+      AppToast.showSucc("Deleting ${companyDets.name}");
+      notifyListeners();
+      var resp = await httpPostRequest(CompanyApi.deleteComp, header, body);
+      if (resp.statusCode == 200) {
+        isDisableLoading = true;
+        AppToast.showSucc("Deleted ${companyDets.name}");
+        notifyListeners();
+        return true;
+      } else {
+        isDisableLoading = false;
+        isDisableErr = true;
+        AppToast.showErr("Error deleting ${companyDets.name}");
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      isDisableLoading = false;
+      isDisableErr = true;
+      AppToast.showErr("Error deleting ${companyDets.name}");
+
+      notifyListeners();
+      return false;
+    }
+  }
 }
