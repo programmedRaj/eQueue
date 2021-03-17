@@ -81,7 +81,6 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
             child: Container(
               constraints: BoxConstraints(maxWidth: 1200),
               alignment: Alignment.topCenter,
-              color: Colors.green,
               child: Column(
                 children: [
                   Column(
@@ -283,8 +282,12 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
         onPressed: () async {
-          Provider.of<AddCompanyProv>(context, listen: false)
-              .execCreateComppany(uploadedImage, getDetails(), edit);
+          bool success =
+              await Provider.of<AddCompanyProv>(context, listen: false)
+                  .execCreateComppany(uploadedImage, getDetails(), edit);
+          if (success) {
+            Navigator.pop(context);
+          }
         },
         child: Text(
           edit ? 'Edit' : 'Create',

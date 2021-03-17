@@ -5,12 +5,13 @@ import 'package:equeue_admin/constants/api_constants.dart';
 import 'package:equeue_admin/constants/appconstants.dart';
 import 'package:equeue_admin/enums/company_enum.dart';
 import 'package:equeue_admin/models/add_company.dart';
+import 'package:equeue_admin/widgets/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class AddCompanyProv extends ChangeNotifier {
   List<int> comlogoint;
-  execCreateComppany(
+  Future<bool> execCreateComppany(
       Uint8List companyLogo, AddCompany addCompany, bool edit) async {
     var postUri = Uri.parse(edit ? CompanyApi.edit : CompanyApi.create);
     var header = {
@@ -41,6 +42,14 @@ class AddCompanyProv extends ChangeNotifier {
     var resp = await request.send();
     if (resp.statusCode == 200) {
       print("Success");
+      return true;
+    } else {
+      if (edit) {
+        AppToast.showErr("Company details editing failed");
+      } else {
+        AppToast.showErr("Company created successfully");
+      }
+      return false;
     }
   }
 }
