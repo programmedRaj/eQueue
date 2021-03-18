@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<String> getImage(BuildContext context) async {
+/* Future<String> getImage(BuildContext context) async {
   final picker = ImagePicker();
   ImageSource imageSource;
 
@@ -14,4 +14,4 @@ Future<String> getImage(BuildContext context) async {
   } catch (e) {
     return null;
   }
-}
+} */
