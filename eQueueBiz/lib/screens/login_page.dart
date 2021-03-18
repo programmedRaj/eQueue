@@ -2,8 +2,13 @@ import 'dart:convert';
 
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/locale/app_localization.dart';
+import 'package:equeuebiz/providers/auth_prov.dart';
+import 'package:equeuebiz/providers/forgot_pass_prov.dart';
+import 'package:equeuebiz/screens/forgot_password.dart';
 import 'package:equeuebiz/screens/homepage.dart';
+import 'package:equeuebiz/services/app_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,7 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController userNameControler = TextEditingController();
+  TextEditingController emailControler = TextEditingController();
   TextEditingController passwordControler = TextEditingController();
   String lang;
 
@@ -60,81 +65,109 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          color: Colors.white,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 400),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                    color: AppColor.mainBlue,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(color: Colors.black26, blurRadius: 5)
-                    ]),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(child: _userNameTextField()),
-                    Flexible(
-                      child: SizedBox(
-                        height: 20,
-                      ),
-                    ),
-                    Flexible(child: _passwordTextField()),
-                    Flexible(
-                        child: SizedBox(
-                      height: 20,
-                    )),
-                    Flexible(
-                      child: InkWell(
-                        onTap: () {
-                          executeLogin("admin@equeue.app", "password");
-                          /* Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
-                              )); */
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
-                          decoration: BoxDecoration(
-                              color: AppColor.darkBlue,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Text(
-                            AppLocalization.of(context).login,
-                            style: TextStyle(color: Colors.white),
+    return Consumer<AuthProv>(
+      builder: (context, value, child) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            body: Container(
+              alignment: Alignment.center,
+              color: Colors.white,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 400),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        color: AppColor.mainBlue,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(color: Colors.black26, blurRadius: 5)
+                        ]),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(child: _userNameTextField()),
+                        Flexible(
+                          child: SizedBox(
+                            height: 20,
                           ),
                         ),
-                      ),
+                        Flexible(child: _passwordTextField()),
+                        Flexible(
+                            child: SizedBox(
+                          height: 20,
+                        )),
+                        Flexible(
+                          child: InkWell(
+                            onTap: () async {
+                              bool success = await value.execLogin(
+                                  emailControler.text, passwordControler.text);
+                              if (success) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ));
+                              } else {
+                                AppToast.showErr("Error logging !");
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
+                              decoration: BoxDecoration(
+                                  color: AppColor.darkBlue,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: value.isLoading
+                                  ? Center(
+                                      child: SizedBox(
+                                        height: 20,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      ),
+                                    )
+                                  : Text(
+                                      AppLocalization.of(context).login,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ForgotPassPage(),
+                                ));
+                          },
+                          child: Text(
+                            AppLocalization.of(context).forgetpassword + " ?",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      AppLocalization.of(context).forgetpassword,
-                      style: TextStyle(color: Colors.white),
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   Widget _userNameTextField() {
     return TextFormField(
-      controller: userNameControler,
+      controller: emailControler,
       keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 20.5),
       decoration: InputDecoration(

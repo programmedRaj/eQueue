@@ -1,5 +1,7 @@
+import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/screens/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'locale/app_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -13,27 +15,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        _localeOverrideDelegate
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProv>(
+          create: (context) => AuthProv(),
+        )
       ],
-      supportedLocales: [
-        const Locale('en', 'US'), //english
-        const Locale('es', 'ES'), // spanish
-        const Locale('ar', 'AR'), // Arabic
-        const Locale('fr', 'FR'), // french
-        const Locale('fa', 'FA'), // farsi
-      ],
-      title: 'Equeue Biz',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+      child: MaterialApp(
+        localizationsDelegates: [
+          GlobalCupertinoLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          _localeOverrideDelegate
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'), //english
+          const Locale('es', 'ES'), // spanish
+          const Locale('ar', 'AR'), // Arabic
+          const Locale('fr', 'FR'), // french
+          const Locale('fa', 'FA'), // farsi
+        ],
+        title: 'Equeue Biz',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: LoginPage(),
       ),
-      home: LoginPage(),
     );
   }
 }

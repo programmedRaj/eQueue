@@ -1,5 +1,6 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/locale/app_localization.dart';
+import 'package:equeuebiz/screens/change_password.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,11 @@ class _SettingsState extends State<Settings> {
             SizedBox(
               height: 15,
             ),
-            _languageDropdown()
+            _languageDropdown(),
+            SizedBox(
+              height: 20,
+            ),
+            _changePass()
           ],
         ),
       ),
@@ -71,6 +76,19 @@ class _SettingsState extends State<Settings> {
           });
         },
       ),
+    );
+  }
+
+  Widget _changePass() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChangePassword(),
+            ));
+      },
+      child: Text("Change Password"),
     );
   }
 }

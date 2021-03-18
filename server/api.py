@@ -587,7 +587,7 @@ def forgot_passw_biz():
                 + "';"
             )
             conn.commit()
-            resp = jsonify({"message": "success"})
+            resp = jsonify({"message": "success","otp":otp})  #edit response after mail added.
             resp.status_code = 200
             return resp
         resp = jsonify({"message": "User not found."})

@@ -1,6 +1,8 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/enum/company_enum.dart';
 import 'package:equeuebiz/locale/app_localization.dart';
+import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/screens/bookings.dart';
 import 'package:equeuebiz/screens/branches.dart';
 import 'package:equeuebiz/screens/employees.dart';
@@ -9,6 +11,7 @@ import 'package:equeuebiz/screens/profile.dart';
 import 'package:equeuebiz/screens/settings.dart';
 import 'package:equeuebiz/screens/tokens.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    var authProv = Provider.of<AuthProv>(context);
     return Scaffold(
       /* appBar: AppBar(
         title: Text("Home"),
@@ -30,7 +34,7 @@ class _HomePageState extends State<HomePage> {
               constraints: BoxConstraints(maxWidth: 1200),
               child: Column(
                 children: [
-                  _profileWidget(),
+                  _profileWidget(authProv),
                   _branchEmployee(),
                   Expanded(
                     child: SingleChildScrollView(
@@ -44,8 +48,8 @@ class _HomePageState extends State<HomePage> {
                                       builder: (context) => Branches(),
                                     ));
                               },
-                              child: _cards("Branches",
-                                  AppLocalization.of(context).alreadyacc)),
+                              child: _cards(
+                                  "Branches", "Edit/Manage branches details")),
                           InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -56,36 +60,43 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: _cards(AppLocalization.of(context).email,
                                   "Edit/Manage employee details")),
-                          InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Tokens(),
-                                    ));
-                              },
-                              child: _cards(
-                                  "Token", "Edit/Manage tokens details")),
-                          InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MultiTokens(),
-                                    ));
-                              },
-                              child: _cards("MultiTokens",
-                                  "Edit/Manage multiple tokens details")),
-                          InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Bookings(),
-                                    ));
-                              },
-                              child: _cards(
-                                  "Bookings", "Edit/Manage bookings details")),
+                          authProv.authinfo.companyType == CompanyEnum.Token
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Tokens(),
+                                        ));
+                                  },
+                                  child: _cards(
+                                      "Token", "Edit/Manage tokens details"))
+                              : SizedBox(),
+                          authProv.authinfo.companyType ==
+                                  CompanyEnum.MultiToken
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MultiTokens(),
+                                        ));
+                                  },
+                                  child: _cards("MultiTokens",
+                                      "Edit/Manage multiple tokens details"))
+                              : SizedBox(),
+                          authProv.authinfo.companyType == CompanyEnum.Booking
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Bookings(),
+                                        ));
+                                  },
+                                  child: _cards("Bookings",
+                                      "Edit/Manage bookings details"))
+                              : SizedBox(),
                           _cards("Privacy & Policy", "Click to view"),
                           _cards("Terms & Conditions", "Click to view"),
                         ],
@@ -99,7 +110,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _profileWidget() {
+  Widget _profileWidget(AuthProv authProv) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
       child: Row(
@@ -127,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                       "Denise Rew",
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
-                    Text("Employee")
+                    Text(authProv.authinfo.userType.toString())
                   ],
                 )
               ],
