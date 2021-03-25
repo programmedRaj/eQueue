@@ -636,6 +636,53 @@ def change_fpassw_biz():
         conn.close()
 
 
+@app.route("/create_branch", methods=["POST"])
+@check_for_token
+def create_branch():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    passw = generate_password_hash(request.json["password"])
+    email = json.dumps(request.json["email"])
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "company":
+            cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
+            r = cur.fetchone()
+            if r["email"]:
+                resp = jsonify({"message": "Email id taken."})
+                resp.status_code = 405
+                return resp
+            else:
+                check = cur.execute(
+                    "INSERT INTO bizusers (email,password,comp_type,status,type) VALUES ('"
+                    + str(email)
+                    + "','"
+                    + str(passw)
+                    + "','"
+                    + str(user["comp_type"])
+                    + "',1,'employee');"
+                )
+                if check:
+                    resp = jsonify(
+                        {"message": "Employee Account Created successfully."}
+                    )
+                    resp.status_code = 200
+                    conn.commit()
+                    return resp
+                resp = jsonify({"message": "Error."})
+                resp.status_code = 403
+                return resp
+
+        resp = jsonify({"message": "ONLY Company can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/create_employee", methods=["POST"])
 @check_for_token
 def create_employee():
