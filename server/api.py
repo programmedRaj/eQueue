@@ -357,7 +357,7 @@ def edit_company():
                 company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             else:
                 filename = records["profile_url"]
-
+            print(filename)
             if request.form["acc_type"] == "booking":
                 name = request.form["name"]
                 desc = request.form["desc"]
@@ -417,6 +417,7 @@ def edit_company():
                 return resp
 
             if check:
+                print(q)
                 check = cur.execute(q)
                 resp = jsonify({"message": "successfully added."})
                 resp.status_code = 200

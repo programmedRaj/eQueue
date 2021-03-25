@@ -21,6 +21,7 @@ class AddCompany {
   String onleLiner;
   @JsonKey(name: "acc_type")
   CompanyEnum accType;
+  int companyId;
 
   AddCompany(
       {this.accType,
@@ -32,7 +33,8 @@ class AddCompany {
       this.name,
       this.onleLiner,
       this.email,
-      this.password});
+      this.password,
+      this.companyId});
 
   factory AddCompany.fromJson(Map<String, dynamic> json) =>
       _$AddCompanyFromJson(json);

@@ -39,7 +39,7 @@ class CompanyDets {
   @JsonKey(name: "descr")
   String desc;
 
-  @JsonKey(name: "bankname")
+  @JsonKey(name: "bank_name")
   String bankName;
   @JsonKey(name: "ifsc")
   String ifscCode;

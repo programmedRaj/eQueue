@@ -4,31 +4,66 @@ import 'dart:typed_data';
 import 'package:equeue_admin/constants/appcolor.dart';
 import 'package:equeue_admin/enums/company_enum.dart';
 import 'package:equeue_admin/models/add_company.dart';
+import 'package:equeue_admin/models/company_full_details.dart';
 import 'package:equeue_admin/providers/add_company_prov.dart';
 import 'package:equeue_admin/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddCompanyPage extends StatefulWidget {
+  final CompanyDets companyDets;
+  final CompEmailStatus compEmailStatus;
+  AddCompanyPage({this.compEmailStatus, this.companyDets});
   @override
   _AddCompanyPageState createState() => _AddCompanyPageState();
 }
 
 class _AddCompanyPageState extends State<AddCompanyPage> {
   Uint8List uploadedImage;
-
+  String profileUrl;
   CompanyEnum selectedType;
+  bool edit = false;
 
   TextEditingController _nameC = TextEditingController();
   TextEditingController _descC = TextEditingController();
   TextEditingController _bankNameC = TextEditingController();
-  TextEditingController _bankBranchC = TextEditingController();
   TextEditingController _accNoC = TextEditingController();
   TextEditingController _accNameC = TextEditingController();
   TextEditingController _ifscCodeC = TextEditingController();
   TextEditingController _onleLinerC = TextEditingController();
   TextEditingController _emailC = TextEditingController();
   TextEditingController _passwordC = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.compEmailStatus != null && widget.companyDets != null) {
+      fillDets();
+    }
+  }
+
+  fillDets() {
+    setState(() {
+      _nameC.value = TextEditingValue(text: widget.companyDets.name ?? "");
+      _emailC.value =
+          TextEditingValue(text: widget.compEmailStatus.email ?? "");
+      _descC.value = TextEditingValue(text: widget.companyDets.desc ?? "");
+      _bankNameC.value =
+          TextEditingValue(text: widget.companyDets.bankName ?? "nil");
+
+      _accNoC.value =
+          TextEditingValue(text: widget.companyDets.accountNo ?? "");
+      _accNameC.value =
+          TextEditingValue(text: widget.companyDets.accountName ?? "");
+      _ifscCodeC.value =
+          TextEditingValue(text: widget.companyDets.ifscCode ?? "");
+      _onleLinerC.value =
+          TextEditingValue(text: widget.companyDets.onleLiner ?? "");
+      selectedType = widget.companyDets.accType;
+      profileUrl = widget.companyDets.profileUrl;
+      edit = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +81,6 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
             child: Container(
               constraints: BoxConstraints(maxWidth: 1200),
               alignment: Alignment.topCenter,
-              color: Colors.green,
               child: Column(
                 children: [
                   Column(
@@ -58,7 +92,14 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                               width: _width * 0.2,
                               fit: BoxFit.fill,
                             )
-                          : SizedBox(),
+                          : profileUrl != null
+                              ? Image.network(
+                                  profileUrl,
+                                  height: _height * 0.3,
+                                  width: _width * 0.2,
+                                  fit: BoxFit.fill,
+                                )
+                              : SizedBox(),
                       SizedBox(
                         height: 20,
                       ),
@@ -193,10 +234,6 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
           decoration: InputDecoration(hintText: "Bank Name"),
         ),
         TextField(
-          controller: _bankBranchC,
-          decoration: InputDecoration(hintText: "Bank Branch"),
-        ),
-        TextField(
           controller: _accNoC,
           decoration: InputDecoration(hintText: "Account Number"),
         ),
@@ -234,7 +271,8 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         name: _nameC.text,
         onleLiner: _onleLinerC.text,
         email: _emailC.text,
-        password: _passwordC.text);
+        password: _passwordC.text,
+        companyId: widget?.companyDets?.id);
   }
 
   Widget createButton() {
@@ -244,11 +282,15 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
         onPressed: () async {
-          Provider.of<AddCompanyProv>(context, listen: false)
-              .execCreateComppany(uploadedImage, getDetails());
+          bool success =
+              await Provider.of<AddCompanyProv>(context, listen: false)
+                  .execCreateComppany(uploadedImage, getDetails(), edit);
+          if (success) {
+            Navigator.pop(context);
+          }
         },
         child: Text(
-          'Create',
+          edit ? 'Edit' : 'Create',
           style: TextStyle(color: Colors.white),
         ),
       ),
