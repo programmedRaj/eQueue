@@ -1,6 +1,7 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/locale/app_localization.dart';
 import 'package:equeuebiz/screens/change_password.dart';
+import 'package:equeuebiz/screens/login_page.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,11 @@ class _SettingsState extends State<Settings> {
             SizedBox(
               height: 20,
             ),
-            _changePass()
+            _changePass(),
+            SizedBox(
+              height: 20,
+            ),
+            _logOut()
           ],
         ),
       ),
@@ -89,6 +94,20 @@ class _SettingsState extends State<Settings> {
             ));
       },
       child: Text("Change Password"),
+    );
+  }
+
+  Widget _logOut() {
+    return InkWell(
+      onTap: () {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoginPage(),
+            ),
+            (route) => false);
+      },
+      child: Text("Log Out"),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/enum/company_enum.dart';
+import 'package:equeuebiz/enum/user_type.dart';
 import 'package:equeuebiz/locale/app_localization.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/screens/bookings.dart';
@@ -40,26 +41,30 @@ class _HomePageState extends State<HomePage> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Branches(),
-                                    ));
-                              },
-                              child: _cards(
-                                  "Branches", "Edit/Manage branches details")),
-                          InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Employees(),
-                                    ));
-                              },
-                              child: _cards(AppLocalization.of(context).email,
-                                  "Edit/Manage employee details")),
+                          authProv.authinfo.userType == UserEnum.Company
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Branches(),
+                                        ));
+                                  },
+                                  child: _cards("Branches",
+                                      "Edit/Manage branches details"))
+                              : SizedBox(),
+                          authProv.authinfo.userType == UserEnum.Company
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Employees(),
+                                        ));
+                                  },
+                                  child: _cards("Employee",
+                                      "Edit/Manage employee details"))
+                              : SizedBox(),
                           authProv.authinfo.companyType == CompanyEnum.Token
                               ? InkWell(
                                   onTap: () {
@@ -138,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                       "Denise Rew",
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
-                    Text(authProv.authinfo.userType.toString())
+                    Text(userEnumToString(authProv.authinfo.userType))
                   ],
                 )
               ],

@@ -1,5 +1,6 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/services/app_toast.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:equeuebiz/widgets/resize_helper.dart';
@@ -56,9 +57,7 @@ class _CreateBranchState extends State<CreateBranch> {
                     _textField("City"),
                     _textField("State/Province"),
                     _textField("Contact"),
-                    _textField("Paisa"),
                     _textField("Description"),
-                    _textField("Counter"),
                     SizedBox(
                       height: 8,
                     ),
@@ -99,12 +98,19 @@ class _CreateBranchState extends State<CreateBranch> {
   }
 
   Widget _departmentChip(String departmentNAme) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(3),
-          border: Border.all(color: AppColor.mainBlue)),
-      child: Text(departmentNAme),
+    return InkWell(
+      onTap: () {
+        setState(() {
+          departments.remove(departmentNAme);
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3),
+            border: Border.all(color: AppColor.mainBlue)),
+        child: Text(departmentNAme),
+      ),
     );
   }
 
@@ -118,6 +124,12 @@ class _CreateBranchState extends State<CreateBranch> {
         controller: _departmentController,
         onChanged: (val) {
           if (val.endsWith(",")) {
+            if (departments.contains(val.replaceAll(",", ""))) {
+              AppToast.showErr("Already present");
+              _departmentController.value = TextEditingValue.empty;
+
+              return;
+            }
             setState(() {
               departments.add(val.replaceAll(",", ""));
               _departmentController.value = TextEditingValue.empty;

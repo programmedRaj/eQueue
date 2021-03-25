@@ -7,7 +7,7 @@ enum UserEnum {
   Employee,
 }
 
-String companyEnumToString(UserEnum userEnum) {
+String userEnumToString(UserEnum userEnum) {
   Map<UserEnum, String> helper = {
     UserEnum.Company: "Company",
     UserEnum.Employee: "Employee",
