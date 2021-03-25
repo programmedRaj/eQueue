@@ -21,6 +21,7 @@ class AuthProv extends ChangeNotifier {
 
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
+        print(decodedResp);
         authinfo = AuthModel.fromJson(decodedResp);
         print("token : " + authinfo.jwtToken);
         isLoading = false;
@@ -28,7 +29,10 @@ class AuthProv extends ChangeNotifier {
         return true;
       } else {
         isLoading = false;
-        notifyListeners();
+        notifyListeners(); //hataa sab breakpoints
+
+
+        //
         return false;
       }
     } catch (e) {
