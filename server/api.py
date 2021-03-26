@@ -587,7 +587,9 @@ def forgot_passw_biz():
                 + "';"
             )
             conn.commit()
-            resp = jsonify({"message": "success","otp":otp})  #edit response after mail added.
+            resp = jsonify(
+                {"message": "success", "otp": otp}
+            )  # edit response after mail added.
             resp.status_code = 200
             return resp
         resp = jsonify({"message": "User not found."})
@@ -636,44 +638,195 @@ def change_fpassw_biz():
         conn.close()
 
 
-@app.route("/create_branch", methods=["POST"])
+@app.route("/create_edit_branch", methods=["POST"])
 @check_for_token
 def create_branch():
     conn = mysql.connect()
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
-    passw = generate_password_hash(request.json["password"])
-    email = json.dumps(request.json["email"])
+
+    bname = request.form["bname"]
+    pnum = request.form["pnum"]
+    addr1 = request.form["addr1"]
+    addr2 = request.form["addr2"]
+    city = request.form["city"]
+    postalcode = request.form["postalcode"]
+    geolocation = request.form["geolocation"]
+    province = request.form["province"]
+    comp_id = user["id"]
+    w_hrs = json.dumps(request.form["w_hrs"])
+
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "company":
-            cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
-            r = cur.fetchone()
-            if r["email"]:
-                resp = jsonify({"message": "Email id taken."})
+            cur.execute("Select * from bizusers WHERE id = '" + str(comp_id) + "'")
+            check = cur.fetchall()
+            if check:
+                if request.form["req"] == "create":
+                    filename = "default.png"
+                    if request.files["company_logo"]:
+                        company_logo = request.files["company_logo"]
+                        filename = secure_filename(company_logo.filename)
+                        company_logo.save(
+                            os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                        )
+
+                    if user["type"] == "booking":
+                        services = json.dumps(request.form["w_hrs"])
+                        timezone = request.form["timezone"]
+                        notify_time = request.form["notify"]
+                        bpd = request.form["booking_perday"]
+                        bphrs = request.form["booking_perhrs"]
+
+                        op = eqbiz.create_branch(
+                            bname,
+                            pnum,
+                            addr1,
+                            addr2,
+                            city,
+                            postalcode,
+                            geolocation,
+                            province,
+                            comp_id,
+                            w_hrs,
+                            services,
+                            timezone,
+                            notify_time,
+                            bpd,
+                            bphrs,
+                            filename,
+                            0,
+                            0,
+                        )  # threshold, department
+
+                    elif user["type"] == "multitoken":
+                        threshold = request.form["threshold"]
+                        department = request.form["department"]
+                        op = eqbiz.create_branch(
+                            bname,
+                            pnum,
+                            addr1,
+                            addr2,
+                            city,
+                            postalcode,
+                            geolocation,
+                            province,
+                            comp_id,
+                            w_hrs,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            filename,
+                            threshold,
+                            department,
+                        )
+
+                    elif user["type"] == "token":
+                        threshold = request.form["threshold"]
+                        department = request.form["department"]
+                        op = eqbiz.create_branch(
+                            bname,
+                            pnum,
+                            addr1,
+                            addr2,
+                            city,
+                            postalcode,
+                            geolocation,
+                            province,
+                            comp_id,
+                            w_hrs,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            filename,
+                            threshold,
+                            department,
+                        )
+
+                    else:
+                        resp = jsonify({"message": "INVALID Company type."})
+                        resp.status_code = 405
+                        return resp
+
+                    if op == 200:
+                        resp = jsonify({"message": "INVALID company type."})
+                        resp.status_code = 200
+                        return resp
+                    if op == 403:
+                        resp = jsonify({"message": "error occured."})
+                        resp.status_code = 403
+                        return resp
+
+                elif request.form["req"] == "update":
+                    if user["type"] == "booking":
+                        op = eqbiz.edit_branch(
+                            bname,
+                            pnum,
+                            addr1,
+                            addr2,
+                            city,
+                            postalcode,
+                            geolocation,
+                            province,
+                            comp_id,
+                            w_hrs,
+                        )
+
+                    elif user["type"] == "multitoken":
+                        op = eqbiz.edit_branch(
+                            bname,
+                            pnum,
+                            addr1,
+                            addr2,
+                            city,
+                            postalcode,
+                            geolocation,
+                            province,
+                            comp_id,
+                            w_hrs,
+                        )
+
+                    elif user["type"] == "token":
+                        op = eqbiz.edit_branch(
+                            bname,
+                            pnum,
+                            addr1,
+                            addr2,
+                            city,
+                            postalcode,
+                            geolocation,
+                            province,
+                            comp_id,
+                            w_hrs,
+                        )
+
+                    else:
+                        resp = jsonify({"message": "INVALID Company type."})
+                        resp.status_code = 405
+                        return resp
+
+                else:
+                    resp = jsonify({"message": "INVALID Request"})
+                    resp.status_code = 405
+                    return resp
+
+            else:
+                resp = jsonify({"message": "INVALID USER maybe deleted.."})
                 resp.status_code = 405
                 return resp
-            else:
-                check = cur.execute(
-                    "INSERT INTO bizusers (email,password,comp_type,status,type) VALUES ('"
-                    + str(email)
-                    + "','"
-                    + str(passw)
-                    + "','"
-                    + str(user["comp_type"])
-                    + "',1,'employee');"
-                )
-                if check:
-                    resp = jsonify(
-                        {"message": "Employee Account Created successfully."}
-                    )
-                    resp.status_code = 200
-                    conn.commit()
-                    return resp
-                resp = jsonify({"message": "Error."})
-                resp.status_code = 403
-                return resp
-
+                #     resp = jsonify(
+                #         {"message": "Employee Account Created successfully."}
+                #     )
+                #     resp.status_code = 200
+                #     conn.commit()
+                #     return resp
+                # resp = jsonify({"message": "Error."})
+                # resp.status_code = 403
+                # return resp
         resp = jsonify({"message": "ONLY Company can access."})
         resp.status_code = 405
         return resp
