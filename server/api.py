@@ -654,8 +654,13 @@ def create_branch():
     geolocation = request.form["geolocation"]
     province = request.form["province"]
     comp_id = user["id"]
-    w_hrs = json.dumps(request.form["w_hrs"])
-
+    filename = "default.png"
+    if request.files["company_logo"]:
+        company_logo = request.files["company_logo"]
+        filename = secure_filename(company_logo.filename)
+        company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+    w_hrs = request.form["w_hrs"]
+    print(filename)
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "company":
@@ -663,23 +668,16 @@ def create_branch():
             check = cur.fetchall()
             if check:
                 if request.form["req"] == "create":
-                    filename = "default.png"
-                    if request.files["company_logo"]:
-                        company_logo = request.files["company_logo"]
-                        filename = secure_filename(company_logo.filename)
-                        company_logo.save(
-                            os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                        )
+                    print(user["comp_type"])
 
-                    if user["type"] == "booking":
-                        services = json.dumps(request.form["w_hrs"])
+                    if user["comp_type"] == "booking":
+                        services = request.form["services"]
                         timezone = request.form["timezone"]
                         notify_time = request.form["notify"]
                         bpd = request.form["booking_perday"]
                         bphrs = request.form["booking_perhrs"]
-
                         op = eqbiz.create_branch(
-                            user["type"],
+                            user["comp_type"],
                             bname,
                             pnum,
                             addr1,
@@ -700,11 +698,11 @@ def create_branch():
                             0,
                         )  # threshold, department
 
-                    elif user["type"] == "multitoken":
+                    elif user["comp_type"] == "multitoken":
                         threshold = request.form["threshold"]
                         department = request.form["department"]
                         op = eqbiz.create_branch(
-                            user["type"],
+                            user["comp_type"],
                             bname,
                             pnum,
                             addr1,
@@ -725,11 +723,11 @@ def create_branch():
                             department,
                         )
 
-                    elif user["type"] == "token":
+                    elif user["comp_type"] == "token":
                         threshold = request.form["threshold"]
                         department = request.form["department"]
                         op = eqbiz.create_branch(
-                            user["type"],
+                            user["comp_type"],
                             bname,
                             pnum,
                             addr1,
@@ -766,7 +764,7 @@ def create_branch():
 
                 elif request.form["req"] == "update":
                     cur.execute(
-                        "Select * from branch-details WHERE id = '"
+                        "Select * from branch_details WHERE id = '"
                         + str(request.form["branchid"])
                         + "'"
                     )
@@ -782,9 +780,14 @@ def create_branch():
                         else:
                             filename = check["profile_photo_url"]
 
-                        if user["type"] == "booking":
+                        if user["comp_type"] == "booking":
+                            services = request.form["services"]
+                            timezone = request.form["timezone"]
+                            notify_time = request.form["notify"]
+                            bpd = request.form["booking_perday"]
+                            bphrs = request.form["booking_perhrs"]
                             op = eqbiz.edit_branch(
-                                user["type"],
+                                user["comp_type"],
                                 branchid,
                                 bname,
                                 pnum,
@@ -806,9 +809,11 @@ def create_branch():
                                 0,
                             )
 
-                        elif user["type"] == "multitoken":
+                        elif user["comp_type"] == "multitoken":
+                            threshold = request.form["threshold"]
+                            department = request.form["department"]
                             op = eqbiz.edit_branch(
-                                user["type"],
+                                user["comp_type"],
                                 branchid,
                                 bname,
                                 pnum,
@@ -830,9 +835,11 @@ def create_branch():
                                 department,
                             )
 
-                        elif user["type"] == "token":
+                        elif user["comp_type"] == "token":
+                            threshold = request.form["threshold"]
+                            department = request.form["department"]
                             op = eqbiz.edit_branch(
-                                user["type"],
+                                user["comp_type"],
                                 branchid,
                                 bname,
                                 pnum,
@@ -899,7 +906,7 @@ def create_employee():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
     passw = generate_password_hash(request.json["password"])
-    email = json.dumps(request.json["email"])
+    email = request.json["email"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "company":

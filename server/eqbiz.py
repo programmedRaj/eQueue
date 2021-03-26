@@ -56,7 +56,7 @@ def create_branch(
     try:
         if acctype == "booking":
             q = (
-                "INSERT INTO branch-details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,services,timezone,notify_time,booking_per_day,per_day_hours,profile_photo_url,money_earned) VALUES ('"
+                "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,services,timezone,notify_time,booking_per_day,per_day_hours,profile_photo_url,money_earned) VALUES ('"
                 + str(bname)
                 + "','"
                 + str(pnum)
@@ -90,10 +90,9 @@ def create_branch(
                 + str(filename)
                 + "','0');"
             )
-
         elif acctype == "token":
             q = (
-                "INSERT INTO branch-details(bname,pnum,addr1,addr2,city,postalcode,geolocation,province,comp_id,w_hrs,department,threshold,filename,money_earned) VALUES ('"
+                "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,money_earned) VALUES ('"
                 + str(bname)
                 + "','"
                 + str(pnum)
@@ -123,7 +122,7 @@ def create_branch(
             )
         elif acctype == "multitoken":
             q = (
-                "INSERT INTO branch-details(bname,pnum,addr1,addr2,city,postalcode,geolocation,province,comp_id,w_hrs,department,threshold,filename,money_earned) VALUES ('"
+                "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,money_earned) VALUES ('"
                 + str(bname)
                 + "','"
                 + str(pnum)
@@ -155,6 +154,7 @@ def create_branch(
         fire = str(q)
         print(fire)
         check = cur2.execute(fire)
+        conn.commit()
         if check:
             return 200
         return 403
@@ -189,11 +189,12 @@ def edit_branch(
 ):
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
-    cur2 = conn.cursor(pymysql.cursors.DictCursor)
+
     try:
+        print(acctype)
         if acctype == "booking":
             q = (
-                "UPDATE companydetails SET bname = '"
+                "UPDATE branch_details SET bname = '"
                 + str(bname)
                 + "',profile_photo_url = '"
                 + str(filename)
@@ -231,7 +232,7 @@ def edit_branch(
             )
         elif acctype == "token":
             q = (
-                "UPDATE companydetails SET bname = '"
+                "UPDATE branch_details SET bname = '"
                 + str(bname)
                 + "',profile_photo_url = '"
                 + str(filename)
@@ -261,10 +262,9 @@ def edit_branch(
                 + str(branchid)
                 + ";"
             )
-
         elif acctype == "multitoken":
             q = (
-                "UPDATE companydetails SET bname = '"
+                "UPDATE branch_details SET bname = '"
                 + str(bname)
                 + "',profile_photo_url = '"
                 + str(filename)
@@ -297,46 +297,49 @@ def edit_branch(
 
         fire = str(q)
         print(fire)
+        cur2 = conn.cursor(pymysql.cursors.DictCursor)
         check = cur2.execute(fire)
+        conn.commit()
         if check:
             return 200
         return 403
 
     finally:
         cur.close()
+        cur2.close()
         conn.close()
 
 
-def delete_branch():
-    conn = mysql.connect()
-    emp_id = request.json["company_id"]
-    cur = conn.cursor(pymysql.cursors.DictCursor)
-    try:
-        check = cur.execute(
-            "SELECT * from companydetails WHERE id =" + str(emp_id) + " ;"
-        )
-        if check:
-            checkk = cur.execute(
-                "SELECT * from bizusers WHERE id =" + str(emp_id) + " ;"
-            )
-            if checkk:
-                check = cur.execute(
-                    "DELETE FROM companydetails WHERE id =" + str(emp_id) + " ;"
-                )
-                check = cur.execute(
-                    "DELETE FROM bizusers WHERE id =" + str(emp_id) + " ;"
-                )
-                conn.commit()
-                resp = jsonify({"message": "Deleted successfully."})
-                resp.status_code = 200
-                return resp
-            resp = jsonify({"message": "No Company found with this name."})
-            resp.status_code = 403
-            return resp
-        resp = jsonify({"message": "No Company found with this name."})
-        resp.status_code = 403
-        return resp
+# def delete_branch():
+#     conn = mysql.connect()
+#     emp_id = request.json["company_id"]
+#     cur = conn.cursor(pymysql.cursors.DictCursor)
+#     try:
+#         check = cur.execute(
+#             "SELECT * from companydetails WHERE id =" + str(emp_id) + " ;"
+#         )
+#         if check:
+#             checkk = cur.execute(
+#                 "SELECT * from bizusers WHERE id =" + str(emp_id) + " ;"
+#             )
+#             if checkk:
+#                 check = cur.execute(
+#                     "DELETE FROM companydetails WHERE id =" + str(emp_id) + " ;"
+#                 )
+#                 check = cur.execute(
+#                     "DELETE FROM bizusers WHERE id =" + str(emp_id) + " ;"
+#                 )
+#                 conn.commit()
+#                 resp = jsonify({"message": "Deleted successfully."})
+#                 resp.status_code = 200
+#                 return resp
+#             resp = jsonify({"message": "No Company found with this name."})
+#             resp.status_code = 403
+#             return resp
+#         resp = jsonify({"message": "No Company found with this name."})
+#         resp.status_code = 403
+#         return resp
 
-    finally:
-        cur.close()
-        conn.close()
+#     finally:
+#         cur.close()
+#         conn.close()
