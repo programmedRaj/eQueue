@@ -30,6 +30,7 @@ def allowedd_file(filename):
 
 
 def create_branch(
+    acctype,
     bname,
     pnum,
     addr1,
@@ -53,7 +54,7 @@ def create_branch(
     cur = conn.cursor(pymysql.cursors.DictCursor)
     cur2 = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        if request.form["acc_type"] == "booking":
+        if acctype == "booking":
             q = (
                 "INSERT INTO branch-details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,services,timezone,notify_time,booking_per_day,per_day_hours,profile_photo_url,money_earned) VALUES ('"
                 + str(bname)
@@ -90,7 +91,7 @@ def create_branch(
                 + "','0');"
             )
 
-        elif request.form["acc_type"] == "token":
+        elif acctype == "token":
             q = (
                 "INSERT INTO branch-details(bname,pnum,addr1,addr2,city,postalcode,geolocation,province,comp_id,w_hrs,department,threshold,filename,money_earned) VALUES ('"
                 + str(bname)
@@ -120,7 +121,7 @@ def create_branch(
                 + str(filename)
                 + "','0');"
             )
-        elif request.form["acc_type"] == "multitoken":
+        elif acctype == "multitoken":
             q = (
                 "INSERT INTO branch-details(bname,pnum,addr1,addr2,city,postalcode,geolocation,province,comp_id,w_hrs,department,threshold,filename,money_earned) VALUES ('"
                 + str(bname)
@@ -165,6 +166,8 @@ def create_branch(
 
 
 def edit_branch(
+    acctype,
+    branchid,
     bname,
     pnum,
     addr1,
@@ -185,96 +188,119 @@ def edit_branch(
     department,
 ):
     conn = mysql.connect()
-    # email = request.form["email"]
-    emp_id = request.form["company_id"]
-
     cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        check = cur.execute(
-            "SELECT * from companydetails" + " WHERE id = " + str(emp_id) + ";"
-        )
-        if check:
-            records = cur.fetchone()
-            print(records["id"])
-            if request.files["company_logo"]:
-                company_logo = request.files["company_logo"]
-                filename = secure_filename(company_logo.filename)
-                company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            else:
-                filename = records["profile_url"]
-            print(filename)
-            if request.form["acc_type"] == "booking":
-                name = request.form["name"]
-                desc = request.form["desc"]
-                bank_name = request.form["bankname"]
-                ifsc = request.form["ifsc_code"]
-                account_number = request.form["accountnumber"]
-                account_name = request.form["accountname"]
-                q = (
-                    "UPDATE companydetails SET name = '"
-                    + str(name)
-                    + "',profile_url = '"
-                    + str(filename)
-                    + "',descr = '"
-                    + str(desc)
-                    + "',bank_name='"
-                    + str(bank_name)
-                    + "',ifsc='"
-                    + str(ifsc)
-                    + "',account_number='"
-                    + str(account_number)
-                    + "',account_name='"
-                    + str(account_name)
-                    + "' WHERE id ="
-                    + str(emp_id)
-                    + ";"
-                )
-            elif request.form["acc_type"] == "token":
-                name = request.form["name"]
-                desc = request.form["desc"]
-                q = (
-                    "UPDATE companydetails SET name = '"
-                    + str(name)
-                    + "',profile_url = '"
-                    + str(filename)
-                    + "',descr = '"
-                    + str(desc)
-                    + "';"
-                )
-            elif request.form["acc_type"] == "multitoken":
-                name = request.form["name"]
-                desc = request.form["desc"]
-                oneliner = request.form["oneliner"]
-                q = (
-                    "UPDATE companydetails SET name = '"
-                    + str(name)
-                    + "',profile_url = '"
-                    + str(filename)
-                    + "',descr = '"
-                    + str(desc)
-                    + "',oneliner = '"
-                    + str(oneliner)
-                    + "';"
-                )
-            else:
-                resp = jsonify({"message": "INVALID company type."})
-                resp.status_code = 405
-                return resp
+        if acctype == "booking":
+            q = (
+                "UPDATE companydetails SET bname = '"
+                + str(bname)
+                + "',profile_photo_url = '"
+                + str(filename)
+                + "',phone_number = '"
+                + str(pnum)
+                + "',address1='"
+                + str(addr1)
+                + "',address2='"
+                + str(addr2)
+                + "',city='"
+                + str(city)
+                + "',postalcode='"
+                + str(postalcode)
+                + "',geolocation='"
+                + str(geolocation)
+                + "',province='"
+                + str(province)
+                + "',comp_id='"
+                + str(comp_id)
+                + "',working_hours='"
+                + str(w_hrs)
+                + "',services='"
+                + str(services)
+                + "',timezone='"
+                + str(timezone)
+                + "',notify_time='"
+                + str(notify_time)
+                + "',booking_per_day='"
+                + str(bpd)
+                + "',per_day_hours='"
+                + str(bphrs)
+                + "' WHERE id ="
+                + str(branchid)
+                + ";"
+            )
+        elif acctype == "token":
+            q = (
+                "UPDATE companydetails SET bname = '"
+                + str(bname)
+                + "',profile_photo_url = '"
+                + str(filename)
+                + "',phone_number = '"
+                + str(pnum)
+                + "',address1='"
+                + str(addr1)
+                + "',address2='"
+                + str(addr2)
+                + "',city='"
+                + str(city)
+                + "',postalcode='"
+                + str(postalcode)
+                + "',geolocation='"
+                + str(geolocation)
+                + "',province='"
+                + str(province)
+                + "',comp_id='"
+                + str(comp_id)
+                + "',working_hours='"
+                + str(w_hrs)
+                + "',threshold='"
+                + str(threshold)
+                + "',department='"
+                + str(department)
+                + "' WHERE id ="
+                + str(branchid)
+                + ";"
+            )
 
-            if check:
-                print(q)
-                check = cur.execute(q)
-                resp = jsonify({"message": "successfully added."})
-                resp.status_code = 200
-                conn.commit()
-                return resp
-            resp = jsonify({"message": "Error."})
-            resp.status_code = 403
-            return resp
-        else:
-            resp = jsonify({"message": "No Company Found."})
-            resp.status_code = 403
-            return resp
+        elif acctype == "multitoken":
+            q = (
+                "UPDATE companydetails SET bname = '"
+                + str(bname)
+                + "',profile_photo_url = '"
+                + str(filename)
+                + "',phone_number = '"
+                + str(pnum)
+                + "',address1='"
+                + str(addr1)
+                + "',address2='"
+                + str(addr2)
+                + "',city='"
+                + str(city)
+                + "',postalcode='"
+                + str(postalcode)
+                + "',geolocation='"
+                + str(geolocation)
+                + "',province='"
+                + str(province)
+                + "',comp_id='"
+                + str(comp_id)
+                + "',working_hours='"
+                + str(w_hrs)
+                + "',threshold='"
+                + str(threshold)
+                + "',department='"
+                + str(department)
+                + "' WHERE id ="
+                + str(branchid)
+                + ";"
+            )
+
+        fire = str(q)
+        print(fire)
+        check = cur2.execute(fire)
+        if check:
+            return 200
+        return 403
 
     finally:
         cur.close()
