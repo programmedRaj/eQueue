@@ -910,7 +910,7 @@ def create_branch():
                             resp.status_code = 403
                             return resp
 
-                    resp = jsonify({"message": "INVALID USER maybe deleted.."})
+                    resp = jsonify({"message": "INVALID Branch id maybe deleted.."})
                     resp.status_code = 405
                     return resp
 
