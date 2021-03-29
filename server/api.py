@@ -696,6 +696,7 @@ def create_branch():
                             filename,
                             0,
                             0,
+                            0,
                         )  # threshold, department
 
                     elif user["comp_type"] == "multitoken":
@@ -721,11 +722,13 @@ def create_branch():
                             filename,
                             threshold,
                             department,
+                            0,
                         )
 
                     elif user["comp_type"] == "token":
                         threshold = request.form["threshold"]
                         department = request.form["department"]
+                        counter = request.form["counter"]
                         op = eqbiz.create_branch(
                             user["comp_type"],
                             bname,
@@ -746,6 +749,7 @@ def create_branch():
                             filename,
                             threshold,
                             department,
+                            counter,
                         )
 
                     else:
@@ -807,6 +811,7 @@ def create_branch():
                                 filename,
                                 0,
                                 0,
+                                0,
                             )
 
                         elif user["comp_type"] == "multitoken":
@@ -833,11 +838,13 @@ def create_branch():
                                 filename,
                                 threshold,
                                 department,
+                                0,
                             )
 
                         elif user["comp_type"] == "token":
                             threshold = request.form["threshold"]
                             department = request.form["department"]
+                            counter = request.form["counter"]
                             op = eqbiz.edit_branch(
                                 user["comp_type"],
                                 branchid,
@@ -859,6 +866,7 @@ def create_branch():
                                 filename,
                                 threshold,
                                 department,
+                                counter,
                             )
 
                         else:
@@ -880,8 +888,36 @@ def create_branch():
                         resp.status_code = 405
                         return resp
 
+                elif request.form["req"] == "delete":
+                    cur.execute(
+                        "Select * from branch_details WHERE id = '"
+                        + str(request.form["branchid"])
+                        + "'"
+                    )
+                    check = cur.fetchone()
+                    if check:
+                        branchid = check["id"]
+                        op = eqbiz.delete_branch(
+                            branchid,
+                        )
+
+                        if op == 200:
+                            resp = jsonify({"message": "successfully deleted."})
+                            resp.status_code = 200
+                            return resp
+                        if op == 403:
+                            resp = jsonify({"message": "error occured."})
+                            resp.status_code = 403
+                            return resp
+
+                    resp = jsonify({"message": "INVALID USER maybe deleted.."})
+                    resp.status_code = 405
+                    return resp
+
                 else:
-                    resp = jsonify({"message": "INVALID Request onlu update/create"})
+                    resp = jsonify(
+                        {"message": "INVALID Request only update/create/delete"}
+                    )
                     resp.status_code = 405
                     return resp
 
