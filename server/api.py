@@ -935,6 +935,69 @@ def create_branch():
         conn.close()
 
 
+@app.route("/dept_services", methods=["POST"])
+@check_for_token
+def dept_services():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    branch_id = request.json["branch_id"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "company":
+            r = cur.execute(
+                "Select * from branch_details WHERE id = '" + str(branch_id) + "'"
+            )
+
+            if r is None:
+                resp = jsonify({"message": "INVALID branch id or no details found"})
+                resp.status_code = 405
+                return resp
+
+            else:
+                if user["comp_type"] == "booking":
+                    find = "services"
+                else:
+                    find = "department"
+
+                cur.execute(
+                    "Select "
+                    + str(find)
+                    + " from branch_details WHERE id = '"
+                    + str(branch_id)
+                    + "'"
+                )
+                records = cur.fetchone()
+                if records:
+                    if find == "department":
+                        kk = json.loads(records["department"])
+                        d = kk.get("department")
+                        resp = jsonify({"departments": d})
+                    else:
+                        kk = json.loads(records["services"])
+                        s = kk.get("services")
+                        sd = kk.get("services_desc")
+                        r = kk.get("rates")
+                        resp = jsonify(
+                            {"services": s, "services_desc": sd, "services_rates": r}
+                        )
+                    resp.status_code = 200
+                    conn.commit()
+                    return resp
+
+                resp = jsonify({"message": "Error."})
+                resp.status_code = 403
+                return resp
+
+        resp = jsonify({"message": "ONLY Company can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/create_employee", methods=["POST"])
 @check_for_token
 def create_employee():
