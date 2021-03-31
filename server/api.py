@@ -73,6 +73,25 @@ def check_for_token(param):
     return wrapped
 
 
+def check_for_user_token(param):
+    @wraps(param)
+    def wrapped(*args, **kwargs):
+        token = ""
+        if "Authorization" in request.headers:
+            token = request.headers["Authorization"]
+        # token = request.args.get('token')
+        if not token:
+            return jsonify({"message": "Missing Token"}), 403
+        try:
+            data = jwt.decode(token, app.config["USER_SECRET_KEY"])
+            # can use this data to fetch current user with contact number encoded in token
+        except:
+            return jsonify({"message": "Invalid Token"}), 403
+        return param(*args, **kwargs)
+
+    return wrapped
+
+
 @app.route("/adminsign_in", methods=["POST"])
 def sign_in():
     conn = mysql.connect()
@@ -1040,6 +1059,224 @@ def create_employee():
         resp.status_code = 405
         return resp
 
+    finally:
+        cur.close()
+        conn.close()
+
+
+# USER APIs STARTS HERE
+
+
+@app.route("/login_otp", methods=["POST"])
+def login_otp():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        check = cur.execute(
+            "SELECT id FROM equeue_users WHERE ( number = '"
+            + str(request.form["number"])
+            + "');"
+        )
+        if check:
+            otp = id_generator()
+            cur.execute(
+                "UPDATE equeue_users SET code ='"
+                + str(otp)
+                + "' WHERE number = '"
+                + str(request.form["number"])
+                + "');"
+            )
+            print(otp)
+            # send sms
+
+            resp = jsonify({"message": "success"})
+            resp.status_code = 200
+            return resp
+        else:
+            resp = jsonify({"message": "Error No user found."})
+            resp.status_code = 403
+            return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        check = cur.execute(
+            "SELECT id FROM equeue_users WHERE number = '"
+            + str(request.form["number"])
+            + "' AND code = '"
+            + str(request.form["code"])
+            + "';"
+        )
+        if check:
+            r = cur.fetchone()
+            if r:
+                kk = r["id"]
+                token = jwt.encode(
+                    {
+                        "number": request.form["number"],
+                        "user_id": kk,
+                        "exp": datetime.datetime.utcnow()
+                        + datetime.timedelta(minutes=43200),
+                    },
+                    app.config["USER_SECRET_KEY"],
+                )
+                resp = jsonify({"message": "success", "token": token.decode("utf-8")})
+                resp.status_code = 200
+                return resp
+            else:
+                resp = jsonify({"message": "Error No user found."})
+                resp.status_code = 403
+                return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/register", methods=["POST"])
+def login_register():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+
+        filename = str(app.config["USER_UPLOAD_FOLDER"]) + "default.png"
+        if request.files["profile_img"]:
+            company_logo = request.files["profile_img"]
+            filename = secure_filename(company_logo.filename)
+            company_logo.save(os.path.join(app.config["USER_UPLOAD_FOLDER"], filename))
+
+        check = cur.execute(
+            "SELECT * FROM equeue_users WHERE ( number = '"
+            + str(request.form["number"])
+            + "');"
+        )
+
+        if check:
+            resp = jsonify({"message": "You already have an account."})
+            resp.status_code = 403
+            return resp
+        check = cur.execute(
+            "SELECT id,bonus,referral_count FROM user_details WHERE ( referral_code = '"
+            + str(request.form["referral_code"])
+            + "');"
+        )
+
+        if check:
+            records = cur.fetchall()
+            for r in records:
+                bonus = r["bonus"]
+                referral_count = r["referral_count"]
+            cur2.execute(
+                "UPDATE user_details SET bonus = "
+                + str(bonus + 20)
+                + ", referral_count = "
+                + str(referral_count + 1)
+                + " WHERE referral_code = '"
+                + str(request.form["referral_code"])
+                + "';"
+            )
+
+            cur.execute(
+                "Insert into user_details(name,profile_url,address1,address2,postalcode,city,province,phone_number,money,bonus,referral_code) VALUES ('"
+                + str(request.form["name"])
+                + "','"
+                + filename
+                + "','"
+                + str(request.form["address1"])
+                + "','"
+                + str(request.form["address2"])
+                + "','"
+                + str(request.form["postalcode"])
+                + "','"
+                + str(request.form["city"])
+                + "','"
+                + str(request.form["province"])
+                + "','"
+                + str(request.form["phonenumber"])
+                + "',0,20,"
+                + ",'"
+                + str(request.form["phonenumber"] + "@equeue")
+                + "');"
+            )
+            phoneee = str(request.form["countrycode"]) + str(
+                request.form["phonenumber"]
+            )
+            cur.execute(
+                "Insert into equeue_users (number) VALUES ('" + str(phoneee) + "');"
+            )
+            conn.commit()
+            if cur:
+                token = jwt.encode(
+                    {
+                        "number": phoneee,
+                        "user_id": cur.lastrowid,
+                        "exp": datetime.datetime.utcnow()
+                        + datetime.timedelta(minutes=43200),
+                    },
+                    app.config["SECRET_KEY"],
+                )
+                print(token.decode("utf-8"))
+                resp = jsonify({"message": "success", "token": token.decode("utf-8")})
+                resp.status_code = 200
+                return resp
+            resp = jsonify({"message": "Error."})
+            resp.status_code = 403
+            return resp
+
+        else:
+            cur.execute(
+                "Insert into user_details(name,profile_url,address1,address2,postalcode,city,province,phone_number,money,bonus,referral_code) VALUES ('"
+                + str(request.form["name"])
+                + "','"
+                + filename
+                + "','"
+                + str(request.form["address1"])
+                + "','"
+                + str(request.form["address2"])
+                + "','"
+                + str(request.form["postalcode"])
+                + "','"
+                + str(request.form["city"])
+                + "','"
+                + str(request.form["province"])
+                + "','"
+                + str(request.form["phonenumber"])
+                + "',0,0,"
+                + ",'"
+                + str(request.form["phonenumber"] + "@equeue")
+                + "');"
+            )
+            phoneee = str(request.form["countrycode"]) + str(
+                request.form["phonenumber"]
+            )
+            cur.execute(
+                "Insert into equeue_users (number) VALUES ('" + str(phoneee) + "');"
+            )
+
+            conn.commit()
+            if cur:
+                token = jwt.encode(
+                    {
+                        "number": phoneee,
+                        "user_id": cur.lastrowid,
+                        "exp": datetime.datetime.utcnow()
+                        + datetime.timedelta(minutes=43200),
+                    },
+                    app.config["SECRET_KEY"],
+                )
+                print(token.decode("utf-8"))
+                resp = jsonify({"message": "success", "token": token.decode("utf-8")})
+                resp.status_code = 200
+                return resp
+            resp = jsonify({"message": "Error."})
+            resp.status_code = 403
+            return resp
     finally:
         cur.close()
         conn.close()
