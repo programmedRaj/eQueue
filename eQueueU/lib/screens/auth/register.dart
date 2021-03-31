@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Register extends StatefulWidget {
@@ -15,19 +18,36 @@ class _RegisterState extends State<Register> {
   final rkey = GlobalKey<FormState>();
   var w = 0.8;
   int type = 0;
-  String email;
-  String password;
   String name;
-  String nickname;
-  String phone;
+  String profile_url;
+  String address1;
+  String address2;
+  String postalcode;
+  String city;
+  String province;
   String number;
   String error;
   String lang;
   int sizz = 0;
+  File _image;
+  final picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        print(_image);
+      } else {
+        print('No image selected.');
+      }
+    });
   }
 
   @override
@@ -125,25 +145,60 @@ class _RegisterState extends State<Register> {
               key: rkey,
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 50, bottom: 30),
-                    child: Image.asset(
-                      'lib/assets/logo.png',
-                      height: height * 0.2,
-                      width: width * 0.3,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 50, bottom: 30),
+                        child: Image.asset(
+                          'lib/assets/logo.png',
+                          height: height * 0.2,
+                          width: width * 0.3,
+                        ),
+                      ),
+                      _image == null
+                          ? GestureDetector(
+                              onTap: () {
+                                getImage();
+                              },
+                              child: Container(
+                                child: CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor: myColor[150],
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.add_a_photo,
+                                      color: myColor[100],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Center(
+                              child: Container(
+                                height: height * 0.15,
+                                width: width * 0.28,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                        image: FileImage(_image),
+                                        fit: BoxFit.fill)),
+                              ),
+                            )
+                    ],
                   ),
                   Container(
-                    height: sizz == 2 ? height * 0.12 : height * 0.08,
+                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
                     width: width,
+                    margin: EdgeInsets.only(bottom: 15),
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      /* validator: (name) {
+                      validator: (name) {
                         if (name.isEmpty)
-                          return AppLocalization.of(context).enternickname;
+                          return 'Please Enter Name';
                         else
                           return null;
-                      }, */
+                      },
                       decoration: InputDecoration(
                         hintText: "Name",
                         hintStyle: TextStyle(
@@ -177,152 +232,30 @@ class _RegisterState extends State<Register> {
                       ),
                       onChanged: (v) {
                         setState(() {
-                          nickname = v;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: sizz == 2 ? height * 0.12 : height * 0.08,
-                    width: width,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return "please enter name";
-                        else
-                          return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Referral Code",
-                        hintStyle: TextStyle(color: Colors.white),
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      ),
-                      onChanged: (v) {
-                        setState(() {
                           name = v;
                         });
                       },
                     ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: sizz == 2 ? height * 0.09 : height * 0.06,
-                        width: width / 5.5,
-                        decoration: BoxDecoration(
-                            color: AppColor.mainBlue,
-                            borderRadius: new BorderRadius.circular(10.0),
-                            border:
-                                Border.all(color: Colors.white, width: 2.0)),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "+91",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        height: sizz == 2 ? height * 0.12 : height * 0.08,
-                        width: sizz == 1 ? width / 1.8 : width / 1.7,
-                        margin: EdgeInsets.only(left: 15),
-                        child: TextFormField(
-                          maxLength: 10,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          validator: (name) {
-                            if (name.length < 10) {
-                              return 'Please enter correct phone number';
-                            } else if (name.isEmpty) {
-                              return 'Please enter phone number';
-                            } else
-                              return null;
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                            hintText: "Mobile number",
-                            hintStyle: TextStyle(color: Colors.white),
-                            prefixIcon: Icon(
-                              Icons.phone,
-                              color: Colors.white,
-                            ),
-                            errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).errorColor,
-                                  width: 2.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).errorColor,
-                                  width: 2.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 2.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 2.0),
-                            ),
-                          ),
-                          onChanged: (v) {
-                            setState(() {
-                              phone = v;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
                   Container(
-                    margin: EdgeInsets.only(top: height * 0.01),
-                    height: sizz == 2 ? height * 0.12 : height * 0.08,
+                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                    margin: EdgeInsets.only(bottom: 15),
                     width: width,
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (name) {
                         if (name.isEmpty)
-                          return "Please enter email";
+                          return 'Please Enter Address 1';
                         else
                           return null;
                       },
                       decoration: InputDecoration(
-                        hintText: "Email",
-                        hintStyle: TextStyle(color: Colors.white),
+                        hintText: "Address 1",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .white), //AppLocalization.of(context).nickname,
                         prefixIcon: Icon(
-                          Icons.email,
+                          Icons.pin_drop_rounded,
                           color: Colors.white,
                         ),
                         errorStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -349,24 +282,301 @@ class _RegisterState extends State<Register> {
                       ),
                       onChanged: (v) {
                         setState(() {
-                          email = v;
+                          address1 = v;
                         });
                       },
                     ),
                   ),
                   Container(
-                    alignment: Alignment.bottomCenter,
-                    child: FlatButton(
-                      child: Text(
-                        "Already have an account ?",
-                        style: TextStyle(
+                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                    margin: EdgeInsets.only(bottom: 15),
+                    width: width,
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (name) {
+                        if (name.isEmpty)
+                          return 'Please Enter Address2';
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Address 2",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .white), //AppLocalization.of(context).nickname,
+                        prefixIcon: Icon(
+                          Icons.pin_drop_rounded,
                           color: Colors.white,
                         ),
+                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
                       ),
-                      onPressed: () {
-                        Navigator.of(context).push(PageTransition(
-                            child: Login(), type: PageTransitionType.fade));
+                      onChanged: (v) {
+                        setState(() {
+                          address2 = v;
+                        });
                       },
+                    ),
+                  ),
+                  Container(
+                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                    margin: EdgeInsets.only(bottom: 15),
+                    width: width,
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (name) {
+                        if (name.isEmpty)
+                          return 'Please Enter Postal Code';
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Postal Code",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .white), //AppLocalization.of(context).nickname,
+                        prefixIcon: Icon(
+                          Icons.contacts_rounded,
+                          color: Colors.white,
+                        ),
+                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                      ),
+                      onChanged: (v) {
+                        setState(() {
+                          postalcode = v;
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                    margin: EdgeInsets.only(bottom: 15),
+                    width: width,
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (name) {
+                        if (name.isEmpty)
+                          return 'Please Enter Province';
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Province",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .white), //AppLocalization.of(context).nickname,
+                        prefixIcon: Icon(
+                          Icons.location_history,
+                          color: Colors.white,
+                        ),
+                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                      ),
+                      onChanged: (v) {
+                        setState(() {
+                          province = v;
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                    margin: EdgeInsets.only(bottom: 15),
+                    width: width,
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (name) {
+                        if (name.isEmpty)
+                          return 'Please Enter City';
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: "City",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .white), //AppLocalization.of(context).nickname,
+                        prefixIcon: Icon(
+                          Icons.location_city,
+                          color: Colors.white,
+                        ),
+                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                      ),
+                      onChanged: (v) {
+                        setState(() {
+                          city = v;
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                    margin: EdgeInsets.only(bottom: 15),
+                    width: width,
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        hintText: "Referal Code",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .white), //AppLocalization.of(context).nickname,
+                        prefixIcon: Icon(
+                          Icons.pin_drop_rounded,
+                          color: Colors.white,
+                        ),
+                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).errorColor, width: 2.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                      ),
+                      onChanged: (v) {
+                        setState(() {
+                          address2 = v;
+                        });
+                      },
+                    ),
+                  ),
+                  IgnorePointer(
+                    child: Container(
+                      // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                      margin: EdgeInsets.only(bottom: 15),
+                      width: width,
+                      child: TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          hintText: "Number",
+                          hintStyle: TextStyle(
+                              color: Colors
+                                  .white), //AppLocalization.of(context).nickname,
+                          prefixIcon: Icon(
+                            Icons.contact_phone,
+                            color: Colors.white,
+                          ),
+                          errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).errorColor,
+                                width: 2.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).errorColor,
+                                width: 2.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 2.0),
+                          ),
+                        ),
+                        onChanged: (v) {
+                          setState(() {
+                            number = v;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   AnimatedContainer(
