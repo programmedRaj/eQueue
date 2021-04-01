@@ -1084,8 +1084,9 @@ def login_otp():
                 + str(otp)
                 + "' WHERE number = '"
                 + str(request.form["number"])
-                + "');"
+                + "';"
             )
+            conn.commit()
             print(otp)
             # send sms
 
@@ -1149,7 +1150,7 @@ def login_register():
         if request.files["profile_img"]:
             company_logo = request.files["profile_img"]
             filename = secure_filename(company_logo.filename)
-            company_logo.save(os.path.join(app.config["USER_UPLOAD_FOLDER"], filename))
+            company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
         check = cur.execute(
             "SELECT * FROM equeue_users WHERE ( number = '"
@@ -1170,8 +1171,8 @@ def login_register():
         if check:
             records = cur.fetchall()
             for r in records:
-                bonus = r["bonus"]
-                referral_count = r["referral_count"]
+                bonus = int(r["bonus"])
+                referral_count = int(r["referral_count"])
             cur2.execute(
                 "UPDATE user_details SET bonus = "
                 + str(bonus + 20)
@@ -1199,7 +1200,7 @@ def login_register():
                 + str(request.form["province"])
                 + "','"
                 + str(request.form["phonenumber"])
-                + "',0,20,"
+                + "',0,20"
                 + ",'"
                 + str(request.form["phonenumber"] + "@equeue")
                 + "');"
@@ -1247,7 +1248,7 @@ def login_register():
                 + str(request.form["province"])
                 + "','"
                 + str(request.form["phonenumber"])
-                + "',0,0,"
+                + "',0,0"
                 + ",'"
                 + str(request.form["phonenumber"] + "@equeue")
                 + "');"
