@@ -1073,9 +1073,9 @@ def login_otp():
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         check = cur.execute(
-            "SELECT id FROM equeue_users WHERE ( number = '"
+            "SELECT id FROM equeue_users WHERE number = '"
             + str(request.form["number"])
-            + "');"
+            + "';"
         )
         if check:
             otp = id_generator()
@@ -1153,9 +1153,9 @@ def login_register():
             company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
         check = cur.execute(
-            "SELECT * FROM equeue_users WHERE ( number = '"
+            "SELECT * FROM equeue_users WHERE number = '"
             + str(request.form["number"])
-            + "');"
+            + "';"
         )
 
         if check:
@@ -1163,9 +1163,9 @@ def login_register():
             resp.status_code = 403
             return resp
         check = cur.execute(
-            "SELECT id,bonus,referral_count FROM user_details WHERE ( referral_code = '"
+            "SELECT id,bonus,referral_count FROM user_details WHERE referral_code = '"
             + str(request.form["referral_code"])
-            + "');"
+            + "';"
         )
 
         if check:
@@ -1183,8 +1183,17 @@ def login_register():
                 + "';"
             )
 
+            phoneee = str(request.form["countrycode"]) + str(
+                request.form["phonenumber"]
+            )
             cur.execute(
-                "Insert into user_details(name,profile_url,address1,address2,postalcode,city,province,phone_number,money,bonus,referral_code) VALUES ('"
+                "Insert into equeue_users (number) VALUES ('" + str(phoneee) + "');"
+            )
+
+            cur.execute(
+                "Insert into user_details(id,name,profile_url,address1,address2,postalcode,city,province,phone_number,money,bonus,referral_code) VALUES ('"
+                + str(cur.lastrowid)
+                + "','"
                 + str(request.form["name"])
                 + "','"
                 + filename
@@ -1205,13 +1214,8 @@ def login_register():
                 + str(request.form["phonenumber"] + "@equeue")
                 + "');"
             )
-            phoneee = str(request.form["countrycode"]) + str(
-                request.form["phonenumber"]
-            )
-            cur.execute(
-                "Insert into equeue_users (number) VALUES ('" + str(phoneee) + "');"
-            )
             conn.commit()
+
             if cur:
                 token = jwt.encode(
                     {
@@ -1231,8 +1235,17 @@ def login_register():
             return resp
 
         else:
+            phoneee = str(request.form["countrycode"]) + str(
+                request.form["phonenumber"]
+            )
             cur.execute(
-                "Insert into user_details(name,profile_url,address1,address2,postalcode,city,province,phone_number,money,bonus,referral_code) VALUES ('"
+                "Insert into equeue_users (number) VALUES ('" + str(phoneee) + "');"
+            )
+
+            cur.execute(
+                "Insert into user_details(id,name,profile_url,address1,address2,postalcode,city,province,phone_number,money,bonus,referral_code) VALUES ('"
+                + str(cur.lastrowid)
+                + "','"
                 + str(request.form["name"])
                 + "','"
                 + filename
@@ -1252,12 +1265,6 @@ def login_register():
                 + ",'"
                 + str(request.form["phonenumber"] + "@equeue")
                 + "');"
-            )
-            phoneee = str(request.form["countrycode"]) + str(
-                request.form["phonenumber"]
-            )
-            cur.execute(
-                "Insert into equeue_users (number) VALUES ('" + str(phoneee) + "');"
             )
 
             conn.commit()
