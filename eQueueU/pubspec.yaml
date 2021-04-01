@@ -36,6 +36,11 @@ dependencies:
   grouped_buttons: ^1.0.4
   country_calling_code_picker: ^1.0.8+1
   image_picker: ^0.7.4
+  provider: ^5.0.0
+  http: ^0.13.1
+  shared_preferences: ^2.0.5
+  retry:
+  dio: ^4.0.0
 
 
 

@@ -1,12 +1,16 @@
 import 'dart:ui';
 import 'package:country_calling_code_picker/picker.dart';
+import 'package:eQueue/api/service/baseurl.dart';
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/screens/auth/otp.dart';
 import 'package:eQueue/screens/auth/register.dart';
 import 'package:eQueue/screens/auth/verification.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   @override
@@ -23,6 +27,7 @@ class _LoginState extends State<Login> {
   Country _selectedCountry;
   String lang;
   int sizz = 0;
+  BaseUrl baseUrl = BaseUrl();
 
   @override
   void initState() {
@@ -44,6 +49,33 @@ class _LoginState extends State<Login> {
     if (country != null) {
       setState(() {
         _selectedCountry = country;
+      });
+    }
+  }
+
+  Future login_otp(String phone, String code) async {
+    Uri registeruri = Uri.parse(baseUrl.login_otp);
+    var header = {
+      'Content-Type': 'multipart/form-data',
+    };
+    var request = new http.MultipartRequest("POST", registeruri)
+      ..headers.addAll(header);
+
+    request.fields['number'] = code + phone;
+
+    var res = await request.send();
+    print(res.statusCode);
+    if (res.statusCode == 200) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Otp(
+              number: code + phone,
+            ),
+          ));
+    } else {
+      setState(() {
+        error = 'User does not exist';
       });
     }
   }
@@ -148,50 +180,11 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: height * 0.01),
-                    height: height * 0.08,
-                    width: width,
-                    child: TextFormField(
-                      onChanged: (v) {
-                        setState(() {
-                          password = v;
-                        });
-                      },
-                      validator: (name) {
-                        if (name.isEmpty) {
-                          return "Please enter password";
-                        } else {
-                          return null;
-                        }
-                      },
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.security,
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).errorColor,
-                                width: 2.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 2.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 2.0),
-                          ),
-                          hintText: "OTP",
-                          hintStyle: TextStyle(color: Colors.white)),
-                    ),
-                  ),
+                  error == null
+                      ? Container()
+                      : Container(
+                          child: Text(error),
+                        ),
                   AnimatedContainer(
                     duration: Duration(milliseconds: 1000),
                     margin: EdgeInsets.only(
@@ -208,15 +201,17 @@ class _LoginState extends State<Login> {
                           borderRadius: new BorderRadius.circular(30.0)),
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyHomePage(),
-                            ));
+                        var code = _selectedCountry.callingCode.substring(1);
+                        print(phone);
+                        if (lkey.currentState.validate()) {
+                          if (_selectedCountry != null) {
+                            login_otp(phone, code);
+                          }
+                        }
                       },
                       child: type == 0
                           ? Text(
-                              "Login",
+                              "Get Otp",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 20),
@@ -237,7 +232,7 @@ class _LoginState extends State<Login> {
                     alignment: Alignment.bottomCenter,
                     child: FlatButton(
                       child: Text(
-                        "Create account",
+                        "Create account ?",
                         style: TextStyle(
                           color: Colors.white,
                         ),

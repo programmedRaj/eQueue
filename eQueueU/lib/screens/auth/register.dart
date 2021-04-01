@@ -1,6 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:eQueue/api/service/baseurl.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/auth/login.dart';
@@ -8,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:retry/retry.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -31,10 +38,50 @@ class _RegisterState extends State<Register> {
   int sizz = 0;
   File _image;
   final picker = ImagePicker();
+  BaseUrl baseUrl = BaseUrl();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Future register({String name, File images}) async {
+    // var bodymsg = json.encode({
+    //   // "profile_img": images,
+    //   "name": name,
+    //   "number": "919892889172",
+    //   "phonenumber": "9892889172",
+    //   "address1": "bhy",
+    //   "address2": "bhy2",
+    //   "province": "mah",
+    //   "city": "mum",
+    //   "postalcode": "400023",
+    //   "countrycode": "91",
+    //   "referral_code": 0,
+    // });
+
+    Uri registeruri = Uri.parse(baseUrl.register);
+    var header = {
+      'Content-Type': 'multipart/form-data',
+    };
+    var request = new http.MultipartRequest("POST", registeruri)
+      ..headers.addAll(header);
+
+    request.files
+        .add(await http.MultipartFile.fromPath('profile_img', images.path));
+
+    request.fields['name'] = name;
+    request.fields['number'] = '919892889172';
+    request.fields['phonenumber'] = '9892889172';
+    request.fields['address1'] = 'bhy';
+    request.fields['address2'] = 'bhy2';
+    request.fields['province'] = 'mah';
+    request.fields['city'] = 'mum';
+    request.fields['postalcode'] = '400932';
+    request.fields['countrycode'] = '91';
+    request.fields['referral_code'] = '9892889172@equeue';
+    var res = await request.send();
+    print(res.statusCode);
   }
 
   Future getImage() async {
@@ -64,69 +111,6 @@ class _RegisterState extends State<Register> {
         sizz = 2;
       });
     }
-
-    /* Future addusertodb(String uid, String nickname, String name, String phone,
-        String email, String password) async {
-      await store.collection('users').doc(uid).set({
-        'userid': uid,
-        'nickname': nickname,
-        'name': name,
-        'phone': phone,
-        'email': email,
-        'type': 'user',
-        'image': ''
-      });
-    }
-
-    registerwithemailpassword(String nickname, String name, String phone,
-        String email, String password) async {
-      try {
-        final result = await auth
-            .createUserWithEmailAndPassword(email: email, password: password)
-            .catchError((e) {
-          setState(() {
-            error = e.toString();
-          });
-          print(e);
-        });
-        final User user = result.user;
-        addusertodb(user.uid, nickname, name, phone, email, password);
-        print(user);
-      } on PlatformException catch (e) {
-        setState(() {
-          w = 0.8;
-          type = 0;
-          error = e.message.toString();
-        });
-        print(e.message);
-      } catch (e) {
-        setState(() {
-          w = 0.8;
-          type = 0;
-          error = e.message.toString();
-        });
-
-        print(error);
-      }
-    }
-
-    void initCountry() async {
-      final country = await getDefaultCountry(context);
-      setState(() {
-        _selectedCountry = country;
-      });
-    }
-
-    void _onPressedShowBottomSheet() async {
-      final country = await showCountryPickerSheet(
-        context,
-      );
-      if (country != null) {
-        setState(() {
-          _selectedCountry = country;
-        });
-      }
-    } */
 
     @override
     // ignore: unused_element
@@ -237,348 +221,349 @@ class _RegisterState extends State<Register> {
                       },
                     ),
                   ),
-                  Container(
-                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
-                    margin: EdgeInsets.only(bottom: 15),
-                    width: width,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter Address 1';
-                        else
-                          return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Address 1",
-                        hintStyle: TextStyle(
-                            color: Colors
-                                .white), //AppLocalization.of(context).nickname,
-                        prefixIcon: Icon(
-                          Icons.pin_drop_rounded,
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      ),
-                      onChanged: (v) {
-                        setState(() {
-                          address1 = v;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
-                    margin: EdgeInsets.only(bottom: 15),
-                    width: width,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter Address2';
-                        else
-                          return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Address 2",
-                        hintStyle: TextStyle(
-                            color: Colors
-                                .white), //AppLocalization.of(context).nickname,
-                        prefixIcon: Icon(
-                          Icons.pin_drop_rounded,
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      ),
-                      onChanged: (v) {
-                        setState(() {
-                          address2 = v;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
-                    margin: EdgeInsets.only(bottom: 15),
-                    width: width,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter Postal Code';
-                        else
-                          return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Postal Code",
-                        hintStyle: TextStyle(
-                            color: Colors
-                                .white), //AppLocalization.of(context).nickname,
-                        prefixIcon: Icon(
-                          Icons.contacts_rounded,
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      ),
-                      onChanged: (v) {
-                        setState(() {
-                          postalcode = v;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
-                    margin: EdgeInsets.only(bottom: 15),
-                    width: width,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter Province';
-                        else
-                          return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Province",
-                        hintStyle: TextStyle(
-                            color: Colors
-                                .white), //AppLocalization.of(context).nickname,
-                        prefixIcon: Icon(
-                          Icons.location_history,
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      ),
-                      onChanged: (v) {
-                        setState(() {
-                          province = v;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
-                    margin: EdgeInsets.only(bottom: 15),
-                    width: width,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter City';
-                        else
-                          return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "City",
-                        hintStyle: TextStyle(
-                            color: Colors
-                                .white), //AppLocalization.of(context).nickname,
-                        prefixIcon: Icon(
-                          Icons.location_city,
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      ),
-                      onChanged: (v) {
-                        setState(() {
-                          city = v;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    // height: sizz == 2 ? height * 0.12 : height * 0.08,
-                    margin: EdgeInsets.only(bottom: 15),
-                    width: width,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: "Referal Code",
-                        hintStyle: TextStyle(
-                            color: Colors
-                                .white), //AppLocalization.of(context).nickname,
-                        prefixIcon: Icon(
-                          Icons.pin_drop_rounded,
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      ),
-                      onChanged: (v) {
-                        setState(() {
-                          address2 = v;
-                        });
-                      },
-                    ),
-                  ),
-                  IgnorePointer(
-                    child: Container(
-                      // height: sizz == 2 ? height * 0.12 : height * 0.08,
-                      margin: EdgeInsets.only(bottom: 15),
-                      width: width,
-                      child: TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          hintText: "Number",
-                          hintStyle: TextStyle(
-                              color: Colors
-                                  .white), //AppLocalization.of(context).nickname,
-                          prefixIcon: Icon(
-                            Icons.contact_phone,
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).errorColor,
-                                width: 2.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).errorColor,
-                                width: 2.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 2.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 2.0),
-                          ),
-                        ),
-                        onChanged: (v) {
-                          setState(() {
-                            number = v;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                  //   margin: EdgeInsets.only(bottom: 15),
+                  //   width: width,
+                  //   child: TextFormField(
+                  //     keyboardType: TextInputType.emailAddress,
+                  //     validator: (name) {
+                  //       if (name.isEmpty)
+                  //         return 'Please Enter Address 1';
+                  //       else
+                  //         return null;
+                  //     },
+                  //     decoration: InputDecoration(
+                  //       hintText: "Address 1",
+                  //       hintStyle: TextStyle(
+                  //           color: Colors
+                  //               .white), //AppLocalization.of(context).nickname,
+                  //       prefixIcon: Icon(
+                  //         Icons.pin_drop_rounded,
+                  //         color: Colors.white,
+                  //       ),
+                  //       errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                  //       focusedErrorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       errorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //     ),
+                  //     onChanged: (v) {
+                  //       setState(() {
+                  //         address1 = v;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+                  // Container(
+                  //   // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                  //   margin: EdgeInsets.only(bottom: 15),
+                  //   width: width,
+                  //   child: TextFormField(
+                  //     keyboardType: TextInputType.emailAddress,
+                  //     validator: (name) {
+                  //       if (name.isEmpty)
+                  //         return 'Please Enter Address2';
+                  //       else
+                  //         return null;
+                  //     },
+                  //     decoration: InputDecoration(
+                  //       hintText: "Address 2",
+                  //       hintStyle: TextStyle(
+                  //           color: Colors
+                  //               .white), //AppLocalization.of(context).nickname,
+                  //       prefixIcon: Icon(
+                  //         Icons.pin_drop_rounded,
+                  //         color: Colors.white,
+                  //       ),
+                  //       errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                  //       focusedErrorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       errorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //     ),
+                  //     onChanged: (v) {
+                  //       setState(() {
+                  //         address2 = v;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+                  // Container(
+                  //   // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                  //   margin: EdgeInsets.only(bottom: 15),
+                  //   width: width,
+                  //   child: TextFormField(
+                  //     keyboardType: TextInputType.emailAddress,
+                  //     validator: (name) {
+                  //       if (name.isEmpty)
+                  //         return 'Please Enter Postal Code';
+                  //       else
+                  //         return null;
+                  //     },
+                  //     decoration: InputDecoration(
+                  //       hintText: "Postal Code",
+                  //       hintStyle: TextStyle(
+                  //           color: Colors
+                  //               .white), //AppLocalization.of(context).nickname,
+                  //       prefixIcon: Icon(
+                  //         Icons.contacts_rounded,
+                  //         color: Colors.white,
+                  //       ),
+                  //       errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                  //       focusedErrorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       errorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //     ),
+                  //     onChanged: (v) {
+                  //       setState(() {
+                  //         postalcode = v;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+                  // Container(
+                  //   // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                  //   margin: EdgeInsets.only(bottom: 15),
+                  //   width: width,
+                  //   child: TextFormField(
+                  //     keyboardType: TextInputType.emailAddress,
+                  //     validator: (name) {
+                  //       if (name.isEmpty)
+                  //         return 'Please Enter Province';
+                  //       else
+                  //         return null;
+                  //     },
+                  //     decoration: InputDecoration(
+                  //       hintText: "Province",
+                  //       hintStyle: TextStyle(
+                  //           color: Colors
+                  //               .white), //AppLocalization.of(context).nickname,
+                  //       prefixIcon: Icon(
+                  //         Icons.location_history,
+                  //         color: Colors.white,
+                  //       ),
+                  //       errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                  //       focusedErrorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       errorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //     ),
+                  //     onChanged: (v) {
+                  //       setState(() {
+                  //         province = v;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+                  // Container(
+                  //   // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                  //   margin: EdgeInsets.only(bottom: 15),
+                  //   width: width,
+                  //   child: TextFormField(
+                  //     keyboardType: TextInputType.emailAddress,
+                  //     validator: (name) {
+                  //       if (name.isEmpty)
+                  //         return 'Please Enter City';
+                  //       else
+                  //         return null;
+                  //     },
+                  //     decoration: InputDecoration(
+                  //       hintText: "City",
+                  //       hintStyle: TextStyle(
+                  //           color: Colors
+                  //               .white), //AppLocalization.of(context).nickname,
+                  //       prefixIcon: Icon(
+                  //         Icons.location_city,
+                  //         color: Colors.white,
+                  //       ),
+                  //       errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                  //       focusedErrorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       errorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //     ),
+                  //     onChanged: (v) {
+                  //       setState(() {
+                  //         city = v;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+                  // Container(
+                  //   // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                  //   margin: EdgeInsets.only(bottom: 15),
+                  //   width: width,
+                  //   child: TextFormField(
+                  //     keyboardType: TextInputType.emailAddress,
+                  //     decoration: InputDecoration(
+                  //       hintText: "Referal Code",
+                  //       hintStyle: TextStyle(
+                  //           color: Colors
+                  //               .white), //AppLocalization.of(context).nickname,
+                  //       prefixIcon: Icon(
+                  //         Icons.pin_drop_rounded,
+                  //         color: Colors.white,
+                  //       ),
+                  //       errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                  //       focusedErrorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       errorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(
+                  //             color: Theme.of(context).errorColor, width: 2.0),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white, width: 2.0),
+                  //       ),
+                  //     ),
+                  //     onChanged: (v) {
+                  //       setState(() {
+                  //         address2 = v;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+                  // IgnorePointer(
+                  //   child: Container(
+                  //     // height: sizz == 2 ? height * 0.12 : height * 0.08,
+                  //     margin: EdgeInsets.only(bottom: 15),
+                  //     width: width,
+                  //     child: TextFormField(
+                  //       keyboardType: TextInputType.emailAddress,
+                  //       decoration: InputDecoration(
+                  //         hintText: "Number",
+                  //         hintStyle: TextStyle(
+                  //             color: Colors
+                  //                 .white), //AppLocalization.of(context).nickname,
+                  //         prefixIcon: Icon(
+                  //           Icons.contact_phone,
+                  //           color: Colors.white,
+                  //         ),
+                  //         errorStyle: TextStyle(fontWeight: FontWeight.bold),
+                  //         focusedErrorBorder: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(10),
+                  //           borderSide: BorderSide(
+                  //               color: Theme.of(context).errorColor,
+                  //               width: 2.0),
+                  //         ),
+                  //         errorBorder: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(10),
+                  //           borderSide: BorderSide(
+                  //               color: Theme.of(context).errorColor,
+                  //               width: 2.0),
+                  //         ),
+                  //         focusedBorder: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(10),
+                  //           borderSide:
+                  //               BorderSide(color: Colors.white, width: 2.0),
+                  //         ),
+                  //         enabledBorder: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(10),
+                  //           borderSide:
+                  //               BorderSide(color: Colors.white, width: 2.0),
+                  //         ),
+                  //       ),
+                  //       onChanged: (v) {
+                  //         setState(() {
+                  //           number = v;
+                  //         });
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
+
                   AnimatedContainer(
                     duration: Duration(milliseconds: 1000),
                     margin: EdgeInsets.only(
@@ -589,11 +574,12 @@ class _RegisterState extends State<Register> {
                         border: Border.all(width: 4, color: Colors.white),
                         color: Theme.of(context).accentColor,
                         borderRadius: BorderRadius.circular(50)),
-                    child: FlatButton(
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)),
+                    child: TextButton(
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
+                        if (rkey.currentState.validate()) {
+                          register(name: name, images: _image);
+                        }
                       },
                       child: type == 0
                           ? Text(
