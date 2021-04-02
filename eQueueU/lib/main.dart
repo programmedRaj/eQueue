@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
         splashIconSize: 800,
-        nextScreen: Login(),
+        nextScreen: MyHomePage(),
         splashTransition: SplashTransition.fadeTransition,
         pageTransitionType: PageTransitionType.leftToRight,
         backgroundColor: HexColor('#6e879b'),

@@ -1321,7 +1321,7 @@ def branches_list():
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
 
-        r = cur.execute("Select * from branch_details WHERE id = '" + company_id + "'")
+        r = cur.execute("Select * from branch_details WHERE comp_id = '" + company_id + "'")
 
         if r:
             resp = jsonify({"branches": r})
