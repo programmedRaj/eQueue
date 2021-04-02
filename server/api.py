@@ -679,7 +679,6 @@ def create_branch():
         filename = secure_filename(company_logo.filename)
         company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
     w_hrs = request.form["w_hrs"]
-    print(filename)
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "company":
@@ -1023,37 +1022,143 @@ def create_employee():
     conn = mysql.connect()
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
-    passw = generate_password_hash(request.json["password"])
-    email = request.json["email"]
+    passw = generate_password_hash(request.form["password"])
+    email = request.form["email"]
+    name = request.form["name"]
+    branch_id = request.form["branch_id"]
+    phone_number = request.form["number"]
+
+    filename = "default.png"
+    if request.files["profile_url"]:
+        company_logo = request.files["company_logo"]
+        filename = secure_filename(company_logo.filename)
+        company_logo.save(os.path.join(app.config["BIZ_UPLOAD_FOLDER"], filename))
+
+    cur = conn.cursor(pymysql.cursors.DictCursor)
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "company":
-            cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
-            r = cur.fetchone()
-            if r["email"]:
-                resp = jsonify({"message": "Email id taken."})
+            if request.form["req"] == "create":
+                cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
+                r = cur.fetchone()
+                if r["email"]:
+                    resp = jsonify({"message": "Email id taken."})
+                    resp.status_code = 405
+                    return resp
+                else:
+                    check = cur.execute(
+                        "INSERT INTO bizusers (email,password,comp_type,status,type) VALUES ('"
+                        + str(email)
+                        + "','"
+                        + str(passw)
+                        + "','"
+                        + str(user["comp_type"])
+                        + "',1,'employee');"
+                    )
+                    if check:
+                        if user["comp_type"] == "booking":
+                            services = request.form["services"]
+                            op = eqbiz.create_employee(
+                                user["comp_type"],
+                                name,
+                                filename,
+                                branch_id,
+                                phone_number,
+                                services,
+                                0,
+                                0,
+                            )
+                        if user["comp_type"] == "token":
+                            counter_number = request.form["counter_number"]
+                            departments = request.form["departments"]
+                            op = eqbiz.create_employee(
+                                user["comp_type"],
+                                name,
+                                filename,
+                                branch_id,
+                                phone_number,
+                                0,
+                                counter_number,
+                                departments,
+                            )
+                        if user["comp_type"] == "multitoken":
+                            counter_number = request.form["counter_number"]
+                            departments = request.form["departments"]
+                            op = eqbiz.create_employee(
+                                user["comp_type"],
+                                name,
+                                filename,
+                                branch_id,
+                                phone_number,
+                                0,
+                                counter_number,
+                                departments,
+                            )
+            elif request.form["req"] == "update":
+                employee_id = request.form["employee_id"]
+                cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
+                r = cur.fetchone()
+                if r["email"]:
+                    if user["comp_type"] == "booking":
+                        services = request.form["services"]
+                        op = eqbiz.edit_employee(
+                            employee_id,
+                            user["comp_type"],
+                            name,
+                            filename,
+                            branch_id,
+                            phone_number,
+                            services,
+                            0,
+                            0,
+                        )
+                    if user["comp_type"] == "token":
+                        counter_number = request.form["counter_number"]
+                        departments = request.form["departments"]
+                        op = eqbiz.edit_employee(
+                            employee_id,
+                            user["comp_type"],
+                            name,
+                            filename,
+                            branch_id,
+                            phone_number,
+                            0,
+                            counter_number,
+                            departments,
+                        )
+                    if user["comp_type"] == "multitoken":
+                        counter_number = request.form["counter_number"]
+                        departments = request.form["departments"]
+                        op = eqbiz.edit_employee(
+                            employee_id,
+                            user["comp_type"],
+                            name,
+                            filename,
+                            branch_id,
+                            phone_number,
+                            0,
+                            counter_number,
+                            departments,
+                        )
+            elif request.form["req"] == "delete":
+                cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
+                r = cur.fetchone()
+                if r["email"]:
+                    print("karo delete")
+            else:
+                resp = jsonify({"message": "Error invalid request."})
                 resp.status_code = 405
                 return resp
-            else:
-                check = cur.execute(
-                    "INSERT INTO bizusers (email,password,comp_type,status,type) VALUES ('"
-                    + str(email)
-                    + "','"
-                    + str(passw)
-                    + "','"
-                    + str(user["comp_type"])
-                    + "',1,'employee');"
-                )
-                if check:
-                    resp = jsonify(
-                        {"message": "Employee Account Created successfully."}
-                    )
-                    resp.status_code = 200
-                    conn.commit()
-                    return resp
-                resp = jsonify({"message": "Error."})
-                resp.status_code = 403
-                return resp
+
+                # resp = jsonify(
+                #     {"message": "Employee Account Created successfully."}
+                # )
+                #     resp.status_code = 200
+                #     conn.commit()
+                #     return resp
+                # resp = jsonify({"message": "Error."})
+                # resp.status_code = 403
+                # return resp
 
         resp = jsonify({"message": "ONLY Company can access."})
         resp.status_code = 405
@@ -1300,7 +1405,7 @@ def comapnies_list():
         r = cur.execute("Select * from bizusers WHERE type = 'company'")
 
         if r:
-            resp = jsonify({"companies": r})
+            resp = jsonify({"companies": cur.fetchall()})
             resp.status_code = 200
             return resp
         else:
@@ -1321,7 +1426,9 @@ def branches_list():
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
 
-        r = cur.execute("Select * from branch_details WHERE comp_id = '" + company_id + "'")
+        r = cur.execute(
+            "Select * from branch_details WHERE comp_id = '" + company_id + "'"
+        )
 
         if r:
             resp = jsonify({"branches": r})

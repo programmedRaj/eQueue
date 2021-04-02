@@ -332,3 +332,182 @@ def delete_branch(branchid):
     finally:
         cur.close()
         conn.close()
+
+
+def create_employee(
+    acctype,
+    name,
+    profile_url,
+    branch_id,
+    phone_number,
+    services,
+    counter_number,
+    departments,
+):
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if acctype == "booking":
+            q = (
+                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,services,ratings,rating_count) VALUES ('"
+                + str(name)
+                + "','"
+                + str(profile_url)
+                + "','"
+                + str(branch_id)
+                + "','"
+                + str(phone_number)
+                + "','"
+                + str(services)
+                + "',"
+                + "5,1);"
+            )
+        elif acctype == "token":
+            q = (
+                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,departments,counter_number,ratings,rating_count) VALUES ('"
+                + str(name)
+                + "','"
+                + str(profile_url)
+                + "','"
+                + str(branch_id)
+                + "','"
+                + str(phone_number)
+                + "','"
+                + str(departments)
+                + "','"
+                + str(counter_number)
+                + "',"
+                + "5,1);"
+            )
+        elif acctype == "multitoken":
+            q = (
+                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,departments,counter_number,ratings,rating_count) VALUES ('"
+                + str(name)
+                + "','"
+                + str(profile_url)
+                + "','"
+                + str(branch_id)
+                + "','"
+                + str(phone_number)
+                + "','"
+                + str(departments)
+                + "','"
+                + str(counter_number)
+                + "',"
+                + "5,1);"
+            )
+
+        fire = str(q)
+        print(fire)
+        check = cur2.execute(fire)
+        conn.commit()
+        if check:
+            return 200
+        return 403
+
+    finally:
+        cur.close()
+        cur2.close()
+        conn.close()
+
+
+def edit_employee(
+    employee_id,
+    acctype,
+    name,
+    profile_url,
+    branch_id,
+    phone_number,
+    services,
+    counter_number,
+    departments,
+):
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+
+    try:
+        if acctype == "booking":
+            q = (
+                "UPDATE employee_details SET name = '"
+                + str(name)
+                + "',profile_url = '"
+                + str(profile_url)
+                + "',phone_number = '"
+                + str(phone_number)
+                + "',branch_id='"
+                + str(branch_id)
+                + "',services='"
+                + str(services)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+        elif acctype == "token":
+            q = (
+                "UPDATE employee_details SET name = '"
+                + str(name)
+                + "',profile_url = '"
+                + str(profile_url)
+                + "',phone_number = '"
+                + str(phone_number)
+                + "',branch_id='"
+                + str(branch_id)
+                + "',departments='"
+                + str(departments)
+                + "',counter_number='"
+                + str(counter_number)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+        elif acctype == "multitoken":
+            q = (
+                "UPDATE employee_details SET name = '"
+                + str(name)
+                + "',profile_url = '"
+                + str(profile_url)
+                + "',phone_number = '"
+                + str(phone_number)
+                + "',branch_id='"
+                + str(branch_id)
+                + "',departments='"
+                + str(departments)
+                + "',counter_number='"
+                + str(counter_number)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+
+        fire = str(q)
+        print(fire)
+        cur2 = conn.cursor(pymysql.cursors.DictCursor)
+        check = cur2.execute(fire)
+        conn.commit()
+        if check:
+            return 200
+        return 403
+
+    finally:
+        cur.close()
+        cur2.close()
+        conn.close()
+
+
+def delete_employee(employee_id):
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+
+        check = cur.execute(
+            "DELETE FROM branch_details WHERE id =" + str(employee_id) + " ;"
+        )
+        conn.commit()
+        if check:
+            return 200
+        return 403
+
+    finally:
+        cur.close()
+        conn.close()
