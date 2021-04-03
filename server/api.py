@@ -953,7 +953,7 @@ def create_branch():
         conn.close()
 
 
-@app.route("//branch_list")
+@app.route("/branch_list")
 @check_for_admin_token
 def branchs_list():
     conn = mysql.connect()
