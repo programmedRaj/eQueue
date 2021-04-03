@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:eQueue/api/service/baseurl.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/home_screen.dart';
@@ -5,6 +7,7 @@ import 'package:eQueue/screens/pages/home.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Otp extends StatefulWidget {
   String number;
@@ -35,8 +38,14 @@ class _OtpState extends State<Otp> {
     request.fields['code'] = code;
 
     var res = await request.send();
+
+    var response = await http.Response.fromStream(res);
     print(res.statusCode);
     if (res.statusCode == 200) {
+      var n = json.decode(response.body);
+      print(n['token']);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', n['token']);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else {

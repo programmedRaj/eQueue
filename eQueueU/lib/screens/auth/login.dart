@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:country_calling_code_picker/picker.dart';
 import 'package:eQueue/api/service/baseurl.dart';
@@ -64,6 +65,7 @@ class _LoginState extends State<Login> {
     request.fields['number'] = code + phone;
 
     var res = await request.send();
+    var response = await http.Response.fromStream(res);
     print(res.statusCode);
     if (res.statusCode == 200) {
       Navigator.push(
