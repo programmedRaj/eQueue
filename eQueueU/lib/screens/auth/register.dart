@@ -82,7 +82,7 @@ class _RegisterState extends State<Register> {
         .add(await http.MultipartFile.fromPath('profile_img', images.path));
 
     request.fields['name'] = name;
-    request.fields['number'] = countrycode + phonenumber;
+    request.fields['number'] = countrycode.substring(1) + phonenumber;
     request.fields['phonenumber'] = phonenumber;
     request.fields['address1'] = address1;
     request.fields['address2'] = address2;
