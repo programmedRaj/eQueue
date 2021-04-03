@@ -1,10 +1,17 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:country_calling_code_picker/picker.dart';
+import 'package:eQueue/api/service/baseurl.dart';
+import 'package:eQueue/components/color.dart';
+import 'package:eQueue/screens/auth/otp.dart';
 import 'package:eQueue/screens/auth/register.dart';
 import 'package:eQueue/screens/auth/verification.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   @override
@@ -15,15 +22,64 @@ class _LoginState extends State<Login> {
   final lkey = GlobalKey<FormState>();
   var w = 0.8;
   int type = 0;
-  String email;
+  String phone;
   String password;
   String error;
-
+  Country _selectedCountry;
   String lang;
+  int sizz = 0;
+  BaseUrl baseUrl = BaseUrl();
 
   @override
   void initState() {
     super.initState();
+    initCountry();
+  }
+
+  void initCountry() async {
+    final country = await getDefaultCountry(context);
+    setState(() {
+      _selectedCountry = country;
+    });
+  }
+
+  void _onPressedShowBottomSheet() async {
+    final country = await showCountryPickerSheet(
+      context,
+    );
+    if (country != null) {
+      setState(() {
+        _selectedCountry = country;
+      });
+    }
+  }
+
+  Future login_otp(String phone, String code) async {
+    Uri registeruri = Uri.parse(baseUrl.login_otp);
+    var header = {
+      'Content-Type': 'multipart/form-data',
+    };
+    var request = new http.MultipartRequest("POST", registeruri)
+      ..headers.addAll(header);
+
+    request.fields['number'] = code + phone;
+
+    var res = await request.send();
+    var response = await http.Response.fromStream(res);
+    print(res.statusCode);
+    if (res.statusCode == 200) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Otp(
+              number: code + phone,
+            ),
+          ));
+    } else {
+      setState(() {
+        error = 'User does not exist';
+      });
+    }
   }
 
   @override
@@ -51,92 +107,86 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: height * 0.01),
-                    height: height * 0.08,
-                    width: width,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return "please enter name";
-                        else
-                          return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Phone",
-                        hintStyle: TextStyle(color: Colors.white),
-                        prefixIcon: Icon(
-                          Icons.email,
-                          color: Colors.white,
+                    child: Row(
+                      children: [
+                        Container(
+                          height: sizz == 2 ? height * 0.12 : height * 0.06,
+                          width: width / 5.5,
+                          decoration: BoxDecoration(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              border:
+                                  Border.all(color: Colors.white, width: 2.0)),
+                          child: RaisedButton(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                            ),
+                            child: _selectedCountry == null
+                                ? Text('+')
+                                : Text(
+                                    '${_selectedCountry?.callingCode ?? '+code'}',
+                                    style: TextStyle(color: myColor[100]),
+                                  ),
+                            color: Theme.of(context).accentColor,
+                            onPressed: _onPressedShowBottomSheet,
+                          ),
                         ),
-                        errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).errorColor, width: 2.0),
+                        Flexible(
+                          child: Container(
+                            height: sizz == 2 ? height * 0.12 : height * 0.06,
+                            width: sizz == 1 ? width / 1.8 : width / 1.58,
+                            margin: EdgeInsets.only(left: 15),
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              validator: (name) {
+                                if (name.isEmpty) {
+                                  return 'Please enter phone number';
+                                } else
+                                  return null;
+                              },
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.security,
+                                    color: Colors.white,
+                                  ),
+                                  errorStyle:
+                                      TextStyle(fontWeight: FontWeight.bold),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).errorColor,
+                                        width: 2.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 2.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 2.0),
+                                  ),
+                                  hintText: "Phone",
+                                  hintStyle: TextStyle(color: Colors.white)),
+                              onChanged: (v) {
+                                setState(() {
+                                  phone = v;
+                                });
+                              },
+                            ),
+                          ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      ),
-                      onChanged: (v) {
-                        setState(() {
-                          email = v;
-                        });
-                      },
+                      ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: height * 0.01),
-                    height: height * 0.08,
-                    width: width,
-                    child: TextFormField(
-                      onChanged: (v) {
-                        setState(() {
-                          password = v;
-                        });
-                      },
-                      validator: (name) {
-                        if (name.isEmpty) {
-                          return "Please enter password";
-                        } else {
-                          return null;
-                        }
-                      },
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.security,
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(fontWeight: FontWeight.bold),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).errorColor,
-                                width: 2.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 2.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 2.0),
-                          ),
-                          hintText: "OTP",
-                          hintStyle: TextStyle(color: Colors.white)),
-                    ),
-                  ),
+                  error == null
+                      ? Container()
+                      : Container(
+                          child: Text(error),
+                        ),
                   AnimatedContainer(
                     duration: Duration(milliseconds: 1000),
                     margin: EdgeInsets.only(
@@ -153,15 +203,17 @@ class _LoginState extends State<Login> {
                           borderRadius: new BorderRadius.circular(30.0)),
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyHomePage(),
-                            ));
+                        var code = _selectedCountry.callingCode.substring(1);
+                        print(phone);
+                        if (lkey.currentState.validate()) {
+                          if (_selectedCountry != null) {
+                            login_otp(phone, code);
+                          }
+                        }
                       },
                       child: type == 0
                           ? Text(
-                              "Login",
+                              "Get Otp",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 20),
@@ -182,7 +234,7 @@ class _LoginState extends State<Login> {
                     alignment: Alignment.bottomCenter,
                     child: FlatButton(
                       child: Text(
-                        "Create account",
+                        "Create account ?",
                         style: TextStyle(
                           color: Colors.white,
                         ),

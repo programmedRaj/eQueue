@@ -34,7 +34,13 @@ dependencies:
   table_calendar: ^2.3.3
   swipe_to: ^0.0.1+8
   grouped_buttons: ^1.0.4
-  google_fonts: ^1.1.2
+  country_calling_code_picker: ^1.0.8+1
+  image_picker: ^0.7.4
+  provider: ^5.0.0
+  http: ^0.13.1
+  shared_preferences: ^2.0.5
+  retry:
+  dio: ^4.0.0
 
 
 
