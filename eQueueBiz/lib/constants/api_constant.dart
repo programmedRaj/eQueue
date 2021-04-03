@@ -4,3 +4,7 @@ class AuthenticationApi {
   static const changeForgotPass = "http://127.0.0.1:5000/change_fpassw_biz";
   static const changePassword = "http://127.0.0.1:5000/change_passw_biz";
 }
+
+class Branch {
+  static const createEditBranch = "http://127.0.0.1:5000/create_edit_branch";
+}
