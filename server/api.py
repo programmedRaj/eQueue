@@ -967,7 +967,7 @@ def branchs_list():
         )
 
         if r:
-            resp = jsonify({"branches": r})
+            resp = jsonify({"branches": cur.fetchall()})
             resp.status_code = 200
             return resp
         else:
@@ -1428,20 +1428,21 @@ def comapnies_list():
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        comp_details={}
+        comp_details = {}
         r = cur.execute("Select * from bizusers WHERE type = 'company'")
         if r:
             record = cur.fetchall()
-            i=0
+            i = 0
             for r in record:
                 # k=r["id"]
-                cur.execute("Select * from companydetails WHERE id = '"+str(r["id"])+"'")
-                kk=cur.fetchone()
-                comp_details[i]=kk
-                i=i+1
+                cur.execute(
+                    "Select * from companydetails WHERE id = '" + str(r["id"]) + "'"
+                )
+                kk = cur.fetchone()
+                comp_details[i] = kk
+                i = i + 1
 
-
-            resp = jsonify({"comp_details":comp_details})
+            resp = jsonify({"comp_details": comp_details})
             resp.status_code = 200
             return resp
         else:
