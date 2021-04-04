@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           disabledColor: myColor[400], //grey
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: Home(),
+        home: LoginPage(),
       ),
     );
   }

@@ -953,6 +953,33 @@ def create_branch():
         conn.close()
 
 
+@app.route("/branch_list")
+@check_for_token
+def branchs_list():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+
+        r = cur.execute(
+            "Select * from branch_details WHERE comp_id = '" + str(user["id"]) + "'"
+        )
+
+        if r:
+            resp = jsonify({"branches": r})
+            resp.status_code = 200
+            return resp
+        else:
+            resp = jsonify({"branches": "No branches listed yet.."})
+            resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/dept_services", methods=["POST"])
 @check_for_token
 def dept_services():

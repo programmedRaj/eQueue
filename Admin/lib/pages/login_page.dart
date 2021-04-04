@@ -71,13 +71,13 @@ class _LoginPageState extends State<LoginPage> {
                       Flexible(
                         child: InkWell(
                           onTap: () {
-                            /* value.executeLogin(
-                                emailControler.text, passwordControler.text); */
-                            Navigator.push(
+                            value.executeLogin(
+                                emailControler.text, passwordControler.text);
+                            /* Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => Home(),
-                                ));
+                                )); */
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
