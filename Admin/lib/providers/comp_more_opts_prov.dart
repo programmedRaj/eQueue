@@ -21,25 +21,29 @@ class CompMoreOptsProv extends ChangeNotifier {
     };
     try {
       isDisableLoading = true;
-      AppToast.showSucc("Disabling ${companyDets.name}");
+      AppToast.showSucc(
+          " ${compEmailStatus.status == 1 ? 'Disabling' : 'Enabling'} ${companyDets.name}");
       notifyListeners();
       var resp = await httpPostRequest(CompanyApi.disableComp, header, body);
       if (resp.statusCode == 200) {
         isDisableLoading = true;
-        AppToast.showSucc("Disabled ${companyDets.name}");
+        AppToast.showSucc(
+            "${compEmailStatus.status == 1 ? 'Disabled' : 'Enabled'} ${companyDets.name}");
         notifyListeners();
         return true;
       } else {
         isDisableLoading = false;
         isDisableErr = true;
-        AppToast.showErr("Error disabling ${companyDets.name}");
+        AppToast.showErr(
+            "Error ${compEmailStatus.status == 1 ? 'Disabling' : 'Enabling'} ${companyDets.name}");
         notifyListeners();
         return false;
       }
     } catch (e) {
       isDisableLoading = false;
       isDisableErr = true;
-      AppToast.showErr("Error disabling ${companyDets.name}");
+      AppToast.showErr(
+          "Error ${compEmailStatus.status == 1 ? 'Disabling' : 'Enabling'} ${companyDets.name}");
 
       notifyListeners();
       return false;

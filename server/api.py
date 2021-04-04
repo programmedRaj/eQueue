@@ -954,11 +954,11 @@ def create_branch():
 
 
 @app.route("/branch_list")
-@check_for_admin_token
+@check_for_token
 def branchs_list():
     conn = mysql.connect()
     token = request.headers["Authorization"]
-    user = jwt.decode(token, app.config["ADMIN_SECRET_KEY"])
+    user = jwt.decode(token, app.config["SECRET_KEY"])
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
 
