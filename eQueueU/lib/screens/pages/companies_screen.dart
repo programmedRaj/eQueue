@@ -1,6 +1,9 @@
+import 'package:eQueue/api/models/companymodel.dart';
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/screens/pages/branch_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Company extends StatefulWidget {
   @override
@@ -9,8 +12,18 @@ class Company extends StatefulWidget {
 
 class _CompanyState extends State<Company> {
   int sizz;
+  List<CompanyModel> companylist;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<CompanyProvider>(context, listen: false).getCompanies();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Future.microtask(() =>
+    //     Provider.of<CompanyProvider>(context, listen: false).getCompanies());
+    final comp = Provider.of<CompanyProvider>(context).companies;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     if (width <= 320.0) {
@@ -60,7 +73,7 @@ class _CompanyState extends State<Company> {
                 height: height * 0.9,
                 width: width,
                 child: ListView.builder(
-                    itemCount: 10,
+                    itemCount: comp.length,
                     itemBuilder: (context, i) {
                       return Container(
                         height: height * 0.3,
@@ -101,7 +114,7 @@ class _CompanyState extends State<Company> {
                                       Container(
                                         width: width * 0.4,
                                         child: Text(
-                                          'Company Name',
+                                          comp[i].name,
                                           style: TextStyle(
                                               color: myColor[50],
                                               fontWeight: FontWeight.bold),
@@ -123,7 +136,10 @@ class _CompanyState extends State<Company> {
                                           Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (ctx) =>
-                                                      BranchScreen()));
+                                                      BranchScreen(
+                                                        id: comp[i].id,
+                                                        comp_type: comp[i].type,
+                                                      )));
                                         },
                                         child: Text(
                                           'View Branches',

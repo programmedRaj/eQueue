@@ -3,4 +3,6 @@ class BaseUrl {
   final String register = "$basic/register";
   final String login = "$basic/login";
   final String login_otp = "$basic/login_otp";
+  final String companies_list = "$basic/companies_list";
+  final String branch_list = "$basic/branches_list";
 }

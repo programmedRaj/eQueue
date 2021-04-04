@@ -1,15 +1,26 @@
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/provider/branch_provider.dart';
+import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/screens/pages/book_appointment.dart';
-import 'package:eQueue/screens/pages/book_token.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BranchScreen extends StatefulWidget {
+  final int id;
+  final String comp_type;
+  BranchScreen({this.id, this.comp_type});
   @override
   _BranchScreenState createState() => _BranchScreenState();
 }
 
 class _BranchScreenState extends State<BranchScreen> {
   int sizz;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<BranchProvider>(context, listen: false).getBranches(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;

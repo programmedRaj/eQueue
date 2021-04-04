@@ -1,4 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:eQueue/check.dart';
+import 'package:eQueue/provider/branch_provider.dart';
+import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/screens/auth/login.dart';
 import 'package:eQueue/screens/auth/phoneauth.dart';
 import 'package:eQueue/screens/home_screen.dart';
@@ -7,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 import 'components/color.dart';
 
@@ -66,65 +70,71 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp(
-      // localizationsDelegates: [
-      //   GlobalCupertinoLocalizations.delegate,
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      //   _localeOverrideDelegate
-      // ],
-      supportedLocales: [
-        const Locale('en', 'US'), //english
-        const Locale('es', 'ES'), // spanish
-        const Locale('ar', 'AR'), // Arabic
-        const Locale('fr', 'FR'), // french
-        const Locale('fa', 'FA'), // farsi
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: CompanyProvider()),
+        ChangeNotifierProvider.value(value: BranchProvider()),
       ],
-      debugShowCheckedModeBanner: false,
-      title: 'E-Queue',
-      theme: ThemeData(
-        iconTheme: IconThemeData(color: myColor[100]),
-        primaryColor: myColor[100], //white
-        accentColor: myColor[50], //primary blue
-        highlightColor: myColor[200], //darkblue
-        hintColor: myColor[300], //black
-        disabledColor: myColor[400],
-        errorColor: Colors.red,
-      ),
-      home: AnimatedSplashScreen(
-        duration: 3000,
-        splash: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              child: Image.asset(
-                'lib/assets/login.png',
-                height: 180,
-                width: 180,
-              ),
-            ),
-            Container(
-              child: Text('eQueue',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold)),
-            ),
-            SizedBox(
-              height: 400,
-            ),
-            Container(
-              child: Text('From Bido Media Inc.',
-                  style: TextStyle(color: Colors.white)),
-            )
-          ],
+      child: MaterialApp(
+        // localizationsDelegates: [
+        //   GlobalCupertinoLocalizations.delegate,
+        //   GlobalMaterialLocalizations.delegate,
+        //   GlobalWidgetsLocalizations.delegate,
+        //   _localeOverrideDelegate
+        // ],
+        supportedLocales: [
+          const Locale('en', 'US'), //english
+          const Locale('es', 'ES'), // spanish
+          const Locale('ar', 'AR'), // Arabic
+          const Locale('fr', 'FR'), // french
+          const Locale('fa', 'FA'), // farsi
+        ],
+        debugShowCheckedModeBanner: false,
+        title: 'E-Queue',
+        theme: ThemeData(
+          iconTheme: IconThemeData(color: myColor[100]),
+          primaryColor: myColor[100], //white
+          accentColor: myColor[50], //primary blue
+          highlightColor: myColor[200], //darkblue
+          hintColor: myColor[300], //black
+          disabledColor: myColor[400],
+          errorColor: Colors.red,
         ),
-        splashIconSize: 800,
-        nextScreen: Login(),
-        splashTransition: SplashTransition.fadeTransition,
-        pageTransitionType: PageTransitionType.leftToRight,
-        backgroundColor: HexColor('#6e879b'),
+        home: AnimatedSplashScreen(
+          duration: 3000,
+          splash: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                child: Image.asset(
+                  'lib/assets/login.png',
+                  height: 180,
+                  width: 180,
+                ),
+              ),
+              Container(
+                child: Text('eQueue',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(
+                height: 400,
+              ),
+              Container(
+                child: Text('From Bido Media Inc.',
+                    style: TextStyle(color: Colors.white)),
+              )
+            ],
+          ),
+          splashIconSize: 800,
+          nextScreen: Check(),
+          splashTransition: SplashTransition.fadeTransition,
+          pageTransitionType: PageTransitionType.leftToRight,
+          backgroundColor: HexColor('#6e879b'),
+        ),
       ),
     );
   }
