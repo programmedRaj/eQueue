@@ -13,3 +13,7 @@ class BranchApi {
 class DepartmentApi {
   static const getDept = "http://127.0.0.1:5000/dept_services";
 }
+
+class Employee {
+  static const createEditDeleteEmp = "http://127.0.0.1:5000/create_employee";
+}

@@ -1,8 +1,11 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/model/branch_resp_model.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
-import 'package:equeuebiz/screens/create_branch.dart';
+import 'package:equeuebiz/providers/create_edit_prov.dart';
+import 'package:equeuebiz/screens/create_branch_mob.dart';
+import 'package:equeuebiz/screens/create_branch_web.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +22,7 @@ class _BranchesState extends State<Branches> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<BranchDataProv>(context, listen: false)
-          .getBranches(authProv.authinfo.jwtToken);
+          .getbranchesWithDetail(authProv.authinfo.jwtToken);
     });
   }
 
@@ -67,9 +70,16 @@ class _BranchesState extends State<Branches> {
                               : Container(
                                   height: size.height,
                                   child: ListView.builder(
-                                      itemCount: value.branches?.length,
+                                      itemCount:
+                                          value.branchesWithDetail?.length,
                                       itemBuilder: (context, index) =>
-                                          _branchCard("value.branches[index]")),
+                                          _branchCard(
+                                              value.branchesWithDetail[index]
+                                                  .branchName,
+                                              value.branchesWithDetail[index]
+                                                  .branchId,
+                                              authProv.authinfo.jwtToken,
+                                              value.branchesWithDetail[index])),
                                 )
                       /* Text("No branches to show ."),
                 ElevatedButton(
@@ -98,7 +108,7 @@ class _BranchesState extends State<Branches> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CreateBranch(),
+              builder: (context) => CreateBranchMob(),
             ));
       },
       child: Padding(
@@ -125,7 +135,8 @@ class _BranchesState extends State<Branches> {
     );
   }
 
-  Widget _branchCard(String name) {
+  Widget _branchCard(String branchName, int branchId, String jwtToken,
+      BranchRespModel _branchDets) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -138,7 +149,7 @@ class _BranchesState extends State<Branches> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "$name",
+              "$branchName",
               style: blackBoldFS16,
             ),
             SizedBox(
@@ -161,11 +172,31 @@ class _BranchesState extends State<Branches> {
                   style: TextStyle(),
                 ),
                 Spacer(),
-                Icon(Icons.edit),
+                InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CreateBranchMob(
+                              branchDets: _branchDets,
+                            ),
+                          ));
+                    },
+                    child: Icon(Icons.edit)),
                 SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.delete)
+                InkWell(
+                    onTap: () async {
+                      bool success = await Provider.of<BranchDataProv>(context,
+                              listen: false)
+                          .execDeleteBranch(jwtToken, branchId, branchName);
+                      if (success) {
+                        Provider.of<BranchDataProv>(context, listen: false)
+                            .getbranchesWithDetail(jwtToken);
+                      }
+                    },
+                    child: Icon(Icons.delete))
               ],
             )
           ],

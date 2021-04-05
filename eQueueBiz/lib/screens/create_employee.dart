@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
@@ -7,6 +9,7 @@ import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:equeuebiz/widgets/resize_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class CreateEmployee extends StatefulWidget {
@@ -21,6 +24,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   String _chosenDept;
   String _chosenBranch;
   bool employeeStatus = true;
+  File uploadedImageMob;
 
   @override
   void initState() {
@@ -76,6 +80,37 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                     departmentsList = deptDataprov.deptsList;
                                     return Column(
                                       children: [
+                                        uploadedImageMob != null
+                                            ? Image.file(
+                                                uploadedImageMob,
+                                                height: size.height * 0.3,
+                                                fit: BoxFit.fill,
+                                              )
+                                            : SizedBox(),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        ElevatedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      AppColor.mainBlue)),
+                                          onPressed: () async {
+                                            var img = await ImagePicker()
+                                                .getImage(
+                                                    source:
+                                                        ImageSource.gallery);
+                                            if (img != null) {
+                                              uploadedImageMob = File(img.path);
+                                              setState(() {});
+                                            }
+                                          },
+                                          child: Text(
+                                            'Upload Image',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
                                         _textField("Name"),
                                         _textField("Email ID"),
                                         _textField("Password"),
@@ -190,7 +225,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           );
         }).toList(),
         hint: Text(
-          "Select a Department",
+          "Select a Department/Service",
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
         ),

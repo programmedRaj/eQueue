@@ -25,7 +25,7 @@ class BranchRespModel {
   @JsonKey(name: "province")
   String province;
   @JsonKey(name: "working_hours")
-  Map<dynamic, dynamic> workingHrs;
+  WorkingHrs workingHrs;
   @JsonKey(name: "services")
   Services services;
   @JsonKey(name: "timezone")
@@ -39,9 +39,9 @@ class BranchRespModel {
   @JsonKey(name: "threshold")
   String threshold;
   @JsonKey(name: "department")
-  Map<String, dynamic> department;
+  List<String> department;
   @JsonKey(name: "id")
-  String branchId;
+  int branchId;
   @JsonKey(name: "counter_count")
   String counter;
 
@@ -85,4 +85,49 @@ class Services {
       _$ServicesFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServicesToJson(this);
+}
+
+@JsonSerializable()
+class WorkingHrs {
+  @JsonKey(name: "Monday")
+  WhrsTiming monday;
+  @JsonKey(name: "Tuesday")
+  WhrsTiming tuesday;
+  @JsonKey(name: "Wednesday")
+  WhrsTiming wednesday;
+  @JsonKey(name: "Thursday")
+  WhrsTiming thursday;
+  @JsonKey(name: "Friday")
+  WhrsTiming friday;
+  @JsonKey(name: "Saturday")
+  WhrsTiming saturday;
+  @JsonKey(name: "Sunday")
+  WhrsTiming sunday;
+
+  WorkingHrs(
+      {this.friday,
+      this.monday,
+      this.saturday,
+      this.sunday,
+      this.thursday,
+      this.tuesday,
+      this.wednesday});
+
+  factory WorkingHrs.fromJson(Map<String, dynamic> json) =>
+      _$WorkingHrsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WorkingHrsToJson(this);
+}
+
+@JsonSerializable()
+class WhrsTiming {
+  String startTime;
+  String endTime;
+
+  WhrsTiming({this.endTime, this.startTime});
+
+  factory WhrsTiming.fromJson(Map<String, dynamic> json) =>
+      _$WhrsTimingFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WhrsTimingToJson(this);
 }
