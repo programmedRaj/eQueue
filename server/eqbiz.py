@@ -454,9 +454,11 @@ def edit_employee(
     services,
     counter_number,
     departments,
+    estatus,
 ):
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
 
     try:
         if acctype == "booking":
@@ -475,6 +477,15 @@ def edit_employee(
                 + str(employee_id)
                 + ";"
             )
+
+            qq = (
+                "UPDATE bizusers SET status = '"
+                + str(estatus)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+
         elif acctype == "token":
             q = (
                 "UPDATE employee_details SET name = '"
@@ -493,6 +504,15 @@ def edit_employee(
                 + str(employee_id)
                 + ";"
             )
+
+            qq = (
+                "UPDATE bizusers SET status = '"
+                + str(estatus)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+
         elif acctype == "multitoken":
             q = (
                 "UPDATE employee_details SET name = '"
@@ -512,10 +532,21 @@ def edit_employee(
                 + ";"
             )
 
+            qq = (
+                "UPDATE bizusers SET status = '"
+                + str(estatus)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+
         fire = str(q)
-        print(fire)
-        cur2 = conn.cursor(pymysql.cursors.DictCursor)
+        firee = str(qq)
         check = cur2.execute(fire)
+        conn.commit()
+
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        checkk = cur.execute(firee)
         conn.commit()
         if check:
             return 200

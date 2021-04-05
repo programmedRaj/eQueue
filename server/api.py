@@ -1139,6 +1139,7 @@ def create_employee():
 
             elif request.form["req"] == "update":
                 employee_id = request.form["employee_id"]
+                estatus = request.form["emp_status"]
                 cur.execute(
                     "Select * from bizusers WHERE id = '" + str(employee_id) + "'"
                 )
@@ -1156,6 +1157,7 @@ def create_employee():
                             services,
                             0,
                             0,
+                            estatus,
                         )
                     if user["comp_type"] == "token":
                         counter_number = request.form["counter_number"]
@@ -1170,6 +1172,7 @@ def create_employee():
                             0,
                             counter_number,
                             departments,
+                            estatus,
                         )
                     if user["comp_type"] == "multitoken":
                         counter_number = request.form["counter_number"]
@@ -1184,6 +1187,7 @@ def create_employee():
                             0,
                             counter_number,
                             departments,
+                            estatus,
                         )
 
                     if op == 200:
