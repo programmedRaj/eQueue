@@ -666,11 +666,11 @@ def create_branch():
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "company":
+            comp_id = user["id"]
             cur.execute("Select * from bizusers WHERE id = '" + str(comp_id) + "'")
             check = cur.fetchall()
             if check:
                 if request.form["req"] == "create":
-                    print(user["comp_type"])
                     bname = request.form["bname"]
                     pnum = request.form["pnum"]
                     addr1 = request.form["addr1"]
@@ -679,12 +679,13 @@ def create_branch():
                     postalcode = request.form["postalcode"]
                     geolocation = request.form["geolocation"]
                     province = request.form["province"]
-                    comp_id = user["id"]
                     filename = "default.png"
                     if request.files["company_logo"]:
                         company_logo = request.files["company_logo"]
                         filename = secure_filename(company_logo.filename)
-                        company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+                        company_logo.save(
+                            os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                        )
                     w_hrs = request.form["w_hrs"]
                     if user["comp_type"] == "booking":
                         services = request.form["services"]
@@ -789,10 +790,26 @@ def create_branch():
                         + "'"
                     )
 
-                    
                     check = cur.fetchone()
                     if check:
                         branchid = check["id"]
+                        bname = request.form["bname"]
+                        pnum = request.form["pnum"]
+                        addr1 = request.form["addr1"]
+                        addr2 = request.form["addr2"]
+                        city = request.form["city"]
+                        postalcode = request.form["postalcode"]
+                        geolocation = request.form["geolocation"]
+                        province = request.form["province"]
+                        filename = "default.png"
+                        if request.files["company_logo"]:
+                            company_logo = request.files["company_logo"]
+                            filename = secure_filename(company_logo.filename)
+                            company_logo.save(
+                                os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                            )
+                        w_hrs = request.form["w_hrs"]
+
                         if request.files["company_logo"]:
                             company_logo = request.files["company_logo"]
                             filename = secure_filename(company_logo.filename)
