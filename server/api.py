@@ -1068,7 +1068,7 @@ def create_employee():
             if request.form["req"] == "create":
                 cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
                 r = cur.fetchone()
-                if r["email"]:
+                if r:
                     resp = jsonify({"message": "Email id taken."})
                     resp.status_code = 405
                     return resp
@@ -1094,6 +1094,8 @@ def create_employee():
                                 services,
                                 0,
                                 0,
+                                email,
+                                passw,
                             )
                         if user["comp_type"] == "token":
                             counter_number = request.form["counter_number"]
@@ -1107,6 +1109,8 @@ def create_employee():
                                 0,
                                 counter_number,
                                 departments,
+                                email,
+                                passw,
                             )
                         if user["comp_type"] == "multitoken":
                             counter_number = request.form["counter_number"]
@@ -1120,12 +1124,26 @@ def create_employee():
                                 0,
                                 counter_number,
                                 departments,
+                                email,
+                                passw,
                             )
+
+                        if op == 200:
+                            resp = jsonify({"message": "successfully created."})
+                            resp.status_code = 200
+                            return resp
+                        if op == 403:
+                            resp = jsonify({"message": "error occured."})
+                            resp.status_code = 403
+                            return resp
+
             elif request.form["req"] == "update":
                 employee_id = request.form["employee_id"]
-                cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
+                cur.execute(
+                    "Select * from bizusers WHERE id = '" + str(employee_id) + "'"
+                )
                 r = cur.fetchone()
-                if r["email"]:
+                if r:
                     if user["comp_type"] == "booking":
                         services = request.form["services"]
                         op = eqbiz.edit_employee(
@@ -1167,25 +1185,38 @@ def create_employee():
                             counter_number,
                             departments,
                         )
+
+                    if op == 200:
+                        resp = jsonify({"message": "successfully updated."})
+                        resp.status_code = 200
+                        return resp
+                    if op == 403:
+                        resp = jsonify({"message": "error occured."})
+                        resp.status_code = 403
+                        return resp
+                else:
+                    resp = jsonify({"message": "NO employee found."})
+                    resp.status_code = 405
+                    return resp
+
             elif request.form["req"] == "delete":
                 cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
                 r = cur.fetchone()
                 if r["email"]:
                     print("karo delete")
+
+                if op == 200:
+                    resp = jsonify({"message": "successfully deleted."})
+                    resp.status_code = 200
+                    return resp
+                if op == 403:
+                    resp = jsonify({"message": "error occured."})
+                    resp.status_code = 403
+                    return resp
             else:
                 resp = jsonify({"message": "Error invalid request."})
                 resp.status_code = 405
                 return resp
-
-                # resp = jsonify(
-                #     {"message": "Employee Account Created successfully."}
-                # )
-                #     resp.status_code = 200
-                #     conn.commit()
-                #     return resp
-                # resp = jsonify({"message": "Error."})
-                # resp.status_code = 403
-                # return resp
 
         resp = jsonify({"message": "ONLY Company can access."})
         resp.status_code = 405
