@@ -168,7 +168,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget _userNameTextField() {
     return TextFormField(
       controller: emailControler,
-      keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 20.5),
       decoration: InputDecoration(
         //focusColor: Colors.green,
@@ -198,7 +197,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget _passwordTextField() {
     return TextFormField(
       controller: passwordControler,
-      keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 20.5),
       decoration: InputDecoration(
         //focusColor: Colors.green,
