@@ -1231,6 +1231,50 @@ def create_employee():
         conn.close()
 
 
+@app.route("/fetch_employees", methods=["POST"])
+@check_for_token
+def fetch_employees():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    branch_id = request.json["branch_id"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "company":
+            r = cur.execute(
+                "Select * from employee_details WHERE branch_id = '"
+                + str(branch_id)
+                + "'"
+            )
+            r = cur.fetchall()
+            statuses = []
+            if r:
+                for row in r:
+                    gettingstatuses = cur.execute(
+                        "Select * from bizusers WHERE id = '" + str(row["id"]) + "'"
+                    )
+
+                    k = cur.fetchone()
+                    statuses.append(k["status"])
+
+                resp = jsonify({"employee_details": r, "empoyee_statuses": statuses})
+                resp.status_code = 200
+                return resp
+
+            else:
+                resp = jsonify({"message": "NO employee found"})
+                resp.status_code = 403
+                return resp
+
+        resp = jsonify({"message": "ONLY Company can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 # USER APIs STARTS HERE
 
 
