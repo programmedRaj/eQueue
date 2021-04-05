@@ -10,7 +10,7 @@ class CreateEditBanchProv extends ChangeNotifier {
   List<int> comlogoint;
   Future<bool> execCreateComppany(
       Uint8List companyLogo, BranchModel branch, String token) async {
-    var postUri = Uri.parse(Branch.createEditBranch);
+    var postUri = Uri.parse(BranchApi.createEditBranch);
     var header = {
       'Content-Type': 'multipart/form-data',
       'Authorization': token

@@ -1,4 +1,4 @@
-import 'dart:html';
+// import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:equeuebiz/constants/appcolor.dart';
@@ -223,7 +223,7 @@ class _CreateBranchState extends State<CreateBranch> {
   }
 
   _startFilePicker() async {
-    InputElement uploadInput = FileUploadInputElement();
+    /*  InputElement uploadInput = FileUploadInputElement();
     uploadInput.click();
 
     uploadInput.onChange.listen((e) {
@@ -247,7 +247,7 @@ class _CreateBranchState extends State<CreateBranch> {
 
         reader.readAsArrayBuffer(file);
       }
-    });
+    }); */
   }
 
   Widget _departmentServiceChip(String departmentServiceNAme,
