@@ -1,9 +1,21 @@
-import 'package:eQueue/components/appointmenttime.dart';
-import 'package:eQueue/components/color.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'package:eQueue/api/models/working_per_day.dart';
+import 'package:eQueue/components/appointmenttime.dart';
+import 'package:eQueue/components/color.dart';
+
 class Calen extends StatefulWidget {
+  // final List<Workinghrsperday> wk;
+  // final List<Workinghrsperday> book;
+  // final List<Workinghrsperday> perday;
+  // const Calen({
+  //   Key key,
+  //   this.wk,
+  //   this.book,
+  //   this.perday,
+  // }) : super(key: key);
   @override
   _CalenState createState() => _CalenState();
 }
@@ -100,6 +112,9 @@ class _CalenState extends State<Calen> {
               child: TableCalendar(
                 // calendarStyle: CalendarStyle(holidayStyle: ),
                 onDaySelected: (day, events, holidays) {
+                  String dateFormat = DateFormat('EEEE').format(day);
+                  String dayy = dateFormat.toLowerCase();
+
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (ctx) => AppTime(
                             day: day,

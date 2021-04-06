@@ -166,7 +166,14 @@ class _BranchScreenState extends State<BranchScreen> {
                                                       builder: (ctx) => widget
                                                                   .comp_type ==
                                                               "booking"
-                                                          ? Calen()
+                                                          ? Calen(
+                                                              // book: value
+                                                              //     .bookingsperhrs,
+                                                              // perday: value
+                                                              //     .perdayhrss,
+                                                              // wk: value
+                                                              //     .workinghrsper,
+                                                              )
                                                           : Booktoken(
                                                               bid: value
                                                                   .branches[i]
