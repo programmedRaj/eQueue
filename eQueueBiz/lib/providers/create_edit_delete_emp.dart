@@ -24,6 +24,9 @@ class EmployeeOperationProv {
           File(profilepic.path).readAsBytes().asStream(),
           File(profilepic.path).lengthSync(),
           filename: "${employeedets.email}_logo"));
+    } else {
+      request.files.add(
+          http.MultipartFile.fromBytes('profile_url', [], filename: "_logo"));
     }
 
     request.fields["email"] = employeedets.email;
@@ -35,15 +38,15 @@ class EmployeeOperationProv {
     request.fields["counter_number"] = employeedets.counterNumber.toString();
     request.fields["departments"] = employeedets.departments;
     request.fields["req"] = employeedets.req;
-    request.fields["employee_id"] = employeedets.employeeId.toString();
+    request.fields["employee_id"] = "19"; //employeedets.employeeId.toString();
     request.fields['services'] = employeedets.services;
-    request.fields['emp_status'] = "";
+    request.fields['emp_status'] = employeedets.empStatus.toString();
 
     var resp = await request.send();
     if (resp.statusCode == 200) {
       print("Success");
       if (employeedets.req == "update") {
-        AppToast.showErr("Employee updated successfully");
+        AppToast.showSucc("Employee updated successfully");
       } else {
         AppToast.showSucc("Employee created successfully");
       }

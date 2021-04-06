@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'employee_model.g.dart';
@@ -7,7 +10,7 @@ class EmployeeModel {
   final String email;
   final String name;
   final String password;
-  @JsonKey(name: 'branch_id')
+  @JsonKey(name: 'branch_id', fromJson: _fromJson)
   final int branchId;
   @JsonKey(name: 'number')
   final String phoneNo;
@@ -20,6 +23,8 @@ class EmployeeModel {
   @JsonKey(name: 'counter_no')
   int counterNumber;
   String services;
+  @JsonKey(name: 'emp_status')
+  int empStatus;
 
   EmployeeModel(
       {this.branchId,
@@ -32,10 +37,13 @@ class EmployeeModel {
       this.profileUrl,
       this.req,
       this.counterNumber,
-      this.services});
+      this.services,
+      this.empStatus});
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) =>
       _$EmployeeModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$EmployeeModelToJson(this);
+
+  static int _fromJson(val) => num.parse(val);
 }
