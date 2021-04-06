@@ -2,12 +2,13 @@ import 'package:eQueue/components/color.dart';
 import 'package:flutter/material.dart';
 
 class TokenPage extends StatefulWidget {
+  final List depa;
+  TokenPage({this.depa});
   @override
   _TokenPageState createState() => _TokenPageState();
 }
 
 class _TokenPageState extends State<TokenPage> {
-  List depa = ['j', 'k', 'l'];
   String dropval;
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _TokenPageState extends State<TokenPage> {
           padding: EdgeInsets.all(10),
           child: DropdownButtonHideUnderline(
             child: DropdownButton(
-                items: depa.map((val) {
+                items: widget.depa.map((val) {
                   return new DropdownMenuItem<String>(
                     value: val,
                     child: new Text(val),

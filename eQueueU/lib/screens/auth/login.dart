@@ -56,11 +56,14 @@ class _LoginState extends State<Login> {
 
   Future login_otp(String phone, String code) async {
     Uri registeruri = Uri.parse(baseUrl.login_otp);
+
     var header = {
       'Content-Type': 'multipart/form-data',
     };
     var request = new http.MultipartRequest("POST", registeruri)
       ..headers.addAll(header);
+
+    print(code + phone);
 
     request.fields['number'] = code + phone;
 
@@ -204,7 +207,7 @@ class _LoginState extends State<Login> {
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
                         var code = _selectedCountry.callingCode.substring(1);
-                        print(phone);
+
                         if (lkey.currentState.validate()) {
                           if (_selectedCountry != null) {
                             login_otp(phone, code);

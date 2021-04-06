@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:eQueue/api/models/branchmodel.dart';
 import 'package:eQueue/api/models/companymodel.dart';
+import 'package:eQueue/api/models/working_per_day.dart';
 import 'package:eQueue/api/service/baseurl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -31,39 +32,138 @@ class BranchProvider extends ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    print(n);
-
-    for (int i = 0; i < n['branches'].length; i++) {
-      branchesadd(
-        address1: n['branches'][i]['address1'],
-        address2: n['branches'][i]['address2'],
-        bname: n['branches'][i]['bname'],
-        bookingperday: n['branches'][i]['booking_per_day'],
-        city: n['branches'][i]['city'],
-        companyid: n['branches'][i]['comp_id'],
-        countercount: n['branches'][i]['counter_count'],
-        department: n['branches'][i]['department'],
-        geolocation: n['branches'][i]['geolocation'],
-        id: n['branches'][i]['id'],
-        moneyearned: n['branches'][i]['money_earned'],
-        notifytime: n['branches'][i]['notify_time'],
-        perdayhours: n['branches'][i]['per_day_hours'],
-        phonenumber: n['branches'][i]['phone_number'],
-        postalcode: n['branches'][i]['postalcode'],
-        profilephotourl: n['branches'][i]['profile_photo_url'],
-        province: n['branches'][i]['province'],
-        services: n['branches'][i]['services'],
-        threshold: n['branches'][i]['threshold'],
-        timezone: n['branches'][i]['timezone'],
-        workinghours: n['branches'][i]['working_hours'],
-      );
-    }
+    var m = json.decode(n['branches'][0]['working_hours']);
+    print(m["friday"]);
     removeedu();
+    // removeday();
+    if (n['branches'] != "No branches listed yet..")
+      for (int i = 0; i < n['branches'].length; i++) {
+        branchesadd(
+          address1: n['branches'][i]['address1'],
+          address2: n['branches'][i]['address2'],
+          bname: n['branches'][i]['bname'],
+          bookingperday: n['branches'][i]['booking_per_day'],
+          city: n['branches'][i]['city'],
+          companyid: n['branches'][i]['comp_id'],
+          countercount: n['branches'][i]['counter_count'],
+          department: n['branches'][i]['department'],
+          geolocation: n['branches'][i]['geolocation'],
+          id: n['branches'][i]['id'],
+          moneyearned: n['branches'][i]['money_earned'],
+          notifytime: n['branches'][i]['notify_time'],
+          perdayhours: n['branches'][i]['per_day_hours'],
+          phonenumber: n['branches'][i]['phone_number'],
+          postalcode: n['branches'][i]['postalcode'],
+          profilephotourl: n['branches'][i]['profile_photo_url'],
+          province: n['branches'][i]['province'],
+          services: n['branches'][i]['services'],
+          threshold: n['branches'][i]['threshold'],
+          timezone: n['branches'][i]['timezone'],
+          workinghours: n['branches'][i]['working_hours'],
+        );
+        workinghrsperdayadd(
+          monday: n['branches'][i]['working_hours']['monday'].toString(),
+          friday: n['branches'][i]['working_hours']['friday'].toString(),
+          saturday: n['branches'][i]['working_hours']['saturday'].toString(),
+          sunday: n['branches'][i]['working_hours']['sunday'].toString(),
+          thursday: n['branches'][i]['working_hours']['thrusday'].toString(),
+          tuesday: n['branches'][i]['working_hours']['tuesday'].toString(),
+          wednesday: n['branches'][i]['working_hours']['wednesday'].toString(),
+        );
+        bookinghrsperdayadd(
+          monday: n['branches'][i]['booking_per_day']['monday'].toString(),
+          friday: n['branches'][i]['booking_per_day']['friday'].toString(),
+          saturday: n['branches'][i]['booking_per_day']['saturday'].toString(),
+          sunday: n['branches'][i]['booking_per_day']['sunday'].toString(),
+          thursday: n['branches'][i]['booking_per_day']['thrusday'].toString(),
+          tuesday: n['branches'][i]['booking_per_day']['tuesday'].toString(),
+          wednesday:
+              n['branches'][i]['booking_per_day']['wednesday'].toString(),
+        );
+        perdayadd(
+          monday: n['branches'][i]['per_day_hours']['monday'].toString(),
+          friday: n['branches'][i]['per_day_hours']['friday'].toString(),
+          saturday: n['branches'][i]['per_day_hours']['saturday'].toString(),
+          sunday: n['branches'][i]['per_day_hours']['sunday'].toString(),
+          thursday: n['branches'][i]['per_day_hours']['thrusday'].toString(),
+          tuesday: n['branches'][i]['per_day_hours']['tuesday'].toString(),
+          wednesday: n['branches'][i]['per_day_hours']['wednesday'].toString(),
+        );
+      }
   }
 
   List<BranchModel> branch = [];
 
   List<BranchModel> get branches => branch;
+  List<Workinghrsperday> workinghrs = [];
+  List<Workinghrsperday> get workinghrsper => workinghrs;
+
+  List<Workinghrsperday> bookingshrs = [];
+  List<Workinghrsperday> get bookingsperhrs => bookingshrs;
+
+  List<Workinghrsperday> perdayhrs = [];
+
+  List<Workinghrsperday> get perdayhrss => perdayhrs;
+
+  void workinghrsperdayadd({
+    String monday,
+    String tuesday,
+    String wednesday,
+    String thursday,
+    String friday,
+    String saturday,
+    String sunday,
+  }) {
+    workinghrsper.add(Workinghrsperday(
+      friday: friday,
+      monday: monday,
+      saturday: saturday,
+      sunday: sunday,
+      thursday: thursday,
+      tuesday: tuesday,
+      wednesday: wednesday,
+    ));
+  }
+
+  void bookinghrsperdayadd({
+    String monday,
+    String tuesday,
+    String wednesday,
+    String thursday,
+    String friday,
+    String saturday,
+    String sunday,
+  }) {
+    bookingsperhrs.add(Workinghrsperday(
+      friday: friday,
+      monday: monday,
+      saturday: saturday,
+      sunday: sunday,
+      thursday: thursday,
+      tuesday: tuesday,
+      wednesday: wednesday,
+    ));
+  }
+
+  void perdayadd({
+    String monday,
+    String tuesday,
+    String wednesday,
+    String thursday,
+    String friday,
+    String saturday,
+    String sunday,
+  }) {
+    perdayhrss.add(Workinghrsperday(
+      friday: friday,
+      monday: monday,
+      saturday: saturday,
+      sunday: sunday,
+      thursday: thursday,
+      tuesday: tuesday,
+      wednesday: wednesday,
+    ));
+  }
 
   void branchesadd({
     int id,
@@ -117,4 +217,11 @@ class BranchProvider extends ChangeNotifier {
     branches.clear();
     notifyListeners();
   }
+
+  // void removeday() {
+  //   workinghrsper.clear();
+  //   bookingsperhrs.clear();
+  //   perdayhrss.clear();
+  //   notifyListeners();
+  // }
 }

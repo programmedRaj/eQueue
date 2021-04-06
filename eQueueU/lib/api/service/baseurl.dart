@@ -5,4 +5,5 @@ class BaseUrl {
   final String login_otp = "$basic/login_otp";
   final String companies_list = "$basic/companies_list";
   final String branch_list = "$basic/branches_list";
+  final String departments = "$basic/dept_services_dropdown";
 }
