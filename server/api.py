@@ -667,26 +667,34 @@ def create_branch():
     try:
         if user["type"] == "company":
             comp_id = user["id"]
+            bname = request.form["bname"]
+            pnum = request.form["pnum"]
+            addr1 = request.form["addr1"]
+            addr2 = request.form["addr2"]
+            city = request.form["city"]
+            postalcode = request.form["postalcode"]
+            geolocation = request.form["geolocation"]
+            province = request.form["province"]
+            w_hrs = request.form["w_hrs"]
+
+            filename = "default.png"
+            if request.files["company_logo"]:
+                company_logo = request.files["company_logo"]
+                filename = secure_filename(company_logo.filename)
+                company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            w_hrs = request.form["w_hrs"]
+
+            if request.files["company_logo"]:
+                company_logo = request.files["company_logo"]
+                filename = secure_filename(company_logo.filename)
+                company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            else:
+                filename = check["profile_photo_url"]
+
             cur.execute("Select * from bizusers WHERE id = '" + str(comp_id) + "'")
             check = cur.fetchall()
             if check:
                 if request.form["req"] == "create":
-                    bname = request.form["bname"]
-                    pnum = request.form["pnum"]
-                    addr1 = request.form["addr1"]
-                    addr2 = request.form["addr2"]
-                    city = request.form["city"]
-                    postalcode = request.form["postalcode"]
-                    geolocation = request.form["geolocation"]
-                    province = request.form["province"]
-                    filename = "default.png"
-                    if request.files["company_logo"]:
-                        company_logo = request.files["company_logo"]
-                        filename = secure_filename(company_logo.filename)
-                        company_logo.save(
-                            os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                        )
-                    w_hrs = request.form["w_hrs"]
                     if user["comp_type"] == "booking":
                         services = request.form["services"]
                         timezone = request.form["timezone"]
@@ -793,31 +801,6 @@ def create_branch():
                     check = cur.fetchone()
                     if check:
                         branchid = check["id"]
-                        bname = request.form["bname"]
-                        pnum = request.form["pnum"]
-                        addr1 = request.form["addr1"]
-                        addr2 = request.form["addr2"]
-                        city = request.form["city"]
-                        postalcode = request.form["postalcode"]
-                        geolocation = request.form["geolocation"]
-                        province = request.form["province"]
-                        filename = "default.png"
-                        if request.files["company_logo"]:
-                            company_logo = request.files["company_logo"]
-                            filename = secure_filename(company_logo.filename)
-                            company_logo.save(
-                                os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                            )
-                        w_hrs = request.form["w_hrs"]
-
-                        if request.files["company_logo"]:
-                            company_logo = request.files["company_logo"]
-                            filename = secure_filename(company_logo.filename)
-                            company_logo.save(
-                                os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                            )
-                        else:
-                            filename = check["profile_photo_url"]
 
                         if user["comp_type"] == "booking":
                             services = request.form["services"]
