@@ -1,9 +1,21 @@
-import 'package:eQueue/components/appointmenttime.dart';
-import 'package:eQueue/components/color.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'package:eQueue/api/models/working_per_day.dart';
+import 'package:eQueue/components/appointmenttime.dart';
+import 'package:eQueue/components/color.dart';
+
 class Calen extends StatefulWidget {
+  final List<Working> wk;
+  final List<Working> book;
+  final List<Working> perday;
+  const Calen({
+    Key key,
+    this.wk,
+    this.book,
+    this.perday,
+  }) : super(key: key);
   @override
   _CalenState createState() => _CalenState();
 }
@@ -100,9 +112,48 @@ class _CalenState extends State<Calen> {
               child: TableCalendar(
                 // calendarStyle: CalendarStyle(holidayStyle: ),
                 onDaySelected: (day, events, holidays) {
+                  String dateFormat = DateFormat('EEEE').format(day);
+                  String dayy = dateFormat.toLowerCase();
+
+                  String workday = widget.wk
+                      .where((element) => element.day == dayy)
+                      .map((e) => e.value)
+                      .toString()
+                      .replaceAll('(', '')
+                      .replaceAll(')', '');
+                  print(workday);
+
+                  String bookday = widget.book
+                      .where((element) => element.day == dayy)
+                      .map((e) => e.value)
+                      .toString()
+                      .replaceAll('(', '')
+                      .replaceAll(')', '');
+                  ;
+                  print('$bookday');
+
+                  String perday = widget.perday
+                      .where((element) => element.day == dayy)
+                      .map((e) => e.value)
+                      .toString()
+                      .replaceAll('(', '')
+                      .replaceAll(')', '');
+                  ;
+                  print(perday);
+
+                  var slots =
+                      (int.parse(perday) * 60) / int.parse(bookday).floor();
+                  print('----- $slots');
+                  setState(() {});
+
+                  List time = workday.split(' - ');
+
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (ctx) => AppTime(
                             day: day,
+                            starttime: time[0],
+                            endtime: time[1],
+                            slots: slots,
                           )));
                 },
                 calendarController: _c,

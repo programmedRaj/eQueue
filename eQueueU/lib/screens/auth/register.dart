@@ -94,7 +94,8 @@ class _RegisterState extends State<Register> {
     request.fields['city'] = city;
     request.fields['postalcode'] = postalcode;
     request.fields['countrycode'] = countrycode.substring(1);
-    request.fields['referral_code'] = phonenumber + '@equeue';
+    request.fields['referral_code'] =
+        referralcode == null ? '' : referralcode + '@equeue';
     var res = await request.send();
 
     var response = await http.Response.fromStream(res);
