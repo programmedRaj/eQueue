@@ -1131,7 +1131,7 @@ def create_employee():
                             return resp
 
             elif request.form["req"] == "update":
-                employee_id = request.form["employee_id"]
+                employee_id = request.form["id"]
                 estatus = request.form["emp_status"]
                 cur.execute(
                     "Select * from bizusers WHERE id = '" + str(employee_id) + "'"
