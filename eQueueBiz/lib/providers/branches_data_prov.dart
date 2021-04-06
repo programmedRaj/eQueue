@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:equeuebiz/providers/emp_data_provider.dart';
 import 'package:equeuebiz/services/app_toast.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,14 +10,16 @@ import 'package:equeuebiz/model/branch_model.dart';
 import 'package:equeuebiz/model/branch_resp_model.dart';
 import 'package:equeuebiz/services/http_services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class BranchDataProv extends ChangeNotifier {
   bool isLoading = true;
   bool error = false;
-  Map<String, int> branches = {};
+  Map<int, String> branches = {};
+  bool noBranches = false;
   List<BranchRespModel> branchesWithDetail = [];
 
-  getBranches(String jwtToken) async {
+  Future<bool> getBranches(BuildContext context, String jwtToken) async {
     var header = {
       'Content-Type': 'application/json',
       'Authorization': jwtToken
@@ -23,25 +28,38 @@ class BranchDataProv extends ChangeNotifier {
       var resp = await httpGetRequest(BranchApi.getBranch, header);
       isLoading = true;
       error = false;
+      noBranches = false;
       branches = {};
       notifyListeners();
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
         print(decodedResp);
         for (var item in decodedResp['branches']) {
-          branches.putIfAbsent(item['bname'], () => item['id']);
+          branches.putIfAbsent(item['id'], () => item['bname']);
         }
+        var _temp = branches.keys.toList();
         isLoading = false;
+        Provider.of<EmpDataProv>(context, listen: false)
+            .getEmployeesWithDetailAcctoBranch(jwtToken, _temp[0]);
         notifyListeners();
+        return true;
+      } else if (resp.statusCode == 403) {
+        noBranches = true;
+        isLoading = false;
+        error = true;
+        notifyListeners();
+        return false;
       } else {
         isLoading = false;
         error = true;
         notifyListeners();
+        return false;
       }
     } catch (e) {
       isLoading = false;
       error = true;
       notifyListeners();
+      return false;
     }
   }
 
@@ -77,8 +95,8 @@ class BranchDataProv extends ChangeNotifier {
     } */
   }
 
-  Future<bool> execDeleteBranch(
-      String jwtToken, int branchId, String branchName) async {
+  Future<bool> execDeleteBranch(String jwtToken, int branchId,
+      String branchName, BranchRespModel branchDets) async {
     AppToast.showSucc("Deleting branch $branchName");
     var header = {
       'Content-Type': 'application/json',
@@ -88,6 +106,17 @@ class BranchDataProv extends ChangeNotifier {
     var request = new http.MultipartRequest("POST", postUri)
       ..headers.addAll(header);
 
+    request.files.add(http.MultipartFile.fromBytes('company_logo', [],
+        filename: "${branchId}_logo"));
+    request.fields["bname"] = '';
+    request.fields["pnum"] = '';
+    request.fields["addr1"] = '';
+    request.fields["addr2"] = '';
+    request.fields["city"] = '';
+    request.fields["postalcode"] = '';
+    request.fields["geolocation"] = '';
+    request.fields["province"] = '';
+    request.fields["w_hrs"] = jsonEncode({});
     request.fields["req"] = "delete";
     request.fields["branchid"] = branchId.toString();
 

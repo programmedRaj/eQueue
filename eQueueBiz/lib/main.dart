@@ -1,6 +1,7 @@
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
+import 'package:equeuebiz/providers/emp_data_provider.dart';
 import 'package:equeuebiz/screens/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<DeptDataProv>(
           create: (context) => DeptDataProv(),
+        ),
+        ChangeNotifierProvider<EmpDataProv>(
+          create: (_) => EmpDataProv(),
         )
       ],
       child: MaterialApp(

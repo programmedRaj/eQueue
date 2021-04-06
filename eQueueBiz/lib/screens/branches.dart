@@ -190,7 +190,8 @@ class _BranchesState extends State<Branches> {
                     onTap: () async {
                       bool success = await Provider.of<BranchDataProv>(context,
                               listen: false)
-                          .execDeleteBranch(jwtToken, branchId, branchName);
+                          .execDeleteBranch(
+                              jwtToken, branchId, branchName, _branchDets);
                       if (success) {
                         Provider.of<BranchDataProv>(context, listen: false)
                             .getbranchesWithDetail(jwtToken);

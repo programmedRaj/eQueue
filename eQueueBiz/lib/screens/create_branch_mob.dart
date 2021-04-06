@@ -159,7 +159,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.monday.endTime, 0),
             minute: customTimeParser(_tempWorkingHrs.monday.endTime, 1));
-    endTimeList[1] = _tempWorkingHrs.tuesday.endTime == 'null:null'
+    endTimeList[1] = _tempWorkingHrs.tuesday.endTime == 'null:null' ||
+            _tempWorkingHrs.tuesday.endTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.tuesday.endTime, 0),
