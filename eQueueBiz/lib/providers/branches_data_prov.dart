@@ -87,8 +87,9 @@ class BranchDataProv extends ChangeNotifier {
     var postUri = Uri.parse(BranchApi.createEditBranch);
     var request = new http.MultipartRequest("POST", postUri)
       ..headers.addAll(header);
-    request.fields["branchid"] = branchId.toString();
+
     request.fields["req"] = "delete";
+    request.fields["branchid"] = branchId.toString();
 
     var resp = await request.send();
     if (resp.statusCode == 200) {

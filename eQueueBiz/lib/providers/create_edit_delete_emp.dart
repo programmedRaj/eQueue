@@ -6,7 +6,7 @@ import 'package:equeuebiz/services/app_toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 
-class EmployeeOperation extends ChangeNotifier {
+class EmployeeOperationProv {
   Future<bool> createEmployee(
       String token, File profilepic, EmployeeModel employeedets) async {
     var postUri = Uri.parse(Employee.createEditDeleteEmp);
@@ -30,22 +30,30 @@ class EmployeeOperation extends ChangeNotifier {
     request.fields["name"] = employeedets.name;
     request.fields["password"] = employeedets.password;
     request.fields["branch_id"] = employeedets.branchId.toString();
+    request.fields['number'] = employeedets.phoneNo;
+
     request.fields["counter_number"] = employeedets.counterNumber.toString();
     request.fields["departments"] = employeedets.departments;
     request.fields["req"] = employeedets.req;
     request.fields["employee_id"] = employeedets.employeeId.toString();
     request.fields['services'] = employeedets.services;
+    request.fields['emp_status'] = "";
 
     var resp = await request.send();
     if (resp.statusCode == 200) {
       print("Success");
-      AppToast.showSucc("Employee details updated successfully");
+      if (employeedets.req == "update") {
+        AppToast.showErr("Employee updated successfully");
+      } else {
+        AppToast.showSucc("Employee created successfully");
+      }
+
       return true;
     } else {
       if (employeedets.req == "update") {
-        AppToast.showErr("Employee details update failed");
+        AppToast.showErr("Employee update failed");
       } else {
-        AppToast.showErr("Employee created successfully");
+        AppToast.showErr("Employee creation failed");
       }
       return false;
     }

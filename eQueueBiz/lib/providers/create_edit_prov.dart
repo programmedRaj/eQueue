@@ -22,7 +22,7 @@ class CreateEditBanchProv extends ChangeNotifier {
 
     if (companyLogoMob != null) {
       request.files.add(http.MultipartFile(
-          'adhaar_upload',
+          'company_logo',
           File(companyLogoMob.path).readAsBytes().asStream(),
           File(companyLogoMob.path).lengthSync(),
           filename: "${branch.branchName}_logo"));
@@ -55,13 +55,18 @@ class CreateEditBanchProv extends ChangeNotifier {
     var resp = await request.send();
     if (resp.statusCode == 200) {
       print("Success");
-      AppToast.showSucc("Branch details updated successfully");
+      if (branch.reqType == "update") {
+        AppToast.showErr("Branch updated successfully");
+      } else {
+        AppToast.showSucc("Branch created successfully");
+      }
+
       return true;
     } else {
       if (branch.reqType == "update") {
-        AppToast.showErr("Branch details update failed");
+        AppToast.showErr("Branch update failed");
       } else {
-        AppToast.showErr("Branch created successfully");
+        AppToast.showErr("Branch creation failed");
       }
       return false;
     }

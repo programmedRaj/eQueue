@@ -13,12 +13,15 @@ BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
     bookingPerday: (jsonDecode(json['booking_per_day']) as List)
         ?.map((e) => e as String)
         ?.toList(),
-    bookingPerDayhrs:
-        (json['per_day_hours'] as List)?.map((e) => e as String)?.toList(),
+    bookingPerDayhrs: (jsonDecode(json['per_day_hours']) as List)
+        ?.map((e) => e as String)
+        ?.toList(),
     branchId: json['id'] as int,
     branchName: json['bname'] as String,
     city: json['city'] as String,
-    department: (json['department'] as List)?.map((e) => e as String)?.toList(),
+    department: (jsonDecode(json['department'] ?? "[]") as List)
+        ?.map((e) => e as String)
+        ?.toList(),
     geoLoaction: json['geolocation'] as String,
     notify: json['notify_time'] as String,
     phoneNo: json['phone_number'] as String,
@@ -26,12 +29,14 @@ BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
     province: json['province'] as String,
     services: json['services'] == null
         ? null
-        : Services.fromJson(json['services'] as Map<String, dynamic>),
+        : Services.fromJson(
+            jsonDecode(json['services']) as Map<String, dynamic>),
     threshold: json['threshold'] as String,
     timeZone: json['timezone'] as String,
     workingHrs: json['working_hours'] == null
         ? null
-        : WorkingHrs.fromJson(json['working_hours'] as Map<String, dynamic>),
+        : WorkingHrs.fromJson(
+            jsonDecode(json['working_hours']) as Map<String, dynamic>),
     counter: json['counter_count'] as String,
   );
 }

@@ -37,6 +37,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
   List<String> servicesName = [];
   List<String> serviceRates = [];
   List<String> servicesDesc = [];
+  List<TextEditingController> noofBookingsC = [];
   List<String> weekDays = [
     "Monday",
     "Tuesday",
@@ -67,7 +68,9 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
   @override
   void initState() {
     super.initState();
-    for (var i = 0; i < 7; i++) {}
+    for (var i = 0; i < 7; i++) {
+      noofBookingsC.add(TextEditingController());
+    }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         if (widget.branchDets != null) {
@@ -96,43 +99,53 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       departments = widget.branchDets.department ?? [];
     }
     wrkingHrsPrefill();
+
+    for (var i = 0; i < 6; i++) {
+      noofBookingsC[i].text = widget.branchDets.bookingPerday[i];
+    }
   }
 
   wrkingHrsPrefill() {
     WorkingHrs _tempWorkingHrs = widget.branchDets.workingHrs;
 
-    startTimeList[0] = _tempWorkingHrs.monday.startTime == 'null:null'
+    startTimeList[0] = _tempWorkingHrs.monday.startTime == 'null:null' ||
+            _tempWorkingHrs.monday.startTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.monday.startTime, 0),
             minute: customTimeParser(_tempWorkingHrs.monday.startTime, 1));
-    startTimeList[1] = _tempWorkingHrs.tuesday.startTime == 'null:null'
+    startTimeList[1] = _tempWorkingHrs.tuesday.startTime == 'null:null' ||
+            _tempWorkingHrs.tuesday.startTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.tuesday.startTime, 0),
             minute: customTimeParser(_tempWorkingHrs.tuesday.startTime, 1));
     startTimeList[2] = _tempWorkingHrs.wednesday.startTime == 'null:null' ||
-            null
+            _tempWorkingHrs.wednesday.startTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.wednesday.startTime, 0),
             minute: customTimeParser(_tempWorkingHrs.wednesday.startTime, 1));
-    startTimeList[3] = _tempWorkingHrs.thursday.startTime == 'null:null'
+    startTimeList[3] = _tempWorkingHrs.thursday.startTime == 'null:null' ||
+            _tempWorkingHrs.thursday.startTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.thursday.startTime, 0),
             minute: customTimeParser(_tempWorkingHrs.thursday.startTime, 1));
-    startTimeList[4] = _tempWorkingHrs.friday.startTime == 'null:null'
+    startTimeList[4] = _tempWorkingHrs.friday.startTime == 'null:null' ||
+            _tempWorkingHrs.friday.startTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.friday.startTime, 0),
             minute: customTimeParser(_tempWorkingHrs.friday.startTime, 1));
-    startTimeList[5] = _tempWorkingHrs.saturday.startTime == 'null:null'
+    startTimeList[5] = _tempWorkingHrs.saturday.startTime == 'null:null' ||
+            _tempWorkingHrs.saturday.startTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.saturday.startTime, 0),
             minute: customTimeParser(_tempWorkingHrs.saturday.startTime, 1));
-    startTimeList[6] = _tempWorkingHrs.sunday.startTime == 'null:null'
+    startTimeList[6] = _tempWorkingHrs.sunday.startTime == 'null:null' ||
+            _tempWorkingHrs.sunday.startTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.sunday.startTime, 0),
@@ -140,7 +153,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
 
     //=======================================================================================================//
 
-    endTimeList[0] = _tempWorkingHrs.monday.endTime == 'null:null'
+    endTimeList[0] = _tempWorkingHrs.monday.endTime == 'null:null' ||
+            _tempWorkingHrs.monday.endTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.monday.endTime, 0),
@@ -150,27 +164,32 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.tuesday.endTime, 0),
             minute: customTimeParser(_tempWorkingHrs.tuesday.endTime, 1));
-    endTimeList[2] = _tempWorkingHrs.wednesday.endTime == 'null:null'
+    endTimeList[2] = _tempWorkingHrs.wednesday.endTime == 'null:null' ||
+            _tempWorkingHrs.wednesday.endTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.wednesday.endTime, 0),
             minute: customTimeParser(_tempWorkingHrs.wednesday.endTime, 1));
-    endTimeList[3] = _tempWorkingHrs.thursday.endTime == 'null:null'
+    endTimeList[3] = _tempWorkingHrs.thursday.endTime == 'null:null' ||
+            _tempWorkingHrs.thursday.endTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.thursday.endTime, 0),
             minute: customTimeParser(_tempWorkingHrs.thursday.endTime, 1));
-    endTimeList[4] = _tempWorkingHrs.friday.endTime == 'null:null'
+    endTimeList[4] = _tempWorkingHrs.friday.endTime == 'null:null' ||
+            _tempWorkingHrs.friday.endTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.friday.endTime, 0),
             minute: customTimeParser(_tempWorkingHrs.friday.endTime, 1));
-    endTimeList[5] = _tempWorkingHrs.saturday.endTime == 'null:null'
+    endTimeList[5] = _tempWorkingHrs.saturday.endTime == 'null:null' ||
+            _tempWorkingHrs.saturday.endTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.saturday.endTime, 0),
             minute: customTimeParser(_tempWorkingHrs.saturday.endTime, 1));
-    endTimeList[6] = _tempWorkingHrs.sunday.endTime == 'null:null'
+    endTimeList[6] = _tempWorkingHrs.sunday.endTime == 'null:null' ||
+            _tempWorkingHrs.sunday.endTime == null
         ? null
         : TimeOfDay(
             hour: customTimeParser(_tempWorkingHrs.sunday.endTime, 0),
@@ -515,9 +534,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 0),
                         child: TextField(
-                          onChanged: (val) {
-                            noOfBookings[index] = val;
-                          },
+                          controller: noofBookingsC[index],
                           decoration: InputDecoration(
                             hintText: "No. of bookings",
                             focusedBorder: InputBorder.none,
@@ -625,9 +642,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         province: _provinceController.text,
         threshold: _thresholdController.text,
         geoLoaction: _geoLocationController.text,
-        bookingPerday: noOfBookings,
+        bookingPerday: noofBookingsC.map((e) => e.text).toList(),
         services: getServices(),
-        branchId: widget.branchDets.branchId.toString() ?? "",
+        branchId: widget?.branchDets?.branchId?.toString() == null
+            ? ""
+            : widget?.branchDets?.branchId?.toString(),
         bookingPerDayhrs: temp,
         workingHrs: getWorkingHrs(),
         counter: _counterController.text,

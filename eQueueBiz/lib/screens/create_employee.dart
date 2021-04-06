@@ -2,9 +2,14 @@ import 'dart:io';
 
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/enum/company_enum.dart';
+import 'package:equeuebiz/model/employee_model.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
+import 'package:equeuebiz/providers/create_edit_delete_emp.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
+import 'package:equeuebiz/screens/homepage.dart';
+import 'package:equeuebiz/services/app_toast.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:equeuebiz/widgets/resize_helper.dart';
@@ -25,6 +30,13 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   String _chosenBranch;
   bool employeeStatus = true;
   File uploadedImageMob;
+  AuthProv authProv;
+
+  TextEditingController _nameC = TextEditingController();
+  TextEditingController _emailC = TextEditingController();
+  TextEditingController _passwordC = TextEditingController();
+  TextEditingController _phoneC = TextEditingController();
+  TextEditingController _counterC = TextEditingController();
 
   @override
   void initState() {
@@ -36,6 +48,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    authProv = Provider.of<AuthProv>(context);
     return Consumer<BranchDataProv>(
       builder: (context, bdp, child) {
         branchesList = bdp.branches;
@@ -111,18 +124,24 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                 TextStyle(color: Colors.white),
                                           ),
                                         ),
-                                        _textField("Name"),
-                                        _textField("Email ID"),
-                                        _textField("Password"),
+                                        _textField("Name", _nameC),
+                                        _textField("Email ID", _emailC),
+                                        _textField("Password", _passwordC),
+                                        _textField("Phone number", _phoneC),
                                         Container(
                                           height: 50,
                                           child: Row(
                                             children: [
                                               Flexible(
-                                                child: Container(
-                                                    width: size.width * 0.5,
-                                                    child:
-                                                        _textField("Counter")),
+                                                child: authProv.authinfo
+                                                            .companyType ==
+                                                        CompanyEnum.Booking
+                                                    ? SizedBox()
+                                                    : Container(
+                                                        width: size.width * 0.5,
+                                                        child: _textField(
+                                                            "Counter",
+                                                            _counterC)),
                                               ),
                                               SizedBox(
                                                 width: 20,
@@ -142,7 +161,62 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                         SizedBox(
                                           height: 20,
                                         ),
-                                        addCancel()
+                                        Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 16),
+                                          height: 50,
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                  child: InkWell(
+                                                onTap: () async {
+                                                  if (_chosenBranch == null ||
+                                                      _chosenDept == null) {
+                                                    AppToast.showErr(
+                                                        "Choose branch and dept. properly");
+                                                  }
+                                                  bool success =
+                                                      await EmployeeOperationProv()
+                                                          .createEmployee(
+                                                              authProv.authinfo
+                                                                  .jwtToken,
+                                                              uploadedImageMob,
+                                                              getDetails());
+
+                                                  if (success) {
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HomePage(),
+                                                        ));
+                                                  }
+                                                },
+                                                child: Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 16),
+                                                  decoration: BoxDecoration(
+                                                      color: AppColor.mainBlue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4)),
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    "ADD",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              )),
+                                              SizedBox(
+                                                width: 25,
+                                              ),
+                                              Expanded(
+                                                  child: CustomWidgets()
+                                                      .hollowButton("CANCEL"))
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     );
                                   },
@@ -238,13 +312,14 @@ class _CreateEmployeeState extends State<CreateEmployee> {
     );
   }
 
-  Widget _textField(String hintText) {
+  Widget _textField(String hintText, TextEditingController controller) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
           color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
           focusedBorder: InputBorder.none,
@@ -255,19 +330,17 @@ class _CreateEmployeeState extends State<CreateEmployee> {
     );
   }
 
-  Widget addCancel() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      height: 50,
-      child: Row(
-        children: [
-          Expanded(child: CustomWidgets().filledButton("ADD")),
-          SizedBox(
-            width: 25,
-          ),
-          Expanded(child: CustomWidgets().hollowButton("CANCEL"))
-        ],
-      ),
-    );
+  EmployeeModel getDetails() {
+    return EmployeeModel(
+        name: _nameC.text,
+        email: _emailC.text,
+        phoneNo: _phoneC.text,
+        password: _passwordC.text,
+        counterNumber:
+            _counterC.text.length == 0 ? null : num.parse(_counterC.text),
+        branchId: branchesList[_chosenBranch],
+        req: 'create',
+        services: _chosenDept,
+        departments: _chosenDept);
   }
 }
