@@ -1131,7 +1131,7 @@ def create_employee():
                             return resp
 
             elif request.form["req"] == "update":
-                employee_id = request.form["id"]
+                employee_id = request.form["employee_id"]
                 estatus = request.form["emp_status"]
                 cur.execute(
                     "Select * from bizusers WHERE id = '" + str(employee_id) + "'"
@@ -1197,10 +1197,13 @@ def create_employee():
                     return resp
 
             elif request.form["req"] == "delete":
-                cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
+                employee_id = request.form["employee_id"]
+                cur.execute(
+                    "Select * from bizusers WHERE id = '" + str(employee_id) + "'"
+                )
                 r = cur.fetchone()
-                if r["email"]:
-                    print("karo delete")
+                if r:
+                    op = eqbiz.delete_employee(employee_id)
 
                 if op == 200:
                     resp = jsonify({"message": "successfully deleted."})
@@ -1210,6 +1213,7 @@ def create_employee():
                     resp = jsonify({"message": "error occured."})
                     resp.status_code = 403
                     return resp
+
             else:
                 resp = jsonify({"message": "Error invalid request."})
                 resp.status_code = 405

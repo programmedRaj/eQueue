@@ -324,6 +324,10 @@ def delete_branch(branchid):
         check = cur.execute(
             "DELETE FROM branch_details WHERE id =" + str(branchid) + " ;"
         )
+
+        check = cur.execute(
+            "DELETE FROM employee_details WHERE branch_id =" + str(branchid) + " ;"
+        )
         conn.commit()
         if check:
             return 200
@@ -352,7 +356,7 @@ def create_employee(
     try:
         if acctype == "booking":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,services,ratings,rating_count,id) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,number,services,ratings,rating_count,id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
@@ -377,7 +381,7 @@ def create_employee(
             )
         elif acctype == "token":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,departments,counter_number,ratings,rating_count,id) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,number,departments,counter_number,ratings,rating_count,id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
@@ -404,7 +408,7 @@ def create_employee(
             )
         elif acctype == "multitoken":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,departments,counter_number,ratings,rating_count,id) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,number,departments,counter_number,ratings,rating_count,id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
@@ -467,13 +471,13 @@ def edit_employee(
                 + str(name)
                 + "',profile_url = '"
                 + str(profile_url)
-                + "',phone_number = '"
+                + "',number = '"
                 + str(phone_number)
                 + "',branch_id='"
                 + str(branch_id)
                 + "',services='"
                 + str(services)
-                + "' WHERE id ="
+                + "' WHERE employee_id ="
                 + str(employee_id)
                 + ";"
             )
@@ -492,7 +496,7 @@ def edit_employee(
                 + str(name)
                 + "',profile_url = '"
                 + str(profile_url)
-                + "',phone_number = '"
+                + "',number = '"
                 + str(phone_number)
                 + "',branch_id='"
                 + str(branch_id)
@@ -500,7 +504,7 @@ def edit_employee(
                 + str(departments)
                 + "',counter_number='"
                 + str(counter_number)
-                + "' WHERE id ="
+                + "' WHERE employee_id ="
                 + str(employee_id)
                 + ";"
             )
@@ -519,7 +523,7 @@ def edit_employee(
                 + str(name)
                 + "',profile_url = '"
                 + str(profile_url)
-                + "',phone_number = '"
+                + "',number = '"
                 + str(phone_number)
                 + "',branch_id='"
                 + str(branch_id)
@@ -527,7 +531,7 @@ def edit_employee(
                 + str(departments)
                 + "',counter_number='"
                 + str(counter_number)
-                + "' WHERE id ="
+                + "' WHERE employee_id ="
                 + str(employee_id)
                 + ";"
             )
@@ -564,7 +568,7 @@ def delete_employee(employee_id):
     try:
 
         check = cur.execute(
-            "DELETE FROM branch_details WHERE id =" + str(employee_id) + " ;"
+            "DELETE FROM employee_details WHERE employee_id =" + str(employee_id) + " ;"
         )
         check = cur.execute("DELETE FROM bizusers WHERE id =" + str(employee_id) + " ;")
         conn.commit()
