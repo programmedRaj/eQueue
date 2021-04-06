@@ -1057,7 +1057,7 @@ def create_employee():
 
     filename = "default.png"
     if request.files["profile_url"]:
-        company_logo = request.files["company_logo"]
+        company_logo = request.files["profile_url"]
         filename = secure_filename(company_logo.filename)
         company_logo.save(os.path.join(app.config["BIZ_UPLOAD_FOLDER"], filename))
 
