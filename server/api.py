@@ -689,7 +689,7 @@ def create_branch():
                 filename = secure_filename(company_logo.filename)
                 company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             else:
-                filename = check["profile_photo_url"]
+                filename = check["company_logo"]
 
             cur.execute("Select * from bizusers WHERE id = '" + str(comp_id) + "'")
             check = cur.fetchall()
