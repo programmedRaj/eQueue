@@ -8,9 +8,9 @@ part of 'auth_model.dart';
 
 AuthModel _$AuthModelFromJson(Map<String, dynamic> json) {
   return AuthModel(
-    companyType: _$enumDecode(_$CompanyEnumEnumMap, json['comp_type']),
+    companyType: _$enumDecodeNullable(_$CompanyEnumEnumMap, json['comp_type']),
     jwtToken: json['token'] as String,
-    userType: _$enumDecode(_$UserEnumEnumMap, json['type']),
+    userType: _$enumDecodeNullable(_$UserEnumEnumMap, json['type']),
   );
 }
 
@@ -20,30 +20,36 @@ Map<String, dynamic> _$AuthModelToJson(AuthModel instance) => <String, dynamic>{
       'type': _$UserEnumEnumMap[instance.userType],
     };
 
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object source, {
-  K unknownValue,
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
   }
 
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$CompanyEnumEnumMap = {

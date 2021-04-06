@@ -343,6 +343,8 @@ def create_employee(
     services,
     counter_number,
     departments,
+    email,
+    password,
 ):
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -350,7 +352,7 @@ def create_employee(
     try:
         if acctype == "booking":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,services,ratings,rating_count) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,services,ratings,rating_count,id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
@@ -361,11 +363,21 @@ def create_employee(
                 + "','"
                 + str(services)
                 + "',"
-                + "5,1);"
+                + "5,1,"
+            )
+            qq = (
+                "INSERT INTO bizusers(email,password,comp_type,status,type) VALUES ('"
+                + str(email)
+                + "','"
+                + str(password)
+                + "','"
+                + str(acctype)
+                + "',"
+                + "1,'employee');"
             )
         elif acctype == "token":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,departments,counter_number,ratings,rating_count) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,departments,counter_number,ratings,rating_count,id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
@@ -378,11 +390,21 @@ def create_employee(
                 + "','"
                 + str(counter_number)
                 + "',"
-                + "5,1);"
+                + "5,1,"
+            )
+            qq = (
+                "INSERT INTO bizusers(email,password,comp_type,status,type) VALUES ('"
+                + str(email)
+                + "','"
+                + str(password)
+                + "','"
+                + str(acctype)
+                + "',"
+                + "1,'employee');"
             )
         elif acctype == "multitoken":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,departments,counter_number,ratings,rating_count) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,phone_number,departments,counter_number,ratings,rating_count,id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
@@ -395,11 +417,21 @@ def create_employee(
                 + "','"
                 + str(counter_number)
                 + "',"
-                + "5,1);"
+                + "5,1,"
             )
-
-        fire = str(q)
-        print(fire)
+            qq = (
+                "INSERT INTO bizusers(email,password,comp_type,status,type) VALUES ('"
+                + str(email)
+                + "','"
+                + str(password)
+                + "','"
+                + str(acctype)
+                + "',"
+                + "1,'employee');"
+            )
+        firee = str(qq)
+        check = cur.execute(firee)
+        fire = str(q + str(cur.lastrowid) + " );")
         check = cur2.execute(fire)
         conn.commit()
         if check:
@@ -422,9 +454,11 @@ def edit_employee(
     services,
     counter_number,
     departments,
+    estatus,
 ):
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
 
     try:
         if acctype == "booking":
@@ -443,6 +477,15 @@ def edit_employee(
                 + str(employee_id)
                 + ";"
             )
+
+            qq = (
+                "UPDATE bizusers SET status = '"
+                + str(estatus)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+
         elif acctype == "token":
             q = (
                 "UPDATE employee_details SET name = '"
@@ -461,6 +504,15 @@ def edit_employee(
                 + str(employee_id)
                 + ";"
             )
+
+            qq = (
+                "UPDATE bizusers SET status = '"
+                + str(estatus)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+
         elif acctype == "multitoken":
             q = (
                 "UPDATE employee_details SET name = '"
@@ -480,10 +532,21 @@ def edit_employee(
                 + ";"
             )
 
+            qq = (
+                "UPDATE bizusers SET status = '"
+                + str(estatus)
+                + "' WHERE id ="
+                + str(employee_id)
+                + ";"
+            )
+
         fire = str(q)
-        print(fire)
-        cur2 = conn.cursor(pymysql.cursors.DictCursor)
+        firee = str(qq)
         check = cur2.execute(fire)
+        conn.commit()
+
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        checkk = cur.execute(firee)
         conn.commit()
         if check:
             return 200
@@ -503,6 +566,7 @@ def delete_employee(employee_id):
         check = cur.execute(
             "DELETE FROM branch_details WHERE id =" + str(employee_id) + " ;"
         )
+        check = cur.execute("DELETE FROM bizusers WHERE id =" + str(employee_id) + " ;")
         conn.commit()
         if check:
             return 200

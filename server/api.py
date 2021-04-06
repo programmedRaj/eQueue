@@ -663,31 +663,38 @@ def create_branch():
     conn = mysql.connect()
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
-
-    bname = request.form["bname"]
-    pnum = request.form["pnum"]
-    addr1 = request.form["addr1"]
-    addr2 = request.form["addr2"]
-    city = request.form["city"]
-    postalcode = request.form["postalcode"]
-    geolocation = request.form["geolocation"]
-    province = request.form["province"]
-    comp_id = user["id"]
-    filename = "default.png"
-    if request.files["company_logo"]:
-        company_logo = request.files["company_logo"]
-        filename = secure_filename(company_logo.filename)
-        company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-    w_hrs = request.form["w_hrs"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "company":
+            comp_id = user["id"]
+            bname = request.form["bname"]
+            pnum = request.form["pnum"]
+            addr1 = request.form["addr1"]
+            addr2 = request.form["addr2"]
+            city = request.form["city"]
+            postalcode = request.form["postalcode"]
+            geolocation = request.form["geolocation"]
+            province = request.form["province"]
+            w_hrs = request.form["w_hrs"]
+
+            filename = "default.png"
+            if request.files["company_logo"]:
+                company_logo = request.files["company_logo"]
+                filename = secure_filename(company_logo.filename)
+                company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            w_hrs = request.form["w_hrs"]
+
+            if request.files["company_logo"]:
+                company_logo = request.files["company_logo"]
+                filename = secure_filename(company_logo.filename)
+                company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            else:
+                filename = check["profile_photo_url"]
+
             cur.execute("Select * from bizusers WHERE id = '" + str(comp_id) + "'")
             check = cur.fetchall()
             if check:
                 if request.form["req"] == "create":
-                    print(user["comp_type"])
-
                     if user["comp_type"] == "booking":
                         services = request.form["services"]
                         timezone = request.form["timezone"]
@@ -790,17 +797,10 @@ def create_branch():
                         + str(request.form["branchid"])
                         + "'"
                     )
+
                     check = cur.fetchone()
                     if check:
                         branchid = check["id"]
-                        if request.files["company_logo"]:
-                            company_logo = request.files["company_logo"]
-                            filename = secure_filename(company_logo.filename)
-                            company_logo.save(
-                                os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                            )
-                        else:
-                            filename = check["profile_photo_url"]
 
                         if user["comp_type"] == "booking":
                             services = request.form["services"]
@@ -1068,7 +1068,7 @@ def create_employee():
             if request.form["req"] == "create":
                 cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
                 r = cur.fetchone()
-                if r["email"]:
+                if r:
                     resp = jsonify({"message": "Email id taken."})
                     resp.status_code = 405
                     return resp
@@ -1094,6 +1094,8 @@ def create_employee():
                                 services,
                                 0,
                                 0,
+                                email,
+                                passw,
                             )
                         if user["comp_type"] == "token":
                             counter_number = request.form["counter_number"]
@@ -1107,6 +1109,8 @@ def create_employee():
                                 0,
                                 counter_number,
                                 departments,
+                                email,
+                                passw,
                             )
                         if user["comp_type"] == "multitoken":
                             counter_number = request.form["counter_number"]
@@ -1120,12 +1124,27 @@ def create_employee():
                                 0,
                                 counter_number,
                                 departments,
+                                email,
+                                passw,
                             )
+
+                        if op == 200:
+                            resp = jsonify({"message": "successfully created."})
+                            resp.status_code = 200
+                            return resp
+                        if op == 403:
+                            resp = jsonify({"message": "error occured."})
+                            resp.status_code = 403
+                            return resp
+
             elif request.form["req"] == "update":
                 employee_id = request.form["employee_id"]
-                cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
+                estatus = request.form["emp_status"]
+                cur.execute(
+                    "Select * from bizusers WHERE id = '" + str(employee_id) + "'"
+                )
                 r = cur.fetchone()
-                if r["email"]:
+                if r:
                     if user["comp_type"] == "booking":
                         services = request.form["services"]
                         op = eqbiz.edit_employee(
@@ -1138,6 +1157,7 @@ def create_employee():
                             services,
                             0,
                             0,
+                            estatus,
                         )
                     if user["comp_type"] == "token":
                         counter_number = request.form["counter_number"]
@@ -1152,6 +1172,7 @@ def create_employee():
                             0,
                             counter_number,
                             departments,
+                            estatus,
                         )
                     if user["comp_type"] == "multitoken":
                         counter_number = request.form["counter_number"]
@@ -1166,26 +1187,84 @@ def create_employee():
                             0,
                             counter_number,
                             departments,
+                            estatus,
                         )
+
+                    if op == 200:
+                        resp = jsonify({"message": "successfully updated."})
+                        resp.status_code = 200
+                        return resp
+                    if op == 403:
+                        resp = jsonify({"message": "error occured."})
+                        resp.status_code = 403
+                        return resp
+                else:
+                    resp = jsonify({"message": "NO employee found."})
+                    resp.status_code = 405
+                    return resp
+
             elif request.form["req"] == "delete":
                 cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
                 r = cur.fetchone()
                 if r["email"]:
                     print("karo delete")
+
+                if op == 200:
+                    resp = jsonify({"message": "successfully deleted."})
+                    resp.status_code = 200
+                    return resp
+                if op == 403:
+                    resp = jsonify({"message": "error occured."})
+                    resp.status_code = 403
+                    return resp
             else:
                 resp = jsonify({"message": "Error invalid request."})
                 resp.status_code = 405
                 return resp
 
-                # resp = jsonify(
-                #     {"message": "Employee Account Created successfully."}
-                # )
-                #     resp.status_code = 200
-                #     conn.commit()
-                #     return resp
-                # resp = jsonify({"message": "Error."})
-                # resp.status_code = 403
-                # return resp
+        resp = jsonify({"message": "ONLY Company can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/fetch_employees", methods=["POST"])
+@check_for_token
+def fetch_employees():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    branch_id = request.json["branch_id"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "company":
+            r = cur.execute(
+                "Select * from employee_details WHERE branch_id = '"
+                + str(branch_id)
+                + "'"
+            )
+            r = cur.fetchall()
+            statuses = []
+            if r:
+                for row in r:
+                    gettingstatuses = cur.execute(
+                        "Select * from bizusers WHERE id = '" + str(row["id"]) + "'"
+                    )
+
+                    k = cur.fetchone()
+                    statuses.append(k["status"])
+
+                resp = jsonify({"employee_details": r, "empoyee_statuses": statuses})
+                resp.status_code = 200
+                return resp
+
+            else:
+                resp = jsonify({"message": "NO employee found"})
+                resp.status_code = 403
+                return resp
 
         resp = jsonify({"message": "ONLY Company can access."})
         resp.status_code = 405

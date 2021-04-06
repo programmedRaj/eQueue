@@ -1,6 +1,5 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
-import 'package:equeuebiz/screens/create_branch.dart';
 import 'package:flutter/material.dart';
 
 class Bookings extends StatefulWidget {

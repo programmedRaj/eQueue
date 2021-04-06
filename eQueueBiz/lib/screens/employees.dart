@@ -1,6 +1,5 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
-import 'package:equeuebiz/screens/create_branch.dart';
 import 'package:equeuebiz/screens/create_employee.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';

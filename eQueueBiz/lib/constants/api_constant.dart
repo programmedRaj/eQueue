@@ -5,6 +5,15 @@ class AuthenticationApi {
   static const changePassword = "http://127.0.0.1:5000/change_passw_biz";
 }
 
-class Branch {
+class BranchApi {
   static const createEditBranch = "http://127.0.0.1:5000/create_edit_branch";
+  static const getBranch = "http://127.0.0.1:5000/branch_list";
+}
+
+class DepartmentApi {
+  static const getDept = "http://127.0.0.1:5000/dept_services";
+}
+
+class Employee {
+  static const createEditDeleteEmp = "http://127.0.0.1:5000/create_employee";
 }
