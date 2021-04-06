@@ -678,11 +678,6 @@ def create_branch():
             w_hrs = request.form["w_hrs"]
 
             filename = "default.png"
-            if request.files["company_logo"]:
-                company_logo = request.files["company_logo"]
-                filename = secure_filename(company_logo.filename)
-                company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            w_hrs = request.form["w_hrs"]
 
             if request.files["company_logo"]:
                 company_logo = request.files["company_logo"]
