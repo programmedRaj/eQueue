@@ -2,33 +2,33 @@ import 'dart:convert';
 
 class Working {
   String day;
-  String time;
+  String value;
   Working({
     this.day,
-    this.time,
+    this.value,
   });
 
   Working copyWith({
     String day,
-    String time,
+    String value,
   }) {
     return Working(
       day: day ?? this.day,
-      time: time ?? this.time,
+      value: value ?? this.value,
     );
   }
 
   Working merge(Working model) {
     return Working(
       day: model.day ?? this.day,
-      time: model.time ?? this.time,
+      value: model.value ?? this.value,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'day': day,
-      'time': time,
+      'value': value,
     };
   }
 
@@ -37,7 +37,7 @@ class Working {
 
     return Working(
       day: map['day'],
-      time: map['time'],
+      value: map['value'],
     );
   }
 
@@ -47,15 +47,15 @@ class Working {
       Working.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Working(day: $day, time: $time)';
+  String toString() => 'Working(day: $day, value: $value)';
 
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is Working && o.day == day && o.time == time;
+    return o is Working && o.day == day && o.value == value;
   }
 
   @override
-  int get hashCode => day.hashCode ^ time.hashCode;
+  int get hashCode => day.hashCode ^ value.hashCode;
 }

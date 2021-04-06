@@ -63,6 +63,33 @@ class BranchProvider extends ChangeNotifier {
         var wh = json.decode(n['branches'][0]['working_hours']);
         var book = json.decode(n['branches'][0]['booking_per_day']);
         var perday = json.decode(n['branches'][0]['per_day_hours']);
+
+        workingadd(day: 'monday', time: wh['monday']);
+        workingadd(day: 'tuesday', time: wh['tuesday']);
+        workingadd(day: 'wednesday', time: wh['wednesday']);
+        workingadd(day: 'thursday', time: wh['thursday']);
+        workingadd(day: 'friday', time: wh['friday']);
+        workingadd(day: 'saturday', time: wh['saturday']);
+        workingadd(day: 'sunday', time: wh['sunday']);
+
+        bookinghrsperdayadd(day: 'monday', value: book['monday'].toString());
+        bookinghrsperdayadd(day: 'tuesday', value: book['tuesday'].toString());
+        bookinghrsperdayadd(
+            day: 'wednesday', value: book['wednesday'].toString());
+        bookinghrsperdayadd(
+            day: 'thursday', value: book['thursday'].toString());
+        bookinghrsperdayadd(day: 'friday', value: book['friday'].toString());
+        bookinghrsperdayadd(
+            day: 'saturday', value: book['saturday'].toString());
+        bookinghrsperdayadd(day: 'sunday', value: book['sunday'].toString());
+
+        perdayadd(day: 'monday', value: perday['monday'].toString());
+        perdayadd(day: 'tuesday', value: perday['tuesday'].toString());
+        perdayadd(day: 'wednesday', value: perday['wednesday'].toString());
+        perdayadd(day: 'thursday', value: perday['thursday'].toString());
+        perdayadd(day: 'friday', value: perday['friday'].toString());
+        perdayadd(day: 'saturday', value: perday['saturday'].toString());
+        perdayadd(day: 'sunday', value: perday['sunday'].toString());
       }
   }
 
@@ -72,56 +99,30 @@ class BranchProvider extends ChangeNotifier {
   List<Working> workinghrs = [];
   List<Working> get workinghrsper => workinghrs;
 
-  // List<Workinghrsperday> bookingshrs = [];
-  // List<Workinghrsperday> get bookingsperhrs => bookingshrs;
+  List<Working> bookingshrs = [];
+  List<Working> get bookingsperhrs => bookingshrs;
 
-  // List<Workinghrsperday> perdayhrs = [];
+  List<Working> perdayhrs = [];
 
-  // List<Workinghrsperday> get perdayhrss => perdayhrs;
+  List<Working> get perdayhrss => perdayhrs;
 
-  void workinghrsperdayadd({String day, String time}) {
-    workinghrsper.add(Working(day: day, time: time));
+  void workingadd({String day, String time}) {
+    workinghrsper.add(Working(day: day, value: time));
   }
 
-  // void bookinghrsperdayadd({
-  //   String monday,
-  //   String tuesday,
-  //   String wednesday,
-  //   String thursday,
-  //   String friday,
-  //   String saturday,
-  //   String sunday,
-  // }) {
-  //   bookingsperhrs.add(Workinghrsperday(
-  //     friday: friday,
-  //     monday: monday,
-  //     saturday: saturday,
-  //     sunday: sunday,
-  //     thursday: thursday,
-  //     tuesday: tuesday,
-  //     wednesday: wednesday,
-  //   ));
-  // }
+  void bookinghrsperdayadd({
+    String day,
+    String value,
+  }) {
+    bookingsperhrs.add(Working(day: day, value: value));
+  }
 
-  // void perdayadd({
-  //   String monday,
-  //   String tuesday,
-  //   String wednesday,
-  //   String thursday,
-  //   String friday,
-  //   String saturday,
-  //   String sunday,
-  // }) {
-  //   perdayhrss.add(Workinghrsperday(
-  //     friday: friday,
-  //     monday: monday,
-  //     saturday: saturday,
-  //     sunday: sunday,
-  //     thursday: thursday,
-  //     tuesday: tuesday,
-  //     wednesday: wednesday,
-  //   ));
-  // }
+  void perdayadd({
+    String day,
+    String value,
+  }) {
+    perdayhrss.add(Working(day: day, value: value));
+  }
 
   void branchesadd({
     int id,
@@ -178,8 +179,8 @@ class BranchProvider extends ChangeNotifier {
 
   void removeday() {
     workinghrsper.clear();
-    // bookingsperhrs.clear();
-    // perdayhrss.clear();
+    bookingsperhrs.clear();
+    perdayhrss.clear();
     notifyListeners();
   }
 }

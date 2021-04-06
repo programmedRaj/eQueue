@@ -167,13 +167,13 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                   .comp_type ==
                                                               "booking"
                                                           ? Calen(
-                                                              // book: value
-                                                              //     .bookingsperhrs,
-                                                              // perday: value
-                                                              //     .perdayhrss,
-                                                              // wk: value
-                                                              //     .workinghrsper,
-                                                              )
+                                                              book: value
+                                                                  .bookingsperhrs,
+                                                              perday: value
+                                                                  .perdayhrss,
+                                                              wk: value
+                                                                  .workinghrsper,
+                                                            )
                                                           : Booktoken(
                                                               bid: value
                                                                   .branches[i]
