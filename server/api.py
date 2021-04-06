@@ -1224,6 +1224,40 @@ def create_employee():
         conn.close()
 
 
+@app.route("/fetch_branchs")
+@check_for_token
+def fetch_branchs():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "company":
+            r = cur.execute(
+                "Select bname,id from branch_details WHERE comp_id = '"
+                + str(user["id"])
+                + "'"
+            )
+            r = cur.fetchall()
+            if r:
+                resp = jsonify({"Branches": r})
+                resp.status_code = 200
+                return resp
+
+            else:
+                resp = jsonify({"message": "NO Branch found"})
+                resp.status_code = 403
+                return resp
+
+        resp = jsonify({"message": "ONLY Company can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/fetch_employees", methods=["POST"])
 @check_for_token
 def fetch_employees():
