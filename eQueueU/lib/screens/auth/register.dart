@@ -81,6 +81,10 @@ class _RegisterState extends State<Register> {
     request.files
         .add(await http.MultipartFile.fromPath('profile_img', images.path));
 
+    print(countrycode.substring(1) + phonenumber);
+    print(countrycode.substring(1));
+    print(countrycode + phonenumber);
+
     request.fields['name'] = name;
     request.fields['number'] = countrycode.substring(1) + phonenumber;
     request.fields['phonenumber'] = phonenumber;
@@ -89,7 +93,7 @@ class _RegisterState extends State<Register> {
     request.fields['province'] = province;
     request.fields['city'] = city;
     request.fields['postalcode'] = postalcode;
-    request.fields['countrycode'] = countrycode;
+    request.fields['countrycode'] = countrycode.substring(1);
     request.fields['referral_code'] = phonenumber + '@equeue';
     var res = await request.send();
 

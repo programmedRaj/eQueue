@@ -13,6 +13,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import 'components/color.dart';
+import 'provider/department_token_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,6 +75,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider.value(value: CompanyProvider()),
         ChangeNotifierProvider.value(value: BranchProvider()),
+        ChangeNotifierProvider.value(value: DepProvider()),
       ],
       child: MaterialApp(
         // localizationsDelegates: [
