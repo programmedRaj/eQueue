@@ -11,7 +11,7 @@ class DeptDataProv extends ChangeNotifier {
   bool error = false;
   List<String> deptsList = [];
 
-  getDepts(String jwtToken, int branchId) async {
+  Future<List<String>> getDepts(String jwtToken, int branchId) async {
     var header = {
       'Content-Type': 'application/json',
       'Authorization': jwtToken
@@ -31,15 +31,18 @@ class DeptDataProv extends ChangeNotifier {
         }
         isLoading = false;
         notifyListeners();
+        return deptsList;
       } else {
         isLoading = false;
         error = true;
         notifyListeners();
+        return deptsList;
       }
     } catch (e) {
       isLoading = false;
       error = true;
       notifyListeners();
+      return deptsList;
     }
   }
 }

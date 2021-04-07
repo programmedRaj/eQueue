@@ -8,7 +8,7 @@ part of 'employee_model.dart';
 
 EmployeeModel _$EmployeeModelFromJson(Map<String, dynamic> json) {
   return EmployeeModel(
-    branchId: json['branch_id'] as int,
+    branchId: EmployeeModel._fromJson(json['branch_id']),
     departments: json['departments'] as String,
     email: json['email'] as String,
     employeeId: json['employee_id'] as int,
@@ -19,6 +19,7 @@ EmployeeModel _$EmployeeModelFromJson(Map<String, dynamic> json) {
     req: json['req'] as String,
     counterNumber: json['counter_no'] as int,
     services: json['services'] as String,
+    empStatus: json['emp_status'] as int,
   );
 }
 
@@ -35,4 +36,5 @@ Map<String, dynamic> _$EmployeeModelToJson(EmployeeModel instance) =>
       'employee_id': instance.employeeId,
       'counter_no': instance.counterNumber,
       'services': instance.services,
+      'emp_status': instance.empStatus,
     };

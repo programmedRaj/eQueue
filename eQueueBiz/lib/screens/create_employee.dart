@@ -18,12 +18,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class CreateEmployee extends StatefulWidget {
+  final EmployeeModel empDets;
+  CreateEmployee({this.empDets});
   @override
   _CreateEmployeeState createState() => _CreateEmployeeState();
 }
 
 class _CreateEmployeeState extends State<CreateEmployee> {
-  Map<String, int> branchesList = {};
+  Map<int, String> branchesList = {};
   List<String> departmentsList = [];
   TextEditingController _departmentController = TextEditingController();
   String _chosenDept;
@@ -41,8 +43,44 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   @override
   void initState() {
     super.initState();
-    Provider.of<BranchDataProv>(context, listen: false).getBranches(
-        Provider.of<AuthProv>(context, listen: false).authinfo.jwtToken);
+    Provider.of<BranchDataProv>(context, listen: false)
+        .getBranches(context,
+            Provider.of<AuthProv>(context, listen: false).authinfo.jwtToken)
+        .then((value) {
+      Provider.of<DeptDataProv>(context, listen: false)
+          .getDepts(authProv.authinfo.jwtToken, widget.empDets.branchId)
+          .then((depList) {
+        departmentsList = depList;
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          setState(() {
+            if (value && widget.empDets != null) {
+              prefill();
+            }
+          });
+          setState(() {});
+        });
+      });
+    });
+  }
+
+  prefill() {
+    _nameC.text = widget.empDets.name;
+    _emailC.text = widget.empDets.email;
+    _passwordC.text = widget.empDets.password;
+    _phoneC.text = widget.empDets.phoneNo;
+    _counterC.text = widget.empDets.counterNumber?.toString();
+    employeeStatus = widget.empDets.empStatus == 0 ? false : true;
+    branchesList.forEach((key, value) {
+      if (key == widget.empDets.branchId) {
+        _chosenBranch = value;
+      }
+    });
+    if (departmentsList.contains(widget.empDets.services) ||
+        departmentsList.contains(widget.empDets.departments)) {
+      _chosenDept = widget.empDets.departments == null
+          ? widget.empDets.services
+          : widget.empDets.departments;
+    }
   }
 
   @override
@@ -202,7 +240,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                               4)),
                                                   alignment: Alignment.center,
                                                   child: Text(
-                                                    "ADD",
+                                                    widget.empDets == null
+                                                        ? "ADD"
+                                                        : "UPDATE",
                                                     style: TextStyle(
                                                         color: Colors.white),
                                                   ),
@@ -247,7 +287,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
         //elevation: 5,
         style: TextStyle(color: Colors.white),
         iconEnabledColor: Colors.black,
-        items: branchesList.keys.map<DropdownMenuItem<String>>((String value) {
+        items:
+            branchesList.values.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
@@ -261,12 +302,18 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
         ),
-        onChanged: (String value) {
+        onChanged: (String val) {
+          int _branchId;
+          branchesList.forEach((key, value) {
+            if (value == val) {
+              _branchId = key;
+            }
+          });
           Provider.of<DeptDataProv>(context, listen: false).getDepts(
               Provider.of<AuthProv>(context, listen: false).authinfo.jwtToken,
-              branchesList[_chosenBranch]);
+              _branchId);
           setState(() {
-            _chosenBranch = value;
+            _chosenBranch = val;
           });
         },
       ),
@@ -331,6 +378,12 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   }
 
   EmployeeModel getDetails() {
+    int _branchId;
+    branchesList.forEach((key, value) {
+      if (value == _chosenBranch) {
+        _branchId = key;
+      }
+    });
     return EmployeeModel(
         name: _nameC.text,
         email: _emailC.text,
@@ -338,8 +391,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
         password: _passwordC.text,
         counterNumber:
             _counterC.text.length == 0 ? null : num.parse(_counterC.text),
-        branchId: branchesList[_chosenBranch],
-        req: 'create',
+        branchId: _branchId,
+        empStatus: employeeStatus ? 1 : 0,
+        req: widget.empDets != null ? 'update' : 'create',
         services: _chosenDept,
         departments: _chosenDept);
   }
