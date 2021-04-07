@@ -1,6 +1,8 @@
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/provider/branch_provider.dart';
 import 'package:eQueue/provider/company_provider.dart';
+import 'package:eQueue/screens/pages/book_appoint_service.dart';
 import 'package:eQueue/screens/pages/book_appointment.dart';
 import 'package:eQueue/screens/pages/book_token.dart';
 import 'package:flutter/material.dart';
@@ -71,134 +73,171 @@ class _BranchScreenState extends State<BranchScreen> {
                     ),
                   ),
                 ),
-                Flexible(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    height: height * 0.9,
-                    width: width,
-                    child: ListView.builder(
-                        itemCount: value.branches.length,
-                        itemBuilder: (context, i) {
-                          return Container(
-                            height: height * 0.3,
-                            margin: EdgeInsets.all(5),
-                            width: width,
-                            decoration: BoxDecoration(
-                                color: myColor[100],
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [BoxShadow(color: Colors.grey)]),
-                            child: Column(
-                              children: [
-                                Flexible(
-                                  child: Container(
-                                    height: height * 0.2,
-                                    width: width,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                              'lib/assets/imagecomp.jpg',
-                                            ),
-                                            fit: BoxFit.fill)),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: 10, left: 10, right: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                value.branches.length == 0 || value.branches.isEmpty
+                    ? Container(
+                        margin: EdgeInsets.only(top: height / 2.5),
+                        child: Center(
+                          child: Text(
+                            'No Branches',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: AppColor.mainBlue),
+                          ),
+                        ),
+                      )
+                    : Flexible(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 10),
+                          height: height * 0.9,
+                          width: width,
+                          child: ListView.builder(
+                              itemCount: value.branches.length,
+                              itemBuilder: (context, i) {
+                                return Container(
+                                  height: height * 0.3,
+                                  margin: EdgeInsets.all(5),
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                      color: myColor[100],
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(color: Colors.grey)
+                                      ]),
+                                  child: Column(
                                     children: [
                                       Flexible(
-                                          child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: width * 0.4,
-                                            child: Text(
-                                              value.branches[i].bname,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  color: myColor[50],
-                                                  fontWeight: FontWeight.bold),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Container(
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.location_history_sharp,
-                                                  color: myColor[50],
-                                                ),
-                                                Text('Torronto,Canada')
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: myColor[50],
-                                                ),
-                                                Text('4.4 Ratings')
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      )),
+                                        child: Container(
+                                          height: height * 0.2,
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                    'lib/assets/imagecomp.jpg',
+                                                  ),
+                                                  fit: BoxFit.fill)),
+                                        ),
+                                      ),
                                       Container(
-                                        height: height * 0.05,
-                                        width: width * 0.4,
-                                        decoration: BoxDecoration(
-                                            color: myColor[50],
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: FlatButton(
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (ctx) => widget
-                                                                  .comp_type ==
-                                                              "booking"
-                                                          ? Calen(
-                                                              book: value
-                                                                  .bookingsperhrs,
-                                                              perday: value
-                                                                  .perdayhrss,
-                                                              wk: value
-                                                                  .workinghrsper,
-                                                            )
-                                                          : Booktoken(
-                                                              bid: value
-                                                                  .branches[i]
-                                                                  .id,
-                                                              id: value
-                                                                  .branches[i]
-                                                                  .companyid,
-                                                              type: widget
-                                                                  .comp_type)));
-                                            },
-                                            child: Text(
-                                              'Book Now',
-                                              style: TextStyle(
-                                                  color: myColor[100]),
-                                            )),
+                                        margin: EdgeInsets.only(
+                                            top: 10, left: 10, right: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.4,
+                                                    child: Text(
+                                                      value.branches[i].bname,
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          color: myColor[50],
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: height * 0.01),
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons
+                                                              .location_history_sharp,
+                                                          color: myColor[50],
+                                                        ),
+                                                        Text(value
+                                                            .branches[i].city)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // Container(
+                                                  //   child: Row(
+                                                  //     children: [
+                                                  //       Icon(
+                                                  //         Icons.star,
+                                                  //         color: myColor[50],
+                                                  //       ),
+                                                  //       Text('4.4 Ratings')
+                                                  //     ],
+                                                  //   ),
+                                                  // )
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              height: height * 0.05,
+                                              width: width * 0.4,
+                                              decoration: BoxDecoration(
+                                                  color: myColor[50],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (ctx) => widget
+                                                                        .comp_type ==
+                                                                    "booking"
+                                                                ? SelectService(
+                                                                    bid: value
+                                                                        .branches[
+                                                                            i]
+                                                                        .id,
+                                                                    id: value
+                                                                        .branches[
+                                                                            i]
+                                                                        .companyid,
+                                                                    type: widget
+                                                                        .comp_type,
+                                                                    book: value
+                                                                        .bookingsperhrs,
+                                                                    perday: value
+                                                                        .perdayhrss,
+                                                                    wk: value
+                                                                        .workinghrsper,
+                                                                  )
+                                                                : Booktoken(
+                                                                    bid: value
+                                                                        .branches[
+                                                                            i]
+                                                                        .id,
+                                                                    id: value
+                                                                        .branches[
+                                                                            i]
+                                                                        .companyid,
+                                                                    type: widget
+                                                                        .comp_type)));
+                                                  },
+                                                  child: Text(
+                                                    'Book Now',
+                                                    style: TextStyle(
+                                                        color: myColor[100]),
+                                                  )),
+                                            )
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          );
-                        }),
-                  ),
-                ),
+                                );
+                              }),
+                        ),
+                      ),
               ],
             ),
           )),

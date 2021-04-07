@@ -81,7 +81,7 @@ class _OtpState extends State<Otp> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: height * 0.01),
-                    height: height * 0.08,
+                    height: height * 0.1,
                     width: width,
                     child: TextFormField(
                       maxLength: 6,

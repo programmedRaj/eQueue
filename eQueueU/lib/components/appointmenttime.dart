@@ -54,12 +54,12 @@ class _AppTimeState extends State<AppTime> {
           // scrollDirection: Axis.horizontal,
           itemCount: times.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, childAspectRatio: 1 / 0.55),
+              crossAxisCount: 3, childAspectRatio: 1 / 0.5),
           itemBuilder: (context, i) {
             return Container(
               height: height * 0.1,
               width: width * 0.25,
-              margin: EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
+              margin: EdgeInsets.only(top: 10, bottom: 5, left: 8, right: 8),
               decoration: BoxDecoration(
                 color: myColor[100],
                 borderRadius: BorderRadius.circular(10),

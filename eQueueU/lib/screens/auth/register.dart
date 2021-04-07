@@ -78,8 +78,13 @@ class _RegisterState extends State<Register> {
     var request = new http.MultipartRequest("POST", registeruri)
       ..headers.addAll(header);
 
-    request.files
-        .add(await http.MultipartFile.fromPath('profile_img', images.path));
+    if (images != null || images.path.isNotEmpty) {
+      request.files
+          .add(await http.MultipartFile.fromPath('profile_img', images.path));
+    } else {
+      request.files.add(await http.MultipartFile.fromBytes('profile_img', [],
+          filename: '_logo'));
+    }
 
     print(countrycode.substring(1) + phonenumber);
     print(countrycode.substring(1));
@@ -88,13 +93,20 @@ class _RegisterState extends State<Register> {
     request.fields['name'] = name;
     request.fields['number'] = countrycode.substring(1) + phonenumber;
     request.fields['phonenumber'] = phonenumber;
-    request.fields['address1'] = address1;
-    request.fields['address2'] = address2;
-    request.fields['province'] = province;
-    request.fields['city'] = city;
-    request.fields['postalcode'] = postalcode;
+    request.fields['address1'] =
+        address1 == null || address1.isEmpty ? "optional" : address1;
+    request.fields['address2'] =
+        address2 == null || address2.isEmpty ? "optional" : address2;
+    request.fields['province'] =
+        province == null || province.isEmpty ? "optional" : province;
+    request.fields['city'] = city == null || city.isEmpty ? "optional" : city;
+    request.fields['postalcode'] =
+        postalcode == null || postalcode.isEmpty ? "optional" : postalcode;
     request.fields['countrycode'] = countrycode.substring(1);
-    request.fields['referral_code'] = referralcode + '@equeue';
+    request.fields['referral_code'] =
+        referralcode == null || referralcode.isEmpty
+            ? "optional"
+            : referralcode + '@equeue';
     var res = await request.send();
 
     var response = await http.Response.fromStream(res);
@@ -157,22 +169,23 @@ class _RegisterState extends State<Register> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 50, bottom: 30),
-                        child: Image.asset(
-                          'lib/assets/logo.png',
-                          height: height * 0.2,
-                          width: width * 0.3,
-                        ),
-                      ),
+                      // Container(
+                      //   margin: EdgeInsets.only(top: 50, bottom: 30),
+                      //   child: Image.asset(
+                      //     'lib/assets/logo.png',
+                      //     height: height * 0.2,
+                      //     width: width * 0.3,
+                      //   ),
+                      // ),
                       _image == null
                           ? GestureDetector(
                               onTap: () {
                                 getImage();
                               },
                               child: Container(
+                                margin: EdgeInsets.all(20),
                                 child: CircleAvatar(
-                                  radius: 60,
+                                  radius: 70,
                                   backgroundColor: myColor[150],
                                   child: Center(
                                     child: Icon(
@@ -252,12 +265,12 @@ class _RegisterState extends State<Register> {
                     width: width,
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter Address 1';
-                        else
-                          return null;
-                      },
+                      // validator: (name) {
+                      //   if (name.isEmpty)
+                      //     return 'Please Enter Address 1';
+                      //   else
+                      //     return null;
+                      // },
                       decoration: InputDecoration(
                         hintText: "Address 1",
                         hintStyle: TextStyle(
@@ -302,12 +315,12 @@ class _RegisterState extends State<Register> {
                     width: width,
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter Address2';
-                        else
-                          return null;
-                      },
+                      // validator: (name) {
+                      //   if (name.isEmpty)
+                      //     return 'Please Enter Address2';
+                      //   else
+                      //     return null;
+                      // },
                       decoration: InputDecoration(
                         hintText: "Address 2",
                         hintStyle: TextStyle(
@@ -352,12 +365,12 @@ class _RegisterState extends State<Register> {
                     width: width,
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter Postal Code';
-                        else
-                          return null;
-                      },
+                      // validator: (name) {
+                      //   if (name.isEmpty)
+                      //     return 'Please Enter Postal Code';
+                      //   else
+                      //     return null;
+                      // },
                       decoration: InputDecoration(
                         hintText: "Postal Code",
                         hintStyle: TextStyle(
@@ -402,12 +415,12 @@ class _RegisterState extends State<Register> {
                     width: width,
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter Province';
-                        else
-                          return null;
-                      },
+                      // validator: (name) {
+                      //   if (name.isEmpty)
+                      //     return 'Please Enter Province';
+                      //   else
+                      //     return null;
+                      // },
                       decoration: InputDecoration(
                         hintText: "Province",
                         hintStyle: TextStyle(
@@ -452,12 +465,12 @@ class _RegisterState extends State<Register> {
                     width: width,
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      validator: (name) {
-                        if (name.isEmpty)
-                          return 'Please Enter City';
-                        else
-                          return null;
-                      },
+                      // validator: (name) {
+                      //   if (name.isEmpty)
+                      //     return 'Please Enter City';
+                      //   else
+                      //     return null;
+                      // },
                       decoration: InputDecoration(
                         hintText: "City",
                         hintStyle: TextStyle(
@@ -627,7 +640,7 @@ class _RegisterState extends State<Register> {
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
                         if (rkey.currentState.validate()) {
-                          if (_image != null) {
+                          if (_selectedCountry != null) {
                             register(
                               name: name,
                               images: _image,
@@ -641,7 +654,7 @@ class _RegisterState extends State<Register> {
                               referralcode: referralcode,
                             );
                           } else {
-                            error = "Please Select An Image";
+                            error = "Please Select Country Code";
                           }
                         }
                       },

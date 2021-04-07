@@ -135,9 +135,10 @@ class _LoginState extends State<Login> {
                         ),
                         Flexible(
                           child: Container(
-                            height: sizz == 2 ? height * 0.12 : height * 0.06,
-                            width: sizz == 1 ? width / 1.8 : width / 1.58,
-                            margin: EdgeInsets.only(left: 15),
+                            margin:
+                                EdgeInsets.only(top: height * 0.01, left: 15),
+                            height: height * 0.1,
+                            width: width,
                             child: TextFormField(
                               keyboardType: TextInputType.number,
                               inputFormatters: <TextInputFormatter>[

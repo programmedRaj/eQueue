@@ -13,6 +13,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import 'components/color.dart';
+import 'provider/department_booking_provider.dart';
 import 'provider/department_token_provider.dart';
 
 Future<void> main() async {
@@ -76,6 +77,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: CompanyProvider()),
         ChangeNotifierProvider.value(value: BranchProvider()),
         ChangeNotifierProvider.value(value: DepProvider()),
+        ChangeNotifierProvider.value(value: DepBookProvider()),
       ],
       child: MaterialApp(
         // localizationsDelegates: [

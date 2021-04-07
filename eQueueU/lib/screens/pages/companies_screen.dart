@@ -92,6 +92,7 @@ class _CompanyState extends State<Company> {
                                   child: Container(
                                     height: height * 0.2,
                                     width: width,
+                                    alignment: Alignment.topRight,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         image: DecorationImage(
@@ -99,6 +100,24 @@ class _CompanyState extends State<Company> {
                                               'lib/assets/imagecomp.jpg',
                                             ),
                                             fit: BoxFit.fill)),
+                                    child: IconButton(
+                                      icon: Icon(Icons.info),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: SingleChildScrollView(
+                                                child: Container(
+                                                  child: Text(
+                                                      'Company Type : ${comp[i].type.toUpperCase()}'),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -127,6 +146,59 @@ class _CompanyState extends State<Company> {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    content:
+                                                        SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            alignment: Alignment
+                                                                .topRight,
+                                                            child: IconButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                              icon: Icon(
+                                                                Icons.close,
+                                                                color:
+                                                                    myColor[50],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            height:
+                                                                height * 0.6,
+                                                            width: width,
+                                                            child: Text(
+                                                                'Company Description : ${comp[i].descr}'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(top: 10),
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                'View Details',
+                                                style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       )),
                                       Container(
