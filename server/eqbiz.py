@@ -325,11 +325,11 @@ def delete_branch(branchid):
             "DELETE FROM branch_details WHERE id =" + str(branchid) + " ;"
         )
 
-        check = cur.execute(
+        checkk = cur.execute(
             "DELETE FROM employee_details WHERE branch_id =" + str(branchid) + " ;"
         )
         conn.commit()
-        if check:
+        if check or checkk:
             return 200
         return 403
 
