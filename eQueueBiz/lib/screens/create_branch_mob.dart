@@ -1,7 +1,5 @@
-// import 'dart:html';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/enum/company_enum.dart';
@@ -20,7 +18,8 @@ import 'package:provider/provider.dart';
 
 class CreateBranchMob extends StatefulWidget {
   final BranchRespModel branchDets;
-  CreateBranchMob({this.branchDets});
+  final String images;
+  CreateBranchMob({this.branchDets, this.images});
 
   @override
   _CreateBranchMobState createState() => _CreateBranchMobState();
@@ -29,6 +28,7 @@ class CreateBranchMob extends StatefulWidget {
 class _CreateBranchMobState extends State<CreateBranchMob> {
   File uploadedImageMob;
   bool _isErr = false;
+  File filename;
   List<String> departments = [];
   TextEditingController _departmentController = TextEditingController();
   List<TimeOfDay> startTimeList = [null, null, null, null, null, null, null];
@@ -239,6 +239,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                               .getImage(source: ImageSource.gallery);
                           if (img != null) {
                             uploadedImageMob = File(img.path);
+                            filename = File(img.path.split("/").last);
+                            print(filename);
                             setState(() {});
                           }
                         },
@@ -592,10 +594,10 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                     return;
                   }
                   bool success = await value.execCreateComppany(
-                    temp,
-                    authProv.authinfo.jwtToken,
-                    companyLogoMob: uploadedImageMob,
-                  );
+                      temp, authProv.authinfo.jwtToken,
+                      companyLogoMob: uploadedImageMob,
+                      filename: filename.toString(),
+                      imagesdef: widget.images);
                   if (success) {
                     Navigator.pushReplacement(
                         context,

@@ -18,6 +18,7 @@ class BranchDataProv extends ChangeNotifier {
   Map<int, String> branches = {};
   bool noBranches = false;
   List<BranchRespModel> branchesWithDetail = [];
+  List branchWithImages = [];
 
   Future<bool> getBranches(BuildContext context, String jwtToken) async {
     var header = {
@@ -31,9 +32,11 @@ class BranchDataProv extends ChangeNotifier {
       noBranches = false;
       branches = {};
       notifyListeners();
+
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
-        print(decodedResp);
+        print(decodedResp['branches'][0]['profile_photo_url']);
+
         for (var item in decodedResp['branches']) {
           branches.putIfAbsent(item['id'], () => item['bname']);
         }
@@ -72,10 +75,14 @@ class BranchDataProv extends ChangeNotifier {
     isLoading = true;
     error = false;
     branchesWithDetail = [];
+    branchWithImages = [];
     notifyListeners();
     if (resp.statusCode == 200) {
       var decodedResp = jsonDecode(resp.body);
-      print(decodedResp);
+
+      for (int i = 0; i < decodedResp['branches'].length; i++) {
+        branchWithImages.add(decodedResp['branches'][i]['profile_photo_url']);
+      }
       for (var item in decodedResp['branches']) {
         branchesWithDetail.add(BranchRespModel.fromJson(item));
       }

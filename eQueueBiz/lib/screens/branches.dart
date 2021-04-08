@@ -32,6 +32,7 @@ class _BranchesState extends State<Branches> {
     authProv = Provider.of<AuthProv>(context);
     return Consumer<BranchDataProv>(
       builder: (context, value, child) {
+        print(value.branchesWithDetail);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
@@ -64,9 +65,7 @@ class _BranchesState extends State<Branches> {
                               child: CircularProgressIndicator(),
                             )
                           : value.error
-                              ? Center(
-                                  child:
-                                      Text("Error occured while fetching data"))
+                              ? Center(child: Text("No Branches Found."))
                               : Container(
                                   height: size.height,
                                   child: ListView.builder(
@@ -74,12 +73,14 @@ class _BranchesState extends State<Branches> {
                                           value.branchesWithDetail?.length,
                                       itemBuilder: (context, index) =>
                                           _branchCard(
-                                              value.branchesWithDetail[index]
-                                                  .branchName,
-                                              value.branchesWithDetail[index]
-                                                  .branchId,
-                                              authProv.authinfo.jwtToken,
-                                              value.branchesWithDetail[index])),
+                                            value.branchesWithDetail[index]
+                                                .branchName,
+                                            value.branchesWithDetail[index]
+                                                .branchId,
+                                            authProv.authinfo.jwtToken,
+                                            value.branchesWithDetail[index],
+                                            value.branchWithImages[index],
+                                          )),
                                 )
                       /* Text("No branches to show ."),
                 ElevatedButton(
@@ -136,7 +137,7 @@ class _BranchesState extends State<Branches> {
   }
 
   Widget _branchCard(String branchName, int branchId, String jwtToken,
-      BranchRespModel _branchDets) {
+      BranchRespModel _branchDets, String profile_url) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -159,7 +160,7 @@ class _BranchesState extends State<Branches> {
                 "Branch desc  sn FVA Srb jfr h,j j fj<JF,j ,jfjw sfjs fjawe,jf jwe fje wfjw fjbfbr,rfb smdfvsdhcbSEBDF<cbs,edc,E<DJCb,jSBDC< SD<C S<JD JC S<JDBC<JSB<JC "),
             Divider(),
             Text(
-              "Something -- Someting",
+              "$profile_url",
               style: TextStyle(color: AppColor.mainBlue),
             ),
             SizedBox(
@@ -178,6 +179,7 @@ class _BranchesState extends State<Branches> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => CreateBranchMob(
+                              images: '$profile_url',
                               branchDets: _branchDets,
                             ),
                           ));

@@ -679,8 +679,8 @@ def create_branch():
 
             filename = "default.png"
 
-            if request.files["company_logo"]:
-                company_logo = request.files["company_logo"]
+            if request.files["profile_photo_url"]:
+                company_logo = request.files["profile_photo_url"]
                 filename = secure_filename(company_logo.filename)
                 company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 

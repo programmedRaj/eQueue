@@ -10,7 +10,10 @@ import 'package:equeuebiz/model/branch_model.dart';
 class CreateEditBanchProv extends ChangeNotifier {
   List<int> comlogoint;
   Future<bool> execCreateComppany(BranchModel branch, String token,
-      {Uint8List companyLogo, File companyLogoMob}) async {
+      {Uint8List companyLogo,
+      File companyLogoMob,
+      String filename,
+      String imagesdef}) async {
     var postUri = Uri.parse(BranchApi.createEditBranch);
     var header = {
       'Content-Type': 'multipart/form-data',
@@ -22,14 +25,21 @@ class CreateEditBanchProv extends ChangeNotifier {
 
     if (companyLogoMob != null) {
       request.files.add(http.MultipartFile(
-          'company_logo',
+          'profile_photo_url',
           File(companyLogoMob.path).readAsBytes().asStream(),
           File(companyLogoMob.path).lengthSync(),
-          filename: "${branch.branchName}_logo"));
+          filename: "$filename"));
     } else {
+      // print(decodedResp['branches'][0]['profile_photo_url']);
+      if (imagesdef != null) {
+        request.files.add(http.MultipartFile.fromBytes(
+            'profile_photo_url', comlogoint ?? [],
+            filename: imagesdef));
+      }
+
       request.files.add(http.MultipartFile.fromBytes(
-          'company_logo', comlogoint ?? [],
-          filename: "${branch.branchName}_logo"));
+          'profile_photo_url', comlogoint ?? [],
+          filename: ""));
     }
 
     request.fields["bname"] = branch.branchName;
@@ -53,6 +63,7 @@ class CreateEditBanchProv extends ChangeNotifier {
     request.fields["counter"] = branch.counter;
 
     var resp = await request.send();
+
     if (resp.statusCode == 200) {
       print("Success");
       if (branch.reqType == "update") {

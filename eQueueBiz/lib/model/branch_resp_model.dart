@@ -24,6 +24,8 @@ class BranchRespModel {
   String geoLoaction;
   @JsonKey(name: "province")
   String province;
+  @JsonKey(name: "profile_photo_url")
+  String profile_photo_url;
   @JsonKey(name: "working_hours")
   WorkingHrs workingHrs;
   @JsonKey(name: "services")
@@ -33,7 +35,8 @@ class BranchRespModel {
   @JsonKey(name: "notify_time")
   String notify;
   @JsonKey(name: "booking_per_day")
-  List<String> bookingPerday;
+  List<String>
+      bookingPerday; // model me image daala hi nhi haiii bhaii kaise hoga
   @JsonKey(name: "per_day_hours")
   List<String> bookingPerDayhrs;
   @JsonKey(name: "threshold")
@@ -59,6 +62,7 @@ class BranchRespModel {
       this.phoneNo,
       this.postalCode,
       this.province,
+      this.profile_photo_url,
       this.services,
       this.threshold,
       this.timeZone,
