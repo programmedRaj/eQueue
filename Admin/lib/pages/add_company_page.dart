@@ -49,7 +49,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
           TextEditingValue(text: widget.compEmailStatus.email ?? "");
       _descC.value = TextEditingValue(text: widget.companyDets.desc ?? "");
       _bankNameC.value =
-          TextEditingValue(text: widget.companyDets.bankName ?? "nil");
+          TextEditingValue(text: widget.companyDets.bankName ?? "");
 
       _accNoC.value =
           TextEditingValue(text: widget.companyDets.accountNo ?? "");
@@ -130,14 +130,18 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     controller: _descC,
                     decoration: InputDecoration(hintText: "Description"),
                   ),
-                  TextField(
-                    controller: _emailC,
-                    decoration: InputDecoration(hintText: "Email"),
-                  ),
-                  TextField(
-                    controller: _passwordC,
-                    decoration: InputDecoration(hintText: "Password"),
-                  ),
+                  edit != true
+                      ? TextField(
+                          controller: _emailC,
+                          decoration: InputDecoration(hintText: "Email"),
+                        )
+                      : Container(),
+                  edit != true
+                      ? TextField(
+                          controller: _passwordC,
+                          decoration: InputDecoration(hintText: "Password"),
+                        )
+                      : Container(),
                   SizedBox(
                     height: 20,
                   ),

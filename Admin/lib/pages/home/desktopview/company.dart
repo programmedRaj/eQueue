@@ -35,18 +35,43 @@ class _CompanyState extends State<Company> {
         : Dts(width, height, context); */
     return Consumer<CompFullDetsProv>(
       builder: (context, value, child) {
+        print(value);
         return Container(
           child: value.isLoading
               ? Center(
                   child: CircularProgressIndicator(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.black, //data fetch nhi ho raha
                   ),
                 )
               : value.isError
                   ? Center(
-                      child: Text(
-                        "Something went wrong",
-                        style: TextStyle(color: Colors.black),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Something went wrong",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: RaisedButton(
+                              color: Theme.of(context).primaryColor,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AddCompanyPage(),
+                                    )).then((val) {
+                                  value.getCompanyDets();
+                                });
+                              },
+                              child: Text(
+                                'Add Company',
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   : SingleChildScrollView(
@@ -72,13 +97,6 @@ class _CompanyState extends State<Company> {
                               ),
                             ),
                           ),
-                          // users == null || users.length == 0
-                          //     ? Container(
-                          //         child: Center(
-                          //           child: Text('No Users Add Users'),
-                          //         ),
-                          //       )
-                          //     :
                           Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black)),
