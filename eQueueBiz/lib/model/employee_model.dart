@@ -22,6 +22,8 @@ class EmployeeModel {
   final int employeeId;
   @JsonKey(name: 'counter_no')
   int counterNumber;
+  @JsonKey(name: 'ratings')
+  int ratings;
   String services;
   @JsonKey(name: 'emp_status')
   int empStatus;
@@ -37,6 +39,7 @@ class EmployeeModel {
       this.profileUrl,
       this.req,
       this.counterNumber,
+      this.ratings,
       this.services,
       this.empStatus});
 

@@ -132,7 +132,10 @@ class _EmployeesState extends State<Employees> {
                                                           edp.employeesWithDetail[
                                                               i],
                                                           edp.employeesWithImage[
-                                                              i]);
+                                                              i],
+                                                          int.parse(
+                                                              edp.employeeratings[
+                                                                  i]));
                                                     },
                                                   ),
                                           )
@@ -242,7 +245,7 @@ class _EmployeesState extends State<Employees> {
     );
   }
 
-  Widget _employeeCard(EmployeeModel empdets, String images) {
+  Widget _employeeCard(EmployeeModel empdets, String images, int ratings) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -261,11 +264,12 @@ class _EmployeesState extends State<Employees> {
             SizedBox(
               height: 10,
             ),
-            Text(
-                "Branch desc  sn FVA Srb jfr h,j j fj<JF,j ,jfjw sfjs fjawe,jf jwe fje wfjw fjbfbr,rfb smdfvsdhcbSEBDF<cbs,edc,E<DJCb,jSBDC< SD<C S<JD JC S<JDBC<JSB<JC "),
+            empdets.services != null
+                ? Text('Service: ' + empdets.services)
+                : Text('Department: ' + empdets.departments),
             Divider(),
             Text(
-              "Something -- Someting",
+              "Phone No. : ${empdets.phoneNo}",
               style: TextStyle(color: AppColor.mainBlue),
             ),
             SizedBox(
@@ -273,7 +277,7 @@ class _EmployeesState extends State<Employees> {
             ),
             Row(
               children: [
-                _ratingStar(),
+                _ratingStar(ratings),
                 Spacer(),
                 InkWell(
                     onTap: () {
@@ -316,12 +320,13 @@ class _EmployeesState extends State<Employees> {
     );
   }
 
-  Widget _ratingStar() {
+  Widget _ratingStar(int ratings) {
+    print(ratings);
     return SmoothStarRating(
         allowHalfRating: false,
         onRated: (v) {},
         starCount: 5,
-        rating: 4.5,
+        rating: ratings.toDouble(),
         size: 30.0,
         isReadOnly: true,
         filledIconData: Icons.star,

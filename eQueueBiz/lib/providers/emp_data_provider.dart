@@ -15,6 +15,7 @@ class EmpDataProv extends ChangeNotifier {
   Map<String, int> branches = {};
   List<EmployeeModel> employeesWithDetail = [];
   List employeesWithImage = [];
+  List employeeratings = [];
 
   getEmployeesWithDetailAcctoBranch(String jwtToken, int branchId) async {
     var header = {
@@ -31,12 +32,12 @@ class EmpDataProv extends ChangeNotifier {
       var decodedResp = jsonDecode(resp.body);
       print(decodedResp);
       employeesWithImage.clear();
+      employeeratings.clear();
       for (int i = 0; i < decodedResp['employee_details'].length; i++) {
-        print(
-            'aaaaa bbbbb ${decodedResp['employee_details'][i]['profile_url']}');
+        print('aaaaa bbbbb ${decodedResp['employee_details'][i]['ratings']}');
         employeesWithImage
             .add(decodedResp['employee_details'][i]['profile_url']);
-        print('List  $employeesWithImage');
+        employeeratings.add(decodedResp['employee_details'][i]['ratings']);
       }
       int i = 0;
       for (var item in decodedResp['employee_details']) {

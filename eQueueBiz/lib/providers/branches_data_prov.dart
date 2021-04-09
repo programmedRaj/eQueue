@@ -113,7 +113,7 @@ class BranchDataProv extends ChangeNotifier {
     var request = new http.MultipartRequest("POST", postUri)
       ..headers.addAll(header);
 
-    request.files.add(http.MultipartFile.fromBytes('company_logo', [],
+    request.files.add(http.MultipartFile.fromBytes('profile_photo_url', [],
         filename: "${branchId}_logo"));
     request.fields["bname"] = '';
     request.fields["pnum"] = '';
