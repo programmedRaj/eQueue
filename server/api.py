@@ -1379,7 +1379,7 @@ def login():
                     + str(r["id"])
                     + "';"
                 )
-                conn.commit(conn)
+                conn.commit()
 
                 resp = jsonify({"message": "success", "token": token.decode("utf-8")})
                 resp.status_code = 200
