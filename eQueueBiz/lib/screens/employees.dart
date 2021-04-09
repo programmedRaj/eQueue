@@ -3,11 +3,14 @@ import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/model/employee_model.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
+import 'package:equeuebiz/providers/create_edit_delete_emp.dart';
 import 'package:equeuebiz/providers/emp_data_provider.dart';
 import 'package:equeuebiz/screens/create_employee.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+
+import 'homepage.dart';
 
 class Employees extends StatefulWidget {
   @override
@@ -62,46 +65,82 @@ class _EmployeesState extends State<Employees> {
               "Employees",
               style: TextStyle(color: Colors.black),
             ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateEmployee(
+                              // uporadd: true,
+                              ),
+                        ));
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    size: 28,
+                    color: AppColor.mainBlue,
+                  ))
+            ],
           ),
           body: Container(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 1200),
                 child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _createEmployeeCard(),
-                      bdp.isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : bdp.noBranches
-                              ? Center(
-                                  child: Text(
-                                      "No branches & employees to display"),
-                                )
-                              : bdp.error
-                                  ? Center(
-                                      child: Text("Something went wrong"),
-                                    )
-                                  : Consumer<EmpDataProv>(
-                                      builder: (context, edp, child) {
-                                        return Column(
-                                          children: [
-                                            _selectBranch(),
-                                            for (var i = 0;
-                                                i <
-                                                    edp?.employeesWithDetail
-                                                        ?.length;
-                                                i++)
-                                              _employeeCard(
-                                                  edp.employeesWithDetail[i])
-                                          ],
-                                        );
-                                      },
-                                    )
-                      /* Text("No branches to show ."),
+                    child: bdp.isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : bdp.noBranches
+                            ? Center(
+                                child:
+                                    Text("No branches & employees to display"),
+                              )
+                            : bdp.error
+                                ? Center(
+                                    child: Text("Something went wrong"),
+                                  )
+                                : Consumer<EmpDataProv>(
+                                    builder: (context, edp, child) {
+                                      return Column(
+                                        children: [
+                                          _selectBranch(),
+                                          Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.8,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: edp.employeesWithDetail
+                                                        .length ==
+                                                    0
+                                                ? Container(
+                                                    child: Center(
+                                                      child:
+                                                          Text('No Employees'),
+                                                    ),
+                                                  )
+                                                : ListView.builder(
+                                                    itemCount: edp
+                                                        .employeesWithDetail
+                                                        .length,
+                                                    itemBuilder: (context, i) {
+                                                      return _employeeCard(
+                                                          edp.employeesWithDetail[
+                                                              i],
+                                                          edp.employeesWithImage[
+                                                              i]);
+                                                    },
+                                                  ),
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  )
+                    /* Text("No branches to show ."),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -113,9 +152,8 @@ class _EmployeesState extends State<Employees> {
                     child: Text("Create Branch"),
                     style: ButtonStyle(),
                   ) */
-                    ],
-                  ),
-                ),
+
+                    ),
               )),
         );
       },
@@ -204,7 +242,7 @@ class _EmployeesState extends State<Employees> {
     );
   }
 
-  Widget _employeeCard(EmployeeModel empdets) {
+  Widget _employeeCard(EmployeeModel empdets, String images) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -244,12 +282,32 @@ class _EmployeesState extends State<Employees> {
                           MaterialPageRoute(
                             builder: (context) => CreateEmployee(
                               empDets: empdets,
+                              images: images,
+                              // uporadd: false,
                             ),
                           ));
                     },
                     child: Icon(Icons.edit)),
                 SizedBox(width: 20),
-                Icon(Icons.delete)
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () async {
+                    bool success = await EmployeeOperationProv()
+                        .execDeleteEmployee(authProv.authinfo.jwtToken,
+                            empdets.employeeId, images);
+
+                    if (success) {
+                      Provider.of<EmpDataProv>(context, listen: false)
+                          .getEmployeesWithDetailAcctoBranch(
+                              authProv.authinfo.jwtToken, empdets.branchId);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ));
+                    }
+                  },
+                )
               ],
             )
           ],

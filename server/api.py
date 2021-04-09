@@ -1282,7 +1282,7 @@ def fetch_employees():
             if r:
                 for row in r:
                     gettingstatuses = cur.execute(
-                        "Select * from bizusers WHERE id = '" + str(row["id"]) + "'"
+                        "Select * from bizusers WHERE id = '" + str(row["employee_id"]) + "'"
                     )
 
                     k = cur.fetchone()

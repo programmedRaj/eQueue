@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 
 class EmployeeOperationProv {
-  Future<bool> createEmployee(
-      String token, File profilepic, EmployeeModel employeedets) async {
+  Future<bool> createEmployee(String token, File profilepic,
+      EmployeeModel employeedets, String filename, String imagedesc) async {
+    print('here');
     var postUri = Uri.parse(Employee.createEditDeleteEmp);
     var header = {
       'Content-Type': 'multipart/form-data',
@@ -23,11 +24,17 @@ class EmployeeOperationProv {
           'profile_url',
           File(profilepic.path).readAsBytes().asStream(),
           File(profilepic.path).lengthSync(),
-          filename: "${employeedets.email}_logo"));
+          filename: "$filename"));
     } else {
-      request.files.add(
-          http.MultipartFile.fromBytes('profile_url', [], filename: "_logo"));
+      if (imagedesc != null) {
+        request.files.add(http.MultipartFile.fromBytes(
+            'profile_url', profilepic ?? [],
+            filename: "$imagedesc"));
+      }
+      request.files
+          .add(http.MultipartFile.fromBytes('profile_url', [], filename: ""));
     }
+    print('------${employeedets.employeeId.toString()}');
 
     request.fields["email"] = employeedets.email;
     request.fields["name"] = employeedets.name;
@@ -38,7 +45,7 @@ class EmployeeOperationProv {
     request.fields["counter_number"] = employeedets.counterNumber.toString();
     request.fields["departments"] = employeedets.departments;
     request.fields["req"] = employeedets.req;
-    request.fields["employee_id"] = "19"; //employeedets.employeeId.toString();
+    request.fields["employee_id"] = employeedets.employeeId.toString();
     request.fields['services'] = employeedets.services;
     request.fields['emp_status'] = employeedets.empStatus.toString();
 
@@ -58,6 +65,41 @@ class EmployeeOperationProv {
       } else {
         AppToast.showErr("Employee creation failed");
       }
+      return false;
+    }
+  }
+
+  Future<bool> execDeleteEmployee(
+    String jwtToken,
+    int employeeId,
+    String filename,
+  ) async {
+    AppToast.showSucc("Deleting Employee ");
+    var header = {
+      'Content-Type': 'application/json',
+      'Authorization': jwtToken
+    };
+    var postUri = Uri.parse(Employee.createEditDeleteEmp);
+    var request = new http.MultipartRequest("POST", postUri)
+      ..headers.addAll(header);
+
+    request.files.add(
+        http.MultipartFile.fromBytes('profile_url', [], filename: "$filename"));
+
+    request.fields["branch_id"] = '';
+    request.fields["number"] = '';
+    request.fields["name"] = '';
+    request.fields["email"] = '';
+    request.fields["password"] = '';
+    request.fields["req"] = "delete";
+    request.fields["employee_id"] = employeeId.toString();
+
+    var resp = await request.send();
+    if (resp.statusCode == 200) {
+      AppToast.showSucc("Deleted Employee ");
+      return true;
+    } else {
+      AppToast.showErr("Error Deleting Employee");
       return false;
     }
   }

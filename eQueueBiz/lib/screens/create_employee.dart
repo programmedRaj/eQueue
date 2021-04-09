@@ -19,7 +19,8 @@ import 'package:provider/provider.dart';
 
 class CreateEmployee extends StatefulWidget {
   final EmployeeModel empDets;
-  CreateEmployee({this.empDets});
+  final String images;
+  CreateEmployee({this.empDets, this.images});
   @override
   _CreateEmployeeState createState() => _CreateEmployeeState();
 }
@@ -33,6 +34,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   bool employeeStatus = true;
   File uploadedImageMob;
   AuthProv authProv;
+  File filename;
 
   TextEditingController _nameC = TextEditingController();
   TextEditingController _emailC = TextEditingController();
@@ -153,6 +155,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                         ImageSource.gallery);
                                             if (img != null) {
                                               uploadedImageMob = File(img.path);
+                                              filename = File(
+                                                  img.path.split("/").last);
+                                              print(filename);
                                               setState(() {});
                                             }
                                           },
@@ -219,7 +224,10 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                               authProv.authinfo
                                                                   .jwtToken,
                                                               uploadedImageMob,
-                                                              getDetails());
+                                                              getDetails(),
+                                                              filename
+                                                                  .toString(),
+                                                              widget.images);
 
                                                   if (success) {
                                                     Navigator.pushReplacement(
@@ -384,17 +392,32 @@ class _CreateEmployeeState extends State<CreateEmployee> {
         _branchId = key;
       }
     });
-    return EmployeeModel(
-        name: _nameC.text,
-        email: _emailC.text,
-        phoneNo: _phoneC.text,
-        password: _passwordC.text,
-        counterNumber:
-            _counterC.text.length == 0 ? null : num.parse(_counterC.text),
-        branchId: _branchId,
-        empStatus: employeeStatus ? 1 : 0,
-        req: widget.empDets != null ? 'update' : 'create',
-        services: _chosenDept,
-        departments: _chosenDept);
+    return widget.empDets != null
+        ? EmployeeModel(
+            name: _nameC.text,
+            email: _emailC.text,
+            phoneNo: _phoneC.text,
+            password: _passwordC.text,
+            counterNumber:
+                _counterC.text.length == 0 ? null : num.parse(_counterC.text),
+            branchId: _branchId,
+            employeeId: widget.empDets.employeeId,
+            empStatus: employeeStatus ? 1 : 0,
+            req: 'update',
+            services: _chosenDept,
+            departments: _chosenDept)
+        : EmployeeModel(
+            name: _nameC.text,
+            email: _emailC.text,
+            phoneNo: _phoneC.text,
+            password: _passwordC.text,
+            counterNumber:
+                _counterC.text.length == 0 ? null : num.parse(_counterC.text),
+            branchId: _branchId,
+            //  employeeId: widget.empDets.employeeId,
+            empStatus: employeeStatus ? 1 : 0,
+            req: 'create',
+            services: _chosenDept,
+            departments: _chosenDept);
   }
 }

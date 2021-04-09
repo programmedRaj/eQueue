@@ -49,6 +49,21 @@ class _BranchesState extends State<Branches> {
               "Branches",
               style: TextStyle(color: Colors.black),
             ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateBranchMob(),
+                        ));
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    size: 28,
+                    color: AppColor.mainBlue,
+                  ))
+            ],
           ),
           body: Container(
               alignment: Alignment.center,
@@ -56,33 +71,49 @@ class _BranchesState extends State<Branches> {
                 constraints:
                     BoxConstraints(maxWidth: 1200, maxHeight: size.height),
                 child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _createBranchCard(),
-                      value.isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : value.error
-                              ? Center(child: Text("No Branches Found."))
-                              : Container(
-                                  height: size.height,
-                                  child: ListView.builder(
-                                      itemCount:
-                                          value.branchesWithDetail?.length,
-                                      itemBuilder: (context, index) =>
-                                          _branchCard(
-                                            value.branchesWithDetail[index]
+                    child: value.isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : value.error
+                            ? Center(child: Text("No Branches Found."))
+                            : Container(
+                                height: size.height,
+                                child: ListView.builder(
+                                    itemCount: value.branchesWithDetail?.length,
+                                    itemBuilder: (context, index) =>
+                                        _branchCard(
+                                            branchName: value
+                                                .branchesWithDetail[index]
                                                 .branchName,
-                                            value.branchesWithDetail[index]
+                                            branchId: value
+                                                .branchesWithDetail[index]
                                                 .branchId,
-                                            authProv.authinfo.jwtToken,
-                                            value.branchesWithDetail[index],
-                                            value.branchWithImages[index],
-                                          )),
-                                )
-                      /* Text("No branches to show ."),
+                                            jwtToken:
+                                                authProv.authinfo.jwtToken,
+                                            branchDets:
+                                                value.branchesWithDetail[index],
+                                            profile_url:
+                                                value.branchWithImages[index],
+                                            address1: value
+                                                .branchesWithDetail[index]
+                                                .addr1,
+                                            address2: value
+                                                .branchesWithDetail[index]
+                                                .addr2,
+                                            city: value
+                                                .branchesWithDetail[index].city,
+                                            province: value
+                                                .branchesWithDetail[index]
+                                                .province,
+                                            countrycode: value
+                                                .branchesWithDetail[index]
+                                                .postalCode,
+                                            phone: value
+                                                .branchesWithDetail[index]
+                                                .phoneNo)),
+                              )
+                    /* Text("No branches to show ."),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -94,9 +125,8 @@ class _BranchesState extends State<Branches> {
                   child: Text("Create Branch"),
                   style: ButtonStyle(),
                 ) */
-                    ],
-                  ),
-                ),
+
+                    ),
               )),
         );
       },
@@ -105,13 +135,7 @@ class _BranchesState extends State<Branches> {
 
   Widget _createBranchCard() {
     return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CreateBranchMob(),
-            ));
-      },
+      onTap: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
         child: Container(
@@ -136,8 +160,18 @@ class _BranchesState extends State<Branches> {
     );
   }
 
-  Widget _branchCard(String branchName, int branchId, String jwtToken,
-      BranchRespModel _branchDets, String profile_url) {
+  Widget _branchCard(
+      {String branchName,
+      int branchId,
+      String jwtToken,
+      BranchRespModel branchDets,
+      String profile_url,
+      String address1,
+      String address2,
+      String province,
+      String city,
+      String countrycode,
+      String phone}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -157,7 +191,7 @@ class _BranchesState extends State<Branches> {
               height: 10,
             ),
             Text(
-                "Branch desc  sn FVA Srb jfr h,j j fj<JF,j ,jfjw sfjs fjawe,jf jwe fje wfjw fjbfbr,rfb smdfvsdhcbSEBDF<cbs,edc,E<DJCb,jSBDC< SD<C S<JD JC S<JDBC<JSB<JC "),
+                '$address1 \n $address2\n $province \n , $city \n $countrycode'),
             Divider(),
             Text(
               "$profile_url",
@@ -169,7 +203,7 @@ class _BranchesState extends State<Branches> {
             Row(
               children: [
                 Text(
-                  "Something ",
+                  "$phone",
                   style: TextStyle(),
                 ),
                 Spacer(),
@@ -180,7 +214,7 @@ class _BranchesState extends State<Branches> {
                           MaterialPageRoute(
                             builder: (context) => CreateBranchMob(
                               images: '$profile_url',
-                              branchDets: _branchDets,
+                              branchDets: branchDets,
                             ),
                           ));
                     },
@@ -193,7 +227,7 @@ class _BranchesState extends State<Branches> {
                       bool success = await Provider.of<BranchDataProv>(context,
                               listen: false)
                           .execDeleteBranch(
-                              jwtToken, branchId, branchName, _branchDets);
+                              jwtToken, branchId, branchName, branchDets);
                       if (success) {
                         Provider.of<BranchDataProv>(context, listen: false)
                             .getbranchesWithDetail(jwtToken);

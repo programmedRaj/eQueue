@@ -252,26 +252,35 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                       SizedBox(
                         height: 20,
                       ),
-                      _textField("Branch Name", _branchNameController),
-                      _textField("Address Line 1", _addr1Controller),
-                      _textField("Address Line 2", _addr2Controller),
-                      _textField("City", _cityController),
-                      _textField("State/Province", _provinceController),
-                      _textField("Contact", _phoneNoController),
-                      _textField("Postal Code", _postalCodeController),
+                      _textField("Branch Name", _branchNameController, false),
+                      _textField("Address Line 1", _addr1Controller, false),
+                      _textField("Address Line 2", _addr2Controller, false),
+                      _textField("City", _cityController, false),
+                      _textField("State/Province", _provinceController, false),
+                      _textField("Contact", _phoneNoController, true),
+                      _textField("Postal Code", _postalCodeController, false),
                       authProv.authinfo.companyType == CompanyEnum.Booking
                           ? SizedBox()
-                          : _textField("No. of counters", _counterController),
+                          : _textField(
+                              "No. of counters", _counterController, false),
                       authProv.authinfo.companyType != CompanyEnum.Booking
-                          ? _textField(
-                              "Threshold in minutes", _thresholdController)
+                          ? _textField("Threshold in minutes",
+                              _thresholdController, true)
                           : SizedBox(),
-                      _textField("Geo Location", _geoLocationController),
+                      _textField("Geo Location", _geoLocationController, true),
                       SizedBox(
                         height: 8,
                       ),
                       authProv.authinfo.companyType == CompanyEnum.Booking
-                          ? _addServicesWidget()
+                          ? Column(
+                              children: [
+                                _addServicesWidget(),
+                                Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                        'Tap on the service block to remove')),
+                              ],
+                            )
                           : Column(
                               children: [
                                 Text(
@@ -292,7 +301,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                         height: 8,
                       ),
                       Text(
-                        "Working hours",
+                        "Working hours and \n Bookings accepted per day",
+                        textAlign: TextAlign.center,
                         style: blackBoldFS16,
                       ),
                       SizedBox(
@@ -321,9 +331,9 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
           "Enter Services",
           style: blackBoldFS16,
         ),
-        _textField("Service Name", _serviceNameController),
-        _textField("Service Rate", _serviceRateController),
-        _textField("Service Description", _serviceDescController),
+        _textField("Service Name", _serviceNameController, false),
+        _textField("Service Rate", _serviceRateController, true),
+        _textField("Service Description", _serviceDescController, false),
         ElevatedButton(
             onPressed: () {
               setState(() {
@@ -415,7 +425,10 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(3),
             border: Border.all(color: AppColor.mainBlue)),
-        child: Text(departmentServiceNAme),
+        child: Text(
+          departmentServiceNAme,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
@@ -458,9 +471,15 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
       child: Column(
         children: [
-          Text(weekDay),
+          Container(
+              alignment: Alignment.topLeft,
+              margin: EdgeInsets.only(left: 15),
+              child: Text(
+                weekDay,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )),
           SizedBox(
-            height: 12,
+            height: 3,
           ),
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 1200),
@@ -538,8 +557,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             horizontal: 8, vertical: 0),
                         child: TextField(
                           controller: noofBookingsC[index],
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: "No. of bookings",
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             disabledBorder: InputBorder.none,
@@ -555,7 +574,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     );
   }
 
-  Widget _textField(String hintText, TextEditingController _controller) {
+  Widget _textField(
+      String hintText, TextEditingController _controller, bool number) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
@@ -563,6 +583,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: TextField(
         controller: _controller,
+        keyboardType: number ? TextInputType.phone : TextInputType.text,
         decoration: InputDecoration(
           hintText: hintText,
           focusedBorder: InputBorder.none,

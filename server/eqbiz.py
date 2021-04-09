@@ -356,7 +356,7 @@ def create_employee(
     try:
         if acctype == "booking":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,number,services,ratings,rating_count,id) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,number,services,ratings,rating_count,employee_id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
@@ -381,7 +381,7 @@ def create_employee(
             )
         elif acctype == "token":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,number,departments,counter_number,ratings,rating_count,id) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,number,departments,counter_number,ratings,rating_count,employee_id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
@@ -408,7 +408,7 @@ def create_employee(
             )
         elif acctype == "multitoken":
             q = (
-                "INSERT INTO employee_details(name,profile_url,branch_id,number,departments,counter_number,ratings,rating_count,id) VALUES ('"
+                "INSERT INTO employee_details(name,profile_url,branch_id,number,departments,counter_number,ratings,rating_count,employee_id) VALUES ('"
                 + str(name)
                 + "','"
                 + str(profile_url)
