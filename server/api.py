@@ -1282,7 +1282,9 @@ def fetch_employees():
             if r:
                 for row in r:
                     gettingstatuses = cur.execute(
-                        "Select * from bizusers WHERE id = '" + str(row["employee_id"]) + "'"
+                        "Select * from bizusers WHERE id = '"
+                        + str(row["employee_id"])
+                        + "'"
                     )
 
                     k = cur.fetchone()
@@ -1642,6 +1644,58 @@ def dept_services_dropdown():
                 return resp
 
             resp = jsonify({"message": "Error."})
+            resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/sorting", methods=["POST"])
+@check_for_user_token
+def searches_sorting():
+    conn = mysql.connect()
+    sortby = request.json["sortby"]
+    asc_desc = request.json["asc_desc"]
+    sorting = request.json["sorting"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+
+        if sorting == "branch":
+            r = cur.execute(
+                "Select * from branch_details ORDER BY "
+                + str(sortby)
+                + " "
+                + str(asc_desc)
+                + ""
+            )
+            texti = "No branches found"
+            textin = "branches"
+        elif sorting == "company":
+            r = cur.execute(
+                "Select * from companydetails ORDER BY "
+                + str(sortby)
+                + " "
+                + str(asc_desc)
+                + ""
+            )
+            texti = "No Companies found"
+            textin = "companies"
+
+        else:
+            resp = jsonify({"message": "INVALID REQUEST."})
+            resp.status_code = 405
+            return resp
+
+        if r is None:
+            resp = jsonify({textin: cur.fetchall()})
+            resp.status_code = 200
+            conn.commit()
+            return resp
+
+        else:
+            resp = jsonify({"message": texti})
             resp.status_code = 403
             return resp
 
