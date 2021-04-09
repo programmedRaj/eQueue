@@ -1688,7 +1688,7 @@ def searches_sorting():
             resp.status_code = 405
             return resp
 
-        if r is None:
+        if r:
             resp = jsonify({textin: cur.fetchall()})
             resp.status_code = 200
             conn.commit()
