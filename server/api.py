@@ -1371,6 +1371,16 @@ def login():
                     },
                     app.config["USER_SECRET_KEY"],
                 )
+
+                cur.execute(
+                    "UPDATE equeue_users SET code = '', device_token ='"
+                    + str(request.form["device_token"])
+                    + "' WHERE id = '"
+                    + str(r["id"])
+                    + "';"
+                )
+                conn.commit()
+
                 resp = jsonify({"message": "success", "token": token.decode("utf-8")})
                 resp.status_code = 200
                 return resp
