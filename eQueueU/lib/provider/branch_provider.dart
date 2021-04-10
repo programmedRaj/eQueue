@@ -14,19 +14,34 @@ import 'package:shared_preferences/shared_preferences.dart';
 class BranchProvider extends ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
 
-  Future getBranches(int id) async {
+  Future getBranches(
+      {int id, bool sort, String sortby, String ascdsc, String type}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
+    var map = new Map<String, dynamic>();
+    if (sort) {
+      map['sortby'] = sortby;
+      map['asc_desc'] = ascdsc;
+      map['sorting'] = type;
+    }
 
     var bodymsg = json.encode({"company_id": id});
     var response = await retry(
       () => http
-          .post(Uri.parse(baseUrl.branch_list),
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": token
-              },
-              body: bodymsg)
+          .post(
+              sort
+                  ? Uri.parse(baseUrl.sorting)
+                  : Uri.parse(baseUrl.branch_list),
+              headers: sort
+                  ? {
+                      // "Content-Type": "application/json",
+                      "Authorization": token
+                    }
+                  : {
+                      "Content-Type": "application/json",
+                      "Authorization": token
+                    },
+              body: sort ? map : bodymsg)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );

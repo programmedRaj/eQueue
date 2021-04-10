@@ -1,3 +1,4 @@
+import 'package:eQueue/api/models/branchmodel.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/provider/branch_provider.dart';
@@ -6,11 +7,13 @@ import 'package:eQueue/screens/pages/book_appoint_service.dart';
 import 'package:eQueue/screens/pages/book_appointment.dart';
 import 'package:eQueue/screens/pages/book_token.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
 
 class BranchScreen extends StatefulWidget {
   final int id;
   final String comp_type;
+
   BranchScreen({this.id, this.comp_type});
   @override
   _BranchScreenState createState() => _BranchScreenState();
@@ -18,10 +21,14 @@ class BranchScreen extends StatefulWidget {
 
 class _BranchScreenState extends State<BranchScreen> {
   int sizz;
+  String searchval = "";
+  List<BranchModel> branchsearch = [];
+  String noprod;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Provider.of<BranchProvider>(context, listen: false).getBranches(widget.id);
+    Provider.of<BranchProvider>(context, listen: false)
+        .getBranches(id: widget.id, sort: false);
   }
 
   @override
@@ -38,6 +45,24 @@ class _BranchScreenState extends State<BranchScreen> {
         sizz = 2;
       });
     }
+    onsearch(v, List<BranchModel> branch) {
+      v = v.toString().toUpperCase();
+      print(v);
+      if (v != null) {
+        branchsearch.clear();
+        for (int i = 0; i < branch.length; i++) {
+          if (branch[i].bname.toLowerCase().contains(v) ||
+              branch[i].bname.toUpperCase().contains(v) ||
+              branch[i].bname.contains(v)) {
+          } else {
+            setState(() {
+              noprod = 'No branch';
+            });
+          }
+        }
+      }
+    }
+
     return Consumer<BranchProvider>(
       builder: (context, value, child) {
         print(value.branches.length);
@@ -47,31 +72,50 @@ class _BranchScreenState extends State<BranchScreen> {
             margin: EdgeInsets.all(20),
             child: Column(
               children: [
-                Container(
-                  height: height * 0.05,
-                  width: width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: myColor[150],
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Search Branches',
-                          style: TextStyle(
-                              color: myColor[250], fontWeight: FontWeight.bold),
-                        ),
-                        Icon(
-                          Icons.search,
-                          color: myColor[250],
-                        )
-                      ],
+                Row(
+                  children: [
+                    Container(
+                      height: height * 0.07,
+                      width: width / 1.4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: myColor[150],
+                      ),
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            onChanged: (val) {
+                              onsearch(val, value.branches);
+
+                              if (val.length == 0) {
+                                branchsearch.clear();
+                              }
+                            },
+                            cursorColor: Colors.white,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                hintText: 'Search Branches',
+                                suffixIcon: Icon(Icons.search)),
+                          )),
                     ),
-                  ),
+                    SizedBox(
+                      width: width * 0.02,
+                    ),
+                    Container(
+                      child: IconButton(
+                          onPressed: () {
+                            sortAlert();
+                          },
+                          icon: Icon(
+                            Icons.sort,
+                            color: myColor[250],
+                          )),
+                    )
+                  ],
                 ),
                 value.branches.length == 0 || value.branches.isEmpty
                     ? Container(
@@ -243,6 +287,125 @@ class _BranchScreenState extends State<BranchScreen> {
           )),
         );
       },
+    );
+  }
+
+  sortAlert() {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return MyD(widget.id);
+      },
+    );
+  }
+}
+
+class MyD extends StatefulWidget {
+  int id;
+  MyD(this.id);
+  @override
+  _MyDState createState() => _MyDState();
+}
+
+class _MyDState extends State<MyD> {
+  var _picked = "Bname";
+  var _order = "ASC";
+  @override
+  Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
+    return AlertDialog(
+      content: Container(
+        height: height * 0.45,
+        width: width,
+        child: Column(
+          children: [
+            Container(alignment: Alignment.centerLeft, child: Text('Sort By')),
+            RadioButtonGroup(
+              orientation: GroupedButtonsOrientation.HORIZONTAL,
+              margin: const EdgeInsets.only(left: 12.0),
+              onSelected: (String selected) => setState(() {
+                _picked = selected;
+                print(selected);
+              }),
+              labels: <String>[
+                "Bname",
+                "City",
+              ],
+              picked: _picked,
+              itemBuilder: (Radio rb, Text txt, int i) {
+                return Column(
+                  children: <Widget>[
+                    Icon(Icons.public),
+                    rb,
+                    txt,
+                  ],
+                );
+              },
+            ),
+            SizedBox(
+              height: height * 0.04,
+            ),
+            Container(
+                alignment: Alignment.centerLeft, child: Text('Sort Order')),
+            RadioButtonGroup(
+              orientation: GroupedButtonsOrientation.HORIZONTAL,
+              margin: const EdgeInsets.only(left: 12.0),
+              onSelected: (String selected) => setState(() {
+                _order = selected;
+              }),
+              labels: <String>[
+                "ASC",
+                "DESC",
+              ],
+              picked: _order,
+              itemBuilder: (Radio rb, Text txt, int i) {
+                return Column(
+                  children: <Widget>[
+                    Icon(Icons.public),
+                    rb,
+                    txt,
+                  ],
+                );
+              },
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: height * 0.06,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Provider.of<BranchProvider>(context, listen: false)
+                            .getBranches(
+                                id: widget.id,
+                                sort: true,
+                                ascdsc: _order,
+                                sortby: _picked.toLowerCase(),
+                                type: 'branch')
+                            .then((value) => Navigator.of(context).pop());
+                      },
+                      child: Text('Ok')),
+                  SizedBox(
+                    width: width * 0.02,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Cancel'))
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
