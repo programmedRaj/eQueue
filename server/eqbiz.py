@@ -156,18 +156,19 @@ def create_branch(
             )
 
         fire = str(q)
-        print(fire)
         check = cur2.execute(fire)
-        last = cur2.lastrowid()
+        # last = cur2.lastrowid()
+
         conn.commit()
 
         cur = conn.cursor(pymysql.cursors.DictCursor)
-        kk = str(bname) + "_" + str(last)
+        kk = str(bname) + "_" + str('last')
         firee = (
-            "CREATE TABLE IF NOT EXISTS "
-            + str(kk)
-            + " ( 'id' INT  AUTO_INCREMENT ,'department' VARCHAR(100) ,'device_token' VARCHAR(1000) ,'branch_id' VARCHAR(45), 'user_id' VARCHAR(45) , 'status' VARCHAR(45) , 'insurance' VARCHAR(255) , 'create_time' datetime default now() ,PRIMARY KEY ('id') )ENGINE = InnoDB;"
+            "CREATE TABLE "
+            + str(kk)+
+            " ( `id` INT  AUTO_INCREMENT ,`department` VARCHAR(100) ,`device_token` VARCHAR(1000) ,`branch_id` VARCHAR(45), `user_id` VARCHAR(45) , `status` VARCHAR(45) , `insurance` VARCHAR(255) , `create_time` datetime default now() ,PRIMARY KEY (`id`) )ENGINE = InnoDB;"
         )
+        print(firee)
         cur.execute(firee)
         conn.commit()
 

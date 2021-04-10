@@ -150,41 +150,30 @@ class _CompanyState extends State<Company> {
                               children: [
                                 Flexible(
                                   child: Container(
-                                    height: height * 0.2,
-                                    width: width,
-                                    alignment: Alignment.topRight,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                              'lib/assets/imagecomp.jpg',
-                                            ),
-                                            fit: BoxFit.fill)),
-                                    child: IconButton(
-                                      icon: Icon(Icons.info),
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              content: SingleChildScrollView(
-                                                child: Container(
-                                                  child: companysearch.length >
-                                                              0 ||
-                                                          companysearch
-                                                              .isNotEmpty
-                                                      ? Text(
-                                                          'Company Type : ${companysearch[i].type.toUpperCase()}')
-                                                      : Text(
-                                                          'Company Type : ${comp[i].type.toUpperCase()}'),
-                                                ),
+                                      height: height * 0.2,
+                                      width: width,
+                                      alignment: Alignment.topRight,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                'lib/assets/imagecomp.jpg',
                                               ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                              fit: BoxFit.fill)),
+                                      child: Container(
+                                        margin: EdgeInsets.all(10),
+                                        child: CircleAvatar(
+                                          radius: 10,
+                                          backgroundColor: myColor[100],
+                                          child: companysearch.length > 0 ||
+                                                  companysearch.isNotEmpty
+                                              ? Text(
+                                                  '${companysearch[i].type[0].toUpperCase()}')
+                                              : Text(
+                                                  '${comp[i].type[0].toUpperCase()}'),
+                                        ),
+                                      )),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(

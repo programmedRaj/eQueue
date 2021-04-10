@@ -15,6 +15,8 @@ import 'package:equeuebiz/widgets/resize_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class CreateBranchMob extends StatefulWidget {
   final BranchRespModel branchDets;
@@ -203,6 +205,19 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     return num.parse(text.split(":")[index]);
   }
 
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -270,6 +285,14 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                               _thresholdController, true)
                           : SizedBox(),
                       _textField("Geo Location", _geoLocationController, true),
+                      GestureDetector(
+                          onTap: () {
+                            _launchInBrowser('https://www.latlong.net/');
+                          },
+                          child: Text(
+                            'Click here to get geolocation',
+                            style: TextStyle(color: Colors.blue),
+                          )),
                       SizedBox(
                         height: 8,
                       ),
