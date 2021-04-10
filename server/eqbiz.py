@@ -123,6 +123,7 @@ def create_branch(
                 + str(counter)
                 + "','0');"
             )
+
         elif acctype == "multitoken":
             q = (
                 "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,money_earned) VALUES ('"
@@ -157,7 +158,20 @@ def create_branch(
         fire = str(q)
         print(fire)
         check = cur2.execute(fire)
+        last = cur2.lastrowid()
         conn.commit()
+
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        kk = str(bname) + "_" + str(last)
+        firee = (
+            "CREATE TABLE IF NOT EXISTS "
+            + str(kk)
+            + " ( 'id' INT  AUTO_INCREMENT ,'department' VARCHAR(100) ,'device_token' VARCHAR(1000) ,'branch_id' VARCHAR(45), 'user_id' VARCHAR(45) , 'status' VARCHAR(45) , 'insurance' VARCHAR(255) , 'create_time' datetime default now() ,PRIMARY KEY ('id') )ENGINE = InnoDB;"
+        )
+        cur.execute(firee)
+        conn.commit()
+
+        # TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
         if check:
             return 200
         return 403
@@ -574,6 +588,59 @@ def delete_employee(employee_id):
         conn.commit()
         if check:
             return 200
+        return 403
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+def creatingtokens_bookings(
+    t_b, bname, branch_id, user_id, device_token, service, insurance
+):
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        kk = str(bname) + "_" + str(branch_id)
+        if t_b == "token":
+            check = cur.execute(
+                "INSERT INTO "
+                + str(kk)
+                + "(branch_id,user_id,device_token,department,status) VALUES ('"
+                + str(branch_id)
+                + "','"
+                + str(user_id)
+                + "','"
+                + str(device_token)
+                + "','"
+                + str(service)
+                + "',"
+                + "'onqueue');"
+            )
+            value = str(bname[0:3]) + str(cur.lastrowid)
+
+        if t_b == "booking":
+            check = cur.execute(
+                "INSERT INTO "
+                + str(kk)
+                + "(branch_id,user_id,device_token,department,insurance,status) VALUES ('"
+                + str(branch_id)
+                + "','"
+                + str(user_id)
+                + "','"
+                + str(device_token)
+                + "','"
+                + str(service)
+                + "','"
+                + str(insurance)
+                + "',"
+                + "'onqueue');"
+            )
+            value = str(bname[0:3]) + str(cur.lastrowid)
+
+        conn.commit()
+        if check:
+            return value
         return 403
 
     finally:
