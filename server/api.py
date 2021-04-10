@@ -1666,9 +1666,9 @@ def dept_services_dropdown():
 @check_for_user_token
 def searches_sorting():
     conn = mysql.connect()
-    sortby = request.json["sortby"]
-    asc_desc = request.json["asc_desc"]
-    sorting = request.json["sorting"]
+    sortby = request.form["sortby"]
+    asc_desc = request.form["asc_desc"]
+    sorting = request.form["sorting"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
 
@@ -1707,6 +1707,63 @@ def searches_sorting():
         else:
             resp = jsonify({"message": texti})
             resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/create_token", methods=["POST"])
+@check_for_user_token
+def create_token():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        branch_name = request.json["branch_name"]
+        branch_id = request.json["branch_id"]
+        user_id = request.json["user_id"]
+        device_token = request.json["device_token"]
+        token_or_booking = request.json["token_or_booking"]
+
+        if token_or_booking == "token":
+            department = request.json["department"]
+            op = eqbiz.creatingtokens_bookings(
+                token_or_booking,
+                branch_name,
+                branch_id,
+                user_id,
+                device_token,
+                department,
+                0,
+            )
+
+        elif token_or_booking == "booking":
+            service = request.json["service"]
+            insurance = request.json["insurance"]
+            op = eqbiz.creatingtokens_bookings(
+                token_or_booking,
+                branch_name,
+                branch_id,
+                user_id,
+                device_token,
+                service,
+                insurance,
+            )
+
+        else:
+            resp = jsonify({"message": "INVALID TYPE"})
+            resp.status_code = 403
+            return resp
+
+        if op == 403:
+            resp = jsonify({"message": "Error occured. Try again"})
+            resp.status_code = 403
+            return resp
+
+        else:
+            resp = jsonify({"message": op})
+            resp.status_code = 200
             return resp
 
     finally:
