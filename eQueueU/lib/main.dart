@@ -6,6 +6,7 @@ import 'package:eQueue/screens/auth/login.dart';
 import 'package:eQueue/screens/auth/phoneauth.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:eQueue/screens/pages/individual_profile.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -18,6 +19,7 @@ import 'provider/department_token_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 

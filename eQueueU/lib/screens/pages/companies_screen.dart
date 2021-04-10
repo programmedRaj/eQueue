@@ -3,6 +3,7 @@ import 'package:eQueue/components/color.dart';
 import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/screens/pages/branch_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
 
 class Company extends StatefulWidget {
@@ -13,10 +14,14 @@ class Company extends StatefulWidget {
 class _CompanyState extends State<Company> {
   int sizz;
   List<CompanyModel> companylist;
+  String searchval = "";
+  List<CompanyModel> companysearch = [];
+  String noprod;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Provider.of<CompanyProvider>(context, listen: false).getCompanies();
+    Provider.of<CompanyProvider>(context, listen: false)
+        .getCompanies(sort: false);
   }
 
   @override
@@ -35,6 +40,39 @@ class _CompanyState extends State<Company> {
         sizz = 2;
       });
     }
+
+    onsearch(v, List<CompanyModel> company) {
+      v = v.toString().toUpperCase();
+      print(v);
+      if (v != null) {
+        companysearch.clear();
+        for (int i = 0; i < company.length; i++) {
+          if (company[i].name.toLowerCase().contains(v) ||
+              company[i].name.toUpperCase().contains(v) ||
+              company[i].name.contains(v)) {
+            companysearch.add(CompanyModel(
+              acname: company[i].acname,
+              acnum: company[i].acnum,
+              bankname: company[i].bankname,
+              descr: company[i].descr,
+              earnedtilldate: company[i].earnedtilldate,
+              id: company[i].id,
+              ifsc: company[i].ifsc,
+              moneyearned: company[i].moneyearned,
+              name: company[i].name,
+              onliner: company[i].onliner,
+              profileurl: company[i].profileurl,
+              type: company[i].type,
+            ));
+          } else {
+            setState(() {
+              noprod = 'No Company';
+            });
+          }
+        }
+      }
+    }
+
     return Consumer<CompanyProvider>(
       builder: (context, value, child) {
         var comp = value.companies;
@@ -44,31 +82,50 @@ class _CompanyState extends State<Company> {
             margin: EdgeInsets.all(20),
             child: Column(
               children: [
-                Container(
-                  height: height * 0.07,
-                  width: width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: myColor[150],
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Search Companies',
-                          style: TextStyle(
-                              color: myColor[250], fontWeight: FontWeight.bold),
-                        ),
-                        Icon(
-                          Icons.search,
-                          color: myColor[250],
-                        )
-                      ],
+                Row(
+                  children: [
+                    Container(
+                      height: height * 0.07,
+                      width: width / 1.4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: myColor[150],
+                      ),
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            onChanged: (val) {
+                              onsearch(val, value.companies);
+
+                              if (val.length == 0) {
+                                companysearch.clear();
+                              }
+                            },
+                            cursorColor: Colors.white,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                hintText: 'Search Companies',
+                                suffixIcon: Icon(Icons.search)),
+                          )),
                     ),
-                  ),
+                    SizedBox(
+                      width: width * 0.02,
+                    ),
+                    Container(
+                      child: IconButton(
+                          onPressed: () {
+                            sortAlert();
+                          },
+                          icon: Icon(
+                            Icons.sort,
+                            color: myColor[250],
+                          )),
+                    )
+                  ],
                 ),
                 Flexible(
                   child: Container(
@@ -76,7 +133,10 @@ class _CompanyState extends State<Company> {
                     height: height * 0.9,
                     width: width,
                     child: ListView.builder(
-                        itemCount: comp.length,
+                        itemCount:
+                            companysearch.length > 0 || companysearch.isNotEmpty
+                                ? companysearch.length
+                                : comp.length,
                         itemBuilder: (context, i) {
                           return Container(
                             height: height * 0.3,
@@ -109,8 +169,14 @@ class _CompanyState extends State<Company> {
                                             return AlertDialog(
                                               content: SingleChildScrollView(
                                                 child: Container(
-                                                  child: Text(
-                                                      'Company Type : ${comp[i].type.toUpperCase()}'),
+                                                  child: companysearch.length >
+                                                              0 ||
+                                                          companysearch
+                                                              .isNotEmpty
+                                                      ? Text(
+                                                          'Company Type : ${companysearch[i].type.toUpperCase()}')
+                                                      : Text(
+                                                          'Company Type : ${comp[i].type.toUpperCase()}'),
                                                 ),
                                               ),
                                             );
@@ -137,14 +203,28 @@ class _CompanyState extends State<Company> {
                                         children: [
                                           Container(
                                             width: width * 0.4,
-                                            child: Text(
-                                              comp[i].name,
-                                              style: TextStyle(
-                                                  color: myColor[50],
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
+                                            child: companysearch.length > 0 ||
+                                                    companysearch.isNotEmpty
+                                                ? Text(
+                                                    companysearch[i].name,
+                                                    style: TextStyle(
+                                                        color: myColor[50],
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  )
+                                                : Text(
+                                                    comp[i].name,
+                                                    style: TextStyle(
+                                                        color: myColor[50],
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
                                           ),
                                           GestureDetector(
                                             onTap: () {
@@ -177,8 +257,15 @@ class _CompanyState extends State<Company> {
                                                             height:
                                                                 height * 0.6,
                                                             width: width,
-                                                            child: Text(
-                                                                'Company Description : ${comp[i].descr}'),
+                                                            child: companysearch
+                                                                            .length >
+                                                                        0 ||
+                                                                    companysearch
+                                                                        .isNotEmpty
+                                                                ? Text(
+                                                                    'Company Description : ${companysearch[i].descr}')
+                                                                : Text(
+                                                                    'Company Description : ${comp[i].descr}'),
                                                           ),
                                                         ],
                                                       ),
@@ -213,11 +300,26 @@ class _CompanyState extends State<Company> {
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (ctx) =>
-                                                          BranchScreen(
-                                                            id: comp[i].id,
-                                                            comp_type:
-                                                                comp[i].type,
-                                                          )));
+                                                          companysearch.length >
+                                                                      0 ||
+                                                                  companysearch
+                                                                      .isNotEmpty
+                                                              ? BranchScreen(
+                                                                  id: companysearch[
+                                                                          i]
+                                                                      .id,
+                                                                  comp_type:
+                                                                      companysearch[
+                                                                              i]
+                                                                          .type,
+                                                                )
+                                                              : BranchScreen(
+                                                                  id: comp[i]
+                                                                      .id,
+                                                                  comp_type:
+                                                                      comp[i]
+                                                                          .type,
+                                                                )));
                                             },
                                             child: Text(
                                               'View Branches',
@@ -239,6 +341,122 @@ class _CompanyState extends State<Company> {
           )),
         );
       },
+    );
+  }
+
+  sortAlert() {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return MyD();
+      },
+    );
+  }
+}
+
+class MyD extends StatefulWidget {
+  @override
+  _MyDState createState() => _MyDState();
+}
+
+class _MyDState extends State<MyD> {
+  var _picked = "";
+  var _order = "";
+  @override
+  Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
+    return AlertDialog(
+      content: Container(
+        height: height * 0.45,
+        width: width,
+        child: Column(
+          children: [
+            Container(alignment: Alignment.centerLeft, child: Text('Sort By')),
+            RadioButtonGroup(
+              orientation: GroupedButtonsOrientation.HORIZONTAL,
+              margin: const EdgeInsets.only(left: 12.0),
+              onSelected: (String selected) => setState(() {
+                _picked = selected;
+                print(selected);
+              }),
+              labels: <String>[
+                "Name",
+                "Type",
+              ],
+              picked: _picked,
+              itemBuilder: (Radio rb, Text txt, int i) {
+                return Column(
+                  children: <Widget>[
+                    Icon(Icons.public),
+                    rb,
+                    txt,
+                  ],
+                );
+              },
+            ),
+            SizedBox(
+              height: height * 0.04,
+            ),
+            Container(
+                alignment: Alignment.centerLeft, child: Text('Sort Order')),
+            RadioButtonGroup(
+              orientation: GroupedButtonsOrientation.HORIZONTAL,
+              margin: const EdgeInsets.only(left: 12.0),
+              onSelected: (String selected) => setState(() {
+                _order = selected;
+              }),
+              labels: <String>[
+                "ASC",
+                "DESC",
+              ],
+              picked: _order,
+              itemBuilder: (Radio rb, Text txt, int i) {
+                return Column(
+                  children: <Widget>[
+                    Icon(Icons.public),
+                    rb,
+                    txt,
+                  ],
+                );
+              },
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: height * 0.06,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Provider.of<CompanyProvider>(context, listen: false)
+                            .getCompanies(
+                                sort: true,
+                                ascdsc: _order,
+                                sortby: _picked.toLowerCase(),
+                                type: 'company')
+                            .then((value) => Navigator.of(context).pop());
+                      },
+                      child: Text('Ok')),
+                  SizedBox(
+                    width: width * 0.02,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Cancel'))
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

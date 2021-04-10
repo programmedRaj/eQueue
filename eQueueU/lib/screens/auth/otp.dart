@@ -4,6 +4,7 @@ import 'package:eQueue/api/service/baseurl.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:eQueue/screens/pages/home.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -26,7 +27,19 @@ class _OtpState extends State<Otp> {
   BaseUrl baseUrl = BaseUrl();
   String lang;
   int sizz = 0;
-  Future login({String code}) async {
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  _getdevicetoken({String code}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _firebaseMessaging.getToken().then((token) {
+      print("Device Token: $token");
+      login(code: code, devicetoken: token);
+      prefs.setString('usertoken', token);
+    });
+  }
+
+  Future login({String code, String devicetoken}) async {
     Uri registeruri = Uri.parse(baseUrl.login);
     var header = {
       'Content-Type': 'multipart/form-data',
@@ -36,6 +49,7 @@ class _OtpState extends State<Otp> {
 
     request.fields['number'] = widget.number;
     request.fields['code'] = code;
+    request.fields['device_token'] = devicetoken;
 
     var res = await request.send();
 
@@ -146,7 +160,7 @@ class _OtpState extends State<Otp> {
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
                         if (otpkey.currentState.validate()) {
-                          login(code: password);
+                          _getdevicetoken(code: password);
                         }
 
                         // Navigator.push(
