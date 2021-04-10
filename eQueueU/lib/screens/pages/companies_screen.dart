@@ -361,8 +361,8 @@ class MyD extends StatefulWidget {
 }
 
 class _MyDState extends State<MyD> {
-  var _picked = "";
-  var _order = "";
+  var _picked = "Name";
+  var _order = "ASC";
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
