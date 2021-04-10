@@ -908,9 +908,7 @@ def create_branch():
                     check = cur.fetchone()
                     if check:
                         branchid = check["id"]
-                        op = eqbiz.delete_branch(
-                            branchid,
-                        )
+                        op = eqbiz.delete_branch(bname, branchid)
 
                         if op == 200:
                             resp = jsonify({"message": "successfully deleted."})

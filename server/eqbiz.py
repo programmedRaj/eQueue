@@ -330,7 +330,7 @@ def edit_branch(
         conn.close()
 
 
-def delete_branch(branchid):
+def delete_branch(branch_name, branchid):
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
@@ -342,6 +342,10 @@ def delete_branch(branchid):
         checkk = cur.execute(
             "DELETE FROM employee_details WHERE branch_id =" + str(branchid) + " ;"
         )
+
+        kk = str(branch_name) + "_" + str(branchid)
+        checkk = cur.execute("DROP TABLE " + str(kk) + " ;")
+
         conn.commit()
         if check or checkk:
             return 200
