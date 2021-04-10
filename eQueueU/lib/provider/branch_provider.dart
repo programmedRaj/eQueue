@@ -72,24 +72,21 @@ class BranchProvider extends ChangeNotifier {
         workingadd(day: 'saturday', time: wh['saturday']);
         workingadd(day: 'sunday', time: wh['sunday']);
 
-        bookinghrsperdayadd(day: 'monday', value: book['monday'].toString());
-        bookinghrsperdayadd(day: 'tuesday', value: book['tuesday'].toString());
-        bookinghrsperdayadd(
-            day: 'wednesday', value: book['wednesday'].toString());
-        bookinghrsperdayadd(
-            day: 'thursday', value: book['thursday'].toString());
-        bookinghrsperdayadd(day: 'friday', value: book['friday'].toString());
-        bookinghrsperdayadd(
-            day: 'saturday', value: book['saturday'].toString());
-        bookinghrsperdayadd(day: 'sunday', value: book['sunday'].toString());
+        bookinghrsperdayadd(day: 'monday', value: book[0].toString());
+        bookinghrsperdayadd(day: 'tuesday', value: book[1].toString());
+        bookinghrsperdayadd(day: 'wednesday', value: book[2].toString());
+        bookinghrsperdayadd(day: 'thursday', value: book[3].toString());
+        bookinghrsperdayadd(day: 'friday', value: book[4].toString());
+        bookinghrsperdayadd(day: 'saturday', value: book[5].toString());
+        bookinghrsperdayadd(day: 'sunday', value: book[6].toString());
 
-        perdayadd(day: 'monday', value: perday['monday'].toString());
-        perdayadd(day: 'tuesday', value: perday['tuesday'].toString());
-        perdayadd(day: 'wednesday', value: perday['wednesday'].toString());
-        perdayadd(day: 'thursday', value: perday['thursday'].toString());
-        perdayadd(day: 'friday', value: perday['friday'].toString());
-        perdayadd(day: 'saturday', value: perday['saturday'].toString());
-        perdayadd(day: 'sunday', value: perday['sunday'].toString());
+        perdayadd(day: 'monday', value: perday[0].toString());
+        perdayadd(day: 'tuesday', value: perday[1].toString());
+        perdayadd(day: 'wednesday', value: perday[2].toString());
+        perdayadd(day: 'thursday', value: perday[3].toString());
+        perdayadd(day: 'friday', value: perday[4].toString());
+        perdayadd(day: 'saturday', value: perday[5].toString());
+        perdayadd(day: 'sunday', value: perday[6].toString());
       }
   }
 

@@ -37,6 +37,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
   List<String> servicesName = [];
   List<String> serviceRates = [];
   List<String> servicesDesc = [];
+
+  List<String> perDayHrs = [];
   List<TextEditingController> noofBookingsC = [];
   List<String> weekDays = [
     "Monday",
@@ -680,18 +682,31 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         });
   }
 
+  List day = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday"
+  ];
+
   List<String> getbookingPerDayHrs() {
-    List<String> perDayHrs = [];
-    for (var i = 0; i < startTimeList.length; i++) {
+    perDayHrs.clear();
+    for (var i = 0; i < 7; i++) {
       if ((startTimeList[i] != null && endTimeList[i] != null)) {
-        perDayHrs.insert(i,
-            "${endTimeList[i].hour - startTimeList[i]?.hour}:${endTimeList[i].hour - startTimeList[i]?.hour}");
+        // perDayHrs.insert(i, "${endTimeList[i].hour - startTimeList[i]?.hour}");
+        perDayHrs.add("${endTimeList[i].hour - startTimeList[i]?.hour}");
+      } else if (startTimeList[i] == null && endTimeList[i] == null) {
+        perDayHrs.add("");
       } else if (startTimeList[i] == null && endTimeList[i] != null) {
         AppToast.showErr("Check your timing field");
 
         return null;
       }
     }
+    print(perDayHrs);
     return perDayHrs;
   }
 

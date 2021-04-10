@@ -1,4 +1,4 @@
-package com.example.eQueue
+package bido.equeue.com
 
 import io.flutter.embedding.android.FlutterActivity
 

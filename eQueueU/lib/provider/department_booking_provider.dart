@@ -37,7 +37,7 @@ class DepBookProvider extends ChangeNotifier {
         branchesadd(
           service: n['services'][i],
           servicedescription: n['services_desc'][i],
-          servicerates: n['services_rates'][i].toString(),
+          servicerates: n['rates'][i].toString(),
         );
       }
   }
