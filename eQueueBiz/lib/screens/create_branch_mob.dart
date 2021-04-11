@@ -66,6 +66,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
   TextEditingController _serviceNameController = TextEditingController();
   TextEditingController _serviceRateController = TextEditingController();
   TextEditingController _serviceDescController = TextEditingController();
+  TextEditingController _timezoneController = TextEditingController();
+  TextEditingController _notifytimeDescController = TextEditingController();
 
   AuthProv authProv;
 
@@ -276,6 +278,9 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                       _textField("State/Province", _provinceController, false),
                       _textField("Contact", _phoneNoController, true),
                       _textField("Postal Code", _postalCodeController, false),
+                      _textField("Time Zone", _timezoneController, false),
+                      _textField(
+                          "Notify Time", _notifytimeDescController, false),
                       authProv.authinfo.companyType == CompanyEnum.Booking
                           ? SizedBox()
                           : _textField(
@@ -683,6 +688,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     }
     return BranchModel(
         branchName: _branchNameController.text,
+        notify: _notifytimeDescController.text,
+        timeZone: _timezoneController.text,
         phoneNo: _phoneNoController.text,
         addr1: _addr1Controller.text,
         addr2: _addr2Controller.text,

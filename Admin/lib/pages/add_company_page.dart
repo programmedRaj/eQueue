@@ -23,6 +23,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
   String profileUrl;
   CompanyEnum selectedType;
   bool edit = false;
+  bool _isChecked = false;
 
   TextEditingController _nameC = TextEditingController();
   TextEditingController _descC = TextEditingController();
@@ -249,6 +250,22 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
           controller: _ifscCodeC,
           decoration: InputDecoration(hintText: "IFSC Code"),
         ),
+        Row(
+          children: [
+            Checkbox(
+                checkColor: Colors.black,
+                value: _isChecked,
+                onChanged: (val) {
+                  setState(() {
+                    _isChecked = !_isChecked;
+                  });
+                }),
+            SizedBox(
+              width: 10,
+            ),
+            Text('Insurance')
+          ],
+        )
       ],
     );
   }
@@ -288,7 +305,8 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         onPressed: () async {
           bool success =
               await Provider.of<AddCompanyProv>(context, listen: false)
-                  .execCreateComppany(uploadedImage, getDetails(), edit);
+                  .execCreateComppany(
+                      uploadedImage, getDetails(), edit, _isChecked);
           if (success) {
             Navigator.pop(context);
           }

@@ -52,8 +52,8 @@ class CreateEditBanchProv extends ChangeNotifier {
     request.fields["province"] = branch.province;
     request.fields["w_hrs"] = jsonEncode(branch.workingHrs);
     request.fields["services"] = jsonEncode(branch.services);
-    request.fields["timezone"] = "jnf";
-    request.fields["notify"] = "lkrrf";
+    request.fields["timezone"] = branch.timeZone;
+    request.fields["notify_time"] = branch.notify;
     request.fields["booking_perday"] = jsonEncode(branch.bookingPerday);
     request.fields["booking_perhrs"] = jsonEncode(branch.bookingPerDayhrs);
     request.fields["req"] = branch.reqType;

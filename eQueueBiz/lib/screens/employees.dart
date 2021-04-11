@@ -133,7 +133,7 @@ class _EmployeesState extends State<Employees> {
                                                               i],
                                                           edp.employeesWithImage[
                                                               i],
-                                                          int.parse(
+                                                          double.parse(
                                                               edp.employeeratings[
                                                                   i]));
                                                     },
@@ -245,7 +245,7 @@ class _EmployeesState extends State<Employees> {
     );
   }
 
-  Widget _employeeCard(EmployeeModel empdets, String images, int ratings) {
+  Widget _employeeCard(EmployeeModel empdets, String images, double ratings) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -320,19 +320,19 @@ class _EmployeesState extends State<Employees> {
     );
   }
 
-  Widget _ratingStar(int ratings) {
+  Widget _ratingStar(double ratings) {
     print(ratings);
     return SmoothStarRating(
         allowHalfRating: false,
         onRated: (v) {},
         starCount: 5,
-        rating: ratings.toDouble(),
+        rating: ratings,
         size: 30.0,
         isReadOnly: true,
         filledIconData: Icons.star,
         halfFilledIconData: Icons.star_half,
         color: Colors.yellow,
-        borderColor: Colors.green,
+        borderColor: Colors.yellow,
         spacing: 0.0);
   }
 }

@@ -11,8 +11,8 @@ import 'package:http/http.dart' as http;
 
 class AddCompanyProv extends ChangeNotifier {
   List<int> comlogoint;
-  Future<bool> execCreateComppany(
-      Uint8List companyLogo, AddCompany addCompany, bool edit) async {
+  Future<bool> execCreateComppany(Uint8List companyLogo, AddCompany addCompany,
+      bool edit, bool _isCheck) async {
     var postUri = Uri.parse(edit ? CompanyApi.edit : CompanyApi.create);
     var header = {
       'Content-Type': 'multipart/form-data',
@@ -22,6 +22,8 @@ class AddCompanyProv extends ChangeNotifier {
     var request = new http.MultipartRequest("POST", postUri)
       ..headers.addAll(header);
 
+    var ins = _isCheck ? 1 : 0;
+
     request.files.add(http.MultipartFile.fromBytes(
         'company_logo', comlogoint ?? [],
         filename: comlogoint == null ? "" : "${addCompany.name}_logo.png"));
@@ -29,7 +31,7 @@ class AddCompanyProv extends ChangeNotifier {
     request.fields['acc_type'] = companyEnumToString(addCompany.accType);
     request.fields['email'] = addCompany.email;
     request.fields['password'] = addCompany.password;
-
+    request.fields['insurance'] = ins.toString();
     request.fields['name'] = addCompany.name;
     request.fields['desc'] = addCompany.desc;
     request.fields['bankname'] = addCompany.bankName;

@@ -153,7 +153,8 @@ def create_company():
             ifsc = request.form["ifsc_code"]
             account_number = request.form["accountnumber"]
             account_name = request.form["accountname"]
-            q = "INSERT INTO companydetails(id,name,profile_url,descr,bankname,ifsc,account_number,account_name,type) VALUES ('"
+            insurance = request.form["insurance"]
+            q = "INSERT INTO companydetails(id,name,profile_url,descr,bankname,ifsc,account_number,insurance,account_name,type) VALUES ('"
             query = (
                 "','"
                 + str(name)
@@ -167,6 +168,8 @@ def create_company():
                 + str(ifsc)
                 + "','"
                 + str(account_number)
+                 + "','"
+                + str(insurance)
                 + "','"
                 + str(account_name)
                 + "','booking');"
