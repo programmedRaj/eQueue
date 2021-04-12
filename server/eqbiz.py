@@ -655,3 +655,36 @@ def creatingtokens_bookings(
     finally:
         cur.close()
         conn.close()
+
+
+def gettokens_bookings(t_b, bname, branch_id, user_id):
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        kk = str(bname) + "_" + str(branch_id)
+        if t_b == "token":
+            check = cur.execute(
+                "select * from "
+                + str(kk)
+                + " WHERE user_id ='"
+                + str(user_id)
+                + "' AND status ='onqueue';"
+            )
+
+        if t_b == "booking":
+            check = cur.execute(
+                "select * from "
+                + str(kk)
+                + " WHERE user_id ='"
+                + str(user_id)
+                + "' AND status ='onqueue';"
+            )
+
+        conn.commit()
+        if check:
+            return 200
+        return 403
+
+    finally:
+        cur.close()
+        conn.close()
