@@ -1786,12 +1786,12 @@ def get_token():
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
     token = request.headers["Authorization"]
-    user = jwt.decode(token, app.config["SECRET_KEY"])
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
-        branch_name = request.json["branch_name"]
-        branch_id = request.json["branch_id"]
+        branch_name = request.form["branch_name"]
+        branch_id = request.form["branch_id"]
         user_id = user["user_id"]
-        token_or_booking = request.json["token_or_booking"]
+        token_or_booking = request.form["token_or_booking"]
 
         if token_or_booking == "token":
             op = eqbiz.gettokens_bookings(

@@ -7,4 +7,5 @@ class BaseUrl {
   final String branch_list = "$basic/branches_list";
   final String departments = "$basic/dept_services_dropdown";
   final String sorting = "$basic/sorting";
+  final String tb_check = "$basic/tb_checker";
 }

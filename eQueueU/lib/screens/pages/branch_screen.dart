@@ -3,6 +3,7 @@ import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/provider/branch_provider.dart';
 import 'package:eQueue/provider/company_provider.dart';
+import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:eQueue/screens/pages/book_appoint_service.dart';
 import 'package:eQueue/screens/pages/book_appointment.dart';
 import 'package:eQueue/screens/pages/book_token.dart';
@@ -232,6 +233,18 @@ class _BranchScreenState extends State<BranchScreen> {
                                                           10)),
                                               child: FlatButton(
                                                   onPressed: () {
+                                                    Provider.of<TokenChecker>(
+                                                            context,
+                                                            listen: false)
+                                                        .checkToken(
+                                                            branchid: value
+                                                                .branches[i].id,
+                                                            tokenorbooking:
+                                                                widget
+                                                                    .comp_type,
+                                                            branchname: value
+                                                                .branches[i]
+                                                                .bname);
                                                     Navigator.of(context).push(
                                                         MaterialPageRoute(
                                                             builder: (ctx) => widget
@@ -256,6 +269,10 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                         .workinghrsper,
                                                                   )
                                                                 : Booktoken(
+                                                                    branchname: value
+                                                                        .branches[
+                                                                            i]
+                                                                        .bname,
                                                                     bid: value
                                                                         .branches[
                                                                             i]

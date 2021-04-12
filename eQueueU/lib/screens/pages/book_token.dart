@@ -1,6 +1,7 @@
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/components/tokenpage.dart';
 import 'package:eQueue/provider/department_token_provider.dart';
+import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,8 @@ class Booktoken extends StatefulWidget {
   final int id;
   final int bid;
   final String type;
-  Booktoken({this.id, this.bid, this.type});
+  final String branchname;
+  Booktoken({this.id, this.bid, this.type, this.branchname});
   @override
   _BooktokenState createState() => _BooktokenState();
 }
@@ -161,30 +163,30 @@ class _BooktokenState extends State<Booktoken> {
                                 }),
                           ),
                         ),
-                        Container(
-                          height: height * 0.3,
-                          width: width,
-                          margin: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: myColor[50],
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 0.4,
-                              )
-                            ],
-                          ),
-                          child: Center(
-                              child: Text(
-                            'ABC123',
-                            style: TextStyle(
-                                color: myColor[100],
-                                fontSize: 40,
-                                letterSpacing: 25,
-                                fontWeight: FontWeight.w800),
-                          )),
-                        )
+                        // Container(
+                        //   height: height * 0.3,
+                        //   width: width,
+                        //   margin: EdgeInsets.all(15),
+                        //   decoration: BoxDecoration(
+                        //     color: myColor[50],
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     boxShadow: [
+                        //       BoxShadow(
+                        //         color: Colors.grey,
+                        //         blurRadius: 0.4,
+                        //       )
+                        //     ],
+                        //   ),
+                        //   child: Center(
+                        //       child: Text(
+                        //     'ABC123',
+                        //     style: TextStyle(
+                        //         color: myColor[100],
+                        //         fontSize: 40,
+                        //         letterSpacing: 25,
+                        //         fontWeight: FontWeight.w800),
+                        //   )),
+                        // )
                       ],
                     ),
                   )
