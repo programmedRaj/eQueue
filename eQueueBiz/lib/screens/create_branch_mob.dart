@@ -640,9 +640,19 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
 
                     return;
                   }
-                  if (servicesName.length == 0) {
-                    AppToast.showErr("Atleast 1 service is required");
-                    return;
+
+                  if (authProv.authinfo.companyType == CompanyEnum.Booking) {
+                    if (servicesName.length == 0) {
+                      AppToast.showErr("Atleast 1 service is required");
+                      return;
+                    }
+                  }
+                  if (authProv.authinfo.companyType == CompanyEnum.Token ||
+                      authProv.authinfo.companyType == CompanyEnum.MultiToken) {
+                    if (departments.length == 0) {
+                      AppToast.showErr("Atleast 1 department is required");
+                      return;
+                    }
                   }
                   bool success = await value.execCreateComppany(
                       temp, authProv.authinfo.jwtToken,
@@ -707,9 +717,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         workingHrs: getWorkingHrs(),
         counter: _counterController.text,
         reqType: widget.branchDets == null ? "create" : "update",
-        department: {
-          "department": ["dep1", "dep2"]
-        });
+        department: {"department": departments});
   }
 
   List day = [
@@ -736,8 +744,10 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         return null;
       }
     }
-    print(perDayHrs);
-    return perDayHrs;
+    if (perDayHrs.isEmpty) {
+      return ["a", "a", "a", "a", "a", "a", "a"];
+    } else
+      return perDayHrs;
   }
 
   Map<String, List<String>> getServices() {
@@ -746,8 +756,13 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       "services": servicesName,
       "services_desc": servicesDesc
     };
+    var nonservice = {
+      "rates": ["a"],
+      "services": ["a"],
+      "services_desc": ["a"]
+    };
 
-    return services;
+    return services.isEmpty ? nonservice : services;
   }
 
   Map<dynamic, dynamic> getWorkingHrs() {

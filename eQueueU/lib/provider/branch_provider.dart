@@ -75,33 +75,35 @@ class BranchProvider extends ChangeNotifier {
           timezone: n['branches'][i]['timezone'],
           workinghours: n['branches'][i]['working_hours'],
         );
-        var wh = json.decode(n['branches'][0]['working_hours']);
-        var book = json.decode(n['branches'][0]['booking_per_day']);
-        var perday = json.decode(n['branches'][0]['per_day_hours']);
+        if (type == 'booking') {
+          var wh = json.decode(n['branches'][0]['working_hours']);
+          var book = json.decode(n['branches'][0]['booking_per_day']);
+          var perday = json.decode(n['branches'][0]['per_day_hours']);
 
-        workingadd(day: 'monday', time: wh['monday']);
-        workingadd(day: 'tuesday', time: wh['tuesday']);
-        workingadd(day: 'wednesday', time: wh['wednesday']);
-        workingadd(day: 'thursday', time: wh['thursday']);
-        workingadd(day: 'friday', time: wh['friday']);
-        workingadd(day: 'saturday', time: wh['saturday']);
-        workingadd(day: 'sunday', time: wh['sunday']);
+          workingadd(day: 'monday', time: wh['monday']);
+          workingadd(day: 'tuesday', time: wh['tuesday']);
+          workingadd(day: 'wednesday', time: wh['wednesday']);
+          workingadd(day: 'thursday', time: wh['thursday']);
+          workingadd(day: 'friday', time: wh['friday']);
+          workingadd(day: 'saturday', time: wh['saturday']);
+          workingadd(day: 'sunday', time: wh['sunday']);
 
-        bookinghrsperdayadd(day: 'monday', value: book[0].toString());
-        bookinghrsperdayadd(day: 'tuesday', value: book[1].toString());
-        bookinghrsperdayadd(day: 'wednesday', value: book[2].toString());
-        bookinghrsperdayadd(day: 'thursday', value: book[3].toString());
-        bookinghrsperdayadd(day: 'friday', value: book[4].toString());
-        bookinghrsperdayadd(day: 'saturday', value: book[5].toString());
-        bookinghrsperdayadd(day: 'sunday', value: book[6].toString());
+          bookinghrsperdayadd(day: 'monday', value: book[0].toString());
+          bookinghrsperdayadd(day: 'tuesday', value: book[1].toString());
+          bookinghrsperdayadd(day: 'wednesday', value: book[2].toString());
+          bookinghrsperdayadd(day: 'thursday', value: book[3].toString());
+          bookinghrsperdayadd(day: 'friday', value: book[4].toString());
+          bookinghrsperdayadd(day: 'saturday', value: book[5].toString());
+          bookinghrsperdayadd(day: 'sunday', value: book[6].toString());
 
-        perdayadd(day: 'monday', value: perday[0].toString());
-        perdayadd(day: 'tuesday', value: perday[1].toString());
-        perdayadd(day: 'wednesday', value: perday[2].toString());
-        perdayadd(day: 'thursday', value: perday[3].toString());
-        perdayadd(day: 'friday', value: perday[4].toString());
-        perdayadd(day: 'saturday', value: perday[5].toString());
-        perdayadd(day: 'sunday', value: perday[6].toString());
+          perdayadd(day: 'monday', value: perday[0].toString());
+          perdayadd(day: 'tuesday', value: perday[1].toString());
+          perdayadd(day: 'wednesday', value: perday[2].toString());
+          perdayadd(day: 'thursday', value: perday[3].toString());
+          perdayadd(day: 'friday', value: perday[4].toString());
+          perdayadd(day: 'saturday', value: perday[5].toString());
+          perdayadd(day: 'sunday', value: perday[6].toString());
+        }
       }
   }
 

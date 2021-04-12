@@ -680,6 +680,7 @@ def create_branch():
             province = request.form["province"]
             w_hrs = request.form["w_hrs"]
 
+
             filename = "default.png"
 
             if request.files["profile_photo_url"]:
@@ -690,13 +691,20 @@ def create_branch():
             cur.execute("Select * from bizusers WHERE id = '" + str(comp_id) + "'")
             check = cur.fetchall()
             if check:
+
                 if request.form["req"] == "create":
                     if user["comp_type"] == "booking":
+                      
+
                         services = request.form["services"]
                         timezone = request.form["timezone"]
                         notify_time = request.form["notify"]
                         bpd = request.form["booking_perday"]
                         bphrs = request.form["booking_perhrs"]
+
+                        
+                       
+
                         op = eqbiz.create_branch(
                             user["comp_type"],
                             bname,

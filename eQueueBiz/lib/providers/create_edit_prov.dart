@@ -42,6 +42,12 @@ class CreateEditBanchProv extends ChangeNotifier {
           filename: ""));
     }
 
+    print('workh -- ${json.encode(branch.workingHrs)}');
+    print('ser -- ${json.encode(branch.services)}');
+
+    print('bkp -- ${json.encode(branch.bookingPerday)}');
+    print('pd -- ${json.encode(branch.bookingPerDayhrs)}');
+
     request.fields["bname"] = branch.branchName;
     request.fields["pnum"] = branch.phoneNo;
     request.fields["addr1"] = branch.addr1;
@@ -53,7 +59,7 @@ class CreateEditBanchProv extends ChangeNotifier {
     request.fields["w_hrs"] = jsonEncode(branch.workingHrs);
     request.fields["services"] = jsonEncode(branch.services);
     request.fields["timezone"] = branch.timeZone;
-    request.fields["notify_time"] = branch.notify;
+    request.fields["notify"] = branch.notify;
     request.fields["booking_perday"] = jsonEncode(branch.bookingPerday);
     request.fields["booking_perhrs"] = jsonEncode(branch.bookingPerDayhrs);
     request.fields["req"] = branch.reqType;
