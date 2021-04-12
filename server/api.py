@@ -168,7 +168,7 @@ def create_company():
                 + str(ifsc)
                 + "','"
                 + str(account_number)
-                 + "','"
+                + "','"
                 + str(insurance)
                 + "','"
                 + str(account_name)
@@ -1772,6 +1772,55 @@ def create_token():
 
         else:
             resp = jsonify({"message": op})
+            resp.status_code = 200
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/tb_checker", methods=["POST"])
+@check_for_user_token
+def get_token():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    try:
+        branch_name = request.json["branch_name"]
+        branch_id = request.json["branch_id"]
+        user_id = user["user_id"]
+        token_or_booking = request.json["token_or_booking"]
+
+        if token_or_booking == "token":
+            op = eqbiz.gettokens_bookings(
+                token_or_booking,
+                branch_name,
+                branch_id,
+                user_id,
+            )
+
+        elif token_or_booking == "booking":
+            op = eqbiz.gettokens_bookings(
+                token_or_booking,
+                branch_name,
+                branch_id,
+                user_id,
+            )
+
+        else:
+            resp = jsonify({"message": "INVALID TYPE"})
+            resp.status_code = 403
+            return resp
+
+        if op == 200:
+            resp = jsonify({"message": "Token already exists"})
+            resp.status_code = 403
+            return resp
+
+        else:
+            resp = jsonify({"message": "cretae token."})
             resp.status_code = 200
             return resp
 
