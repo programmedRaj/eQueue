@@ -33,6 +33,7 @@ class _OtpState extends State<Otp> {
   _getdevicetoken({String code}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _firebaseMessaging.getToken().then((token) {
+      prefs.setString('devicetoken', token);
       print("Device Token: $token");
       login(code: code, devicetoken: token);
       prefs.setString('usertoken', token);

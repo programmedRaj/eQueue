@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:eQueue/constants/apptoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:eQueue/api/service/baseurl.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,9 +16,6 @@ class TokenChecker with ChangeNotifier {
       {String branchname, int branchid, String tokenorbooking}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    print(token);
-    print(branchname);
-    print(branchid.toString());
     var map = new Map<String, dynamic>();
     map['branch_name'] = branchname;
     map['branch_id'] = branchid.toString();
@@ -33,5 +31,11 @@ class TokenChecker with ChangeNotifier {
     var k = response.body;
     var n = json.decode(k);
     print(n);
+    if (response.statusCode == 200) {
+      return response.statusCode;
+    } else {
+      AppToast.showErr("You already have token of this branch");
+      return 403;
+    }
   }
 }

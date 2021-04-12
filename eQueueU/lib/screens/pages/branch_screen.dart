@@ -232,10 +232,11 @@ class _BranchScreenState extends State<BranchScreen> {
                                                       BorderRadius.circular(
                                                           10)),
                                               child: FlatButton(
-                                                  onPressed: () {
-                                                    Provider.of<TokenChecker>(
-                                                            context,
-                                                            listen: false)
+                                                  onPressed: () async {
+                                                    var status = await Provider
+                                                            .of<TokenChecker>(
+                                                                context,
+                                                                listen: false)
                                                         .checkToken(
                                                             branchid: value
                                                                 .branches[i].id,
@@ -245,44 +246,46 @@ class _BranchScreenState extends State<BranchScreen> {
                                                             branchname: value
                                                                 .branches[i]
                                                                 .bname);
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (ctx) => widget
-                                                                        .comp_type ==
-                                                                    "booking"
-                                                                ? SelectService(
-                                                                    bid: value
-                                                                        .branches[
-                                                                            i]
-                                                                        .id,
-                                                                    id: value
-                                                                        .branches[
-                                                                            i]
-                                                                        .companyid,
-                                                                    type: widget
-                                                                        .comp_type,
-                                                                    book: value
-                                                                        .bookingsperhrs,
-                                                                    perday: value
-                                                                        .perdayhrss,
-                                                                    wk: value
-                                                                        .workinghrsper,
-                                                                  )
-                                                                : Booktoken(
-                                                                    branchname: value
-                                                                        .branches[
-                                                                            i]
-                                                                        .bname,
-                                                                    bid: value
-                                                                        .branches[
-                                                                            i]
-                                                                        .id,
-                                                                    id: value
-                                                                        .branches[
-                                                                            i]
-                                                                        .companyid,
-                                                                    type: widget
-                                                                        .comp_type)));
+                                                    if (status == 200) {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder: (ctx) => widget
+                                                                          .comp_type ==
+                                                                      "booking"
+                                                                  ? SelectService(
+                                                                      bid: value
+                                                                          .branches[
+                                                                              i]
+                                                                          .id,
+                                                                      id: value
+                                                                          .branches[
+                                                                              i]
+                                                                          .companyid,
+                                                                      type: widget
+                                                                          .comp_type,
+                                                                      book: value
+                                                                          .bookingsperhrs,
+                                                                      perday: value
+                                                                          .perdayhrss,
+                                                                      wk: value
+                                                                          .workinghrsper,
+                                                                    )
+                                                                  : Booktoken(
+                                                                      branchname: value
+                                                                          .branches[
+                                                                              i]
+                                                                          .bname,
+                                                                      bid: value
+                                                                          .branches[
+                                                                              i]
+                                                                          .id,
+                                                                      id: value
+                                                                          .branches[
+                                                                              i]
+                                                                          .companyid,
+                                                                      type: widget
+                                                                          .comp_type)));
+                                                    }
                                                   },
                                                   child: Text(
                                                     'Book Now',

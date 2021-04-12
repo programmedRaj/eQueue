@@ -1728,15 +1728,17 @@ def searches_sorting():
 def create_token():
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
-        branch_name = request.json["branch_name"]
-        branch_id = request.json["branch_id"]
-        user_id = request.json["user_id"]
-        device_token = request.json["device_token"]
-        token_or_booking = request.json["token_or_booking"]
+        branch_name = request.form["branch_name"]
+        branch_id = request.form["branch_id"]
+        user_id = user["user_id"]
+        device_token = request.form["device_token"]
+        token_or_booking = request.form["token_or_booking"]
 
         if token_or_booking == "token":
-            department = request.json["department"]
+            department = request.form["department"]
             op = eqbiz.creatingtokens_bookings(
                 token_or_booking,
                 branch_name,
@@ -1748,8 +1750,8 @@ def create_token():
             )
 
         elif token_or_booking == "booking":
-            service = request.json["service"]
-            insurance = request.json["insurance"]
+            service = request.form["service"]
+            insurance = request.form["insurance"]
             op = eqbiz.creatingtokens_bookings(
                 token_or_booking,
                 branch_name,
@@ -1788,6 +1790,7 @@ def get_token():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
+
         branch_name = request.form["branch_name"]
         branch_id = request.form["branch_id"]
         user_id = user["user_id"]

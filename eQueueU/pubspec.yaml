@@ -44,6 +44,7 @@ dependencies:
   intl:
   firebase_messaging: ^9.1.1
   firebase_core: ^1.0.3
+  fluttertoast: ^7.1.8
 
 
 
