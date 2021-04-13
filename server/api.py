@@ -1397,6 +1397,31 @@ def login():
         conn.close()
 
 
+@app.route("/userdetails")
+def userdetails():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    try:
+        check = cur.execute(
+            "SELECT * FROM user_details WHERE id = '" + str(user["user_id"]) + "';"
+        )
+        if check:
+            r = cur.fetchone()
+            if r:
+                resp = jsonify({"userdetails": r})
+                resp.status_code = 200
+                return resp
+            else:
+                resp = jsonify({"message": "Error No user found."})
+                resp.status_code = 403
+                return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/register", methods=["POST"])
 def login_register():
     conn = mysql.connect()
