@@ -301,6 +301,10 @@ class _CompanyState extends State<Company> {
                                                                       companysearch[
                                                                               i]
                                                                           .type,
+                                                                  companyname:
+                                                                      companysearch[
+                                                                              i]
+                                                                          .name,
                                                                 )
                                                               : BranchScreen(
                                                                   id: comp[i]
@@ -308,6 +312,9 @@ class _CompanyState extends State<Company> {
                                                                   comp_type:
                                                                       comp[i]
                                                                           .type,
+                                                                  companyname:
+                                                                      comp[i]
+                                                                          .name,
                                                                 )));
                                             },
                                             child: Text(

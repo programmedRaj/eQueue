@@ -626,7 +626,7 @@ def creatingtokens_bookings(
                 + "',"
                 + "'onqueue');"
             )
-            value = str(bname[0:3]) + str(cur.lastrowid)
+            value = str(service[0:3]) +"-"+ str(cur.lastrowid)
 
         if t_b == "booking":
             check = cur.execute(
@@ -647,7 +647,7 @@ def creatingtokens_bookings(
                 + "',"
                 + "'onqueue');"
             )
-            value = str(bname[0:3]) + str(cur.lastrowid)
+            value = str(service[0:3]) +"-"+ str(cur.lastrowid)
 
         conn.commit()
         if check:

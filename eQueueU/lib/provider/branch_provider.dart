@@ -49,7 +49,7 @@ class BranchProvider extends ChangeNotifier {
     var n = json.decode(k);
 
     removeedu();
-    // removeday();
+
     if (n['branches'] != "No branches listed yet..")
       for (int i = 0; i < n['branches'].length; i++) {
         branchesadd(
@@ -80,13 +80,13 @@ class BranchProvider extends ChangeNotifier {
           var book = json.decode(n['branches'][0]['booking_per_day']);
           var perday = json.decode(n['branches'][0]['per_day_hours']);
 
-          workingadd(day: 'monday', time: wh['monday']);
-          workingadd(day: 'tuesday', time: wh['tuesday']);
-          workingadd(day: 'wednesday', time: wh['wednesday']);
-          workingadd(day: 'thursday', time: wh['thursday']);
-          workingadd(day: 'friday', time: wh['friday']);
-          workingadd(day: 'saturday', time: wh['saturday']);
-          workingadd(day: 'sunday', time: wh['sunday']);
+          workingadd(day: 'monday', time: wh['Monday'].toString());
+          workingadd(day: 'tuesday', time: wh['Tuesday'].toString());
+          workingadd(day: 'wednesday', time: wh['Wednesday'].toString());
+          workingadd(day: 'thursday', time: wh['Thursday'].toString());
+          workingadd(day: 'friday', time: wh['Friday'].toString());
+          workingadd(day: 'saturday', time: wh['Saturday'].toString());
+          workingadd(day: 'sunday', time: wh['Sunday'].toString());
 
           bookinghrsperdayadd(day: 'monday', value: book[0].toString());
           bookinghrsperdayadd(day: 'tuesday', value: book[1].toString());
@@ -122,6 +122,7 @@ class BranchProvider extends ChangeNotifier {
 
   void workingadd({String day, String time}) {
     workinghrsper.add(Working(day: day, value: time));
+    print(workinghrsper);
   }
 
   void bookinghrsperdayadd({

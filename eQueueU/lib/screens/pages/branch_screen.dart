@@ -14,8 +14,9 @@ import 'package:provider/provider.dart';
 class BranchScreen extends StatefulWidget {
   final int id;
   final String comp_type;
+  final String companyname;
 
-  BranchScreen({this.id, this.comp_type});
+  BranchScreen({this.id, this.comp_type, this.companyname});
   @override
   _BranchScreenState createState() => _BranchScreenState();
 }
@@ -29,12 +30,12 @@ class _BranchScreenState extends State<BranchScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     Provider.of<BranchProvider>(context, listen: false)
-        .getBranches(id: widget.id, sort: false);
+        .getBranches(id: widget.id, sort: false, type: widget.comp_type);
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.comp_type);
+    print(widget.companyname);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     if (width <= 320.0) {
@@ -233,6 +234,7 @@ class _BranchScreenState extends State<BranchScreen> {
                                                           10)),
                                               child: FlatButton(
                                                   onPressed: () async {
+                                                    print(value.bookingshrs);
                                                     var status = await Provider
                                                             .of<TokenChecker>(
                                                                 context,
@@ -253,6 +255,13 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                           .comp_type ==
                                                                       "booking"
                                                                   ? SelectService(
+                                                                      companyname:
+                                                                          widget
+                                                                              .companyname,
+                                                                      branchname: value
+                                                                          .branches[
+                                                                              i]
+                                                                          .bname,
                                                                       bid: value
                                                                           .branches[
                                                                               i]

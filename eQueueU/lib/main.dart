@@ -2,6 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:eQueue/check.dart';
 import 'package:eQueue/provider/branch_provider.dart';
 import 'package:eQueue/provider/company_provider.dart';
+import 'package:eQueue/provider/send_booking.dart';
 import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:eQueue/screens/auth/login.dart';
@@ -84,6 +85,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: DepBookProvider()),
         ChangeNotifierProvider.value(value: TokenChecker()),
         ChangeNotifierProvider.value(value: SendToken()),
+        ChangeNotifierProvider.value(value: SendBooking()),
       ],
       child: MaterialApp(
         // localizationsDelegates: [

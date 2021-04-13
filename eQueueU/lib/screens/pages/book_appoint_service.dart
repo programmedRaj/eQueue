@@ -12,17 +12,20 @@ class SelectService extends StatefulWidget {
   final int id;
   final int bid;
   final String type;
+  final String branchname;
+  final String companyname;
   final List<Working> wk;
   final List<Working> book;
   final List<Working> perday;
-  SelectService({
-    this.id,
-    this.bid,
-    this.type,
-    this.wk,
-    this.book,
-    this.perday,
-  });
+  SelectService(
+      {this.id,
+      this.bid,
+      this.type,
+      this.wk,
+      this.book,
+      this.perday,
+      this.branchname,
+      this.companyname});
   @override
   _SelectServiceState createState() => _SelectServiceState();
 }
@@ -47,6 +50,7 @@ class _SelectServiceState extends State<SelectService> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
     return Consumer<DepBookProvider>(
       builder: (context, value, child) {
         return Scaffold(
@@ -226,6 +230,12 @@ class _SelectServiceState extends State<SelectService> {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (ctx) => Calen(
+                              branchid: widget.bid,
+                              branchname: widget.branchname,
+                              companyname: widget.companyname,
+                              servicename: service,
+                              servicedess: serdes,
+                              servicerate: serrate,
                               book: widget.book,
                               perday: widget.perday,
                               wk: widget.wk,
