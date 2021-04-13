@@ -170,7 +170,7 @@ def create_branch(
         firee = (
             "CREATE TABLE "
             + str(kk)
-            + " ( `id` INT  AUTO_INCREMENT ,`department` VARCHAR(100) ,`device_token` VARCHAR(1000) ,`branch_id` VARCHAR(45), `user_id` VARCHAR(45) , `status` VARCHAR(45) , `insurance` VARCHAR(255) , `create_time` datetime default now() ,PRIMARY KEY (`id`) )ENGINE = InnoDB;"
+            + " ( `id` INT  AUTO_INCREMENT ,`department` VARCHAR(100) ,`device_token` VARCHAR(1000) ,`branch_id` VARCHAR(45), `user_id` VARCHAR(45) , `status` VARCHAR(45) , `insurance` VARCHAR(255) , `create_time` datetime default now() , `slots` VARCHAR(45) ,PRIMARY KEY (`id`) )ENGINE = InnoDB;"
         )
         print(firee)
         cur.execute(firee)

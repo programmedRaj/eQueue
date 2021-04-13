@@ -680,7 +680,6 @@ def create_branch():
             province = request.form["province"]
             w_hrs = request.form["w_hrs"]
 
-
             filename = "default.png"
 
             if request.files["profile_photo_url"]:
@@ -694,16 +693,12 @@ def create_branch():
 
                 if request.form["req"] == "create":
                     if user["comp_type"] == "booking":
-                      
 
                         services = request.form["services"]
                         timezone = request.form["timezone"]
                         notify_time = request.form["notify"]
                         bpd = request.form["booking_perday"]
                         bphrs = request.form["booking_perhrs"]
-
-                        
-                       
 
                         op = eqbiz.create_branch(
                             user["comp_type"],
@@ -1731,7 +1726,7 @@ def create_token():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
-        print( request.form["branch_name"])
+        print(request.form["branch_name"])
         branch_name = request.form["branch_name"]
         branch_id = request.form["branch_id"]
         user_id = user["user_id"]
@@ -1826,6 +1821,39 @@ def get_token():
         else:
             resp = jsonify({"message": "cretae token."})
             resp.status_code = 200
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/booking_status", methods=["POST"])
+@check_for_user_token
+def booking_status():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+
+        branch_name = request.form["branch_name"]
+        branch_id = request.form["branch_id"]
+        token_or_booking = request.form["token_or_booking"]
+
+        if token_or_booking == "booking":
+            kk = str(branch_name) + "_" + str(branch_id)
+            r = cur.execute("Select slots from " + str(kk) + "")
+        else:
+            resp = jsonify({"message": "INVALID TYPE"})
+            resp.status_code = 403
+            return resp
+
+        if r:
+            resp = jsonify({"bookings": cur.fetchall()})
+            resp.status_code = 200
+            return resp
+        else:
+            resp = jsonify({"message": "All slots are available."})
+            resp.status_code = 403
             return resp
 
     finally:
