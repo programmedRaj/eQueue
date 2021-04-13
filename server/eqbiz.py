@@ -605,7 +605,7 @@ def delete_employee(employee_id):
 
 
 def creatingtokens_bookings(
-    t_b, bname, branch_id, user_id, device_token, service, insurance
+    t_b, bname, branch_id, user_id, device_token, service, insurance, slots
 ):
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -632,7 +632,7 @@ def creatingtokens_bookings(
             check = cur.execute(
                 "INSERT INTO "
                 + str(kk)
-                + "(branch_id,user_id,device_token,department,insurance,status) VALUES ('"
+                + "(branch_id,user_id,device_token,department,insurance,slots,status) VALUES ('"
                 + str(branch_id)
                 + "','"
                 + str(user_id)
@@ -642,6 +642,8 @@ def creatingtokens_bookings(
                 + str(service)
                 + "','"
                 + str(insurance)
+                + "','"
+                + str(slots)
                 + "',"
                 + "'onqueue');"
             )

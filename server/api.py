@@ -1743,11 +1743,13 @@ def create_token():
                 device_token,
                 department,
                 0,
+                0,
             )
 
         elif token_or_booking == "booking":
             service = request.form["service"]
             insurance = request.form["insurance"]
+            slots = request.form["slot"]
             op = eqbiz.creatingtokens_bookings(
                 token_or_booking,
                 branch_name,
@@ -1756,6 +1758,7 @@ def create_token():
                 device_token,
                 service,
                 insurance,
+                slots,
             )
 
         else:
