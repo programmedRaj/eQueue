@@ -8,4 +8,5 @@ class BaseUrl {
   final String departments = "$basic/dept_services_dropdown";
   final String sorting = "$basic/sorting";
   final String tb_check = "$basic/tb_checker";
+  final String createtoken = "$basic/create_token";
 }

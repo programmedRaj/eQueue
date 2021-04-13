@@ -1731,6 +1731,7 @@ def create_token():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
+        print( request.form["branch_name"])
         branch_name = request.form["branch_name"]
         branch_id = request.form["branch_id"]
         user_id = user["user_id"]

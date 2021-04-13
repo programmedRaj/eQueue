@@ -1,6 +1,8 @@
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/components/tokenpage.dart';
+import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/provider/department_token_provider.dart';
+import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -200,7 +202,18 @@ class _BooktokenState extends State<Booktoken> {
               decoration: BoxDecoration(
                   color: myColor[50], borderRadius: BorderRadius.circular(10)),
               child: FlatButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (dropval != null) {
+                      await Provider.of<SendToken>(context, listen: false)
+                          .generatetoken(
+                              branchid: widget.bid,
+                              branchname: widget.branchname,
+                              department: dropval,
+                              tokenorbooking: widget.type);
+                    } else {
+                      AppToast.showErr('Please select department');
+                    }
+                  },
                   child: Text(
                     'Generate Token',
                     style: TextStyle(color: myColor[100]),

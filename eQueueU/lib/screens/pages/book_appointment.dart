@@ -141,20 +141,20 @@ class _CalenState extends State<Calen> {
                   ;
                   print(perday);
 
-                  var slots =
-                      (int.parse(perday) * 60) / int.parse(bookday).floor();
-                  print('----- $slots');
-                  setState(() {});
+                  // var slots =
+                  //     (int.parse(perday) * 60) / int.parse(bookday).floor();
+                  // print('----- $slots');
+                  // setState(() {});
 
-                  List time = workday.split(' - ');
+                  // List time = workday.split(' - ');
 
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (ctx) => AppTime(
-                            day: day,
-                            starttime: time[0],
-                            endtime: time[1],
-                            slots: slots,
-                          )));
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (ctx) => AppTime(
+                  //           day: day,
+                  //           starttime: time[0],
+                  //           endtime: time[1],
+                  //           slots: slots,
+                  //         )));
                 },
                 calendarController: _c,
                 availableGestures: AvailableGestures.horizontalSwipe,
