@@ -1773,23 +1773,22 @@ def booking_payment():
                     + "',"
                     + "'green');"
                 )
-            
-                j=cur.lastrowid
 
-                # check = cur.execute(
-                #                     "INSERT INTO transactions_users"
-                #                     + "(status,user_id,amount,color) VALUES ('"
-                #                     + "success','"
-                #                     + str(user_id)
-                #                     + "','"
-                #                     + str(amount + bonus)
-                #                     + "',"
-                #                     + "'green');"
-                #                 )
+                j = cur.lastrowid
+
+                check = cur.execute(
+                    "UPDATE user_details SET bonus = '"
+                    + str(wbonus - bonus)
+                    + "',money = '"
+                    + str(wmoney - amount)
+                    + "' WHERE id ="
+                    + str(user_id)
+                    + ";"
+                )
                 conn.commit()
                 if check:
 
-                    resp = jsonify({"transaction_id":str(j) })
+                    resp = jsonify({"transaction_id": str(j)})
                     resp.status_code = 200
                     return resp
                 else:
@@ -1951,6 +1950,54 @@ def booking_status():
             return resp
         else:
             resp = jsonify({"message": "All slots are available."})
+            resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/my_tokens_bookings", methods=["POST"])
+@check_for_user_token
+def my_tokens_bookings():
+    conn = mysql.connect()
+    need = request.form["need"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    try:
+
+        if need == "bookings":
+            r = cur.execute(
+                "Select * from bookingshistory WHERE user_id = "
+                + str(user["user_id"])
+                + ""
+            )
+            texti = "No bookings found"
+            textin = "bookings"
+        elif need == "tokens":
+            r = cur.execute(
+                "Select * from tokenshistory WHERE user_id = "
+                + str(user["user_id"])
+                + ""
+            )
+            texti = "No tokens found"
+            textin = "tokens"
+
+        else:
+            resp = jsonify({"message": "INVALID REQUEST."})
+            resp.status_code = 405
+            return resp
+
+        if r:
+            resp = jsonify({textin: cur.fetchall()})
+            resp.status_code = 200
+            conn.commit()
+            return resp
+
+        else:
+            resp = jsonify({"message": texti})
             resp.status_code = 403
             return resp
 

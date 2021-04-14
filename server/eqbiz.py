@@ -626,7 +626,19 @@ def creatingtokens_bookings(
                 + "',"
                 + "'onqueue');"
             )
-            value = str(service[0:3]) +"-"+ str(cur.lastrowid)
+            value = str(service[0:3]) + "-" + str(cur.lastrowid)
+
+            check = cur.execute(
+                "INSERT INTO tokenshistory"
+                + "(branchtable,user_id,token,status) VALUES ('"
+                + str(kk)
+                + "','"
+                + str(user_id)
+                + "','"
+                + str(value)
+                + "',"
+                + "'onqueue');"
+            )
 
         if t_b == "booking":
             check = cur.execute(
@@ -647,7 +659,19 @@ def creatingtokens_bookings(
                 + "',"
                 + "'onqueue');"
             )
-            value = str(service[0:3]) +"-"+ str(cur.lastrowid)
+            value = str(service[0:3]) + "-" + str(cur.lastrowid)
+
+            check = cur.execute(
+                "INSERT INTO bookingshistory"
+                + "(branchtable,user_id,booking,status) VALUES ('"
+                + str(kk)
+                + "','"
+                + str(user_id)
+                + "','"
+                + str(value)
+                + "',"
+                + "'onqueue');"
+            )
 
         conn.commit()
         if check:
