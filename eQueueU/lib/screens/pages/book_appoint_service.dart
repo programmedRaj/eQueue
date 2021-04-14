@@ -2,6 +2,7 @@ import 'package:eQueue/api/models/servicesmodel.dart';
 import 'package:eQueue/api/models/working_per_day.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/components/tokenpage.dart';
+import 'package:eQueue/provider/check_slot.dart';
 import 'package:eQueue/provider/department_booking_provider.dart';
 import 'package:eQueue/provider/department_token_provider.dart';
 import 'package:eQueue/screens/pages/book_appointment.dart';
@@ -42,6 +43,11 @@ class _SelectServiceState extends State<SelectService> {
     Provider.of<DepBookProvider>(context, listen: false).getdep(
       bid: widget.bid,
       id: widget.id,
+      type: widget.type,
+    );
+    Provider.of<SlotProvider>(context, listen: false).getslot(
+      bid: widget.bid,
+      name: widget.branchname,
       type: widget.type,
     );
   }

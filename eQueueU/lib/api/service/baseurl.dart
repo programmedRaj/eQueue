@@ -9,4 +9,6 @@ class BaseUrl {
   final String sorting = "$basic/sorting";
   final String tb_check = "$basic/tb_checker";
   final String createtoken = "$basic/create_token";
+  final String checkslot = "$basic/booking_status";
+  final String userdetails = "$basic/userdetails";
 }

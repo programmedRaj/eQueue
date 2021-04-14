@@ -1,5 +1,6 @@
 import 'package:eQueue/provider/send_booking.dart';
 import 'package:eQueue/provider/send_token.dart';
+import 'package:eQueue/provider/user_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
@@ -33,6 +34,13 @@ class PayFor extends StatefulWidget {
 class _PayForState extends State<PayFor> {
   bool isinsu = false;
   String insno;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<UserDetails>(context, listen: false).getUserDet();
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
