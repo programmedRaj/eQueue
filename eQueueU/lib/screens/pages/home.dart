@@ -1,4 +1,5 @@
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/pages/companies_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -70,13 +71,89 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     // info
-                    IconButton(
+                    Row(children: [
+                      PopupMenuButton<int>(
                         icon: Icon(
                           Icons.info,
-                          color: myColor[250],
+                          color: myColor[150],
                           size: 30,
                         ),
-                        onPressed: () {})
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height * 0.02,
+                                  width: width * 0.04,
+                                  decoration: BoxDecoration(
+                                      color: Colors.orangeAccent,
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                Text('Onwait'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 2,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height * 0.02,
+                                  width: width * 0.04,
+                                  decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                Text('Call'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 3,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height * 0.02,
+                                  width: width * 0.04,
+                                  decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                Text("Completed"),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 4,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height * 0.02,
+                                  width: width * 0.04,
+                                  decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                Text('Cancel'),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    ]),
                   ],
                 ),
               ),

@@ -28,6 +28,8 @@ class PayProvider with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    print(n);
+    var tid = n['transaction_id'];
+
+    return tid;
   }
 }

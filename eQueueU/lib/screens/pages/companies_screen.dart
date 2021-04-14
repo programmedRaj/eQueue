@@ -86,7 +86,7 @@ class _CompanyState extends State<Company> {
                   children: [
                     Container(
                       height: height * 0.07,
-                      width: width / 1.4,
+                      width: width / 1.6,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: myColor[150],
@@ -113,7 +113,7 @@ class _CompanyState extends State<Company> {
                           )),
                     ),
                     SizedBox(
-                      width: width * 0.02,
+                      width: width * 0.01,
                     ),
                     Container(
                       child: IconButton(
@@ -124,7 +124,92 @@ class _CompanyState extends State<Company> {
                             Icons.sort,
                             color: myColor[250],
                           )),
-                    )
+                    ),
+                    Row(children: [
+                      PopupMenuButton<int>(
+                        icon: Icon(
+                          Icons.info,
+                          color: myColor[150],
+                          size: 30,
+                        ),
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height * 0.03,
+                                  width: width * 0.04,
+                                  // decoration: BoxDecoration(
+                                  //     color: Colors.orangeAccent,
+                                  //     borderRadius: BorderRadius.circular(20)),
+                                  child: Text(
+                                    'T',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                Text('Token'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 2,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height * 0.03,
+                                  width: width * 0.04,
+                                  // decoration: BoxDecoration(
+                                  //     color: Colors.green,
+                                  //     borderRadius: BorderRadius.circular(20)),
+                                  child: Text(
+                                    'M',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                Text(
+                                  'Multi-Token',
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 3,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height * 0.03,
+                                  width: width * 0.04,
+                                  // decoration: BoxDecoration(
+                                  //     color: Colors.blue,
+                                  //     borderRadius: BorderRadius.circular(20)),
+                                  child: Text(
+                                    'B',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                Text("Booking"),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    ]),
                   ],
                 ),
                 Flexible(
