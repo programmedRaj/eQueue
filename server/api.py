@@ -1397,6 +1397,31 @@ def login():
         conn.close()
 
 
+@app.route("/userdetails")
+def userdetails():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    try:
+        check = cur.execute(
+            "SELECT * FROM user_details WHERE id = '" + str(user["user_id"]) + "';"
+        )
+        if check:
+            r = cur.fetchone()
+            if r:
+                resp = jsonify({"userdetails": r})
+                resp.status_code = 200
+                return resp
+            else:
+                resp = jsonify({"message": "Error No user found."})
+                resp.status_code = 403
+                return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/register", methods=["POST"])
 def login_register():
     conn = mysql.connect()
@@ -1718,6 +1743,61 @@ def searches_sorting():
         conn.close()
 
 
+@app.route("/booking_payment", methods=["POST"])
+@check_for_user_token
+def booking_payment():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    try:
+        user_id = user["user_id"]
+        amount = float(request.form["amount"])
+        bonus = float(request.form["bonus"])
+        token_or_booking = request.form["token_or_booking"]
+
+        if token_or_booking == "booking":
+            cur.execute("Select * from user_details WHERE id = " + str(user_id) + " ")
+            k = cur.fetchone()
+            wbonus = float(k["bonus"])
+            wmoney = float(k["money"])
+
+            if wmoney >= amount and wbonus >= bonus:
+                check = cur.execute(
+                    "INSERT INTO transactions_users"
+                    + "(status,user_id,amount,color) VALUES ('"
+                    + "success','"
+                    + str(user_id)
+                    + "','"
+                    + str(amount + bonus)
+                    + "',"
+                    + "'green');"
+                )
+
+                if check:
+                    resp = jsonify({"transaction_id": cur.lastrowid()})
+                    resp.status_code = 200
+                    return resp
+                else:
+                    resp = jsonify({"message": "Error occured."})
+                    resp.status_code = 403
+                    return resp
+
+            else:
+                resp = jsonify({"message": "insufficient balance in wallet."})
+                resp.status_code = 405
+                return resp
+
+        else:
+            resp = jsonify({"message": "Only for Booking."})
+            resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/create_token", methods=["POST"])
 @check_for_user_token
 def create_token():
@@ -1726,7 +1806,7 @@ def create_token():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
-      
+
         branch_name = request.form["branch_name"]
         branch_id = request.form["branch_id"]
         user_id = user["user_id"]
