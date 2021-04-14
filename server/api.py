@@ -1773,9 +1773,23 @@ def booking_payment():
                     + "',"
                     + "'green');"
                 )
+            
+                j=cur.lastrowid
 
+                # check = cur.execute(
+                #                     "INSERT INTO transactions_users"
+                #                     + "(status,user_id,amount,color) VALUES ('"
+                #                     + "success','"
+                #                     + str(user_id)
+                #                     + "','"
+                #                     + str(amount + bonus)
+                #                     + "',"
+                #                     + "'green');"
+                #                 )
+                conn.commit()
                 if check:
-                    resp = jsonify({"transaction_id": cur.lastrowid()})
+
+                    resp = jsonify({"transaction_id":str(j) })
                     resp.status_code = 200
                     return resp
                 else:

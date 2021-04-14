@@ -11,4 +11,5 @@ class BaseUrl {
   final String createtoken = "$basic/create_token";
   final String checkslot = "$basic/booking_status";
   final String userdetails = "$basic/userdetails";
+  final String payment = "$basic/booking_payment";
 }

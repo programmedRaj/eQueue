@@ -3,6 +3,7 @@ import 'package:eQueue/check.dart';
 import 'package:eQueue/provider/branch_provider.dart';
 import 'package:eQueue/provider/check_slot.dart';
 import 'package:eQueue/provider/company_provider.dart';
+import 'package:eQueue/provider/payment_provider.dart';
 import 'package:eQueue/provider/send_booking.dart';
 import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/token_check_provider.dart';
@@ -90,6 +91,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: SendBooking()),
         ChangeNotifierProvider.value(value: SlotProvider()),
         ChangeNotifierProvider.value(value: UserDetails()),
+        ChangeNotifierProvider.value(value: PayProvider()),
       ],
       child: MaterialApp(
         // localizationsDelegates: [

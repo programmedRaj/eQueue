@@ -1,3 +1,5 @@
+import 'package:eQueue/constants/apptoast.dart';
+import 'package:eQueue/provider/payment_provider.dart';
 import 'package:eQueue/provider/send_booking.dart';
 import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
@@ -34,12 +36,6 @@ class PayFor extends StatefulWidget {
 class _PayForState extends State<PayFor> {
   bool isinsu = false;
   String insno;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Provider.of<UserDetails>(context, listen: false).getUserDet();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,19 +187,60 @@ class _PayForState extends State<PayFor> {
         decoration: BoxDecoration(color: myColor[50]),
         child: FlatButton(
           onPressed: () async {
-            if (isinsu) {
-              await Provider.of<SendBooking>(context, listen: false)
-                  .generatetoken(
-                branchid: widget.branchid,
-                branchname: widget.branchname,
-                tokenorbooking: 'booking',
-                insurance: insno,
-                service: widget.servicename,
-                slot: '${widget.date} - ${widget.time}',
-              );
-            } else {
-              print('wait');
+            var moneybonus =
+                await Provider.of<UserDetails>(context, listen: false)
+                    .getUserDet();
+            print('---${moneybonus[1]}');
+
+            var totalbonus = (int.parse(widget.servicerate) * 10) / 100;
+            var totalbonustoint = double.parse(totalbonus.toStringAsFixed(2));
+
+            if (double.parse(moneybonus[1]) >= totalbonustoint) {
+              var totalservicecharge =
+                  (int.parse(widget.servicerate) - totalbonustoint);
+              if (double.parse(moneybonus[1]) >= totalservicecharge) {
+                print('1. $totalservicecharge');
+                var transid = Provider.of<PayProvider>(context, listen: false)
+                    .getPayment(totalservicecharge, double.parse(moneybonus[1]),
+                        'booking');
+              } else {
+                AppToast.showErr('Insufficient Balance');
+              }
+            } else if (totalbonustoint < moneybonus[1]) {
+              var totalservicecharge =
+                  (int.parse(widget.servicerate) - moneybonus[1]);
+              if (double.parse(moneybonus[1]) >= totalservicecharge) {
+                print('2. $totalservicecharge');
+                var transid = Provider.of<PayProvider>(context, listen: false)
+                    .getPayment(totalservicecharge, double.parse(moneybonus[1]),
+                        'booking');
+              } else {
+                AppToast.showErr('Insufficient Balance');
+              }
+            } else if (double.parse(moneybonus[1]) == 0) {
+              if (double.parse(moneybonus[1]) >=
+                  double.parse(widget.servicerate)) {
+                var transid = Provider.of<PayProvider>(context, listen: false)
+                    .getPayment(double.parse(widget.servicerate),
+                        double.parse(moneybonus[1]), 'booking');
+              } else {
+                AppToast.showErr('Insufficient Balance');
+              }
             }
+
+            // if (isinsu) {
+            //   await Provider.of<SendBooking>(context, listen: false)
+            //       .generatetoken(
+            //     branchid: widget.branchid,
+            //     branchname: widget.branchname,
+            //     tokenorbooking: 'booking',
+            //     insurance: insno,
+            //     service: widget.servicename,
+            //     slot: '${widget.date} - ${widget.time}',
+            //   );
+            // } else {
+            //   print('wait');
+            // }
           },
           child: isinsu
               ? Text(

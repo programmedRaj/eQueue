@@ -14,7 +14,7 @@ class UserDetails with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     var response = await retry(
-      () => http.post(
+      () => http.get(
         Uri.parse(baseUrl.userdetails),
         headers: {"Authorization": token},
       ).timeout(Duration(seconds: 5)),
@@ -22,6 +22,12 @@ class UserDetails with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    print(n);
+
+    String money = n['userdetails']['money'];
+    String bonus = n['userdetails']['bonus'];
+
+    print(money);
+
+    return [money, bonus];
   }
 }
