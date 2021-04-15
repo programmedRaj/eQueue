@@ -1422,6 +1422,85 @@ def userdetails():
         conn.close()
 
 
+@app.route("/update_myprofile", methods=["POST"])
+def update_myprofile():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    try:
+
+        check = cur.execute(
+            "SELECT * FROM user_details WHERE id = '" + str(user["user_id"]) + "';"
+        )
+        if check:
+            r = cur.fetchone()
+        else:
+            resp = jsonify({"message": "No account found."})
+            resp.status_code = 405
+            return resp
+
+        filename = r["profile_url"]
+        if request.files["profile_img"]:
+            company_logo = request.files["profile_img"]
+            filename = secure_filename(company_logo.filename)
+            company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+
+        address1 = r["address1"]
+        address2 = r["address2"]
+        postalcode = r["postalcode"]
+        city = r["city"]
+        province = r["province"]
+
+        if request.form["address1"]:
+            address1 = request.form["address1"]
+
+        if request.form["address2"]:
+            address2 = request.form["address2"]
+
+        if request.form["postalcode"]:
+            postalcode = request.form["postalcode"]
+
+        if request.form["city"]:
+            city = request.form["city"]
+
+        if request.form["province"]:
+            province = request.form["province"]
+
+        cur2.execute(
+            "UPDATE user_details SET address1 = "
+            + str(address1)
+            + ", address2 = "
+            + str(address2)
+            + ", postalcode = "
+            + str(postalcode)
+            + ", city = "
+            + str(city)
+            + ", province = "
+            + str(province)
+            + ", profile_url = "
+            + str(filename)
+            + " WHERE id = '"
+            + str(user["user_id"])
+            + "';"
+        )
+
+        conn.commit()
+
+        if cur2:
+            resp = jsonify({"message": "success"})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "Error."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/register", methods=["POST"])
 def login_register():
     conn = mysql.connect()
@@ -1998,6 +2077,34 @@ def my_tokens_bookings():
 
         else:
             resp = jsonify({"message": texti})
+            resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/my_transactions")
+@check_for_user_token
+def my_transactions():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    try:
+
+        r = cur.execute(
+            "Select * from transactions_users WHERE user_id = "
+            + str(user["user_id"])
+            + ""
+        )
+        if r:
+            resp = jsonify({"message": cur.fetchall()})
+            resp.status_code = 200
+            return resp
+        else:
+            resp = jsonify({"message": "error"})
             resp.status_code = 403
             return resp
 
