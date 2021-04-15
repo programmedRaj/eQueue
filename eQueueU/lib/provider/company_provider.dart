@@ -44,22 +44,23 @@ class CompanyProvider extends ChangeNotifier {
     removeedu();
 
     if (sort) {
-      for (int i = 0; i < n['comp_details'].length; i++) {
-        companyadd(
-          acname: n['comp_details'][i]['account_name'],
-          acnum: n['comp_details'][i]['account_number'],
-          bankname: n['comp_details'][i]['bank_name'],
-          descr: n['comp_details'][i]['descr'],
-          earnedtilldate: n['comp_details'][i]['earned_till_date'],
-          ifsc: n['comp_details'][i]['ifsc'],
-          moneyearned: n['comp_details'][i]['money_earned'],
-          name: n['comp_details'][i]['name'],
-          onliner: n['comp_details'][i]['oneliner'],
-          profileurl: n['comp_details'][i]['profile_url'],
-          id: n['comp_details'][i]['id'],
-          type: n['comp_details'][i]['type'],
-        );
-      }
+      if (n['comp_details'] != null)
+        for (int i = 0; i < n['comp_details'].length; i++) {
+          companyadd(
+            acname: n['comp_details'][i]['account_name'],
+            acnum: n['comp_details'][i]['account_number'],
+            bankname: n['comp_details'][i]['bank_name'],
+            descr: n['comp_details'][i]['descr'],
+            earnedtilldate: n['comp_details'][i]['earned_till_date'],
+            ifsc: n['comp_details'][i]['ifsc'],
+            moneyearned: n['comp_details'][i]['money_earned'],
+            name: n['comp_details'][i]['name'],
+            onliner: n['comp_details'][i]['oneliner'],
+            profileurl: n['comp_details'][i]['profile_url'],
+            id: n['comp_details'][i]['id'],
+            type: n['comp_details'][i]['type'],
+          );
+        }
     } else {
       for (int j = 0; j < n['comp_details'].length; j++) {
         String i = j.toString();

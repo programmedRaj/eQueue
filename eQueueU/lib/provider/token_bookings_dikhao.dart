@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:eQueue/api/service/baseurl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,26 +31,30 @@ class DisplayTokenBook with ChangeNotifier {
     print(n);
 
     if (type == "tokens") {
-      removetoken();
-      for (int i = 0; i < n["tokens"].length; i++) {
-        addtoken(
-            branchtable: n["tokens"][i]["branchtable"],
-            createdon: n["tokens"][i]["created_on"],
-            status: n["tokens"][i]["status"],
-            token: n["tokens"][i]["token"],
-            userid: n["tokens"][i]["user_id"].toString());
+      if (n["tokens"] != null) {
+        removetoken();
+        for (int i = 0; i < n["tokens"].length; i++) {
+          addtoken(
+              branchtable: n["tokens"][i]["branchtable"],
+              createdon: n["tokens"][i]["created_on"],
+              status: n["tokens"][i]["status"],
+              token: n["tokens"][i]["token"],
+              userid: n["tokens"][i]["user_id"].toString());
+        }
       }
     } else if (type == "bookings") {
-      // removebooking();
-      // for (int i = 0; i < n["bookings"].length; i++) {
-      //   addbooking(
-      //     branchtable: n["bookings"][i]["branchtable"],
-      //     createdon: n["bookings"][i]["created_on"],
-      //     status: n["bookings"][i]["status"],
-      //     booking: n["bookings"][i]["booking"],
-      //     userid: n["bookings"][i]["user_id"].toString(),
-      //   );
-      // }
+      if (n["bookings"] != null) {
+        removebooking();
+        for (int i = 0; i < n["bookings"].length; i++) {
+          addbooking(
+            branchtable: n["bookings"][i]["branchtable"],
+            createdon: n["bookings"][i]["created_on"],
+            status: n["bookings"][i]["status"],
+            booking: n["bookings"][i]["booking"],
+            userid: n["bookings"][i]["user_id"].toString(),
+          );
+        }
+      }
     }
   }
 

@@ -153,7 +153,7 @@ class _MyAppState extends State<MyApp> {
           nextScreen: Check(),
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.leftToRight,
-          backgroundColor: HexColor('#6e879b'),
+          backgroundColor: myColor[150],
         ),
       ),
     );

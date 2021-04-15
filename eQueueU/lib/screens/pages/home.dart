@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
     }
     return Consumer<DisplayTokenBook>(
       builder: (context, value, child) {
-        print(value.bookings);
+        print('=t=t=${value.bookings}');
         print(value.tokens);
         return SafeArea(
             child: Scaffold(
@@ -178,213 +178,539 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   //----------------------------------------------------------------------------------------------------
-                  // Container(
-                  //   margin: EdgeInsets.only(top: 10, bottom: 10),
-                  //   alignment: Alignment.centerLeft,
-                  //   child: Text(
-                  //     'Hello Rushabh,',
-                  //     style:
-                  //         TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
-                  //   ),
-                  // ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Hello Rushabh,',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+                    ),
+                  ),
                   //----------------------------------------------------------------------------------------------------
                   //------------------- Your Appointment-----------------------------------------------------------------
                   Container(
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                        color: myColor[50].withOpacity(0.4),
+                      )
+                    ]),
                     child: Column(
                       children: [
-                        Container(
-                          margin:
-                              EdgeInsets.only(top: 20, left: 15, bottom: 20),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Your Appointment',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: myColor[250]),
+                        Card(
+                          child: ExpansionTile(
+                            title: Text(
+                              'Your Bookings',
+                              style: TextStyle(
+                                  fontSize: 16.0, fontWeight: FontWeight.w500),
+                            ),
+                            children: <Widget>[
+                              Container(
+                                  height: height * 0.4,
+                                  width: width,
+                                  child:
+                                      // value.bookings == null ||
+                                      //     value.bookings.isEmpty
+                                      // ? Container(
+                                      //     child: Column(
+                                      //       children: [
+                                      //         SizedBox(
+                                      //           height: height * 0.1,
+                                      //         ),
+                                      //         Text('No Bookings!!'),
+                                      //         Container(
+                                      //           height: height * 0.08,
+                                      //           margin:
+                                      //               EdgeInsets.only(top: 10),
+                                      //           decoration: BoxDecoration(
+                                      //               color: myColor[150],
+                                      //               borderRadius:
+                                      //                   BorderRadius.circular(
+                                      //                       10)),
+                                      //           child: FlatButton(
+                                      //             child: Text(
+                                      //               'Create Bookings',
+                                      //               style: TextStyle(
+                                      //                   color: myColor[100]),
+                                      //             ),
+                                      //             onPressed: () {},
+                                      //           ),
+                                      //         )
+                                      //       ],
+                                      //     ),
+                                      //   )
+                                      // :
+                                      ListView.builder(
+                                    // itemCount: value.tokens.length,
+                                    itemBuilder: (context, index) {
+                                      return Dismissible(
+                                        direction: DismissDirection.endToStart,
+                                        key: Key(index.toString()),
+                                        background: Container(
+                                          color: Colors.red,
+                                          child: Container(
+                                            margin: EdgeInsets.all(10),
+                                            alignment: Alignment.centerRight,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  Icons.delete,
+                                                  color: myColor[100],
+                                                ),
+                                                Text(
+                                                  'Remove',
+                                                  style: TextStyle(
+                                                    color: myColor[100],
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        onDismissed: (direction) {
+                                          // Removes that item the list on swipwe
+                                          setState(() {
+                                            // items.removeAt(index);
+                                          });
+                                          // Shows the information on Snackbar
+                                          Scaffold.of(context).showSnackBar(
+                                              SnackBar(
+                                                  content: Text("dismissed")));
+                                        },
+                                        child: Container(
+                                          height: height * 0.2,
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                              color: myColor[100],
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.grey[600],
+                                                    blurRadius: 4)
+                                              ]),
+                                          margin: EdgeInsets.all(5),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: width * 0.4,
+                                                margin: EdgeInsets.all(5),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      child:
+                                                          Text('Branch Name'),
+                                                    ),
+                                                    Container(
+                                                      child:
+                                                          Text('Booking on: '),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      height: height * 0.07,
+                                                      width: width * 0.4,
+                                                      margin: EdgeInsets.only(
+                                                          top: 8),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          color: myColor[150]),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Token',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  myColor[100],
+                                                              fontSize: 18,
+                                                              letterSpacing: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // Container(
+                                                    //   height: height * 0.07,
+                                                    //   width: width * 0.4,
+                                                    //   child: Center(
+                                                    //     child: Text(
+                                                    //       'Estimated Time : 10',
+                                                    //       style: TextStyle(
+                                                    //           fontWeight:
+                                                    //               FontWeight
+                                                    //                   .bold),
+                                                    //     ),
+                                                    //   ),
+                                                    // ),
+                                                    // Container(
+                                                    //   child: Text(
+                                                    //       'You are 4th in line'),
+                                                    // )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ))
+                            ],
                           ),
-                        ),
-                        Container(
-                          height: height * 0.4,
-                          width: width,
-                          child: value.bookings.isNotEmpty ||
-                                  value.bookings.length >= 0
-                              ? GridView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: value.bookings.length,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2),
-                                  itemBuilder: (context, i) {
-                                    return GestureDetector(
-                                        child: Card(
-                                      child: Center(
-                                        child: Text(value.bookings[i].bookings),
-                                      ),
-                                    ));
-                                  })
-                              : Container(
-                                  child: Center(
-                                    child: Text('No Bookings'),
-                                  ),
-                                ),
                         ),
                       ],
                     ),
                   ),
                   //--------------------------------------------------------------------------------------
                   //----------------------------Your token-----------------------------------------------
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
                   Container(
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                        color: myColor[50].withOpacity(0.4),
+                      )
+                    ]),
                     child: Column(
                       children: [
-                        Container(
-                          margin:
-                              EdgeInsets.only(top: 20, left: 15, bottom: 20),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Your Tokens',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: myColor[250]),
-                          ),
-                        ),
-                        Container(
-                          height: height * 0.5,
-                          width: width,
-                          child: value.tokens.isNotEmpty ||
-                                  value.tokens.length >= 0
-                              ? GridView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: value.tokens.length,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 1 / 1.5),
-                                  itemBuilder: (context, i) {
-                                    return GestureDetector(
-                                      child: Card(
+                        Card(
+                          child: ExpansionTile(
+                            title: Text(
+                              'Your Tokens',
+                              style: TextStyle(
+                                  fontSize: 16.0, fontWeight: FontWeight.w500),
+                            ),
+                            children: <Widget>[
+                              Container(
+                                  height: height * 0.4,
+                                  width: width,
+                                  child:
+                                      // value.tokens == null ||
+                                      //     value.tokens.isEmpty
+                                      // ? Container(
+                                      //     child: Column(
+                                      //       children: [
+                                      //         SizedBox(
+                                      //           height: height * 0.1,
+                                      //         ),
+                                      //         Text('No Tokens!!'),
+                                      //         Container(
+                                      //           height: height * 0.08,
+                                      //           margin:
+                                      //               EdgeInsets.only(top: 10),
+                                      //           decoration: BoxDecoration(
+                                      //               color: myColor[150],
+                                      //               borderRadius:
+                                      //                   BorderRadius.circular(
+                                      //                       10)),
+                                      //           child: FlatButton(
+                                      //             child: Text(
+                                      //               'Create Token',
+                                      //               style: TextStyle(
+                                      //                   color: myColor[100]),
+                                      //             ),
+                                      //             onPressed: () {},
+                                      //           ),
+                                      //         )
+                                      //       ],
+                                      //     ),
+                                      //   )
+                                      // :
+                                      ListView.builder(
+                                    // itemCount: value.tokens.length,
+                                    itemBuilder: (context, index) {
+                                      return Dismissible(
+                                        direction: DismissDirection.endToStart,
+                                        key: Key(index.toString()),
+                                        background: Container(
+                                          color: Colors.red,
+                                          child: Container(
+                                            margin: EdgeInsets.all(10),
+                                            alignment: Alignment.centerRight,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  Icons.delete,
+                                                  color: myColor[100],
+                                                ),
+                                                Text(
+                                                  'Remove',
+                                                  style: TextStyle(
+                                                    color: myColor[100],
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        onDismissed: (direction) {
+                                          // Removes that item the list on swipwe
+                                          setState(() {
+                                            // items.removeAt(index);
+                                          });
+                                          // Shows the information on Snackbar
+                                          Scaffold.of(context).showSnackBar(
+                                              SnackBar(
+                                                  content: Text("dismissed")));
+                                        },
                                         child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Flexible(
-                                                child: Container(
-                                                  width: width * 0.5,
-                                                  padding:
-                                                      EdgeInsets.only(left: 8),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                          child: Text(
-                                                        'Company Name',
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      )),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 8),
+                                          height: height * 0.2,
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                              color: myColor[100],
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.grey[600],
+                                                    blurRadius: 4)
+                                              ]),
+                                          margin: EdgeInsets.all(5),
+                                          child: Container(
+                                            width: width * 0.4,
+                                            margin: EdgeInsets.all(5),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  child: Text('Company Name'),
+                                                ),
+                                                Container(
+                                                  child: Text('Branch Name'),
+                                                ),
+                                                Container(
+                                                  child:
+                                                      Text('Counter Number : '),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      height: height * 0.07,
+                                                      width: width * 0.4,
+                                                      margin: EdgeInsets.only(
+                                                          top: 8),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          color: myColor[150]),
+                                                      child: Center(
                                                         child: Text(
-                                                          'Branch Name',
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 8),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        height: height * 0.04,
-                                                        width: width * 0.2,
-                                                        decoration: BoxDecoration(
-                                                            color: myColor[150],
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                        child: Text(
-                                                          value.tokens[i].token,
+                                                          'Token',
                                                           style: TextStyle(
                                                               color:
-                                                                  myColor[250],
+                                                                  myColor[100],
+                                                              fontSize: 18,
+                                                              letterSpacing: 15,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
                                                         ),
                                                       ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 4),
-                                                        child: Text(
-                                                            'Date: 02/02/2021'),
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 4),
-                                                        child: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons.timer,
-                                                              color:
-                                                                  myColor[250],
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                                  width * 0.02,
-                                                            ),
-                                                            Text(
-                                                              '24:00',
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Container(
+                                                          height: height * 0.07,
+                                                          width: width * 0.4,
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Estimated Time : 10',
                                                               style: TextStyle(
-                                                                  color:
-                                                                      myColor[
-                                                                          50],
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                  child: CircleAvatar(
-                                                radius: 45,
-                                                backgroundColor: myColor[50],
-                                              )),
-                                            ],
+                                                        Container(
+                                                          child: Text(
+                                                              'You are 4th in line'),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  })
-                              : Container(
-                                  child: Center(
-                                    child: Text('No Tokens'),
+                                      );
+                                    },
+                                  )
+                                  //  GridView.builder(
+                                  //     itemCount: value.tokens.length,
+                                  //     gridDelegate:
+                                  //         SliverGridDelegateWithFixedCrossAxisCount(
+                                  //             crossAxisCount: 2,
+                                  //             childAspectRatio: 1 / 1.5),
+                                  //     itemBuilder: (context, i) {
+                                  //       return GestureDetector(
+                                  //         child: Card(
+                                  //           child: Container(
+                                  //             padding: EdgeInsets.all(10),
+                                  //             child: Row(
+                                  //               mainAxisAlignment:
+                                  //                   MainAxisAlignment
+                                  //                       .spaceBetween,
+                                  //               crossAxisAlignment:
+                                  //                   CrossAxisAlignment
+                                  //                       .center,
+                                  //               children: [
+                                  //                 Flexible(
+                                  //                   child: Container(
+                                  //                     width: width * 0.5,
+                                  //                     padding:
+                                  //                         EdgeInsets.only(
+                                  //                             left: 8),
+                                  //                     child: Column(
+                                  //                       mainAxisAlignment:
+                                  //                           MainAxisAlignment
+                                  //                               .start,
+                                  //                       crossAxisAlignment:
+                                  //                           CrossAxisAlignment
+                                  //                               .start,
+                                  //                       children: [
+                                  //                         Container(
+                                  //                             child: Text(
+                                  //                           'Company Name',
+                                  //                           style: TextStyle(
+                                  //                               fontSize:
+                                  //                                   16,
+                                  //                               fontWeight:
+                                  //                                   FontWeight
+                                  //                                       .bold),
+                                  //                           maxLines: 1,
+                                  //                           overflow:
+                                  //                               TextOverflow
+                                  //                                   .ellipsis,
+                                  //                         )),
+                                  //                         Container(
+                                  //                           margin: EdgeInsets
+                                  //                               .only(
+                                  //                                   top: 8),
+                                  //                           child: Text(
+                                  //                             'Branch Name',
+                                  //                             style: TextStyle(
+                                  //                                 fontSize:
+                                  //                                     14,
+                                  //                                 fontWeight:
+                                  //                                     FontWeight
+                                  //                                         .w600),
+                                  //                             maxLines: 1,
+                                  //                             overflow:
+                                  //                                 TextOverflow
+                                  //                                     .ellipsis,
+                                  //                           ),
+                                  //                         ),
+                                  //                         Container(
+                                  //                           margin: EdgeInsets
+                                  //                               .only(
+                                  //                                   top: 8),
+                                  //                           alignment:
+                                  //                               Alignment
+                                  //                                   .center,
+                                  //                           height: height *
+                                  //                               0.04,
+                                  //                           width:
+                                  //                               width * 0.2,
+                                  //                           decoration: BoxDecoration(
+                                  //                               color:
+                                  //                                   myColor[
+                                  //                                       150],
+                                  //                               borderRadius:
+                                  //                                   BorderRadius.circular(
+                                  //                                       10)),
+                                  //                           child: Text(
+                                  //                             value
+                                  //                                 .tokens[i]
+                                  //                                 .token,
+                                  //                             style: TextStyle(
+                                  //                                 color: myColor[
+                                  //                                     250],
+                                  //                                 fontWeight:
+                                  //                                     FontWeight
+                                  //                                         .bold),
+                                  //                           ),
+                                  //                         ),
+                                  //                         Container(
+                                  //                           margin: EdgeInsets
+                                  //                               .only(
+                                  //                                   top: 4),
+                                  //                           child: Text(
+                                  //                               'Date: 02/02/2021'),
+                                  //                         ),
+                                  //                         Container(
+                                  //                           margin: EdgeInsets
+                                  //                               .only(
+                                  //                                   top: 4),
+                                  //                           child: Row(
+                                  //                             children: [
+                                  //                               Icon(
+                                  //                                 Icons
+                                  //                                     .timer,
+                                  //                                 color: myColor[
+                                  //                                     250],
+                                  //                               ),
+                                  //                               SizedBox(
+                                  //                                 width: width *
+                                  //                                     0.02,
+                                  //                               ),
+                                  //                               Text(
+                                  //                                 '24:00',
+                                  //                                 style: TextStyle(
+                                  //                                     color: myColor[
+                                  //                                         50],
+                                  //                                     fontWeight:
+                                  //                                         FontWeight.bold),
+                                  //                               ),
+                                  //                             ],
+                                  //                           ),
+                                  //                         )
+                                  //                       ],
+                                  //                     ),
+                                  //                   ),
+                                  //                 ),
+                                  //                 Container(
+                                  //                     child: CircleAvatar(
+                                  //                   radius: 45,
+                                  //                   backgroundColor:
+                                  //                       myColor[50],
+                                  //                 )),
+                                  //               ],
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     }
+                                  // )
                                   ),
-                                ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
