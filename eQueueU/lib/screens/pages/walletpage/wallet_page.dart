@@ -1,4 +1,5 @@
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/screens/pages/transactionpage.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_to/swipe_to.dart';
 
@@ -148,21 +149,27 @@ class _WalletState extends State<Wallet> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(8),
-              //height: height * 0.07,
-              width: width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadiusDirectional.circular(10),
-                  color: myColor[100],
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                    )
-                  ]),
-              child: ListTile(
-                title: Text('My Transaction'),
-                trailing: Icon(Icons.arrow_forward_ios),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) => TransactionDets()));
+              },
+              child: Container(
+                margin: EdgeInsets.all(8),
+                //height: height * 0.07,
+                width: width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadiusDirectional.circular(10),
+                    color: myColor[100],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                      )
+                    ]),
+                child: ListTile(
+                  title: Text('My Transaction'),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                ),
               ),
             ),
           ],

@@ -15,7 +15,7 @@ class DisplayTokenBook with ChangeNotifier {
   Future displayboth(String type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-
+    print(token);
     var map = new Map<String, dynamic>();
     map['need'] = type;
 
