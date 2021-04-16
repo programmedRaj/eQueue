@@ -39,7 +39,7 @@ class CompanyProvider extends ChangeNotifier {
     var response = await http.Response.fromStream(res);
 
     var n = jsonDecode(response.body);
-    print(n);
+    print('sss ===  ${n['companies']}');
 
     removeedu();
 
@@ -113,6 +113,7 @@ class CompanyProvider extends ChangeNotifier {
         onliner: onliner,
         profileurl: profileurl,
         type: type));
+    print(companies);
     notifyListeners();
   }
 
