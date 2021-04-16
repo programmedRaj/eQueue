@@ -23,6 +23,7 @@ class BranchProvider extends ChangeNotifier {
       map['sortby'] = sortby;
       map['asc_desc'] = ascdsc;
       map['sorting'] = type;
+      map['comp_id'] = id.toString();
     }
 
     var bodymsg = json.encode({"company_id": id});

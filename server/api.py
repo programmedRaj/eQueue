@@ -1334,7 +1334,7 @@ def login_otp():
                 + str(otp)
                 + ""
             )
-            if res.status_code == 200:
+            if res.status_code == 200: 
                 cur.execute(
                     "UPDATE equeue_users SET code ='"
                     + str(otp)
@@ -1791,12 +1791,13 @@ def searches_sorting():
     try:
 
         if sorting == "branch":
+            comp_id = request.form["comp_id"]
             r = cur.execute(
-                "Select * from branch_details ORDER BY "
+                "Select * from branch_details WHERE comp_id = "+str(comp_id)+ " ORDER BY "
                 + str(sortby)
                 + " "
                 + str(asc_desc)
-                + ""
+                +""
             )
             texti = "No branches found"
             textin = "branches"

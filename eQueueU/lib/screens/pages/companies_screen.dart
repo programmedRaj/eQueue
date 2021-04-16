@@ -49,7 +49,10 @@ class _CompanyState extends State<Company> {
         for (int i = 0; i < company.length; i++) {
           if (company[i].name.toLowerCase().contains(v) ||
               company[i].name.toUpperCase().contains(v) ||
-              company[i].name.contains(v)) {
+              company[i].name.contains(v) ||
+              company[i].descr.toLowerCase().contains(v) ||
+              company[i].descr.toUpperCase().contains(v) ||
+              company[i].descr.contains(v)) {
             companysearch.add(CompanyModel(
               acname: company[i].acname,
               acnum: company[i].acnum,

@@ -1,9 +1,12 @@
+import 'package:eQueue/check.dart';
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/screens/auth/login.dart';
 import 'package:eQueue/screens/pages/settings/history.dart';
 import 'package:eQueue/screens/pages/settings/langauge.dart';
 import 'package:eQueue/screens/pages/settings/profile.dart';
 import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -19,49 +22,6 @@ class _SettingsState extends State<Settings> {
       child: Scaffold(
         body: ListView(
           children: [
-            Container(
-              margin: EdgeInsets.all(8),
-              height: height * 0.2,
-              width: width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadiusDirectional.circular(10),
-                  color: myColor[100],
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                    )
-                  ]),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor: myColor[50],
-                    ),
-                  ),
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Rushabh Mehta',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        Text(
-                          'rushabhm75@gmail.com',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 16),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
             GestureDetector(
               onTap: () {
                 Navigator.of(context)
@@ -194,25 +154,37 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(8),
-              width: width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadiusDirectional.circular(10),
-                  color: myColor[100],
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                    )
-                  ]),
-              child: ListTile(
-                title: Text('Log Out'),
-                trailing: Icon(Icons.arrow_forward_ios),
+            GestureDetector(
+              onTap: () {
+                logout();
+              },
+              child: Container(
+                margin: EdgeInsets.all(8),
+                width: width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadiusDirectional.circular(10),
+                    color: myColor[100],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                      )
+                    ]),
+                child: ListTile(
+                  title: Text('Log Out'),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('token');
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext ctx) => Login()));
   }
 }

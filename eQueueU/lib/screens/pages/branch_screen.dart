@@ -55,7 +55,10 @@ class _BranchScreenState extends State<BranchScreen> {
         for (int i = 0; i < branch.length; i++) {
           if (branch[i].bname.toLowerCase().contains(v) ||
               branch[i].bname.toUpperCase().contains(v) ||
-              branch[i].bname.contains(v)) {
+              branch[i].bname.contains(v) ||
+              branch[i].city.toLowerCase().contains(v) ||
+              branch[i].city.toUpperCase().contains(v) ||
+              branch[i].city.contains(v)) {
           } else {
             setState(() {
               noprod = 'No branch';
