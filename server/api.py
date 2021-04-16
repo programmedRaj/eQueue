@@ -1809,7 +1809,7 @@ def searches_sorting():
                 + ""
             )
             texti = "No Companies found"
-            textin = "comp_details"
+            textin = "comp_details" #check
 
         else:
             resp = jsonify({"message": "INVALID REQUEST."})
