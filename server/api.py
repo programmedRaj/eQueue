@@ -1327,20 +1327,30 @@ def login_otp():
         )
         if check:
             otp = id_generator()
-            cur.execute(
-                "UPDATE equeue_users SET code ='"
-                + str(otp)
-                + "' WHERE number = '"
+            res = requests.get(
+                "https://sms.bewin.one/api/sms-gateway.php?number="
                 + str(request.form["number"])
-                + "';"
+                + "&message=your otp for login is:"
+                + str(otp)
+                + ""
             )
-            conn.commit()
-            print(otp)
-            # send sms
+            if res.status_code == 200:
+                cur.execute(
+                    "UPDATE equeue_users SET code ='"
+                    + str(otp)
+                    + "' WHERE number = '"
+                    + str(request.form["number"])
+                    + "';"
+                )
+                conn.commit()
 
-            resp = jsonify({"message": "success"})
-            resp.status_code = 200
-            return resp
+                resp = jsonify({"message": "success"})
+                resp.status_code = 200
+                return resp
+            else:
+                resp = jsonify({"message": "SMS failure"})
+                resp.status_code = 407
+                return resp
         else:
             resp = jsonify({"message": "Error No user found."})
             resp.status_code = 403
