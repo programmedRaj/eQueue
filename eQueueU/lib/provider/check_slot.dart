@@ -32,17 +32,17 @@ class SlotProvider extends ChangeNotifier {
     print(n);
 
     removeedu();
-
-    for (int i = 0; i < n['bookings'].length; i++) {
-      print(n['bookings'][i]["slots"].split(' -'));
-      slotsadd(
-          date: n['bookings'][i]["slots"]
-              .split(' -')[0]
-              .replaceAll(new RegExp(r"\s+"), ""),
-          time: n['bookings'][i]["slots"]
-              .split(' -')[1]
-              .replaceAll(new RegExp(r"\s+"), ""));
-    }
+    if (n['bookings'] != null)
+      for (int i = 0; i < n['bookings'].length; i++) {
+        print(n['bookings'][i]["slots"].split(' -'));
+        slotsadd(
+            date: n['bookings'][i]["slots"]
+                .split(' -')[0]
+                .replaceAll(new RegExp(r"\s+"), ""),
+            time: n['bookings'][i]["slots"]
+                .split(' -')[1]
+                .replaceAll(new RegExp(r"\s+"), ""));
+      }
   }
 
   List<BookingSlot> booking = [];
