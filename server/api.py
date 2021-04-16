@@ -1334,7 +1334,7 @@ def login_otp():
                 + str(otp)
                 + ""
             )
-            if res.status_code == 200: 
+            if res.status_code == 200:
                 cur.execute(
                     "UPDATE equeue_users SET code ='"
                     + str(otp)
@@ -1583,7 +1583,7 @@ def login_register():
                 + str(request.form["phonenumber"])
                 + "',0,20"
                 + ",'"
-                + str(request.form["phonenumber"] + "@equeue")
+                + str(request.form["phonenumber"] + "@eq")
                 + "');"
             )
             conn.commit()
@@ -1635,7 +1635,7 @@ def login_register():
                 + str(request.form["phonenumber"])
                 + "',0,0"
                 + ",'"
-                + str(request.form["phonenumber"] + "@equeue")
+                + str(request.form["phonenumber"] + "@eq")
                 + "');"
             )
 
@@ -1793,11 +1793,13 @@ def searches_sorting():
         if sorting == "branch":
             comp_id = request.form["comp_id"]
             r = cur.execute(
-                "Select * from branch_details WHERE comp_id = "+str(comp_id)+ " ORDER BY "
+                "Select * from branch_details WHERE comp_id = "
+                + str(comp_id)
+                + " ORDER BY "
                 + str(sortby)
                 + " "
                 + str(asc_desc)
-                +""
+                + ""
             )
             texti = "No branches found"
             textin = "branches"
@@ -1810,7 +1812,7 @@ def searches_sorting():
                 + ""
             )
             texti = "No Companies found"
-            textin = "comp_details" #check
+            textin = "comp_details"  # check
 
         else:
             resp = jsonify({"message": "INVALID REQUEST."})
@@ -1909,7 +1911,7 @@ def create_token():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
-
+        comp_name = request.form["comp_name"]
         branch_name = request.form["branch_name"]
         branch_id = request.form["branch_id"]
         user_id = user["user_id"]
@@ -1927,6 +1929,7 @@ def create_token():
                 department,
                 0,
                 0,
+                comp_name,
             )
 
         elif token_or_booking == "booking":
@@ -1943,6 +1946,7 @@ def create_token():
                 service,
                 insurance,
                 slots,
+                comp_name,
             )
 
         else:

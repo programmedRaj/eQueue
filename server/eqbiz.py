@@ -170,7 +170,7 @@ def create_branch(
         firee = (
             "CREATE TABLE "
             + str(kk)
-            + " ( `id` INT  AUTO_INCREMENT ,`department` VARCHAR(100) ,`device_token` VARCHAR(1000) ,`branch_id` VARCHAR(45), `user_id` VARCHAR(45) , `status` VARCHAR(45) , `insurance` VARCHAR(255) , `create_time` datetime default now() , `slots` VARCHAR(45) ,PRIMARY KEY (`id`) )ENGINE = InnoDB;"
+            + " ( `id` INT  AUTO_INCREMENT ,`department` VARCHAR(100) ,`device_token` VARCHAR(1000) ,`branch_id` VARCHAR(45), `user_id` VARCHAR(45) , `status` VARCHAR(45) , `insurance` VARCHAR(255), `employee_id` VARCHAR(45) , `counter_number` VARCHAR(45), `create_time` datetime default now() , `slots` VARCHAR(45) ,PRIMARY KEY (`id`) )ENGINE = InnoDB;"
         )
         print(firee)
         cur.execute(firee)
@@ -605,7 +605,7 @@ def delete_employee(employee_id):
 
 
 def creatingtokens_bookings(
-    t_b, bname, branch_id, user_id, device_token, service, insurance, slots
+    t_b, bname, branch_id, user_id, device_token, service, insurance, slots, comp_name
 ):
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -630,12 +630,14 @@ def creatingtokens_bookings(
 
             check = cur.execute(
                 "INSERT INTO tokenshistory"
-                + "(branchtable,user_id,token,status) VALUES ('"
+                + "(branchtable,user_id,token,comp_name,status) VALUES ('"
                 + str(kk)
                 + "','"
                 + str(user_id)
                 + "','"
                 + str(value)
+                + "',"
+                + str(comp_name)
                 + "',"
                 + "'onqueue');"
             )
@@ -663,12 +665,14 @@ def creatingtokens_bookings(
 
             check = cur.execute(
                 "INSERT INTO bookingshistory"
-                + "(branchtable,user_id,booking,status) VALUES ('"
+                + "(branchtable,user_id,booking,comp_name,status) VALUES ('"
                 + str(kk)
                 + "','"
                 + str(user_id)
                 + "','"
                 + str(value)
+                + "',"
+                + str(comp_name)
                 + "',"
                 + "'onqueue');"
             )
