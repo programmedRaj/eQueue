@@ -105,8 +105,8 @@ class _WalletState extends State<Wallet> {
                             ),
                             onRightSwipe: () {
                               print('right');
-                              //   Navigator.of(context).push(MaterialPageRoute(
-                              //       builder: (ctx) => Payment()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => ExistingCardsPage()));
                             },
                             onLeftSwipe: () {
                               print('left');
