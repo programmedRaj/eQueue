@@ -1835,6 +1835,89 @@ def searches_sorting():
         conn.close()
 
 
+@app.route("/add_money", methods=["POST"])
+@check_for_user_token
+def add_money():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    status = request.form["status"]
+    txn_id = request.form["txn_id"]
+    amount = request.form["amount"]
+    user_id = user["user_id"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        r = cur.execute("Select * from user_details WHERE id = " + str(user_id) + "")
+        kk = cur.fetchone()
+
+        if kk:
+            wallet = float(kk["money"])
+            if status == "success":
+                r = cur.execute(
+                    "INSERT INTO transactions_users (stripe_txn,user_id,status,amount,color) VALUES ('"
+                    + str(txn_id)
+                    + "','"
+                    + str(user_id)
+                    + "','"
+                    + str(status)
+                    + "','"
+                    + str(amount)
+                    + "',"
+                    + "'green');"
+                )
+                rr = cur.execute(
+                    "UPDATE user_details SET money = '"
+                    + str(wallet + amount)
+                    + "' WHERE id ="
+                    + str(user_id)
+                    + ";"
+                )
+                conn.commit()
+
+                if rr and r:
+                    resp = jsonify({"message": "success"})
+                    resp.status_code = 200
+                    return resp
+                else:
+                    resp = jsonify({"message": "error"})
+                    resp.status_code = 403
+                    return resp
+
+            elif status == "failed":
+                r = cur.execute(
+                    "INSERT INTO transactions_users (stripe_txn,user_id,status,amount,color) VALUES ('"
+                    + str(txn_id)
+                    + "','"
+                    + str(user_id)
+                    + "','"
+                    + str(status)
+                    + "','"
+                    + str(amount)
+                    + "',"
+                    + "'red');"
+                )
+                if r:
+                    resp = jsonify({"message": "success"})
+                    resp.status_code = 200
+                    return resp
+                else:
+                    resp = jsonify({"message": "error"})
+                    resp.status_code = 403
+                    return resp
+            else:
+                resp = jsonify({"message": "INVALID REQUEST."})
+                resp.status_code = 405
+                return resp
+        else:
+            resp = jsonify({"message": "Invalid user"})
+            resp.status_code = 405
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/booking_payment", methods=["POST"])
 @check_for_user_token
 def booking_payment():
