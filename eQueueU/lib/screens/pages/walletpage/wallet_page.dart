@@ -1,5 +1,6 @@
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/screens/pages/transactionpage.dart';
+import 'package:eQueue/screens/pages/walletpage/add_money.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_to/swipe_to.dart';
 
@@ -60,7 +61,7 @@ class _WalletState extends State<Wallet> {
                     thickness: 0.8,
                   ),
                   Container(
-                    width: width,
+                    width: width / 1.4,
                     margin: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: myColor[250],
@@ -69,19 +70,6 @@ class _WalletState extends State<Wallet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                          child: CircleAvatar(
-                            radius: 30,
-                            backgroundColor: myColor[100],
-                            child: Center(
-                              child: Icon(
-                                Icons.remove,
-                                size: 30,
-                                color: myColor[50],
-                              ),
-                            ),
-                          ),
-                        ),
                         Container(
                           child: SwipeTo(
                             child: Container(
@@ -117,6 +105,8 @@ class _WalletState extends State<Wallet> {
                             ),
                             onRightSwipe: () {
                               print('right');
+                              //   Navigator.of(context).push(MaterialPageRoute(
+                              //       builder: (ctx) => Payment()));
                             },
                             onLeftSwipe: () {
                               print('left');
@@ -142,7 +132,7 @@ class _WalletState extends State<Wallet> {
                   Container(
                     child: Center(
                         child: Text(
-                      'Swipe Right to Add And Left to Withdraw',
+                      'Swipe Right to Add ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )),
                   ),

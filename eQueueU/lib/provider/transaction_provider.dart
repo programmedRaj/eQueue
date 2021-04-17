@@ -24,7 +24,6 @@ class TransactionProvider with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    print(n['message'][0]['txn_id']);
     removetoken();
     for (int i = 0; i < n['message'].length; i++) {
       addtoken(
