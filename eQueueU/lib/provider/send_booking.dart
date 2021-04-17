@@ -18,6 +18,7 @@ class SendBooking with ChangeNotifier {
     String service,
     String insurance,
     String slot,
+    String company,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
@@ -31,6 +32,7 @@ class SendBooking with ChangeNotifier {
     map['service'] = service;
     map['insurance'] = insurance;
     map['slot'] = slot;
+    map['comp_name'] = company;
 
     var response = await retry(
       () => http

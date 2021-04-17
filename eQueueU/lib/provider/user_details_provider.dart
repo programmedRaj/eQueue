@@ -1,3 +1,4 @@
+import 'package:eQueue/api/models/userdetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,8 +27,54 @@ class UserDetails with ChangeNotifier {
     String money = n['userdetails']['money'];
     String bonus = n['userdetails']['bonus'];
 
-    print(money);
+    getdet(
+      name: n['userdetails']['name'],
+      address1: n['userdetails']['address1'],
+      address2: n['userdetails']['address2'],
+      bonus: n['userdetails']['bonus'],
+      city: n['userdetails']['city'],
+      money: n['userdetails']['money'],
+      postalcode: n['userdetails']['postalcode'],
+      profileurl: n['userdetails']['profile_url'],
+      province: n['userdetails']['province'],
+      phone: n['userdetails']['phone_number'],
+    );
 
     return [money, bonus];
+  }
+
+  List<UserDets> userd = [];
+  List<UserDets> get users => userd;
+
+  getdet({
+    String name,
+    String profileurl,
+    String address1,
+    String address2,
+    String province,
+    String city,
+    String postalcode,
+    String money,
+    String bonus,
+    String phone,
+  }) {
+    users.add(UserDets(
+      name: name,
+      address1: address1,
+      address2: address2,
+      bonus: bonus,
+      city: city,
+      money: money,
+      postalcode: postalcode,
+      profileurl: profileurl,
+      province: province,
+      phone: phone,
+    ));
+    notifyListeners();
+  }
+
+  removedets() {
+    users.clear();
+    notifyListeners();
   }
 }

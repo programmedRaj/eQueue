@@ -43,13 +43,13 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
   List<String> perDayHrs = [];
   List<TextEditingController> noofBookingsC = [];
   List<String> weekDays = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday"
   ];
   TextEditingController _branchNameController = TextEditingController();
   TextEditingController _branchNoController = TextEditingController();

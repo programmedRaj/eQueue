@@ -39,7 +39,6 @@ class CompanyProvider extends ChangeNotifier {
     var response = await http.Response.fromStream(res);
 
     var n = jsonDecode(response.body);
-    print('sss ===  ${n['companies']}');
 
     removeedu();
 

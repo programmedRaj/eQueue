@@ -237,7 +237,6 @@ class _BranchScreenState extends State<BranchScreen> {
                                                           10)),
                                               child: FlatButton(
                                                   onPressed: () async {
-                                                    print(value.bookingshrs);
                                                     var status = await Provider
                                                             .of<TokenChecker>(
                                                                 context,
@@ -276,11 +275,17 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                       type: widget
                                                                           .comp_type,
                                                                       book: value
-                                                                          .bookingsperhrs,
+                                                                          .branches[
+                                                                              i]
+                                                                          .bookingperday,
                                                                       perday: value
-                                                                          .perdayhrss,
+                                                                          .branches[
+                                                                              i]
+                                                                          .perdayhours,
                                                                       wk: value
-                                                                          .workinghrsper,
+                                                                          .branches[
+                                                                              i]
+                                                                          .workinghours,
                                                                     )
                                                                   : Booktoken(
                                                                       branchname: value

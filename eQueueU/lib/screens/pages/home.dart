@@ -100,12 +100,16 @@ class _HomeState extends State<Home> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      height: height * 0.02,
-                                      width: width * 0.04,
-                                      decoration: BoxDecoration(
-                                          color: Colors.orangeAccent,
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
+                                      child: CircleAvatar(
+                                        radius: 10,
+                                        backgroundColor: Colors.orangeAccent,
+                                      ),
+                                      // height: height * 0.02,
+                                      // width: width * 0.04,
+                                      // decoration: BoxDecoration(
+                                      //     color: Colors.orangeAccent,
+                                      //     borderRadius:
+                                      //         BorderRadius.circular(20)),
                                     ),
                                     SizedBox(
                                       width: width * 0.02,
@@ -119,13 +123,17 @@ class _HomeState extends State<Home> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      height: height * 0.02,
-                                      width: width * 0.04,
-                                      decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                    ),
+                                        child: CircleAvatar(
+                                      radius: 10,
+                                      backgroundColor: Colors.green,
+                                    )
+                                        // height: height * 0.02,
+                                        // width: width * 0.04,
+                                        // decoration: BoxDecoration(
+                                        //     color: Colors.green,
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(20)),
+                                        ),
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
@@ -138,13 +146,18 @@ class _HomeState extends State<Home> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      height: height * 0.02,
-                                      width: width * 0.04,
-                                      decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                    ),
+                                        child: CircleAvatar(
+                                      radius: 10,
+                                      backgroundColor: Colors.blue,
+                                    )
+
+                                        // height: height * 0.02,
+                                        // width: width * 0.04,
+                                        // decoration: BoxDecoration(
+                                        //     color: Colors.blue,
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(20)),
+                                        ),
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
@@ -157,13 +170,17 @@ class _HomeState extends State<Home> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      height: height * 0.02,
-                                      width: width * 0.04,
-                                      decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                    ),
+                                        child: CircleAvatar(
+                                      radius: 10,
+                                      backgroundColor: Colors.red,
+                                    )
+                                        // height: height * 0.02,
+                                        // width: width * 0.04,
+                                        // decoration: BoxDecoration(
+                                        //     color: Colors.red,
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(20)),
+                                        ),
                                     SizedBox(
                                       width: width * 0.02,
                                     ),

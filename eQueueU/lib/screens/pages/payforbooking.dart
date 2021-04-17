@@ -197,6 +197,7 @@ class _PayForState extends State<PayFor> {
               if (isinsu) {
                 await Provider.of<SendBooking>(context, listen: false)
                     .generatetoken(
+                  company: widget.companyname,
                   branchid: widget.branchid,
                   branchname: widget.branchname,
                   tokenorbooking: 'booking',
@@ -208,6 +209,7 @@ class _PayForState extends State<PayFor> {
                 await Provider.of<SendBooking>(context, listen: false)
                     .generatetoken(
                   branchid: widget.branchid,
+                  company: widget.companyname,
                   branchname: widget.branchname,
                   tokenorbooking: 'booking',
                   insurance: value,

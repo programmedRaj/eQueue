@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -8,9 +10,9 @@ import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/apptoast.dart';
 
 class Calen extends StatefulWidget {
-  final List<Working> wk;
-  final List<Working> book;
-  final List<Working> perday;
+  final String wk;
+  final String book;
+  final String perday;
   final String companyname;
   final String branchname;
   final int branchid;
@@ -35,10 +37,19 @@ class Calen extends StatefulWidget {
 
 class _CalenState extends State<Calen> {
   CalendarController _c = CalendarController();
+  List<Working> wk = [];
+  int whichday;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
+    var wh = json.decode(widget.wk);
+    var book = json.decode(widget.book);
+    var perdayy = json.decode(widget.perday);
+
+    print(book);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Time Slot'),
@@ -54,34 +65,59 @@ class _CalenState extends State<Calen> {
                 onDaySelected: (day, events, holidays) {
                   String dateFormat = DateFormat('EEEE').format(day);
                   String dayy = dateFormat.toLowerCase();
+                  print(dayy);
 
-                  String workday = widget.wk
-                      .where((element) => element.day == dayy)
-                      .map((e) => e.value)
-                      .first
+                  if (dayy == 'monday') {
+                    setState(() {
+                      whichday = 0;
+                    });
+                  } else if (dayy == 'tuesday') {
+                    setState(() {
+                      whichday = 1;
+                    });
+                  } else if (dayy == 'wednesday') {
+                    setState(() {
+                      whichday = 2;
+                    });
+                  } else if (dayy == 'thursday') {
+                    setState(() {
+                      whichday = 3;
+                    });
+                  } else if (dayy == 'friday') {
+                    setState(() {
+                      whichday = 4;
+                    });
+                  } else if (dayy == 'saturday') {
+                    setState(() {
+                      whichday = 5;
+                    });
+                  } else if (dayy == 'sunday') {
+                    setState(() {
+                      whichday = 6;
+                    });
+                  }
+
+                  String workday = wh[dayy]
                       .toString()
-                      .replaceAll('(', '')
-                      .replaceAll(')', '');
+                      .replaceAll('{', '')
+                      .replaceAll('}', '');
                   print('wk -- $workday');
 
-                  String bookday = widget.book
-                      .where((element) => element.day == dayy)
-                      .map((e) => e.value)
-                      .first
-                      .toString()
-                      .replaceAll('(', '')
-                      .replaceAll(')', '');
+                  String bookday = book[whichday];
+                  // .toString()
+                  // .replaceAll('{', '')
+                  // .replaceAll('}', '');
 
                   print('book -- $bookday');
 
-                  String perday = widget.perday
-                      .where((element) => element.day == dayy)
-                      .map((e) => e.value)
-                      .first
-                      .toString()
-                      .replaceAll('(', '')
-                      .replaceAll(')', '');
-                  ;
+                  String perday = perdayy[whichday];
+                  // .where((element) => element.day == dayy)
+                  // .map((e) => e.value)
+                  // .first
+                  // .toString()
+                  // .replaceAll('(', '')
+                  // .replaceAll(')', '');
+
                   print('pr --- $perday');
                   print(perday.length);
                   if (perday.length > 0 && bookday.length > 0 ||
@@ -95,7 +131,6 @@ class _CalenState extends State<Calen> {
                     var t = workday.replaceAll('{', '').replaceAll('}', '');
                     var ti = t.split(',');
                     var end = ti[0].split(' ')[1];
-                    // print(ti[1].split(' ')[2]);
                     var start = ti[1].split(' ')[2];
 
                     print('$start --- $end');
