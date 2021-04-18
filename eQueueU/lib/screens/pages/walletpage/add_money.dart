@@ -2,6 +2,7 @@ import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/provider/paymentdone.dart';
 import 'package:eQueue/screens/pages/walletpage/stripe-pay.dart';
+import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
@@ -25,8 +26,18 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
 
     print(response.success);
     if (response.success) {
-      Provider.of<PaymentDoneProvider>(context, listen: false)
-          .paymentdone(amount: amount, status: response.success);
+      await Provider.of<PaymentDoneProvider>(context, listen: false)
+          .paymentdone(amount: amount, status: response.success)
+          .then((value) {
+        if (value == 200) {
+          AppToast.showSucc('Payment Done');
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => Wallet()))
+              .then((value) {});
+        } else {
+          AppToast.showErr('Something went wrong');
+        }
+      });
     } else {
       AppToast.showErr('Payment Failed');
     }

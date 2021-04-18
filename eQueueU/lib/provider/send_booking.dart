@@ -24,13 +24,15 @@ class SendBooking with ChangeNotifier {
     var token = prefs.getString('token');
     var devicetoken = prefs.getString('devicetoken');
     print(devicetoken);
+    print(
+        '$branchname + $branchid + $tokenorbooking + $devicetoken + $service + $insurance + $slot + $company');
     var map = new Map<String, dynamic>();
     map['branch_name'] = branchname;
     map['branch_id'] = branchid.toString();
     map['token_or_booking'] = tokenorbooking;
     map['device_token'] = devicetoken;
     map['service'] = service;
-    map['insurance'] = insurance;
+    map['insurance'] = 'paid';
     map['slot'] = slot;
     map['comp_name'] = company;
 

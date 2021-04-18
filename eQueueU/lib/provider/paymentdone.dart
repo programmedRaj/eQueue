@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 class PaymentDoneProvider with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
-  paymentdone({bool status, String amount}) async {
+  Future paymentdone({bool status, String amount}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     var map = new Map<String, dynamic>();
@@ -27,5 +27,7 @@ class PaymentDoneProvider with ChangeNotifier {
     var k = response.body;
     var n = json.decode(k);
     print(n);
+
+    return response.statusCode;
   }
 }

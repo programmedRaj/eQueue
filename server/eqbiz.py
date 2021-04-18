@@ -636,7 +636,7 @@ def creatingtokens_bookings(
                 + str(user_id)
                 + "','"
                 + str(value)
-                + "',"
+                + "','"
                 + str(comp_name)
                 + "',"
                 + "'onqueue');"
@@ -671,7 +671,7 @@ def creatingtokens_bookings(
                 + str(user_id)
                 + "','"
                 + str(value)
-                + "',"
+                + "','"
                 + str(comp_name)
                 + "',"
                 + "'onqueue');"
