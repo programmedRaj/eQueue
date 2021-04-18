@@ -1,6 +1,12 @@
+import 'package:eQueue/components/color.dart';
+import 'package:eQueue/constants/apptoast.dart';
+import 'package:eQueue/provider/paymentdone.dart';
 import 'package:eQueue/screens/pages/walletpage/stripe-pay.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:provider/provider.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class ExistingCardsPage extends StatefulWidget {
@@ -10,27 +16,20 @@ class ExistingCardsPage extends StatefulWidget {
 }
 
 class ExistingCardsPageState extends State<ExistingCardsPage> {
-  List cards = [
-    {
-      'cardNumber': '4242424242424242',
-      'expiryDate': '04/24',
-      'cardHolderName': 'Muhammad Ahsan Ayaz',
-      'cvvCode': '424',
-      'showBackView': false
-    },
-    {
-      'cardNumber': '5555555566554444',
-      'expiryDate': '04/23',
-      'cardHolderName': 'Tracer',
-      'cvvCode': '123',
-      'showBackView': false
-    }
-  ];
-  payViaNewCard(BuildContext context) async {
-    var response =
-        await StripeService.payWithNewCard(amount: '15000', currency: 'INR');
+  String amount = "1";
+
+  payViaNewCard(BuildContext context, String amount) async {
+    var amt = int.parse(amount) * 100;
+    var response = await StripeService.payWithNewCard(
+        amount: amt.toString(), currency: 'USD');
 
     print(response.success);
+    if (response.success) {
+      Provider.of<PaymentDoneProvider>(context, listen: false)
+          .paymentdone(amount: amount, status: response.success);
+    } else {
+      AppToast.showErr('Payment Failed');
+    }
 
     // Scaffold.of(context).showSnackBar(SnackBar(
     //     content: Text(response.message),
@@ -70,30 +69,64 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Choose existing card'),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  payViaNewCard(context);
-                },
-                icon: Icon(Icons.add))
-          ],
+          // actions: [
+          //   IconButton(
+          //       onPressed: () {
+          //         payViaNewCard(context);
+          //       },
+          //       icon: Icon(Icons.add))
+          // ],
         ),
         body: Container(
-            padding: EdgeInsets.all(20),
-            child: ListView.builder(
-                itemCount: cards.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var card = cards[index];
-                  return InkWell(
-                      onTap: () {
-                        payViaExistingCard(context, card);
-                      },
-                      child: CreditCardWidget(
-                          cardNumber: card['cardNumber'],
-                          expiryDate: card['expiryDate'],
-                          cardHolderName: card['cardHolderName'],
-                          cvvCode: card['cvvCode'],
-                          showBackView: false));
-                })));
+          margin: EdgeInsets.all(40),
+          decoration: BoxDecoration(
+              color: myColor[100],
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[600],
+                  blurRadius: 0.6,
+                )
+              ]),
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(left: 40, bottom: 20),
+                child: RadioButtonGroup(
+                  orientation: GroupedButtonsOrientation.HORIZONTAL,
+                  margin: const EdgeInsets.only(left: 12.0),
+                  onSelected: (String selected) => setState(() {
+                    amount = selected;
+                    print(selected);
+                  }),
+                  labels: <String>["1", "5", "10", "20"],
+                  picked: amount,
+                  itemBuilder: (Radio rb, Text txt, int i) {
+                    return Column(
+                      children: <Widget>[
+                        Icon(Icons.public),
+                        rb,
+                        txt,
+                      ],
+                    );
+                  },
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    if (amount != null || amount != '0') {
+                      payViaNewCard(context, amount);
+                    } else {
+                      AppToast.showErr('Enter Amount');
+                    }
+                  },
+                  child: Text('Add Money'))
+            ],
+          ),
+        ));
   }
 }

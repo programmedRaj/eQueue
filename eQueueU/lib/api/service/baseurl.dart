@@ -14,4 +14,5 @@ class BaseUrl {
   final String payment = "$basic/booking_payment";
   final String displaytokenbooking = "$basic/my_tokens_bookings";
   final String transactions = "$basic/my_transactions";
+  final String addmoney = "$basic/add_money";
 }

@@ -4,6 +4,7 @@ import 'package:eQueue/provider/branch_provider.dart';
 import 'package:eQueue/provider/check_slot.dart';
 import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/provider/payment_provider.dart';
+import 'package:eQueue/provider/paymentdone.dart';
 import 'package:eQueue/provider/send_booking.dart';
 import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/token_bookings_dikhao.dart';
@@ -85,6 +86,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: CompanyProvider()),
+        ChangeNotifierProvider.value(value: PaymentDoneProvider()),
         ChangeNotifierProvider.value(value: BranchProvider()),
         ChangeNotifierProvider.value(value: DepProvider()),
         ChangeNotifierProvider.value(value: DepBookProvider()),

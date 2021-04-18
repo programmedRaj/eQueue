@@ -1842,7 +1842,6 @@ def add_money():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     status = request.form["status"]
-    txn_id = request.form["txn_id"]
     amount = request.form["amount"]
     user_id = user["user_id"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -1852,11 +1851,10 @@ def add_money():
 
         if kk:
             wallet = float(kk["money"])
-            if status == "success":
+            if status == "true":
+                status="success"
                 r = cur.execute(
-                    "INSERT INTO transactions_users (stripe_txn,user_id,status,amount,color) VALUES ('"
-                    + str(txn_id)
-                    + "','"
+                    "INSERT INTO transactions_users (user_id,status,amount,color) VALUES ('"
                     + str(user_id)
                     + "','"
                     + str(status)
@@ -1867,7 +1865,7 @@ def add_money():
                 )
                 rr = cur.execute(
                     "UPDATE user_details SET money = '"
-                    + str(wallet + amount)
+                    + str(wallet + float(amount))
                     + "' WHERE id ="
                     + str(user_id)
                     + ";"
@@ -1883,11 +1881,10 @@ def add_money():
                     resp.status_code = 403
                     return resp
 
-            elif status == "failed":
+            elif status == "false":
+                status="failed"
                 r = cur.execute(
-                    "INSERT INTO transactions_users (stripe_txn,user_id,status,amount,color) VALUES ('"
-                    + str(txn_id)
-                    + "','"
+                    "INSERT INTO transactions_users (user_id,status,amount,color) VALUES ('"
                     + str(user_id)
                     + "','"
                     + str(status)
@@ -1896,6 +1893,8 @@ def add_money():
                     + "',"
                     + "'red');"
                 )
+                conn.commit()
+
                 if r:
                     resp = jsonify({"message": "success"})
                     resp.status_code = 200
