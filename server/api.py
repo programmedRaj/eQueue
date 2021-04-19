@@ -1836,19 +1836,87 @@ def searches_sorting():
 
 
 @app.route("/branch_map")
-@check_for_user_token
+# @check_for_user_token
 def branch_map():
     conn = mysql.connect()
-    token = request.headers["Authorization"]
-    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    # token = request.headers["Authorization"]
+    # user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
 
         r = cur.execute("Select * from branch_details")
         r = cur.fetchall()
+        rr = cur.execute("Select id,name,type from companydetails")
+        rr = cur.fetchall()
+        myDict = {}
+        for m in rr:
+            l = []
+            l.append(m["name"])
+            l.append(m["type"])
+            myDict[m["id"]] = l
 
         if r:
-            resp = jsonify({"branch_list": r})
+            phone_number = []
+            department = []
+            profile_photo_url = []
+            working_hours = []
+            threshold = []
+            booking_per_day = []
+            per_day_hours = []
+            services = []
+            bname = []
+            address1 = []
+            address2 = []
+            city = []
+            postalcode = []
+            geolocation = []
+            province = []
+            comp_id = []
+            comp_name = []
+            comp_type = []
+
+            for m in r:
+                phone_number.append(m["phone_number"])
+                department.append(m["department"])
+                profile_photo_url.append(m["profile_photo_url"])
+                working_hours.append(m["working_hours"])
+                threshold.append(m["threshold"])
+                booking_per_day.append(m["booking_per_day"])
+                per_day_hours.append(m["per_day_hours"])
+                services.append(m["services"])
+                bname.append(m["bname"])
+                address1.append(m["address1"])
+                address2.append(m["address2"])
+                city.append(m["city"])
+                postalcode.append(m["postalcode"])
+                geolocation.append(m["geolocation"])
+                province.append(m["province"])
+                comp_id.append(m["comp_id"])
+                comp_name.append(myDict[m["comp_id"]][0])
+                comp_type.append(myDict[m["comp_id"]][1])
+
+            resp = jsonify(
+                {
+                    "phone_number": phone_number,
+                    "department": department,
+                    "profile_photo_url": profile_photo_url,
+                    "working_hours": working_hours,
+                    "threshold": threshold,
+                    "booking_per_day": booking_per_day,
+                    "per_day_hours": per_day_hours,
+                    "services": services,
+                    "bname": bname,
+                    "address1": address1,
+                    "address2": address2,
+                    "city": city,
+                    "postalcode": postalcode,
+                    "geolocation": geolocation,
+                    "province": province,
+                    "comp_id": comp_id,
+                    "comp_name": comp_name,
+                    "comp_type": comp_type,
+                }
+            )
             resp.status_code = 200
             return resp
 
