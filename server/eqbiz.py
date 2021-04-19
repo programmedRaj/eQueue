@@ -665,7 +665,7 @@ def creatingtokens_bookings(
 
             check = cur.execute(
                 "INSERT INTO bookingshistory"
-                + "(branchtable,user_id,booking,comp_name,status) VALUES ('"
+                + "(branchtable,user_id,booking,comp_name,slot,status) VALUES ('"
                 + str(kk)
                 + "','"
                 + str(user_id)
@@ -673,6 +673,8 @@ def creatingtokens_bookings(
                 + str(value)
                 + "','"
                 + str(comp_name)
+                + "',"
+                + str(slots)
                 + "',"
                 + "'onqueue');"
             )
