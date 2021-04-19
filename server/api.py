@@ -1835,6 +1835,32 @@ def searches_sorting():
         conn.close()
 
 
+@app.route("/branch_map")
+@check_for_user_token
+def branch_map():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+
+        r = cur.execute("Select * from branch_details")
+        r = cur.fetchall()
+
+        if r:
+            resp = jsonify({"branch_list": r})
+            resp.status_code = 200
+            return resp
+
+        else:
+            resp = jsonify({"message": "No branches found."})
+            resp.status_code = 403
+            return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/add_money", methods=["POST"])
 @check_for_user_token
 def add_money():
@@ -1852,7 +1878,7 @@ def add_money():
         if kk:
             wallet = float(kk["money"])
             if status == "true":
-                status="success"
+                status = "success"
                 r = cur.execute(
                     "INSERT INTO transactions_users (user_id,status,amount,color) VALUES ('"
                     + str(user_id)
@@ -1882,7 +1908,7 @@ def add_money():
                     return resp
 
             elif status == "false":
-                status="failed"
+                status = "failed"
                 r = cur.execute(
                     "INSERT INTO transactions_users (user_id,status,amount,color) VALUES ('"
                     + str(user_id)
