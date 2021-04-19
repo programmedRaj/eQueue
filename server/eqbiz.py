@@ -673,7 +673,7 @@ def creatingtokens_bookings(
                 + str(value)
                 + "','"
                 + str(comp_name)
-                + "',"
+                + "','"
                 + str(slots)
                 + "',"
                 + "'onqueue');"

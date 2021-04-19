@@ -14,6 +14,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Notifications'),
+        leading: Container(),
       ),
       body: ListView.builder(
           itemCount: 20,

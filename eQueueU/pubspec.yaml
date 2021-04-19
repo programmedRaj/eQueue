@@ -37,16 +37,15 @@ dependencies:
   country_calling_code_picker: ^1.0.8+1
   image_picker: ^0.7.4
   provider: ^5.0.0
-  http: ^0.13.1
+  http:
   shared_preferences: ^2.0.5
   retry:
-  dio: ^4.0.0
   intl:
   firebase_messaging: ^9.1.1
   firebase_core: ^1.0.3
   fluttertoast: ^7.1.8
   stripe_payment: ^1.0.6
-  flutter_credit_card:
+  google_maps_flutter: ^2.0.3
 
 
 

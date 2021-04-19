@@ -44,8 +44,10 @@ class StripeService {
             message: 'Transaction failed', success: false);
       }
     } on PlatformException catch (err) {
+      print(err);
       return StripeService.getPlatformExceptionErrorResult(err);
     } catch (err) {
+      print(err);
       return new StripeTransactionResponse(
           message: 'Transaction failed: ${err.toString()}', success: false);
     }
@@ -69,8 +71,10 @@ class StripeService {
             message: 'Transaction failed', success: false);
       }
     } on PlatformException catch (err) {
+      print(err);
       return StripeService.getPlatformExceptionErrorResult(err);
     } catch (err) {
+      print(err);
       return new StripeTransactionResponse(
           message: 'Transaction failed: ${err.toString()}', success: false);
     }

@@ -5,7 +5,6 @@ import 'package:eQueue/screens/pages/walletpage/stripe-pay.dart';
 import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:stripe_payment/stripe_payment.dart';
@@ -19,7 +18,7 @@ class ExistingCardsPage extends StatefulWidget {
 class ExistingCardsPageState extends State<ExistingCardsPage> {
   String amount = "1";
 
-  payViaNewCard(BuildContext context, String amount) async {
+  Future payViaNewCard(BuildContext context, String amount) async {
     var amt = int.parse(amount) * 100;
     var response = await StripeService.payWithNewCard(
         amount: amt.toString(), currency: 'USD');
@@ -31,9 +30,8 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
           .then((value) {
         if (value == 200) {
           AppToast.showSucc('Payment Done');
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (ctx) => Wallet()))
-              .then((value) {});
+          Navigator.of(context).pop();
+          // .push(MaterialPageRoute(builder: (ctx) => Wallet()));
         } else {
           AppToast.showErr('Something went wrong');
         }
@@ -79,7 +77,7 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Choose existing card'),
+          title: Text('Payment'),
           // actions: [
           //   IconButton(
           //       onPressed: () {

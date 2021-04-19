@@ -288,6 +288,9 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                           .workinghours,
                                                                     )
                                                                   : Booktoken(
+                                                                      companyname:
+                                                                          widget
+                                                                              .companyname,
                                                                       branchname: value
                                                                           .branches[
                                                                               i]

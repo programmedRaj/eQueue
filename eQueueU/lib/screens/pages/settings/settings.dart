@@ -3,7 +3,9 @@ import 'package:eQueue/components/color.dart';
 import 'package:eQueue/screens/auth/login.dart';
 import 'package:eQueue/screens/pages/settings/history.dart';
 import 'package:eQueue/screens/pages/settings/langauge.dart';
+import 'package:eQueue/screens/pages/settings/privacy_policy.dart';
 import 'package:eQueue/screens/pages/settings/profile.dart';
+import 'package:eQueue/screens/pages/settings/terms_conditions.dart';
 import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -112,8 +114,8 @@ class _SettingsState extends State<Settings> {
             ),
             GestureDetector(
               onTap: () {
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (ctx) => Wallet()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) => TermsCondition()));
               },
               child: Container(
                 margin: EdgeInsets.all(8),
@@ -134,8 +136,8 @@ class _SettingsState extends State<Settings> {
             ),
             GestureDetector(
               onTap: () {
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (ctx) => Wallet()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctx) => Policy()));
               },
               child: Container(
                 margin: EdgeInsets.all(8),

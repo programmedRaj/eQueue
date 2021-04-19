@@ -6,12 +6,18 @@ class DisplayToken {
   final String createdon;
   final String status;
   final String userid;
+  final String employeeid;
+  final String slots;
+  final String comp;
   DisplayToken({
     this.token,
     this.branchtable,
     this.createdon,
     this.status,
     this.userid,
+    this.employeeid,
+    this.slots,
+    this.comp,
   });
 
   DisplayToken copyWith({
@@ -20,6 +26,9 @@ class DisplayToken {
     String createdon,
     String status,
     String userid,
+    String employeeid,
+    String slots,
+    String comp,
   }) {
     return DisplayToken(
       token: token ?? this.token,
@@ -27,6 +36,9 @@ class DisplayToken {
       createdon: createdon ?? this.createdon,
       status: status ?? this.status,
       userid: userid ?? this.userid,
+      employeeid: employeeid ?? this.employeeid,
+      slots: slots ?? this.slots,
+      comp: comp ?? this.comp,
     );
   }
 
@@ -37,6 +49,9 @@ class DisplayToken {
       createdon: model.createdon ?? this.createdon,
       status: model.status ?? this.status,
       userid: model.userid ?? this.userid,
+      employeeid: model.employeeid ?? this.employeeid,
+      slots: model.slots ?? this.slots,
+      comp: model.comp ?? this.comp,
     );
   }
 
@@ -47,6 +62,9 @@ class DisplayToken {
       'createdon': createdon,
       'status': status,
       'userid': userid,
+      'employeeid': employeeid,
+      'slots': slots,
+      'comp': comp,
     };
   }
 
@@ -59,6 +77,9 @@ class DisplayToken {
       createdon: map['createdon'],
       status: map['status'],
       userid: map['userid'],
+      employeeid: map['employeeid'],
+      slots: map['slots'],
+      comp: map['comp'],
     );
   }
 
@@ -69,7 +90,7 @@ class DisplayToken {
 
   @override
   String toString() {
-    return 'DisplayToken(token: $token, branchtable: $branchtable, createdon: $createdon, status: $status, userid: $userid)';
+    return 'DisplayToken(token: $token, branchtable: $branchtable, createdon: $createdon, status: $status, userid: $userid, employeeid: $employeeid, slots: $slots, comp: $comp)';
   }
 
   @override
@@ -81,7 +102,10 @@ class DisplayToken {
         o.branchtable == branchtable &&
         o.createdon == createdon &&
         o.status == status &&
-        o.userid == userid;
+        o.userid == userid &&
+        o.employeeid == employeeid &&
+        o.slots == slots &&
+        o.comp == comp;
   }
 
   @override
@@ -90,6 +114,9 @@ class DisplayToken {
         branchtable.hashCode ^
         createdon.hashCode ^
         status.hashCode ^
-        userid.hashCode;
+        userid.hashCode ^
+        employeeid.hashCode ^
+        slots.hashCode ^
+        comp.hashCode;
   }
 }

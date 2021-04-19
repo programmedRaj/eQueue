@@ -3,6 +3,7 @@ import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/provider/branch_provider.dart';
 import 'package:eQueue/provider/token_bookings_dikhao.dart';
 import 'package:eQueue/screens/pages/companies_screen.dart';
+import 'package:eQueue/screens/pages/mapss.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -225,186 +226,193 @@ class _HomeState extends State<Home> {
                               Container(
                                   height: height * 0.4,
                                   width: width,
-                                  child: value.bookings == null ||
-                                          value.bookings.isEmpty
-                                      ? Container(
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: height * 0.1,
-                                              ),
-                                              Text('No Bookings!!'),
-                                              Container(
-                                                height: height * 0.08,
-                                                margin:
-                                                    EdgeInsets.only(top: 10),
-                                                decoration: BoxDecoration(
-                                                    color: myColor[150],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: FlatButton(
-                                                  child: Text(
-                                                    'Create Bookings',
-                                                    style: TextStyle(
-                                                        color: myColor[100]),
+                                  child:
+                                      value.bookings == null ||
+                                              value.bookings.isEmpty
+                                          ? Container(
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: height * 0.1,
                                                   ),
-                                                  onPressed: () {},
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          itemCount: value.bookings.length,
-                                          itemBuilder: (context, index) {
-                                            return Dismissible(
-                                              direction:
-                                                  DismissDirection.endToStart,
-                                              key: Key(index.toString()),
-                                              background: Container(
-                                                color: Colors.red,
-                                                child: Container(
-                                                  margin: EdgeInsets.all(10),
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.delete,
-                                                        color: myColor[100],
-                                                      ),
-                                                      Text(
-                                                        'Remove',
+                                                  Text('No Bookings!!'),
+                                                  Container(
+                                                    height: height * 0.08,
+                                                    margin: EdgeInsets.only(
+                                                        top: 10),
+                                                    decoration: BoxDecoration(
+                                                        color: myColor[150],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: FlatButton(
+                                                      child: Text(
+                                                        'Create Bookings',
                                                         style: TextStyle(
-                                                          color: myColor[100],
-                                                          fontSize: 20,
-                                                        ),
+                                                            color:
+                                                                myColor[100]),
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (ctx) =>
+                                                                    Company()));
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                              onDismissed: (direction) {
-                                                // Removes that item the list on swipwe
-                                                setState(() {
-                                                  // items.removeAt(index);
-                                                });
-                                                // Shows the information on Snackbar
-                                                Scaffold.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                        content:
-                                                            Text("dismissed")));
-                                              },
-                                              child: Container(
-                                                height: height * 0.2,
-                                                width: width,
-                                                decoration: BoxDecoration(
-                                                    color: myColor[100],
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                          color:
-                                                              Colors.grey[600],
-                                                          blurRadius: 4)
-                                                    ]),
-                                                margin: EdgeInsets.all(5),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      width: width * 0.4,
-                                                      margin: EdgeInsets.all(5),
-                                                      child: Column(
+                                            )
+                                          : ListView.builder(
+                                              itemCount: value.bookings.length,
+                                              itemBuilder: (context, index) {
+                                                return Dismissible(
+                                                  direction: DismissDirection
+                                                      .endToStart,
+                                                  key: Key(index.toString()),
+                                                  background: Container(
+                                                    color: Colors.red,
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.all(10),
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
-                                                                .start,
+                                                                .end,
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
-                                                                .start,
+                                                                .end,
                                                         children: [
-                                                          Container(
-                                                            child: Text(
-                                                                'Branch Name'),
+                                                          Icon(
+                                                            Icons.delete,
+                                                            color: myColor[100],
                                                           ),
-                                                          Container(
-                                                            child: Text(
-                                                                'Booking on: '),
+                                                          Text(
+                                                            'Remove',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  myColor[100],
+                                                              fontSize: 20,
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                    Container(
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Container(
-                                                            height:
-                                                                height * 0.07,
-                                                            width: width * 0.4,
+                                                  ),
+                                                  onDismissed: (direction) {
+                                                    // Removes that item the list on swipwe
+                                                    setState(() {
+                                                      // items.removeAt(index);
+                                                    });
+                                                    // Shows the information on Snackbar
+                                                    Scaffold.of(context)
+                                                        .showSnackBar(SnackBar(
+                                                            content: Text(
+                                                                "dismissed")));
+                                                  },
+                                                  child: Container(
+                                                    height: height * 0.2,
+                                                    width: width,
+                                                    decoration: BoxDecoration(
+                                                        color: myColor[100],
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              color: Colors
+                                                                  .grey[600],
+                                                              blurRadius: 4)
+                                                        ]),
+                                                    margin: EdgeInsets.all(5),
+                                                    child: Row(
+                                                      children: [
+                                                        Flexible(
+                                                          child: Container(
+                                                            width: width,
                                                             margin:
-                                                                EdgeInsets.only(
-                                                                    top: 8),
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                                color: myColor[
-                                                                    150]),
-                                                            child: Center(
-                                                              child: Text(
-                                                                value
-                                                                    .bookings[
-                                                                        index]
-                                                                    .bookings,
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        myColor[
-                                                                            100],
-                                                                    fontSize:
-                                                                        18,
-                                                                    letterSpacing:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
+                                                                EdgeInsets.all(
+                                                                    5),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Container(
+                                                                  child: Text(
+                                                                      'Branch Name : ${value.bookings[index].branchtable.split("_")[0]}'),
+                                                                ),
+                                                                Container(
+                                                                  child: Text(
+                                                                      'Booking on:${value.bookings[index].slots} '),
+                                                                ),
+                                                                Container(
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Container(
+                                                                        height: height *
+                                                                            0.07,
+                                                                        width: width *
+                                                                            0.4,
+                                                                        margin: EdgeInsets.only(
+                                                                            top:
+                                                                                8),
+                                                                        decoration: BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10),
+                                                                            color: myColor[150]),
+                                                                        child:
+                                                                            Center(
+                                                                          child:
+                                                                              Text(
+                                                                            value.bookings[index].bookings,
+                                                                            style: TextStyle(
+                                                                                color: myColor[100],
+                                                                                fontSize: 18,
+                                                                                letterSpacing: 15,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+
+                                                                // Container(
+                                                                //   height: height * 0.07,
+                                                                //   width: width * 0.4,
+                                                                //   child: Center(
+                                                                //     child: Text(
+                                                                //       'Estimated Time : 10',
+                                                                //       style: TextStyle(
+                                                                //           fontWeight:
+                                                                //               FontWeight
+                                                                //                   .bold),
+                                                                //     ),
+                                                                //   ),
+                                                                // ),
+                                                                // Container(
+                                                                //   child: Text(
+                                                                //       'You are 4th in line'),
+                                                                // )
+                                                              ],
                                                             ),
                                                           ),
-                                                          // Container(
-                                                          //   height: height * 0.07,
-                                                          //   width: width * 0.4,
-                                                          //   child: Center(
-                                                          //     child: Text(
-                                                          //       'Estimated Time : 10',
-                                                          //       style: TextStyle(
-                                                          //           fontWeight:
-                                                          //               FontWeight
-                                                          //                   .bold),
-                                                          //     ),
-                                                          //   ),
-                                                          // ),
-                                                          // Container(
-                                                          //   child: Text(
-                                                          //       'You are 4th in line'),
-                                                          // )
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ))
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ))
                             ],
                           ),
                         ),
@@ -459,7 +467,12 @@ class _HomeState extends State<Home> {
                                                     style: TextStyle(
                                                         color: myColor[100]),
                                                   ),
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (ctx) =>
+                                                                Company()));
+                                                  },
                                                 ),
                                               )
                                             ],
@@ -533,16 +546,19 @@ class _HomeState extends State<Home> {
                                                             .start,
                                                     children: [
                                                       Container(
-                                                        child: Text(
-                                                            'Company Name'),
+                                                        child: Text(value
+                                                            .tokens[index]
+                                                            .comp),
                                                       ),
                                                       Container(
-                                                        child:
-                                                            Text('Branch Name'),
+                                                        child: Text(value
+                                                            .tokens[index]
+                                                            .branchtable
+                                                            .split('_')[0]),
                                                       ),
                                                       Container(
                                                         child: Text(
-                                                            'Counter Number : '),
+                                                            'Counter Number : ${value.tokens[index].employeeid}'),
                                                       ),
                                                       Row(
                                                         children: [
@@ -761,6 +777,12 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                         ),
+                        // ElevatedButton(
+                        //     onPressed: () {
+                        //       Navigator.of(context).push(MaterialPageRoute(
+                        //           builder: (ctx) => MapSample()));
+                        //     },
+                        //     child: child)
                       ],
                     ),
                   ),

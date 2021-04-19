@@ -84,7 +84,7 @@ class _HistoryState extends State<History> {
                 backgroundColor: Colors.red,
               ),
               title: Text(
-                'Branch Name',
+                tob[i].branchtable.split('_')[0],
                 style:
                     TextStyle(color: myColor[250], fontWeight: FontWeight.bold),
               ),
@@ -122,7 +122,7 @@ class _HistoryState extends State<History> {
             ),
             child: ListTile(
               title: Text(
-                'Branch Name',
+                tob[i].branchtable.split('_')[0],
                 style:
                     TextStyle(color: myColor[250], fontWeight: FontWeight.bold),
               ),

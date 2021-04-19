@@ -13,7 +13,8 @@ class Booktoken extends StatefulWidget {
   final int bid;
   final String type;
   final String branchname;
-  Booktoken({this.id, this.bid, this.type, this.branchname});
+  final String companyname;
+  Booktoken({this.id, this.bid, this.type, this.branchname, this.companyname});
   @override
   _BooktokenState createState() => _BooktokenState();
 }
@@ -46,77 +47,53 @@ class _BooktokenState extends State<Booktoken> {
                 children: [
                   Container(
                     margin: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundColor: myColor[50],
-                          ),
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 5),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    'Enr. Raj Shah',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 3),
-                                  child: Text(
-                                    'Specialized in Flask',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 3),
-                                  child: Text(
-                                    '4 Years Of Experience',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: myColor[50],
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 3),
-                                  child: Text(
-                                    '\$40',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: FlatButton(
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      width: width,
+                      decoration: BoxDecoration(
+                        color: myColor[100],
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[300],
+                            blurRadius: 4,
+                          )
+                        ],
+                      ),
+                      margin: EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: height * 0.02),
                             child: Text(
-                              'View Profile',
-                              style: TextStyle(color: myColor[50]),
+                              'Company Name : ${widget.companyname}',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
-                            onPressed: () {},
                           ),
-                        )
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(top: height * 0.01),
+                            child: Text(
+                              'Branch Name : ${widget.branchname}',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: height * 0.01),
+                            child: Text(
+                              'Branch Type : ${widget.type}',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(

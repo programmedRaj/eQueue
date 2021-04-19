@@ -67,6 +67,54 @@ class _SelectServiceState extends State<SelectService> {
               child: Column(
                 children: [
                   Container(
+                    padding: EdgeInsets.all(10),
+                    width: width,
+                    decoration: BoxDecoration(
+                      color: myColor[100],
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey[300],
+                          blurRadius: 4,
+                        )
+                      ],
+                    ),
+                    margin: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: height * 0.02),
+                          child: Text(
+                            'Company Name : ${widget.companyname}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: Text(
+                            'Branch Name : ${widget.branchname}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: Text(
+                            'Branch Type : ${widget.type}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
                     width: width,
                     child: Column(
                       children: [
