@@ -1836,11 +1836,11 @@ def searches_sorting():
 
 
 @app.route("/branch_map")
-# @check_for_user_token
+@check_for_user_token
 def branch_map():
     conn = mysql.connect()
-    # token = request.headers["Authorization"]
-    # user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
 
