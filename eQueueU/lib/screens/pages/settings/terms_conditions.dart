@@ -6,7 +6,7 @@ class TermsCondition extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Terms&Condition',
+          'Terms & Conditions',
         ),
       ),
       body: SingleChildScrollView(
