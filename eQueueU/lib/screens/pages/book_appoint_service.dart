@@ -45,11 +45,6 @@ class _SelectServiceState extends State<SelectService> {
       id: widget.id,
       type: widget.type,
     );
-    Provider.of<SlotProvider>(context, listen: false).getslot(
-      bid: widget.bid,
-      name: widget.branchname,
-      type: widget.type,
-    );
   }
 
   @override
@@ -218,6 +213,7 @@ class _SelectServiceState extends State<SelectService> {
                               book: widget.book,
                               perday: widget.perday,
                               wk: widget.wk,
+                              type: widget.type,
                             )));
                   },
                   child: Text(

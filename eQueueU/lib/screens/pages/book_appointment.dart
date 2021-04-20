@@ -19,7 +19,9 @@ class Calen extends StatefulWidget {
   final String servicename;
   final String servicerate;
   final String servicedess;
+  final String type;
   const Calen({
+    this.type,
     this.wk,
     this.book,
     this.perday,
@@ -147,6 +149,7 @@ class _CalenState extends State<Calen> {
                               servicedess: widget.servicedess,
                               servicename: widget.servicename,
                               servicerate: widget.servicerate,
+                              type: widget.type,
                             )));
                   } else {
                     AppToast.showErr('Branch is closed');

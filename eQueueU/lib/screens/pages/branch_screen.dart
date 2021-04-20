@@ -58,7 +58,13 @@ class _BranchScreenState extends State<BranchScreen> {
               branch[i].bname.contains(v) ||
               branch[i].city.toLowerCase().contains(v) ||
               branch[i].city.toUpperCase().contains(v) ||
-              branch[i].city.contains(v)) {
+              branch[i].city.contains(v) ||
+              branch[i].address1.toLowerCase().contains(v) ||
+              branch[i].address1.toUpperCase().contains(v) ||
+              branch[i].address1.contains(v) ||
+              branch[i].address2.toLowerCase().contains(v) ||
+              branch[i].address2.toUpperCase().contains(v) ||
+              branch[i].address2.contains(v)) {
           } else {
             setState(() {
               noprod = 'No branch';
@@ -141,7 +147,10 @@ class _BranchScreenState extends State<BranchScreen> {
                           height: height * 0.9,
                           width: width,
                           child: ListView.builder(
-                              itemCount: value.branches.length,
+                              itemCount: branchsearch.length > 0 ||
+                                      branchsearch.isNotEmpty
+                                  ? branchsearch.length
+                                  : value.branches.length,
                               itemBuilder: (context, i) {
                                 return Container(
                                   height: height * 0.3,
@@ -185,19 +194,43 @@ class _BranchScreenState extends State<BranchScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Container(
-                                                    width: width * 0.4,
-                                                    child: Text(
-                                                      value.branches[i].bname,
-                                                      maxLines: 1,
-                                                      style: TextStyle(
-                                                          color: myColor[50],
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
+                                                  branchsearch.length > 0 ||
+                                                          branchsearch
+                                                              .isNotEmpty
+                                                      ? Container(
+                                                          width: width * 0.4,
+                                                          child: Text(
+                                                            branchsearch[i]
+                                                                .bname,
+                                                            maxLines: 1,
+                                                            style: TextStyle(
+                                                                color:
+                                                                    myColor[50],
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          width: width * 0.4,
+                                                          child: Text(
+                                                            value.branches[i]
+                                                                .bname,
+                                                            maxLines: 1,
+                                                            style: TextStyle(
+                                                                color:
+                                                                    myColor[50],
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
                                                   Container(
                                                     margin: EdgeInsets.only(
                                                         top: height * 0.01),
@@ -208,22 +241,133 @@ class _BranchScreenState extends State<BranchScreen> {
                                                               .location_history_sharp,
                                                           color: myColor[50],
                                                         ),
-                                                        Text(value
-                                                            .branches[i].city)
+                                                        branchsearch.length >
+                                                                    0 ||
+                                                                branchsearch
+                                                                    .isNotEmpty
+                                                            ? Text(
+                                                                branchsearch[i]
+                                                                    .city)
+                                                            : Text(value
+                                                                .branches[i]
+                                                                .city)
                                                       ],
                                                     ),
                                                   ),
-                                                  // Container(
-                                                  //   child: Row(
-                                                  //     children: [
-                                                  //       Icon(
-                                                  //         Icons.star,
-                                                  //         color: myColor[50],
-                                                  //       ),
-                                                  //       Text('4.4 Ratings')
-                                                  //     ],
-                                                  //   ),
-                                                  // )
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        barrierDismissible:
+                                                            false,
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            content:
+                                                                SingleChildScrollView(
+                                                              child: Column(
+                                                                children: [
+                                                                  Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topRight,
+                                                                    child:
+                                                                        IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      icon:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .close,
+                                                                        color: myColor[
+                                                                            50],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    width:
+                                                                        width,
+                                                                    child: branchsearch.length >
+                                                                                0 ||
+                                                                            branchsearch
+                                                                                .isNotEmpty
+                                                                        ? Text(
+                                                                            'Address Line 1 : ${branchsearch[i].address1}')
+                                                                        : Text(
+                                                                            'Address Line 1 : ${value.branches[i].address1}'),
+                                                                  ),
+                                                                  Container(
+                                                                    width:
+                                                                        width,
+                                                                    child: branchsearch.length >
+                                                                                0 ||
+                                                                            branchsearch
+                                                                                .isNotEmpty
+                                                                        ? Text(
+                                                                            'Address Line 2 : ${branchsearch[i].address2}')
+                                                                        : Text(
+                                                                            'Address Line 2 : ${value.branches[i].address2}'),
+                                                                  ),
+                                                                  Container(
+                                                                    width:
+                                                                        width,
+                                                                    child: branchsearch.length >
+                                                                                0 ||
+                                                                            branchsearch
+                                                                                .isNotEmpty
+                                                                        ? Text(
+                                                                            'Province : ${branchsearch[i].province}')
+                                                                        : Text(
+                                                                            'Province : ${value.branches[i].province}'),
+                                                                  ),
+                                                                  Container(
+                                                                    width:
+                                                                        width,
+                                                                    child: branchsearch.length >
+                                                                                0 ||
+                                                                            branchsearch
+                                                                                .isNotEmpty
+                                                                        ? Text(
+                                                                            'City : ${branchsearch[i].city}')
+                                                                        : Text(
+                                                                            'City : ${value.branches[i].city}'),
+                                                                  ),
+                                                                  Container(
+                                                                    width:
+                                                                        width,
+                                                                    child: branchsearch.length >
+                                                                                0 ||
+                                                                            branchsearch
+                                                                                .isNotEmpty
+                                                                        ? Text(
+                                                                            'Postal code : ${branchsearch[i].postalcode}')
+                                                                        : Text(
+                                                                            'Postal code : ${value.branches[i].postalcode}'),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 10),
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        'View Details',
+                                                        style: TextStyle(
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                             ),
@@ -251,60 +395,76 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                 .branches[i]
                                                                 .bname);
                                                     if (status == 200) {
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute(
-                                                              builder: (ctx) => widget
-                                                                          .comp_type ==
-                                                                      "booking"
-                                                                  ? SelectService(
-                                                                      companyname:
-                                                                          widget
+                                                      branchsearch.length > 0 ||
+                                                              branchsearch
+                                                                  .isNotEmpty
+                                                          ? Navigator.of(context).push(
+                                                              MaterialPageRoute(
+                                                                  builder: (ctx) =>
+                                                                      widget.comp_type ==
+                                                                              "booking"
+                                                                          ? SelectService(
+                                                                              companyname: widget.companyname,
+                                                                              branchname: branchsearch[i].bname,
+                                                                              bid: branchsearch[i].id,
+                                                                              id: branchsearch[i].companyid,
+                                                                              type: widget.comp_type,
+                                                                              book: branchsearch[i].bookingperday,
+                                                                              perday: branchsearch[i].perdayhours,
+                                                                              wk: branchsearch[i].workinghours,
+                                                                            )
+                                                                          : Booktoken(
+                                                                              companyname: widget
+                                                                                  .companyname,
+                                                                              branchname: branchsearch[i]
+                                                                                  .bname,
+                                                                              bid: branchsearch[i]
+                                                                                  .id,
+                                                                              id: branchsearch[i]
+                                                                                  .companyid,
+                                                                              type: widget
+                                                                                  .comp_type)))
+                                                          : Navigator.of(context).push(
+                                                              MaterialPageRoute(
+                                                                  builder: (ctx) => widget
+                                                                              .comp_type ==
+                                                                          "booking"
+                                                                      ? SelectService(
+                                                                          companyname:
+                                                                              widget.companyname,
+                                                                          branchname: value
+                                                                              .branches[i]
+                                                                              .bname,
+                                                                          bid: value
+                                                                              .branches[i]
+                                                                              .id,
+                                                                          id: value
+                                                                              .branches[i]
+                                                                              .companyid,
+                                                                          type:
+                                                                              widget.comp_type,
+                                                                          book: value
+                                                                              .branches[i]
+                                                                              .bookingperday,
+                                                                          perday: value
+                                                                              .branches[i]
+                                                                              .perdayhours,
+                                                                          wk: value
+                                                                              .branches[i]
+                                                                              .workinghours,
+                                                                        )
+                                                                      : Booktoken(
+                                                                          companyname: widget
                                                                               .companyname,
-                                                                      branchname: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .bname,
-                                                                      bid: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .id,
-                                                                      id: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .companyid,
-                                                                      type: widget
-                                                                          .comp_type,
-                                                                      book: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .bookingperday,
-                                                                      perday: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .perdayhours,
-                                                                      wk: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .workinghours,
-                                                                    )
-                                                                  : Booktoken(
-                                                                      companyname:
-                                                                          widget
-                                                                              .companyname,
-                                                                      branchname: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .bname,
-                                                                      bid: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .id,
-                                                                      id: value
-                                                                          .branches[
-                                                                              i]
-                                                                          .companyid,
-                                                                      type: widget
-                                                                          .comp_type)));
+                                                                          branchname: value
+                                                                              .branches[
+                                                                                  i]
+                                                                              .bname,
+                                                                          bid: value
+                                                                              .branches[i]
+                                                                              .id,
+                                                                          id: value.branches[i].companyid,
+                                                                          type: widget.comp_type)));
                                                     }
                                                   },
                                                   child: Text(

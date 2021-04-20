@@ -1881,7 +1881,7 @@ def branch_map():
             comp_type = []
 
             for m in r:
-                branch_id.append(m["branch_id"])
+                branch_id.append(m["id"])
                 phone_number.append(m["phone_number"])
                 department.append(m["department"])
                 profile_photo_url.append(m["profile_photo_url"])

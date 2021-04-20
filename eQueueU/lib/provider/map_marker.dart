@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:eQueue/api/models/branchmodelcompany.dart';
 import 'package:http/http.dart' as http;
 import 'package:eQueue/api/models/branchmodel.dart';
 import 'package:eQueue/api/service/baseurl.dart';
@@ -23,40 +24,41 @@ class MapMarker with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-
+    print(n);
     removeedu();
 
-    if (n['branch_list'] != "No branches listed yet..")
-      for (int i = 0; i < n['branch_list'].length; i++) {
-        branchesadd(
-          address1: n['branch_list'][i]['address1'],
-          address2: n['branch_list'][i]['address2'],
-          bname: n['branch_list'][i]['bname'],
-          bookingperday: n['branch_list'][i]['booking_per_day'],
-          city: n['branch_list'][i]['city'],
-          companyid: n['branch_list'][i]['comp_id'],
-          countercount: n['branch_list'][i]['counter_count'],
-          department: n['branch_list'][i]['department'],
-          geolocation: n['branch_list'][i]['geolocation'],
-          id: n['branch_list'][i]['id'],
-          moneyearned: n['branch_list'][i]['money_earned'],
-          notifytime: n['branch_list'][i]['notify_time'],
-          perdayhours: n['branch_list'][i]['per_day_hours'],
-          phonenumber: n['branch_list'][i]['phone_number'],
-          postalcode: n['branch_list'][i]['postalcode'],
-          profilephotourl: n['branch_list'][i]['profile_photo_url'],
-          province: n['branch_list'][i]['province'],
-          services: n['branch_list'][i]['services'],
-          threshold: n['branch_list'][i]['threshold'],
-          timezone: n['branch_list'][i]['timezone'],
-          workinghours: n['branch_list'][i]['working_hours'],
-        );
-      }
+    for (int i = 0; i < n['address1'].length; i++) {
+      branchesadd(
+        address1: n['address1'][i],
+        address2: n['address2'][i],
+        bname: n['bname'][i],
+        bookingperday: n['booking_per_day'][i],
+        city: n['city'][i],
+        companyid: n['comp_id'][i],
+        countercount: n['counter_count'][i],
+        department: n['department'][i],
+        geolocation: n['geolocation'][i],
+        id: n['branch_id'][i],
+        moneyearned: n['money_earned'][i],
+        notifytime: n['notify_time'][i],
+        perdayhours: n['per_day_hours'][i],
+        phonenumber: n['phone_number'][i],
+        postalcode: n['postalcode'][i],
+        profilephotourl: n['profile_photo_url'][i],
+        province: n['province'][i],
+        services: n['services'][i],
+        threshold: n['threshold'][i],
+        timezone: n['timezone'][i],
+        workinghours: n['working_hours'][i],
+        company: n['comp_name'][i],
+        type: n['comp_type'][i],
+      );
+    }
   }
 
-  List<BranchModel> branch = [];
+  List<BranchModelwithcompany> branch = [];
 
-  List<BranchModel> get branches => branch;
+  List<BranchModelwithcompany> get branches => branch;
 
   void branchesadd({
     int id,
@@ -80,8 +82,12 @@ class MapMarker with ChangeNotifier {
     String threshold,
     String timezone,
     String workinghours,
+    String company,
+    String type,
   }) {
-    branches.add(BranchModel(
+    branches.add(BranchModelwithcompany(
+        company: company,
+        type: type,
         address1: address1,
         address2: address2,
         bname: bname,
@@ -104,6 +110,7 @@ class MapMarker with ChangeNotifier {
         timezone: timezone,
         workinghours: workinghours));
     notifyListeners();
+    print(branches);
   }
 
   void removeedu() {
