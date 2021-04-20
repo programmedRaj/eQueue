@@ -35,22 +35,22 @@ def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
         cur.execute(
             "DELETE FROM "
             + str(tablename)
-            + "WHERE user_id="
+            + " WHERE user_id='"
             + str(uid)
-            + " AND id = "
-            + number
-            + ";"
+            + "' AND id = '"
+            + str(number)
+            + "';"
         )
         if type == "token":
             r = cur.execute(
                 "DELETE FROM "
-                + "tokenshistory WHERE branchtable="
+                + "tokenshistory WHERE branchtable='"
                 + str(tablename)
-                + " AND user_id = "
-                + uid
-                + " AND token = "
-                + tok_booking_num
-                + ";"
+                + "' AND user_id = '"
+                + str(uid)
+                + "' AND token = '"
+                + str(tok_booking_num)
+                + "';"
             )
             if r:
                 return 200
@@ -60,21 +60,21 @@ def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
         else:
             r = cur.execute(
                 "DELETE FROM "
-                + "bookingshistory WHERE branchtable="
+                + "bookingshistory WHERE branchtable='"
                 + str(tablename)
-                + " AND user_id = "
-                + uid
-                + " AND booking = "
-                + tok_booking_num
-                + ";"
+                + "' AND user_id = '"
+                + str(uid)
+                + "' AND booking = '"
+                + str(tok_booking_num)
+                + "';"
             )
 
             rr = cur.execute(
                 "UPDATE user_details SET money = '"
                 + str(addmoney)
-                + "' WHERE id ="
+                + "' WHERE id ='"
                 + str(uid)
-                + ";"
+                + "';"
             )
             conn.commit()
 

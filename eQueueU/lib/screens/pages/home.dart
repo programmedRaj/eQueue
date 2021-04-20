@@ -1,6 +1,9 @@
+import 'package:eQueue/check.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/appcolor.dart';
+import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/provider/branch_provider.dart';
+import 'package:eQueue/provider/delete_token_branch.dart';
 import 'package:eQueue/provider/token_bookings_dikhao.dart';
 import 'package:eQueue/screens/pages/companies_screen.dart';
 import 'package:eQueue/screens/pages/mapss.dart';
@@ -226,193 +229,220 @@ class _HomeState extends State<Home> {
                               Container(
                                   height: height * 0.4,
                                   width: width,
-                                  child:
-                                      value.bookings == null ||
-                                              value.bookings.isEmpty
-                                          ? Container(
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: height * 0.1,
-                                                  ),
-                                                  Text('No Bookings!!'),
-                                                  Container(
-                                                    height: height * 0.08,
-                                                    margin: EdgeInsets.only(
-                                                        top: 10),
-                                                    decoration: BoxDecoration(
-                                                        color: myColor[150],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10)),
-                                                    child: FlatButton(
-                                                      child: Text(
-                                                        'Create Bookings',
-                                                        style: TextStyle(
-                                                            color:
-                                                                myColor[100]),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder: (ctx) =>
-                                                                    Company()));
-                                                      },
-                                                    ),
-                                                  )
-                                                ],
+                                  child: value.bookings == null ||
+                                          value.bookings.isEmpty
+                                      ? Container(
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: height * 0.1,
                                               ),
-                                            )
-                                          : ListView.builder(
-                                              itemCount: value.bookings.length,
-                                              itemBuilder: (context, index) {
-                                                return Dismissible(
-                                                  direction: DismissDirection
-                                                      .endToStart,
-                                                  key: Key(index.toString()),
-                                                  background: Container(
-                                                    color: Colors.red,
-                                                    child: Container(
-                                                      margin:
-                                                          EdgeInsets.all(10),
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Icon(
-                                                            Icons.delete,
-                                                            color: myColor[100],
-                                                          ),
-                                                          Text(
-                                                            'Remove',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  myColor[100],
-                                                              fontSize: 20,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                              Text('No Bookings!!'),
+                                              Container(
+                                                height: height * 0.08,
+                                                margin:
+                                                    EdgeInsets.only(top: 10),
+                                                decoration: BoxDecoration(
+                                                    color: myColor[150],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                child: FlatButton(
+                                                  child: Text(
+                                                    'Create Bookings',
+                                                    style: TextStyle(
+                                                        color: myColor[100]),
                                                   ),
-                                                  onDismissed: (direction) {
-                                                    // Removes that item the list on swipwe
-                                                    setState(() {
-                                                      // items.removeAt(index);
-                                                    });
-                                                    // Shows the information on Snackbar
-                                                    Scaffold.of(context)
-                                                        .showSnackBar(SnackBar(
-                                                            content: Text(
-                                                                "dismissed")));
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (ctx) =>
+                                                                Company()));
                                                   },
-                                                  child: Container(
-                                                    height: height * 0.2,
-                                                    width: width,
-                                                    decoration: BoxDecoration(
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : ListView.builder(
+                                          itemCount: value.bookings.length,
+                                          itemBuilder: (context, index) {
+                                            return Dismissible(
+                                              direction:
+                                                  DismissDirection.endToStart,
+                                              key: UniqueKey(),
+                                              background: Container(
+                                                color: Colors.red,
+                                                child: Container(
+                                                  margin: EdgeInsets.all(10),
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.delete,
                                                         color: myColor[100],
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                              color: Colors
-                                                                  .grey[600],
-                                                              blurRadius: 4)
-                                                        ]),
-                                                    margin: EdgeInsets.all(5),
-                                                    child: Row(
-                                                      children: [
-                                                        Flexible(
-                                                          child: Container(
-                                                            width: width,
-                                                            margin:
-                                                                EdgeInsets.all(
-                                                                    5),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Container(
-                                                                  child: Text(
-                                                                      'Branch Name : ${value.bookings[index].branchtable.split("_")[0]}'),
-                                                                ),
-                                                                Container(
-                                                                  child: Text(
-                                                                      'Booking on:${value.bookings[index].slots} '),
-                                                                ),
-                                                                Container(
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Container(
-                                                                        height: height *
+                                                      ),
+                                                      Text(
+                                                        'Remove',
+                                                        style: TextStyle(
+                                                          color: myColor[100],
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              onDismissed: (direction) {
+                                                // Removes that item the list on swipwe
+                                                setState(() {
+                                                  Provider.of<DeletetokenProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .delettoken(
+                                                          branchname: value
+                                                              .bookings[index]
+                                                              .branchtable
+                                                              .split('_')[0],
+                                                          branchid: value
+                                                              .bookings[index]
+                                                              .branchtable
+                                                              .split('_')[1],
+                                                          tokennumber: value
+                                                              .bookings[index]
+                                                              .bookings,
+                                                          tokenstatus: value
+                                                              .bookings[index]
+                                                              .status,
+                                                          type: 'booking');
+                                                });
+                                                // Shows the information on Snackbar
+                                                Provider.of<DisplayTokenBook>(
+                                                        context,
+                                                        listen: false)
+                                                    .displayboth('bookings');
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            Check()));
+                                                AppToast.showSucc('Deleted');
+                                              },
+                                              child: Container(
+                                                height: height * 0.2,
+                                                width: width,
+                                                decoration: BoxDecoration(
+                                                    color: myColor[100],
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color:
+                                                              Colors.grey[600],
+                                                          blurRadius: 4)
+                                                    ]),
+                                                margin: EdgeInsets.all(5),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                        width: width,
+                                                        margin:
+                                                            EdgeInsets.all(5),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                              child: Text(
+                                                                  'Branch Name : ${value.bookings[index].branchtable.split("_")[0]}'),
+                                                            ),
+                                                            Container(
+                                                              child: Text(
+                                                                  'Booking on:${value.bookings[index].slots} '),
+                                                            ),
+                                                            Container(
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                    height:
+                                                                        height *
                                                                             0.07,
-                                                                        width: width *
+                                                                    width:
+                                                                        width *
                                                                             0.4,
-                                                                        margin: EdgeInsets.only(
+                                                                    margin: EdgeInsets
+                                                                        .only(
                                                                             top:
                                                                                 8),
-                                                                        decoration: BoxDecoration(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10),
-                                                                            color: myColor[150]),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            value.bookings[index].bookings,
-                                                                            style: TextStyle(
-                                                                                color: myColor[100],
-                                                                                fontSize: 18,
-                                                                                letterSpacing: 15,
-                                                                                fontWeight: FontWeight.bold),
-                                                                          ),
-                                                                        ),
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                10),
+                                                                        color: myColor[
+                                                                            150]),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Text(
+                                                                        value
+                                                                            .bookings[index]
+                                                                            .bookings,
+                                                                        style: TextStyle(
+                                                                            color: myColor[
+                                                                                100],
+                                                                            fontSize:
+                                                                                18,
+                                                                            letterSpacing:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
                                                                       ),
-                                                                    ],
+                                                                    ),
                                                                   ),
-                                                                ),
-
-                                                                // Container(
-                                                                //   height: height * 0.07,
-                                                                //   width: width * 0.4,
-                                                                //   child: Center(
-                                                                //     child: Text(
-                                                                //       'Estimated Time : 10',
-                                                                //       style: TextStyle(
-                                                                //           fontWeight:
-                                                                //               FontWeight
-                                                                //                   .bold),
-                                                                //     ),
-                                                                //   ),
-                                                                // ),
-                                                                // Container(
-                                                                //   child: Text(
-                                                                //       'You are 4th in line'),
-                                                                // )
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ))
+
+                                                            // Container(
+                                                            //   height: height * 0.07,
+                                                            //   width: width * 0.4,
+                                                            //   child: Center(
+                                                            //     child: Text(
+                                                            //       'Estimated Time : 10',
+                                                            //       style: TextStyle(
+                                                            //           fontWeight:
+                                                            //               FontWeight
+                                                            //                   .bold),
+                                                            //     ),
+                                                            //   ),
+                                                            // ),
+                                                            // Container(
+                                                            //   child: Text(
+                                                            //       'You are 4th in line'),
+                                                            // )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ))
                             ],
                           ),
                         ),
@@ -484,7 +514,7 @@ class _HomeState extends State<Home> {
                                             return Dismissible(
                                               direction:
                                                   DismissDirection.endToStart,
-                                              key: Key(index.toString()),
+                                              key: UniqueKey(),
                                               background: Container(
                                                 color: Colors.red,
                                                 child: Container(
@@ -515,13 +545,31 @@ class _HomeState extends State<Home> {
                                               onDismissed: (direction) {
                                                 // Removes that item the list on swipwe
                                                 setState(() {
-                                                  // items.removeAt(index);
+                                                  Provider.of<DeletetokenProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .delettoken(
+                                                          branchname: value
+                                                              .tokens[index]
+                                                              .branchtable
+                                                              .split('_')[0],
+                                                          branchid: value
+                                                              .tokens[index]
+                                                              .branchtable
+                                                              .split('_')[1],
+                                                          tokennumber: value
+                                                              .tokens[index]
+                                                              .token,
+                                                          tokenstatus: value
+                                                              .tokens[index]
+                                                              .status,
+                                                          type: 'token');
                                                 });
-                                                // Shows the information on Snackbar
-                                                Scaffold.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                        content:
-                                                            Text("dismissed")));
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            Check()));
+                                                AppToast.showSucc('Deleted');
                                               },
                                               child: Container(
                                                 height: height * 0.2,

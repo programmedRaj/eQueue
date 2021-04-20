@@ -3,6 +3,7 @@ import 'package:eQueue/check.dart';
 import 'package:eQueue/provider/branch_provider.dart';
 import 'package:eQueue/provider/check_slot.dart';
 import 'package:eQueue/provider/company_provider.dart';
+import 'package:eQueue/provider/delete_token_branch.dart';
 import 'package:eQueue/provider/map_marker.dart';
 import 'package:eQueue/provider/payment_provider.dart';
 import 'package:eQueue/provider/paymentdone.dart';
@@ -86,6 +87,7 @@ class _MyAppState extends State<MyApp> {
     ]);
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: DeletetokenProvider()),
         ChangeNotifierProvider.value(value: CompanyProvider()),
         ChangeNotifierProvider.value(value: MapMarker()),
         ChangeNotifierProvider.value(value: PaymentDoneProvider()),
