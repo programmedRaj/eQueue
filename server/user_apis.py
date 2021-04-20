@@ -26,3 +26,63 @@ def user(naam):
     finally:
         cur.close()
         conn.close()
+
+
+def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
+    try:
+        conn = mysql.connect()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute(
+            "DELETE FROM "
+            + str(tablename)
+            + "WHERE user_id="
+            + str(uid)
+            + " AND id = "
+            + number
+            + ";"
+        )
+        if type == "token":
+            r = cur.execute(
+                "DELETE FROM "
+                + "tokenshistory WHERE branchtable="
+                + str(tablename)
+                + " AND user_id = "
+                + uid
+                + " AND token = "
+                + tok_booking_num
+                + ";"
+            )
+            if r:
+                return 200
+            else:
+                return 400
+
+        else:
+            r = cur.execute(
+                "DELETE FROM "
+                + "bookingshistory WHERE branchtable="
+                + str(tablename)
+                + " AND user_id = "
+                + uid
+                + " AND booking = "
+                + tok_booking_num
+                + ";"
+            )
+
+            rr = cur.execute(
+                "UPDATE user_details SET money = '"
+                + str(addmoney)
+                + "' WHERE id ="
+                + str(uid)
+                + ";"
+            )
+            conn.commit()
+
+            if r and rr:
+                return 200
+            else:
+                return 400
+
+    finally:
+        cur.close()
+        conn.close()

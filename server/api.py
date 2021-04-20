@@ -2319,6 +2319,79 @@ def my_transactions():
         conn.close()
 
 
+@app.route("/cancel_token_booking", methods=["POST"])
+@check_for_user_token
+def cancel_token():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+
+    token_booking = request.form["token_booking"]
+    number = str(request.form["number"])
+    branch_id = request.form["branch_id"]
+    branch_name = str(request.form["branch_name"])
+    tokenstatus = str(request.form["tokenstatus"])
+    tablename = branch_name + "_" + branch_id
+
+    try:
+
+        cur.execute("Select * from user_details WHERE id=" + str(user["user_id"]) + ";")
+        row = cur.fetchone()
+        if row:
+            walletbalance = float(row["money"])
+            if tokenstatus == "onqueue":
+                if token_booking == "token":
+                    op = user_side.canceltb(
+                        "token",
+                        user["user_id"],
+                        number[4:],
+                        number,
+                        0,
+                        tablename,
+                    )
+
+                elif token_booking == "booking":
+                    amountpaid = request.form["amountpaid"]
+                    addmoney = walletbalance + float(amountpaid)
+
+                    op = user_side.canceltb(
+                        "booking",
+                        user["user_id"],
+                        number[4:],
+                        number,
+                        addmoney,
+                        tablename,
+                    )
+                else:
+                    resp = jsonify({"message": "invalid request"})
+                    resp.status_code = 405
+                    return resp
+
+                if op == 200:
+                    resp = jsonify({"message": "Deleted / Cancelled successfully."})
+                    resp.status_code = 200
+                    return resp
+                else:
+                    resp = jsonify({"message": "error"})
+                    resp.status_code = 403
+                    return resp
+
+            else:
+                resp = jsonify(
+                    {"message": "only onqueue status tokens/bookings can be cancelled."}
+                )
+                resp.status_code = 405
+                return resp
+        else:
+            resp = jsonify({"message": "No user found."})
+            resp.status_code = 405
+            return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.errorhandler(404)
 def not_found(error=None):
     message = {
