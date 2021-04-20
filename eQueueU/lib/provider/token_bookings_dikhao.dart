@@ -113,6 +113,16 @@ class DisplayTokenBook with ChangeNotifier {
     notifyListeners();
   }
 
+  void removetokenone({String token}) {
+    tokens.removeWhere((element) => element.token == token);
+    notifyListeners();
+  }
+
+  void removebookinone({String token}) {
+    bookings.removeWhere((element) => element.bookings == token);
+    notifyListeners();
+  }
+
   void removetoken() {
     tokens.clear();
 

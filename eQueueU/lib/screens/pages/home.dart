@@ -320,17 +320,20 @@ class _HomeState extends State<Home> {
                                                               .bookings[index]
                                                               .status,
                                                           type: 'booking');
+                                                  Provider.of<DisplayTokenBook>(
+                                                          context,
+                                                          listen: false)
+                                                      .removebookinone(
+                                                          token: value
+                                                              .bookings[index]
+                                                              .bookings);
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (ctx) =>
+                                                              Check()));
+                                                  AppToast.showSucc('Deleted');
                                                 });
                                                 // Shows the information on Snackbar
-                                                Provider.of<DisplayTokenBook>(
-                                                        context,
-                                                        listen: false)
-                                                    .displayboth('bookings');
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (ctx) =>
-                                                            Check()));
-                                                AppToast.showSucc('Deleted');
                                               },
                                               child: Container(
                                                 height: height * 0.2,
@@ -564,6 +567,13 @@ class _HomeState extends State<Home> {
                                                               .tokens[index]
                                                               .status,
                                                           type: 'token');
+                                                  Provider.of<DisplayTokenBook>(
+                                                          context,
+                                                          listen: false)
+                                                      .removetokenone(
+                                                          token: value
+                                                              .tokens[index]
+                                                              .token);
                                                 });
                                                 Navigator.of(context).push(
                                                     MaterialPageRoute(
