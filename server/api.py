@@ -2353,7 +2353,7 @@ def cancel_token():
 
                 elif token_booking == "booking":
                     amountpaid = request.form["amountpaid"]
-                    addmoney = float(row["money"]) + float(amountpaid)
+                    addmoney = walletbalance + float(amountpaid)
 
                     op = user_side.canceltb(
                         "booking",
