@@ -1856,6 +1856,7 @@ def branch_map():
             myDict[m["id"]] = l
 
         if r:
+            branch_id = []
             phone_number = []
             department = []
             profile_photo_url = []
@@ -1864,6 +1865,7 @@ def branch_map():
             booking_per_day = []
             per_day_hours = []
             services = []
+            money_earned = []
             bname = []
             address1 = []
             address2 = []
@@ -1871,11 +1873,15 @@ def branch_map():
             postalcode = []
             geolocation = []
             province = []
+            timezone = []
+            notify_time = []
+            counter_count = []
             comp_id = []
             comp_name = []
             comp_type = []
 
             for m in r:
+                branch_id.append(m["branch_id"])
                 phone_number.append(m["phone_number"])
                 department.append(m["department"])
                 profile_photo_url.append(m["profile_photo_url"])
@@ -1884,6 +1890,7 @@ def branch_map():
                 booking_per_day.append(m["booking_per_day"])
                 per_day_hours.append(m["per_day_hours"])
                 services.append(m["services"])
+                money_earned.append(m["money_earned"])
                 bname.append(m["bname"])
                 address1.append(m["address1"])
                 address2.append(m["address2"])
@@ -1891,12 +1898,16 @@ def branch_map():
                 postalcode.append(m["postalcode"])
                 geolocation.append(m["geolocation"])
                 province.append(m["province"])
+                timezone.append(m["timezone"])
+                notify_time.append(m["notify_time"])
+                counter_count.append(m["counter_count"])
                 comp_id.append(m["comp_id"])
                 comp_name.append(myDict[m["comp_id"]][0])
                 comp_type.append(myDict[m["comp_id"]][1])
 
             resp = jsonify(
                 {
+                    "branch_id": branch_id,
                     "phone_number": phone_number,
                     "department": department,
                     "profile_photo_url": profile_photo_url,
@@ -1905,6 +1916,7 @@ def branch_map():
                     "booking_per_day": booking_per_day,
                     "per_day_hours": per_day_hours,
                     "services": services,
+                    "money_earned": money_earned,
                     "bname": bname,
                     "address1": address1,
                     "address2": address2,
@@ -1912,6 +1924,9 @@ def branch_map():
                     "postalcode": postalcode,
                     "geolocation": geolocation,
                     "province": province,
+                    "timezone": timezone,
+                    "notify_time": notify_time,
+                    "counter_count": counter_count,
                     "comp_id": comp_id,
                     "comp_name": comp_name,
                     "comp_type": comp_type,
