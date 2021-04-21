@@ -61,6 +61,7 @@ class _OtpState extends State<Otp> {
       print(n['token']);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', n['token']);
+      prefs.setString('language', 'English');
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else {

@@ -28,6 +28,13 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -238,7 +245,7 @@ class _HomeState extends State<Home> {
                                               SizedBox(
                                                 height: height * 0.1,
                                               ),
-                                              Text('No Bookings').tr(),
+                                              Text('NoBookings').tr(),
                                               Container(
                                                 height: height * 0.08,
                                                 margin:

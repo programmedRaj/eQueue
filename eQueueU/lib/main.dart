@@ -17,6 +17,8 @@ import 'package:eQueue/screens/auth/login.dart';
 import 'package:eQueue/screens/auth/phoneauth.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:eQueue/screens/pages/individual_profile.dart';
+import 'package:eQueue/translations/codegen_loader.g.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
   runApp(EasyLocalization(
+    assetLoader: CodegenLoader(),
     fallbackLocale: Locale('en', 'US'),
     child: MyApp(),
     supportedLocales: [
