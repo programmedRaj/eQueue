@@ -34,7 +34,6 @@ class SlotProvider extends ChangeNotifier {
     removeedu();
     if (n['bookings'] != null)
       for (int i = 0; i < n['bookings'].length; i++) {
-        print(n['bookings'][i]["slots"].split(' -'));
         slotsadd(
             date: n['bookings'][i]["slots"]
                 .split(' -')[0]
@@ -55,7 +54,6 @@ class SlotProvider extends ChangeNotifier {
   }) {
     bookings.add(BookingSlot(date: date, time: time));
     notifyListeners();
-    print(bookings);
   }
 
   void removeedu() {

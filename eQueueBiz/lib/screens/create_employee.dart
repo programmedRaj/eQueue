@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/enum/company_enum.dart';
@@ -20,7 +21,8 @@ import 'package:provider/provider.dart';
 class CreateEmployee extends StatefulWidget {
   final EmployeeModel empDets;
   final String images;
-  CreateEmployee({this.empDets, this.images});
+  final bool uporadd;
+  CreateEmployee({this.empDets, this.images, this.uporadd});
   @override
   _CreateEmployeeState createState() => _CreateEmployeeState();
 }
@@ -95,7 +97,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-            appBar: whiteAppBar(context, "Create Employee"),
+            appBar: widget.uporadd
+                ? whiteAppBar(context, "Update Employee")
+                : whiteAppBar(context, "Create Employee"),
             body: bdp.isLoading
                 ? Center(
                     child: CircularProgressIndicator(),
@@ -167,10 +171,17 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                 TextStyle(color: Colors.white),
                                           ),
                                         ),
-                                        _textField("Name", _nameC),
-                                        _textField("Email ID", _emailC),
-                                        _textField("Password", _passwordC),
-                                        _textField("Phone number", _phoneC),
+                                        _textField("Name", _nameC, false),
+                                        widget.uporadd
+                                            ? Container()
+                                            : _textField(
+                                                "Email ID", _emailC, true),
+                                        widget.uporadd
+                                            ? Container()
+                                            : _textField(
+                                                "Password", _passwordC, false),
+                                        _textField(
+                                            "Phone number", _phoneC, false),
                                         Container(
                                           height: 50,
                                           child: Row(
@@ -184,7 +195,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                         width: size.width * 0.5,
                                                         child: _textField(
                                                             "Counter",
-                                                            _counterC)),
+                                                            _counterC,
+                                                            false)),
                                               ),
                                               SizedBox(
                                                 width: 20,
@@ -367,14 +379,20 @@ class _CreateEmployeeState extends State<CreateEmployee> {
     );
   }
 
-  Widget _textField(String hintText, TextEditingController controller) {
+  Widget _textField(
+      String hintText, TextEditingController controller, bool email) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
           color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
+        validator: (value) => email
+            ? EmailValidator.validate(value)
+                ? null
+                : "Please enter a valid email"
+            : null,
         decoration: InputDecoration(
           hintText: hintText,
           focusedBorder: InputBorder.none,

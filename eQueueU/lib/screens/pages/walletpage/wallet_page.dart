@@ -123,13 +123,10 @@ class _WalletState extends State<Wallet> {
                                   radius: 20,
                                 ),
                                 onRightSwipe: () {
-                                  print('right');
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (ctx) => ExistingCardsPage()));
                                 },
-                                onLeftSwipe: () {
-                                  print('left');
-                                },
+                                onLeftSwipe: () {},
                               ),
                             ),
                             Container(
@@ -151,7 +148,7 @@ class _WalletState extends State<Wallet> {
                       Container(
                         child: Center(
                             child: Text(
-                          'Swipe Right to Add ',
+                          'Swipe Right to Add',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         )),
                       ),

@@ -72,8 +72,8 @@ class _EmployeesState extends State<Employees> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CreateEmployee(
-                              // uporadd: true,
-                              ),
+                            uporadd: false,
+                          ),
                         ));
                   },
                   icon: Icon(
@@ -287,7 +287,7 @@ class _EmployeesState extends State<Employees> {
                             builder: (context) => CreateEmployee(
                               empDets: empdets,
                               images: images,
-                              // uporadd: false,
+                              uporadd: true,
                             ),
                           ));
                     },

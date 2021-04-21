@@ -98,6 +98,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     _geoLocationController.text = widget.branchDets.geoLoaction;
     if (Provider.of<AuthProv>(context, listen: false).authinfo.companyType ==
         CompanyEnum.Booking) {
+      print(widget.branchDets.services.serviceNames);
       servicesName = widget.branchDets.services.serviceNames;
       servicesDesc = widget.branchDets.services.servicesDesc;
       serviceRates = widget.branchDets.services.rates;
@@ -279,8 +280,19 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                       _textField("Contact", _phoneNoController, true),
                       _textField("Postal Code", _postalCodeController, false),
                       _textField("Time Zone", _timezoneController, false),
-                      _textField(
-                          "Notify Time", _notifytimeDescController, false),
+                      RaisedButton(
+                          child: Text('Notify Time'),
+                          onPressed: () {
+                            showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now())
+                                .then((value) {
+                              setState(() {
+                                _notifytimeDescController.text =
+                                    value.toString();
+                              });
+                            });
+                          }),
                       authProv.authinfo.companyType == CompanyEnum.Booking
                           ? SizedBox()
                           : _textField(

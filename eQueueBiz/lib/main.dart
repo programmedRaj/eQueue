@@ -1,3 +1,4 @@
+import 'package:equeuebiz/check.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: LoginPage(),
+        home: Check(),
       ),
     );
   }
