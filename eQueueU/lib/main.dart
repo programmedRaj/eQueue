@@ -32,6 +32,7 @@ import 'provider/department_token_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await EasyLocalization.ensureInitialized();
   runApp(EasyLocalization(
     fallbackLocale: Locale('en', 'US'),
     child: MyApp(),
@@ -42,7 +43,7 @@ Future<void> main() async {
       Locale('fr', 'FR'), // french
       Locale('fa', 'FA'),
     ],
-    path: 'assets/translations',
+    path: 'lib/assets/translations',
   ));
 }
 

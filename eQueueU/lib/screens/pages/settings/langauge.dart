@@ -10,7 +10,7 @@ class Language extends StatefulWidget {
 
 class _LanguageState extends State<Language> {
   String lang;
-  String _picked;
+  String _picked = "English";
   @override
   void initState() {
     // getlang();
