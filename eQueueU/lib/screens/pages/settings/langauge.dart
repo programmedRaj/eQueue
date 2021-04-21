@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Language extends StatefulWidget {
   @override
@@ -51,6 +52,27 @@ class _LanguageState extends State<Language> {
                 setState(() {
                   _picked = selected;
                 });
+                if (_picked == 'English') {
+                  context.setLocale(
+                    Locale('en', 'US'),
+                  );
+                } else if (_picked == 'فارسی(Persian)') {
+                  context.setLocale(
+                    Locale('fa', 'FA'),
+                  );
+                } else if (_picked == 'عربی(Arabic)') {
+                  context.setLocale(
+                    Locale('ar', 'AR'),
+                  );
+                } else if (_picked == 'French') {
+                  context.setLocale(
+                    Locale('fr', 'FR'),
+                  );
+                } else if (_picked == 'Spanish') {
+                  context.setLocale(
+                    Locale('es', 'ES'),
+                  );
+                }
               },
               labels: <String>[
                 'English',

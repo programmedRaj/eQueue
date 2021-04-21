@@ -10,6 +10,7 @@ import 'package:eQueue/screens/pages/mapss.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -237,7 +238,7 @@ class _HomeState extends State<Home> {
                                               SizedBox(
                                                 height: height * 0.1,
                                               ),
-                                              Text('No Bookings!!'),
+                                              Text('No Bookings').tr(),
                                               Container(
                                                 height: height * 0.08,
                                                 margin:

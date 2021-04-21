@@ -17,6 +17,7 @@ import 'package:eQueue/screens/auth/login.dart';
 import 'package:eQueue/screens/auth/phoneauth.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:eQueue/screens/pages/individual_profile.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,7 +32,18 @@ import 'provider/department_token_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(EasyLocalization(
+    fallbackLocale: Locale('en', 'US'),
+    child: MyApp(),
+    supportedLocales: [
+      Locale('en', 'US'), //english
+      Locale('es', 'ES'), // spanish
+      Locale('ar', 'AR'), // Arabic
+      Locale('fr', 'FR'), // french
+      Locale('fa', 'FA'),
+    ],
+    path: 'assets/translations',
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -104,19 +116,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: TransactionProvider()),
       ],
       child: MaterialApp(
-        // localizationsDelegates: [
-        //   GlobalCupertinoLocalizations.delegate,
-        //   GlobalMaterialLocalizations.delegate,
-        //   GlobalWidgetsLocalizations.delegate,
-        //   _localeOverrideDelegate
-        // ],
-        supportedLocales: [
-          const Locale('en', 'US'), //english
-          const Locale('es', 'ES'), // spanish
-          const Locale('ar', 'AR'), // Arabic
-          const Locale('fr', 'FR'), // french
-          const Locale('fa', 'FA'), // farsi
-        ],
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
         debugShowCheckedModeBanner: false,
         title: 'E-Queue',
         theme: ThemeData(
