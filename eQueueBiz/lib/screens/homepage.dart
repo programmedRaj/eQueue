@@ -13,6 +13,7 @@ import 'package:equeuebiz/screens/settings.dart';
 import 'package:equeuebiz/screens/tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,97 +22,89 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  Future<void> didChangeDependencies() async {
+    super.didChangeDependencies();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var email = prefs.get('email');
+    var password = prefs.get('pass');
+    print(email);
+    print(password);
+
+    Provider.of<AuthProv>(context, listen: false).execLogin(email, password);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var authProv = Provider.of<AuthProv>(context);
-    return Scaffold(
-      /* appBar: AppBar(
-        title: Text("Home"),
-        actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
-      ), */
-      body: SafeArea(
-        child: Container(
-            alignment: Alignment.center,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 1200),
-              child: Column(
-                children: [
-                  _profileWidget(authProv),
-                  _branchEmployee(),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          authProv.authinfo.userType == UserEnum.Company
-                              ? InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Branches(),
-                                        ));
-                                  },
-                                  child: _cards("Branches",
-                                      "Edit/Manage branches details"))
-                              : SizedBox(),
-                          authProv.authinfo.userType == UserEnum.Company
-                              ? InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Employees(),
-                                        ));
-                                  },
-                                  child: _cards("Employee",
-                                      "Edit/Manage employee details"))
-                              : SizedBox(),
-                          authProv.authinfo.companyType == CompanyEnum.Token
-                              ? InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Tokens(),
-                                        ));
-                                  },
-                                  child: _cards(
-                                      "Token", "Edit/Manage tokens details"))
-                              : SizedBox(),
-                          authProv.authinfo.companyType ==
-                                  CompanyEnum.MultiToken
-                              ? InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MultiTokens(),
-                                        ));
-                                  },
-                                  child: _cards("MultiTokens",
-                                      "Edit/Manage multiple tokens details"))
-                              : SizedBox(),
-                          authProv.authinfo.companyType == CompanyEnum.Booking
-                              ? InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Bookings(),
-                                        ));
-                                  },
-                                  child: _cards("Bookings",
-                                      "Edit/Manage bookings details"))
-                              : SizedBox(),
-                          _cards("Privacy & Policy", "Click to view"),
-                          _cards("Terms & Conditions", "Click to view"),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )),
-      ),
+    return Consumer<AuthProv>(
+      builder: (context, authProv, child) {
+        return authProv.authinfo.userType == null
+            ? Container(
+                color: Colors.white,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(AppColor.mainBlue),
+                  ),
+                ),
+              )
+            : Scaffold(
+                /* appBar: AppBar(
+          title: Text("Home"),
+          actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
+        ), */
+                body: SafeArea(
+                  child: Container(
+                      alignment: Alignment.center,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 1200),
+                        child: Column(
+                          children: [
+                            _profileWidget(authProv),
+                            _branchEmployee(),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    authProv.authinfo.userType ==
+                                            UserEnum.Company
+                                        ? InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Branches(),
+                                                  ));
+                                            },
+                                            child: _cards("Branches",
+                                                "Edit/Manage branches details"))
+                                        : SizedBox(),
+                                    authProv.authinfo.userType ==
+                                            UserEnum.Company
+                                        ? InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Employees(),
+                                                  ));
+                                            },
+                                            child: _cards("Employee",
+                                                "Edit/Manage employee details"))
+                                        : SizedBox(),
+                                    _cards("Privacy & Policy", "Click to view"),
+                                    _cards(
+                                        "Terms & Conditions", "Click to view"),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )),
+                ),
+              );
+      },
     );
   }
 

@@ -554,7 +554,7 @@ def change_passw_biz():
     password_entered = request.json["password"]
     n_password_entered = generate_password_hash(request.json["new_password"])
     token = request.headers["Authorization"]
-    user = jwt.decode(token, app.config["ADMIN_SECRET_KEY"])
+    user = jwt.decode(token, app.config["SECRET_KEY"])
     try:
         check = cur.execute(
             "Select * FROM bizusers WHERE email ='"

@@ -28,20 +28,20 @@ class _LoginPageState extends State<LoginPage> {
     getlang();
   }
 
-  executeLogin(String email, String password) async {
-    try {
-      var url = Uri.parse('http://127.0.0.1:5000/adminsign_in');
-      http
-          .post(url,
-              headers: {'Content-Type': 'application/json'},
-              body: jsonEncode({'email': email, 'password': password}))
-          .then((value) {
-        print(jsonDecode(value.body));
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
+  // executeLogin(String email, String password) async {
+  //   try {
+  //     var url = Uri.parse('http://127.0.0.1:5000/adminsign_in');
+  //     http
+  //         .post(url,
+  //             headers: {'Content-Type': 'application/json'},
+  //             body: jsonEncode({'email': email, 'password': password}))
+  //         .then((value) {
+  //       print(jsonDecode(value.body));
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   getlang() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -105,6 +105,11 @@ class _LoginPageState extends State<LoginPage> {
                               bool success = await value.execLogin(
                                   emailControler.text, passwordControler.text);
                               if (success) {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString('email', emailControler.text);
+                                prefs.setString('pass', passwordControler.text);
+
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
