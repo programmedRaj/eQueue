@@ -531,7 +531,7 @@ class _MyDState extends State<MyD> {
                 print(selected);
               }),
               labels: <String>[
-                "Bname",
+                "Branch name",
                 "City",
               ],
               picked: _picked,
