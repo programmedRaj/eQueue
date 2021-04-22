@@ -1365,6 +1365,51 @@ def sort_bookings():
         conn.close()
 
 
+@app.route("/viewuser_details_bookings", methods=["POST"])
+@check_for_token
+def viewuser_details():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    user_id = request.json["user_id"]
+    branch_id = request.json["branch_id"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "employee":
+            r = cur.execute(
+                "Select * from employee_details WHERE branch_id = '"
+                + str(branch_id)
+                + "' AND employee_id ='"
+                + str(user["id"])
+                + "'"
+            )
+            r = cur.fetchone()
+            if r:
+                r = cur.execute(
+                    "Select * from user_details WHERE id = '" + str(user_id) + "'"
+                )
+                r = cur.fetchone()
+                if r:
+                    resp = jsonify({"userdetails": r})
+                    resp.status_code = 200
+                    return resp
+                resp = jsonify({"bookings": "NO user found !!"})
+                resp.status_code = 403
+                return resp
+            else:
+                resp = jsonify({"message": "NO employee found"})
+                resp.status_code = 407
+                return resp
+
+        resp = jsonify({"message": "ONLY employees can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 # USER APIs STARTS HERE
 
 
