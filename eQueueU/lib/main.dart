@@ -13,10 +13,6 @@ import 'package:eQueue/provider/token_bookings_dikhao.dart';
 import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:eQueue/provider/transaction_provider.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
-import 'package:eQueue/screens/auth/login.dart';
-import 'package:eQueue/screens/auth/phoneauth.dart';
-import 'package:eQueue/screens/home_screen.dart';
-import 'package:eQueue/screens/pages/individual_profile.dart';
 import 'package:eQueue/translations/codegen_loader.g.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -35,19 +31,21 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
-  runApp(EasyLocalization(
-    assetLoader: CodegenLoader(),
-    fallbackLocale: Locale('en', 'US'),
-    child: MyApp(),
-    supportedLocales: [
-      Locale('en', 'US'), //english
-      Locale('es', 'ES'), // spanish
-      Locale('ar', 'AR'), // Arabic
-      Locale('fr', 'FR'), // french
-      Locale('fa', 'FA'),
-    ],
-    path: 'lib/assets/translations',
-  ));
+  runApp(
+    EasyLocalization(
+      fallbackLocale: Locale('en', 'US'),
+      assetLoader: CodegenLoader(),
+      child: MyApp(),
+      supportedLocales: [
+        Locale('en', 'US'), //english
+        Locale('es', 'ES'), // spanish
+        Locale('ar', 'AR'), // Arabic
+        Locale('fr', 'FR'), // french
+        Locale('fa', 'FA'),
+      ],
+      path: 'lib/assets/translations',
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -122,6 +120,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
+        locale: context.locale,
         debugShowCheckedModeBanner: false,
         title: 'E-Queue',
         theme: ThemeData(

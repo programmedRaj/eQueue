@@ -7,10 +7,13 @@ import 'package:eQueue/provider/delete_token_branch.dart';
 import 'package:eQueue/provider/token_bookings_dikhao.dart';
 import 'package:eQueue/screens/pages/companies_screen.dart';
 import 'package:eQueue/screens/pages/mapss.dart';
+import 'package:eQueue/screens/pages/settings/langauge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+
+import 'package:eQueue/translations/locale_keys.g.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -245,7 +248,7 @@ class _HomeState extends State<Home> {
                                               SizedBox(
                                                 height: height * 0.1,
                                               ),
-                                              Text('NoBookings').tr(),
+                                              Text(LocaleKeys.NoBookings).tr(),
                                               Container(
                                                 height: height * 0.08,
                                                 margin:
@@ -265,7 +268,7 @@ class _HomeState extends State<Home> {
                                                     Navigator.of(context).push(
                                                         MaterialPageRoute(
                                                             builder: (ctx) =>
-                                                                Company()));
+                                                                Language()));
                                                   },
                                                 ),
                                               )

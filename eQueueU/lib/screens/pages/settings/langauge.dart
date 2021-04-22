@@ -59,72 +59,77 @@ class _LanguageState extends State<Language> {
             child: RadioButtonGroup(
               picked: _picked,
               onSelected: (String selected) async {
-                setState(() {
-                  _picked = selected;
-                });
-                setState(() async {
-                  if (_picked == 'English') {
-                    this.setState(() async {
-                      context.setLocale(
-                        Locale('en', 'US'),
-                      );
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString('language', 'English');
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (ctx) => Check()));
-                    });
-                  } else if (_picked == 'فارسی(Persian)') {
-                    this.setState(() async {
-                      context.setLocale(
-                        Locale('fa', 'FA'),
-                      );
+                context.setLocale(
+                  Locale('ar', 'AR'),
+                );
 
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
+                // setState(() {
+                //   _picked = selected;
+                // });
+                // setState(() async {
+                //   if (_picked == 'English') {
+                //     this.setState(() async {
+                // await context.setLocale(
+                //   Locale('en', 'US'),
+                // );
+                //       SharedPreferences prefs =
+                //           await SharedPreferences.getInstance();
+                //       prefs.setString('language', 'English');
 
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (ctx) => Check()));
-                      prefs.setString('language', 'فارسی(Persian)');
-                    });
-                  } else if (_picked == 'عربی(Arabic)') {
-                    this.setState(() async {
-                      context.setLocale(
-                        Locale('ar', 'AR'),
-                      );
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
+                //       Navigator.of(context)
+                //           .push(MaterialPageRoute(builder: (ctx) => Check()));
+                //     });
+                //   } else if (_picked == 'فارسی(Persian)') {
+                //     this.setState(() async {
+                //       await context.setLocale(
+                //         Locale('fa', 'FA'),
+                //       );
 
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (ctx) => Check()));
-                      prefs.setString('language', 'عربی(Arabic)');
-                    });
-                  } else if (_picked == 'French') {
-                    this.setState(() async {
-                      context.setLocale(
-                        Locale('fr', 'FR'),
-                      );
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString('language', 'French');
+                //       SharedPreferences prefs =
+                //           await SharedPreferences.getInstance();
 
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (ctx) => Check()));
-                    });
-                  } else if (_picked == 'Spanish') {
-                    this.setState(() async {
-                      context.setLocale(
-                        Locale('es', 'ES'),
-                      );
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString('language', 'Spanish');
+                //       Navigator.of(context)
+                //           .push(MaterialPageRoute(builder: (ctx) => Check()));
+                //       prefs.setString('language', 'فارسی(Persian)');
+                //     });
+                //   } else if (_picked == 'عربی(Arabic)') {
+                //     this.setState(() async {
+                //       await context.setLocale(
+                //         Locale('ar', 'AR'),
+                //       );
+                //       SharedPreferences prefs =
+                //           await SharedPreferences.getInstance();
 
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (ctx) => Check()));
-                    });
-                  }
-                });
+                //       Navigator.of(context)
+                //           .push(MaterialPageRoute(builder: (ctx) => Check()));
+                //       prefs.setString('language', 'عربی(Arabic)');
+                //     });
+                //   } else if (_picked == 'French') {
+                //     this.setState(() async {
+                //       await context.setLocale(
+                //         Locale('fr', 'FR'),
+                //       );
+                //       SharedPreferences prefs =
+                //           await SharedPreferences.getInstance();
+                //       prefs.setString('language', 'French');
+
+                //       Navigator.of(context)
+                //           .push(MaterialPageRoute(builder: (ctx) => Check()));
+                //     });
+                //   } else if (_picked == 'Spanish') {
+                //     this.setState(() async {
+                //       await context.setLocale(
+                //         Locale('es', 'ES'),
+                //       );
+                //       SharedPreferences prefs =
+                //           await SharedPreferences.getInstance();
+                //       prefs.setString('language', 'Spanish');
+
+                //       Navigator.of(context)
+                //           .push(MaterialPageRoute(builder: (ctx) => Check()));
+                //     });
+                //   }
+                // });
               },
               labels: <String>[
                 'English',
