@@ -60,7 +60,7 @@ class _LanguageState extends State<Language> {
               picked: _picked,
               onSelected: (String selected) async {
                 context.setLocale(
-                  Locale('ar', 'AR'),
+                  Locale('hi', 'IN'),
                 );
 
                 // setState(() {

@@ -39,5 +39,10 @@ static const Map<String,dynamic> fr_FR = {
   "Tokens": "Jetons",
   "NoBookings": "Réservations"
 };
-static const Map<String, Map<String,dynamic>> mapLocales = {"ar_AR": ar_AR, "en_US": en_US, "es_ES": es_ES, "fa_FA": fa_FA, "fr_FR": fr_FR};
+static const Map<String,dynamic> hi_IN = {
+  "History": "इतिहास",
+  "Tokens": "टोकन",
+  "NoBookings": "कोई बुकिंग नही"
+};
+static const Map<String, Map<String,dynamic>> mapLocales = {"ar_AR": ar_AR, "en_US": en_US, "es_ES": es_ES, "fa_FA": fa_FA, "fr_FR": fr_FR, "hi_IN": hi_IN};
 }
