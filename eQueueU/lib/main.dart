@@ -42,6 +42,7 @@ Future<void> main() async {
         Locale('ar', 'AR'), // Arabic
         Locale('fr', 'FR'), // french
         Locale('fa', 'FA'),
+        Locale('hi', 'IN'),
       ],
       path: 'lib/assets/translations',
     ),
