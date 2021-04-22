@@ -1312,6 +1312,59 @@ def fetch_employees():
         conn.close()
 
 
+# bookings masti
+
+
+@app.route("/sort_bookings", methods=["POST"])
+@check_for_token
+def sort_bookings():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    branch_id = request.json["branch_id"]
+    branch_name = request.json["branch_name"]
+    date_sort = request.json["date_sort"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "employee":
+            r = cur.execute(
+                "Select * from employee_details WHERE branch_id = '"
+                + str(branch_id)
+                + "' AND employee_id ='"
+                + str(user["id"])
+                + "'"
+            )
+            r = cur.fetchone()
+            if r:
+                getbranches = cur.execute(
+                    "Select * from "
+                    + str(branch_name + str(branch_id))
+                    + " WHERE slots = '"
+                    + str(date_sort)
+                    + "' ORDER BY id DESC"
+                )
+                if getbranches:
+                    resp = jsonify({"bookings": getbranches})
+                    resp.status_code = 200
+                    return resp
+                resp = jsonify({"bookings": "NO Bookings for" + str(date_sort) + "!!"})
+                resp.status_code = 403
+                return resp
+
+            else:
+                resp = jsonify({"message": "NO employee found"})
+                resp.status_code = 407
+                return resp
+
+        resp = jsonify({"message": "ONLY employees can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 # USER APIs STARTS HERE
 
 
