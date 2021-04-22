@@ -38,6 +38,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   AuthProv authProv;
   File filename;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _nameC = TextEditingController();
   TextEditingController _emailC = TextEditingController();
   TextEditingController _passwordC = TextEditingController();
@@ -113,175 +114,192 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                         child: ConstrainedBox(
                           constraints: BoxConstraints(maxWidth: 1200),
                           child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                _selectBranch(),
-                                Consumer<DeptDataProv>(
-                                  builder: (context, deptDataprov, child) {
-                                    if (!deptDataprov.isLoading &&
-                                        _chosenBranch == null) {
-                                      return SizedBox();
-                                    }
-                                    if (deptDataprov.isLoading) {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                    if (deptDataprov.error) {
-                                      return Center(
-                                        child:
-                                            Text("Error fetching departments"),
-                                      );
-                                    }
-                                    departmentsList = deptDataprov.deptsList;
-                                    return Column(
-                                      children: [
-                                        uploadedImageMob != null
-                                            ? Image.file(
-                                                uploadedImageMob,
-                                                height: size.height * 0.3,
-                                                fit: BoxFit.fill,
-                                              )
-                                            : SizedBox(),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        ElevatedButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      AppColor.mainBlue)),
-                                          onPressed: () async {
-                                            var img = await ImagePicker()
-                                                .getImage(
-                                                    source:
-                                                        ImageSource.gallery);
-                                            if (img != null) {
-                                              uploadedImageMob = File(img.path);
-                                              filename = File(
-                                                  img.path.split("/").last);
-                                              print(filename);
-                                              setState(() {});
-                                            }
-                                          },
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  _selectBranch(),
+                                  Consumer<DeptDataProv>(
+                                    builder: (context, deptDataprov, child) {
+                                      if (!deptDataprov.isLoading &&
+                                          _chosenBranch == null) {
+                                        return SizedBox();
+                                      }
+                                      if (deptDataprov.isLoading) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                      if (deptDataprov.error) {
+                                        return Center(
                                           child: Text(
-                                            'Upload Image',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                              "Error fetching departments"),
+                                        );
+                                      }
+                                      departmentsList = deptDataprov.deptsList;
+                                      return Column(
+                                        children: [
+                                          uploadedImageMob != null
+                                              ? Image.file(
+                                                  uploadedImageMob,
+                                                  height: size.height * 0.3,
+                                                  fit: BoxFit.fill,
+                                                )
+                                              : SizedBox(),
+                                          SizedBox(
+                                            height: 20,
                                           ),
-                                        ),
-                                        _textField("Name", _nameC, false),
-                                        widget.uporadd
-                                            ? Container()
-                                            : _textField(
-                                                "Email ID", _emailC, true),
-                                        widget.uporadd
-                                            ? Container()
-                                            : _textField(
-                                                "Password", _passwordC, false),
-                                        _textField(
-                                            "Phone number", _phoneC, false),
-                                        Container(
-                                          height: 50,
-                                          child: Row(
-                                            children: [
-                                              Flexible(
-                                                child: authProv.authinfo
-                                                            .companyType ==
-                                                        CompanyEnum.Booking
-                                                    ? SizedBox()
-                                                    : Container(
-                                                        width: size.width * 0.5,
-                                                        child: _textField(
-                                                            "Counter",
-                                                            _counterC,
-                                                            false)),
-                                              ),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Text("Status"),
-                                              Switch(
-                                                  value: employeeStatus,
-                                                  onChanged: (val) {
-                                                    setState(() {
-                                                      employeeStatus = val;
-                                                    });
-                                                  })
-                                            ],
+                                          ElevatedButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        AppColor.mainBlue)),
+                                            onPressed: () async {
+                                              var img = await ImagePicker()
+                                                  .getImage(
+                                                      source:
+                                                          ImageSource.gallery);
+                                              if (img != null) {
+                                                uploadedImageMob =
+                                                    File(img.path);
+                                                filename = File(
+                                                    img.path.split("/").last);
+                                                print(filename);
+                                                setState(() {});
+                                              }
+                                            },
+                                            child: Text(
+                                              'Upload Image',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           ),
-                                        ),
-                                        _selectDepartment(),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 16),
-                                          height: 50,
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                  child: InkWell(
-                                                onTap: () async {
-                                                  if (_chosenBranch == null ||
-                                                      _chosenDept == null) {
-                                                    AppToast.showErr(
-                                                        "Choose branch and dept. properly");
-                                                  }
-                                                  bool success =
-                                                      await EmployeeOperationProv()
-                                                          .createEmployee(
-                                                              authProv.authinfo
-                                                                  .jwtToken,
-                                                              uploadedImageMob,
-                                                              getDetails(),
-                                                              filename
-                                                                  .toString(),
-                                                              widget.images);
-
-                                                  if (success) {
-                                                    Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              HomePage(),
-                                                        ));
-                                                  }
-                                                },
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 16),
-                                                  decoration: BoxDecoration(
-                                                      color: AppColor.mainBlue,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4)),
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    widget.empDets == null
-                                                        ? "ADD"
-                                                        : "UPDATE",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
+                                          _textField("Name", _nameC, false),
+                                          widget.uporadd
+                                              ? Container()
+                                              : _textField(
+                                                  "Email ID", _emailC, true),
+                                          widget.uporadd
+                                              ? Container()
+                                              : _textField("Password",
+                                                  _passwordC, false),
+                                          _textField(
+                                              "Phone number", _phoneC, false),
+                                          Container(
+                                            height: 50,
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                  child: authProv.authinfo
+                                                              .companyType ==
+                                                          CompanyEnum.Booking
+                                                      ? SizedBox()
+                                                      : Container(
+                                                          width:
+                                                              size.width * 0.5,
+                                                          child: _textField(
+                                                              "Counter",
+                                                              _counterC,
+                                                              false)),
                                                 ),
-                                              )),
-                                              SizedBox(
-                                                width: 25,
-                                              ),
-                                              Expanded(
-                                                  child: CustomWidgets()
-                                                      .hollowButton("CANCEL"))
-                                            ],
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text("Status"),
+                                                Switch(
+                                                    value: employeeStatus,
+                                                    onChanged: (val) {
+                                                      setState(() {
+                                                        employeeStatus = val;
+                                                      });
+                                                    })
+                                              ],
+                                            ),
                                           ),
-                                        )
-                                      ],
-                                    );
-                                  },
-                                )
-                              ],
+                                          _selectDepartment(),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 8, horizontal: 16),
+                                            height: 50,
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                    child: InkWell(
+                                                  onTap: () async {
+                                                    if (_formKey.currentState
+                                                        .validate()) {
+                                                      if (_chosenBranch ==
+                                                              null ||
+                                                          _chosenDept == null) {
+                                                        AppToast.showErr(
+                                                            "Choose branch and dept. properly");
+                                                      }
+                                                      bool success =
+                                                          await EmployeeOperationProv()
+                                                              .createEmployee(
+                                                                  authProv
+                                                                      .authinfo
+                                                                      .jwtToken,
+                                                                  uploadedImageMob,
+                                                                  getDetails(),
+                                                                  filename
+                                                                      .toString(),
+                                                                  widget
+                                                                      .images);
+
+                                                      if (success) {
+                                                        Navigator.pushReplacement(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      HomePage(),
+                                                            ));
+                                                      }
+                                                    } else {
+                                                      AppToast.showErr(
+                                                          'Fill Missing Value');
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 16),
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            AppColor.mainBlue,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4)),
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      widget.empDets == null
+                                                          ? "ADD"
+                                                          : "UPDATE",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                )),
+                                                SizedBox(
+                                                  width: 25,
+                                                ),
+                                                Expanded(
+                                                    child: CustomWidgets()
+                                                        .hollowButton("CANCEL"))
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         )),
@@ -388,11 +406,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: TextFormField(
         controller: controller,
-        validator: (value) => email
-            ? EmailValidator.validate(value)
-                ? null
-                : "Please enter a valid email"
-            : null,
+        validator: (value) => value.isEmpty ? "Please enter a $hintText" : null,
         decoration: InputDecoration(
           hintText: hintText,
           focusedBorder: InputBorder.none,

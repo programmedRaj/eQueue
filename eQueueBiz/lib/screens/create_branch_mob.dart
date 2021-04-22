@@ -40,6 +40,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
   List<String> serviceRates = [];
   List<String> servicesDesc = [];
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> perDayHrs = [];
   List<TextEditingController> noofBookingsC = [];
   List<String> weekDays = [
@@ -237,127 +238,132 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 1200),
                 child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      uploadedImageMob != null
-                          ? Image.file(
-                              uploadedImageMob,
-                              height: size.height * 0.3,
-                              fit: BoxFit.fill,
-                            )
-                          : SizedBox(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.black)),
-                        onPressed: () async {
-                          var img = await ImagePicker()
-                              .getImage(source: ImageSource.gallery);
-                          if (img != null) {
-                            uploadedImageMob = File(img.path);
-                            filename = File(img.path.split("/").last);
-                            print(filename);
-                            setState(() {});
-                          }
-                        },
-                        child: Text(
-                          'Upload Logo',
-                          style: TextStyle(color: Colors.white),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        uploadedImageMob != null
+                            ? Image.file(
+                                uploadedImageMob,
+                                height: size.height * 0.3,
+                                fit: BoxFit.fill,
+                              )
+                            : SizedBox(),
+                        SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      _textField("Branch Name", _branchNameController, false),
-                      _textField("Address Line 1", _addr1Controller, false),
-                      _textField("Address Line 2", _addr2Controller, false),
-                      _textField("City", _cityController, false),
-                      _textField("State/Province", _provinceController, false),
-                      _textField("Contact", _phoneNoController, true),
-                      _textField("Postal Code", _postalCodeController, false),
-                      _textField("Time Zone", _timezoneController, false),
-                      RaisedButton(
-                          child: Text('Notify Time'),
-                          onPressed: () {
-                            showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now())
-                                .then((value) {
-                              setState(() {
-                                _notifytimeDescController.text =
-                                    value.toString();
-                              });
-                            });
-                          }),
-                      authProv.authinfo.companyType == CompanyEnum.Booking
-                          ? SizedBox()
-                          : _textField(
-                              "No. of counters", _counterController, false),
-                      authProv.authinfo.companyType != CompanyEnum.Booking
-                          ? _textField("Threshold in minutes",
-                              _thresholdController, true)
-                          : SizedBox(),
-                      _textField("Geo Location", _geoLocationController, true),
-                      GestureDetector(
-                          onTap: () {
-                            _launchInBrowser('https://www.latlong.net/');
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.black)),
+                          onPressed: () async {
+                            var img = await ImagePicker()
+                                .getImage(source: ImageSource.gallery);
+                            if (img != null) {
+                              uploadedImageMob = File(img.path);
+                              filename = File(img.path.split("/").last);
+                              print(filename);
+                              setState(() {});
+                            }
                           },
                           child: Text(
-                            'Click here to get geolocation',
-                            style: TextStyle(color: Colors.blue),
-                          )),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      authProv.authinfo.companyType == CompanyEnum.Booking
-                          ? Column(
-                              children: [
-                                _addServicesWidget(),
-                                Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text(
-                                        'Tap on the service block to remove')),
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                Text(
-                                  "Press a comma to add a department",
-                                  style: blackBoldFS16,
-                                ),
-                                _departmentTextfield(),
-                                Wrap(
-                                  spacing: 8,
-                                  children: [
-                                    for (var item in departments)
-                                      _departmentServiceChip(item)
-                                  ],
-                                ),
-                              ],
-                            ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        "Working hours and \n Bookings accepted per day",
-                        textAlign: TextAlign.center,
-                        style: blackBoldFS16,
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      for (var i = 0; i < weekDays.length; i++)
-                        _workingDay(
-                            weekDays[i], startTimeList[i], endTimeList[i], i),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      addCancel()
-                    ],
+                            'Upload Logo',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        _textField("Branch Name", _branchNameController, false),
+                        _textField("Address Line 1", _addr1Controller, false),
+                        _textField("Address Line 2", _addr2Controller, false),
+                        _textField("City", _cityController, false),
+                        _textField(
+                            "State/Province", _provinceController, false),
+                        _textField("Contact", _phoneNoController, true),
+                        _textField("Postal Code", _postalCodeController, false),
+                        _textField("Time Zone", _timezoneController, false),
+                        RaisedButton(
+                            child: Text('Notify Time'),
+                            onPressed: () {
+                              showTimePicker(
+                                      context: context,
+                                      initialTime: TimeOfDay.now())
+                                  .then((value) {
+                                setState(() {
+                                  _notifytimeDescController.text =
+                                      value.toString();
+                                });
+                              });
+                            }),
+                        authProv.authinfo.companyType == CompanyEnum.Booking
+                            ? SizedBox()
+                            : _textField(
+                                "No. of counters", _counterController, false),
+                        authProv.authinfo.companyType != CompanyEnum.Booking
+                            ? _textField("Threshold in minutes",
+                                _thresholdController, true)
+                            : SizedBox(),
+                        _textField(
+                            "Geo Location", _geoLocationController, true),
+                        GestureDetector(
+                            onTap: () {
+                              _launchInBrowser('https://www.latlong.net/');
+                            },
+                            child: Text(
+                              'Click here to get geolocation',
+                              style: TextStyle(color: Colors.blue),
+                            )),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        authProv.authinfo.companyType == CompanyEnum.Booking
+                            ? Column(
+                                children: [
+                                  _addServicesWidget(),
+                                  Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                          'Tap on the service block to remove')),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  Text(
+                                    "Press a comma to add a department",
+                                    style: blackBoldFS16,
+                                  ),
+                                  _departmentTextfield(),
+                                  Wrap(
+                                    spacing: 8,
+                                    children: [
+                                      for (var item in departments)
+                                        _departmentServiceChip(item)
+                                    ],
+                                  ),
+                                ],
+                              ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "Working hours and \n Bookings accepted per day",
+                          textAlign: TextAlign.center,
+                          style: blackBoldFS16,
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        for (var i = 0; i < weekDays.length; i++)
+                          _workingDay(
+                              weekDays[i], startTimeList[i], endTimeList[i], i),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        addCancel()
+                      ],
+                    ),
                   ),
                 ),
               )),
@@ -623,7 +629,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       decoration: BoxDecoration(
           color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-      child: TextField(
+      child: TextFormField(
+        validator: (value) => value.isEmpty ? 'Enter $hintText' : null,
         controller: _controller,
         keyboardType: number ? TextInputType.phone : TextInputType.text,
         decoration: InputDecoration(
@@ -646,37 +653,52 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
             builder: (context, value, child) {
               return InkWell(
                 onTap: () async {
-                  var temp = getDetails();
-                  if (temp == null) {
-                    AppToast.showErr("Check your details");
+                  if (_formKey.currentState.validate()) {
+                    var temp = getDetails();
+                    if (temp == null) {
+                      AppToast.showErr("Check your details");
 
-                    return;
-                  }
-
-                  if (authProv.authinfo.companyType == CompanyEnum.Booking) {
-                    if (servicesName.length == 0) {
-                      AppToast.showErr("Atleast 1 service is required");
                       return;
                     }
-                  }
-                  if (authProv.authinfo.companyType == CompanyEnum.Token ||
-                      authProv.authinfo.companyType == CompanyEnum.MultiToken) {
-                    if (departments.length == 0) {
-                      AppToast.showErr("Atleast 1 department is required");
-                      return;
+
+                    if (authProv.authinfo.companyType == CompanyEnum.Booking) {
+                      if (servicesName.length == 0) {
+                        AppToast.showErr("Atleast 1 service is required");
+                        return;
+                      }
+                      if (perDayHrs.length == 0) {
+                        AppToast.showErr("Atleast 1 working day is required");
+                        return;
+                      }
                     }
-                  }
-                  bool success = await value.execCreateComppany(
-                      temp, authProv.authinfo.jwtToken,
-                      companyLogoMob: uploadedImageMob,
-                      filename: filename.toString(),
-                      imagesdef: widget.images);
-                  if (success) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ));
+                    if (authProv.authinfo.companyType == CompanyEnum.Token ||
+                        authProv.authinfo.companyType ==
+                            CompanyEnum.MultiToken) {
+                      if (departments.length == 0) {
+                        AppToast.showErr("Atleast 1 department is required");
+                        return;
+                      }
+                      if (perDayHrs.length == 0) {
+                        AppToast.showErr("Atleast 1 working day is required");
+                        return;
+                      }
+                    }
+                    bool success = await value.execCreateComppany(
+                        temp, authProv.authinfo.jwtToken,
+                        companyLogoMob: uploadedImageMob,
+                        filename: filename.toString(),
+                        imagesdef: widget.images);
+                    if (success) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ));
+                    } else {
+                      AppToast.showErr('Please Fill Missing Value');
+                    }
+                  } else {
+                    AppToast.showErr('Please Fill Missing Value');
                   }
                 },
                 child: Container(
