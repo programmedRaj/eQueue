@@ -546,6 +546,43 @@ def biz_signin():
         conn.close()
 
 
+@app.route("/getbr_emp")
+@check_for_token
+def getbr_emp():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    try:
+        check = cur.execute(
+            "Select * FROM employee_details WHERE employee_id ='"
+            + str(user["id"])
+            + "';"
+        )
+        r = cur.fetchone()
+        if r:
+            bid = r["branch_id"]
+            check = cur.execute(
+                "Select * FROM branch_details WHERE id ='" + str(bid) + "';"
+            )
+            r = cur.fetchone()
+            if r:
+
+                resp = jsonify({"bname": r["bname"], "bid": bid})
+                resp.status_code = 200
+                return resp
+            else:
+                resp = jsonify({"message": "Error"})
+                resp.status_code = 403
+                return resp
+        resp = jsonify({"message": "No Employee Found."})
+        resp.status_code = 405
+        return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/change_passw_biz", methods=["POST"])
 @check_for_token
 def change_passw_biz():
