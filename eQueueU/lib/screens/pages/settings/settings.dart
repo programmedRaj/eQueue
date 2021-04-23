@@ -7,8 +7,10 @@ import 'package:eQueue/screens/pages/settings/privacy_policy.dart';
 import 'package:eQueue/screens/pages/settings/profile.dart';
 import 'package:eQueue/screens/pages/settings/terms_conditions.dart';
 import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -41,7 +43,7 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                 child: ListTile(
-                  title: Text('My Information'),
+                  title: Text(LocaleKeys.MyInformation).tr(),
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),
               ),
@@ -63,7 +65,7 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                 child: ListTile(
-                  title: Text('My History'),
+                  title: Text(LocaleKeys.MyHistory).tr(),
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),
               ),
@@ -85,7 +87,7 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                 child: ListTile(
-                  title: Text('Language'),
+                  title: Text(LocaleKeys.Language).tr(),
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),
               ),
@@ -107,7 +109,7 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                 child: ListTile(
-                  title: Text('Payments'),
+                  title: Text(LocaleKeys.Payments).tr(),
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),
               ),
@@ -129,7 +131,7 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                 child: ListTile(
-                  title: Text('Terms & Conditions'),
+                  title: Text(LocaleKeys.TermsConditions).tr(),
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),
               ),
@@ -151,7 +153,7 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                 child: ListTile(
-                  title: Text('Privacy Policy'),
+                  title: Text(LocaleKeys.PrivacyPolicy).tr(),
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),
               ),
@@ -172,7 +174,7 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                 child: ListTile(
-                  title: Text('Log Out'),
+                  title: Text(LocaleKeys.LogOut).tr(),
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),
               ),

@@ -4,11 +4,14 @@ import 'package:eQueue/api/service/baseurl.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:eQueue/screens/pages/home.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class Otp extends StatefulWidget {
   String number;
@@ -66,7 +69,7 @@ class _OtpState extends State<Otp> {
           context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else {
       setState(() {
-        error = 'Incorrect OTP';
+        error = LocaleKeys.IncorrectOTP.tr();
       });
     }
   }
@@ -108,7 +111,7 @@ class _OtpState extends State<Otp> {
                       },
                       validator: (name) {
                         if (name.isEmpty) {
-                          return "Please enter OTP";
+                          return LocaleKeys.PleaseenterOTP.tr();
                         } else {
                           return null;
                         }
@@ -136,7 +139,7 @@ class _OtpState extends State<Otp> {
                             borderSide:
                                 BorderSide(color: Colors.white, width: 2.0),
                           ),
-                          hintText: "OTP",
+                          hintText: LocaleKeys.OTP.tr(),
                           hintStyle: TextStyle(color: Colors.white)),
                     ),
                   ),
@@ -173,11 +176,11 @@ class _OtpState extends State<Otp> {
                       },
                       child: type == 0
                           ? Text(
-                              "Login",
+                              LocaleKeys.Login,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 20),
-                            )
+                            ).tr()
                           : type == 1
                               ? CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(

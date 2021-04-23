@@ -5,8 +5,10 @@ import 'package:eQueue/provider/department_token_provider.dart';
 import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:eQueue/screens/home_screen.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Booktoken extends StatefulWidget {
   final int id;
@@ -40,7 +42,7 @@ class _BooktokenState extends State<Booktoken> {
       builder: (context, value, child) {
         return Scaffold(
             appBar: AppBar(
-              title: Text('Time Slot'),
+              title: Text(LocaleKeys.TimeSlot).tr(),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -68,7 +70,7 @@ class _BooktokenState extends State<Booktoken> {
                           Container(
                             margin: EdgeInsets.only(top: height * 0.02),
                             child: Text(
-                              'Company Name : ${widget.companyname}',
+                              '${LocaleKeys.CompanyName.tr()} : ${widget.companyname}',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -77,7 +79,7 @@ class _BooktokenState extends State<Booktoken> {
                           Container(
                             margin: EdgeInsets.only(top: height * 0.01),
                             child: Text(
-                              'Branch Name : ${widget.branchname}',
+                              '${LocaleKeys.BranchName.tr()} : ${widget.branchname}',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -86,7 +88,7 @@ class _BooktokenState extends State<Booktoken> {
                           Container(
                             margin: EdgeInsets.only(top: height * 0.01),
                             child: Text(
-                              'Branch Type : ${widget.type}',
+                              '${LocaleKeys.BranchType.tr()} : ${widget.type}',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -121,13 +123,13 @@ class _BooktokenState extends State<Booktoken> {
                                     ? Container(
                                         width: width * 0.45,
                                         child: Text(
-                                          'Choose Department',
+                                          LocaleKeys.ChooseDepartment,
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   .highlightColor,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w800),
-                                        ),
+                                        ).tr(),
                                       )
                                     : Text(
                                         dropval,
@@ -193,13 +195,13 @@ class _BooktokenState extends State<Booktoken> {
                             MaterialPageRoute(builder: (ctx) => MyHomePage()));
                       });
                     } else {
-                      AppToast.showErr('Please select department');
+                      AppToast.showErr(LocaleKeys.Pleaseselectdepartment.tr());
                     }
                   },
                   child: Text(
-                    'Generate Token',
+                    LocaleKeys.GenerateToken,
                     style: TextStyle(color: myColor[100]),
-                  )),
+                  ).tr()),
             ));
       },
     );

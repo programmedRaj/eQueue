@@ -5,9 +5,11 @@ import 'package:eQueue/api/models/branchmodelcompany.dart';
 import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/provider/map_marker.dart';
 import 'package:eQueue/screens/pages/book_appoint_service.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MapSample extends StatefulWidget {
   @override
@@ -65,7 +67,7 @@ class MapSampleState extends State<MapSample> {
         });
       }
     } else {
-      AppToast.showErr('No Branches');
+      AppToast.showErr(LocaleKeys.nobranches.tr());
     }
   }
 
@@ -75,7 +77,7 @@ class MapSampleState extends State<MapSample> {
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Map'),
+            title: Text(LocaleKeys.Map).tr(),
           ),
           body: GoogleMap(
             mapType: MapType.normal,

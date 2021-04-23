@@ -3,11 +3,13 @@ import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/provider/paymentdone.dart';
 import 'package:eQueue/screens/pages/walletpage/stripe-pay.dart';
 import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:stripe_payment/stripe_payment.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ExistingCardsPage extends StatefulWidget {
   ExistingCardsPage({Key key}) : super(key: key);
@@ -29,15 +31,15 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
           .paymentdone(amount: amount, status: response.success)
           .then((value) {
         if (value == 200) {
-          AppToast.showSucc('Payment Done');
+          AppToast.showSucc(LocaleKeys.PaymentDone.tr());
           Navigator.of(context).pop();
           // .push(MaterialPageRoute(builder: (ctx) => Wallet()));
         } else {
-          AppToast.showErr('Something went wrong');
+          AppToast.showErr(LocaleKeys.Somethingwentwrong.tr());
         }
       });
     } else {
-      AppToast.showErr('Payment Failed');
+      AppToast.showErr(LocaleKeys.PaymentFailed.tr());
     }
 
     // Scaffold.of(context).showSnackBar(SnackBar(
@@ -77,7 +79,7 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Payment'),
+          title: Text(LocaleKeys.Payment).tr(),
           // actions: [
           //   IconButton(
           //       onPressed: () {
@@ -130,10 +132,10 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
                     if (amount != null || amount != '0') {
                       payViaNewCard(context, amount);
                     } else {
-                      AppToast.showErr('Enter Amount');
+                      AppToast.showErr(LocaleKeys.EnterAmount.tr());
                     }
                   },
-                  child: Text('Add Money'))
+                  child: Text(LocaleKeys.addmoney).tr())
             ],
           ),
         ));

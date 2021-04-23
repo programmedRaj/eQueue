@@ -1,4 +1,7 @@
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class Policy extends StatelessWidget {
   @override
@@ -6,8 +9,8 @@ class Policy extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Privacy Policy',
-        ),
+          LocaleKeys.PrivacyPolicy,
+        ).tr(),
       ),
       body: SingleChildScrollView(
         child: Container(

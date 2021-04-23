@@ -2,9 +2,11 @@ import 'package:eQueue/api/models/companymodel.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/screens/pages/branch_screen.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Company extends StatefulWidget {
   @override
@@ -69,7 +71,7 @@ class _CompanyState extends State<Company> {
             ));
           } else {
             setState(() {
-              noprod = 'No Company';
+              noprod = LocaleKeys.nocompanies.tr();
             });
           }
         }
@@ -111,7 +113,7 @@ class _CompanyState extends State<Company> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Search Companies',
+                                hintText: LocaleKeys.searchcompanies.tr(),
                                 suffixIcon: Icon(Icons.search)),
                           )),
                     ),
@@ -156,7 +158,7 @@ class _CompanyState extends State<Company> {
                                 SizedBox(
                                   width: width * 0.02,
                                 ),
-                                Text('Token'),
+                                Text(LocaleKeys.Token).tr(),
                               ],
                             ),
                           ),
@@ -181,8 +183,8 @@ class _CompanyState extends State<Company> {
                                   width: width * 0.02,
                                 ),
                                 Text(
-                                  'Multi-Token',
-                                ),
+                                  LocaleKeys.MultiToken,
+                                ).tr(),
                               ],
                             ),
                           ),
@@ -206,7 +208,7 @@ class _CompanyState extends State<Company> {
                                 SizedBox(
                                   width: width * 0.02,
                                 ),
-                                Text("Booking"),
+                                Text(LocaleKeys.Booking).tr(),
                               ],
                             ),
                           ),
@@ -340,9 +342,9 @@ class _CompanyState extends State<Company> {
                                                                     companysearch
                                                                         .isNotEmpty
                                                                 ? Text(
-                                                                    'Company Description : ${companysearch[i].descr}')
+                                                                    '${LocaleKeys.CompanyDescription.tr()} : ${companysearch[i].descr}')
                                                                 : Text(
-                                                                    'Company Description : ${comp[i].descr}'),
+                                                                    '${LocaleKeys.CompanyDescription.tr()} : ${comp[i].descr}'),
                                                           ),
                                                         ],
                                                       ),
@@ -355,12 +357,12 @@ class _CompanyState extends State<Company> {
                                               margin: EdgeInsets.only(top: 10),
                                               alignment: Alignment.centerLeft,
                                               child: Text(
-                                                'View Details',
+                                                LocaleKeys.ViewDetails,
                                                 style: TextStyle(
                                                   decoration:
                                                       TextDecoration.underline,
                                                 ),
-                                              ),
+                                              ).tr(),
                                             ),
                                           )
                                         ],
@@ -406,10 +408,10 @@ class _CompanyState extends State<Company> {
                                                                 )));
                                             },
                                             child: Text(
-                                              'View Branches',
+                                              LocaleKeys.ViewDetails,
                                               style: TextStyle(
                                                   color: myColor[100]),
-                                            )),
+                                            ).tr()),
                                       )
                                     ],
                                   ),
@@ -458,7 +460,9 @@ class _MyDState extends State<MyD> {
         width: width,
         child: Column(
           children: [
-            Container(alignment: Alignment.centerLeft, child: Text('Sort By')),
+            Container(
+                alignment: Alignment.centerLeft,
+                child: Text(LocaleKeys.SortBy).tr()),
             RadioButtonGroup(
               orientation: GroupedButtonsOrientation.HORIZONTAL,
               margin: const EdgeInsets.only(left: 12.0),
@@ -485,7 +489,8 @@ class _MyDState extends State<MyD> {
               height: height * 0.04,
             ),
             Container(
-                alignment: Alignment.centerLeft, child: Text('Sort Order')),
+                alignment: Alignment.centerLeft,
+                child: Text(LocaleKeys.SortOrder).tr()),
             RadioButtonGroup(
               orientation: GroupedButtonsOrientation.HORIZONTAL,
               margin: const EdgeInsets.only(left: 12.0),
@@ -526,7 +531,7 @@ class _MyDState extends State<MyD> {
                                 type: 'company')
                             .then((value) => Navigator.of(context).pop());
                       },
-                      child: Text('Ok')),
+                      child: Text(LocaleKeys.Ok).tr()),
                   SizedBox(
                     width: width * 0.02,
                   ),
@@ -534,7 +539,7 @@ class _MyDState extends State<MyD> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Cancel'))
+                      child: Text(LocaleKeys.Cancel).tr())
                 ],
               ),
             )

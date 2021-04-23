@@ -5,8 +5,10 @@ import 'package:eQueue/screens/pages/mapss.dart';
 import 'package:eQueue/screens/pages/notification_screen.dart';
 import 'package:eQueue/screens/pages/settings/settings.dart';
 import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -77,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icons.home,
                   color: myColor[50],
                 ),
-                title: Text("Home")),
+                title: Text(LocaleKeys.home).tr()),
             BubbleBottomBarItem(
                 backgroundColor: myColor[250],
                 icon: Icon(
@@ -88,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icons.monetization_on,
                   color: myColor[50],
                 ),
-                title: Text("Wallet")),
+                title: Text(LocaleKeys.wallet).tr()),
             BubbleBottomBarItem(
                 backgroundColor: myColor[250],
                 icon: Icon(
@@ -99,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icons.notifications,
                   color: myColor[50],
                 ),
-                title: Text("Message")),
+                title: Text(LocaleKeys.message).tr()),
             BubbleBottomBarItem(
                 backgroundColor: myColor[250],
                 icon: Icon(
@@ -110,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icons.settings,
                   color: myColor[50],
                 ),
-                title: Text("Settings"))
+                title: Text(LocaleKeys.settings).tr())
           ],
         ),
         body: currentIndex == 0

@@ -1,4 +1,6 @@
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TermsCondition extends StatelessWidget {
   @override
@@ -6,8 +8,8 @@ class TermsCondition extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Terms & Conditions',
-        ),
+          LocaleKeys.TermsConditions,
+        ).tr(),
       ),
       body: SingleChildScrollView(
         child: Container(

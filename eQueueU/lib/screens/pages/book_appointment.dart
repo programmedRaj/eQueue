@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -8,6 +9,7 @@ import 'package:eQueue/api/models/working_per_day.dart';
 import 'package:eQueue/components/appointmenttime.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/apptoast.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Calen extends StatefulWidget {
   final String wk;
@@ -54,7 +56,7 @@ class _CalenState extends State<Calen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Time Slot'),
+        title: Text(LocaleKeys.TimeSlot).tr(),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -67,7 +69,6 @@ class _CalenState extends State<Calen> {
                 onDaySelected: (day, events, holidays) {
                   String dateFormat = DateFormat('EEEE').format(day);
                   String dayy = dateFormat.toLowerCase();
-                  print(dayy);
 
                   if (dayy == 'monday') {
                     setState(() {
@@ -152,7 +153,7 @@ class _CalenState extends State<Calen> {
                               type: widget.type,
                             )));
                   } else {
-                    AppToast.showErr('Branch is closed');
+                    AppToast.showErr(LocaleKeys.Branchisclosed.tr());
                   }
                 },
                 calendarController: _c,

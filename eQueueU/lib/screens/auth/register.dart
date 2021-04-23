@@ -7,11 +7,12 @@ import 'package:eQueue/api/service/baseurl.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/auth/login.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
 import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -113,10 +114,10 @@ class _RegisterState extends State<Register> {
     if (res.statusCode == 200) {
       Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => Login()));
     } else if (res.statusCode == 403) {
-      error = 'You Already Have an Account';
+      error = LocaleKeys.YouAlreadyHaveanAccount.tr();
     } else {
       setState(() {
-        error = 'Something went wrong';
+        error = LocaleKeys.Somethingwentwrong.tr();
       });
     }
   }
@@ -217,12 +218,12 @@ class _RegisterState extends State<Register> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (name) {
                         if (name.isEmpty)
-                          return 'Please Enter Name';
+                          return LocaleKeys.PleaseEnterName.tr();
                         else
                           return null;
                       },
                       decoration: InputDecoration(
-                        hintText: "Name",
+                        hintText: LocaleKeys.Name.tr(),
                         hintStyle: TextStyle(
                             color: Colors
                                 .white), //AppLocalization.of(context).nickname,
@@ -272,7 +273,7 @@ class _RegisterState extends State<Register> {
                       //     return null;
                       // },
                       decoration: InputDecoration(
-                        hintText: "Address 1",
+                        hintText: LocaleKeys.Address1.tr(),
                         hintStyle: TextStyle(
                             color: Colors
                                 .white), //AppLocalization.of(context).nickname,
@@ -322,7 +323,7 @@ class _RegisterState extends State<Register> {
                       //     return null;
                       // },
                       decoration: InputDecoration(
-                        hintText: "Address 2",
+                        hintText: LocaleKeys.Address2.tr(),
                         hintStyle: TextStyle(
                             color: Colors
                                 .white), //AppLocalization.of(context).nickname,
@@ -372,7 +373,7 @@ class _RegisterState extends State<Register> {
                       //     return null;
                       // },
                       decoration: InputDecoration(
-                        hintText: "Postal Code",
+                        hintText: LocaleKeys.PostalCode.tr(),
                         hintStyle: TextStyle(
                             color: Colors
                                 .white), //AppLocalization.of(context).nickname,
@@ -422,7 +423,7 @@ class _RegisterState extends State<Register> {
                       //     return null;
                       // },
                       decoration: InputDecoration(
-                        hintText: "Province",
+                        hintText: LocaleKeys.Province.tr(),
                         hintStyle: TextStyle(
                             color: Colors
                                 .white), //AppLocalization.of(context).nickname,
@@ -472,7 +473,7 @@ class _RegisterState extends State<Register> {
                       //     return null;
                       // },
                       decoration: InputDecoration(
-                        hintText: "City",
+                        hintText: LocaleKeys.City.tr(),
                         hintStyle: TextStyle(
                             color: Colors
                                 .white), //AppLocalization.of(context).nickname,
@@ -516,7 +517,7 @@ class _RegisterState extends State<Register> {
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        hintText: "Referal Code",
+                        hintText: LocaleKeys.ReferalCode.tr(),
                         hintStyle: TextStyle(
                             color: Colors
                                 .white), //AppLocalization.of(context).nickname,
@@ -585,7 +586,7 @@ class _RegisterState extends State<Register> {
                               ],
                               validator: (name) {
                                 if (name.isEmpty) {
-                                  return 'Please enter phone number';
+                                  return LocaleKeys.Pleaseenterphonenumber.tr();
                                 } else
                                   return null;
                               },
@@ -612,7 +613,7 @@ class _RegisterState extends State<Register> {
                                     borderSide: BorderSide(
                                         color: Colors.white, width: 2.0),
                                   ),
-                                  hintText: "Phone",
+                                  hintText: LocaleKeys.Phone.tr(),
                                   hintStyle: TextStyle(color: Colors.white)),
                               onChanged: (v) {
                                 setState(() {
@@ -654,16 +655,16 @@ class _RegisterState extends State<Register> {
                               referralcode: referralcode,
                             );
                           } else {
-                            error = "Please Select Country Code";
+                            error = LocaleKeys.PleaseSelectCountryCode.tr();
                           }
                         }
                       },
                       child: type == 0
                           ? Text(
-                              "Register",
+                              LocaleKeys.Register,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
-                            )
+                            ).tr()
                           : type == 1
                               ? CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(

@@ -52,8 +52,6 @@ class _HomeState extends State<Home> {
     }
     return Consumer<DisplayTokenBook>(
       builder: (context, value, child) {
-        print('=t=t=${value.bookings}');
-        print(value.tokens);
         return SafeArea(
             child: Scaffold(
           body: SingleChildScrollView(
@@ -87,11 +85,11 @@ class _HomeState extends State<Home> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Search Companies',
+                                    LocaleKeys.searchcompanies,
                                     style: TextStyle(
                                         color: myColor[250],
                                         fontWeight: FontWeight.bold),
-                                  ),
+                                  ).tr(),
                                   Icon(
                                     Icons.search,
                                     color: myColor[250],
@@ -129,7 +127,7 @@ class _HomeState extends State<Home> {
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
-                                    Text('Onwait'),
+                                    Text(LocaleKeys.Onwait).tr(),
                                   ],
                                 ),
                               ),
@@ -152,7 +150,7 @@ class _HomeState extends State<Home> {
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
-                                    Text('Call'),
+                                    Text(LocaleKeys.Call).tr(),
                                   ],
                                 ),
                               ),
@@ -176,7 +174,7 @@ class _HomeState extends State<Home> {
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
-                                    Text("Completed"),
+                                    Text(LocaleKeys.Completed).tr(),
                                   ],
                                 ),
                               ),
@@ -199,7 +197,7 @@ class _HomeState extends State<Home> {
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
-                                    Text('Cancel'),
+                                    Text(LocaleKeys.Cancel).tr(),
                                   ],
                                 ),
                               ),
@@ -214,7 +212,7 @@ class _HomeState extends State<Home> {
                     margin: EdgeInsets.only(top: 10, bottom: 10),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Hello Rushabh,',
+                      '${LocaleKeys.hello.tr()} Rushabh,',
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
                     ),
@@ -232,10 +230,10 @@ class _HomeState extends State<Home> {
                         Card(
                           child: ExpansionTile(
                             title: Text(
-                              'Your Bookings',
+                              LocaleKeys.yourbookings,
                               style: TextStyle(
                                   fontSize: 16.0, fontWeight: FontWeight.w500),
-                            ),
+                            ).tr(),
                             children: <Widget>[
                               Container(
                                   height: height * 0.4,
@@ -260,10 +258,10 @@ class _HomeState extends State<Home> {
                                                             10)),
                                                 child: FlatButton(
                                                   child: Text(
-                                                    'Create Bookings',
+                                                    LocaleKeys.createbookings,
                                                     style: TextStyle(
                                                         color: myColor[100]),
-                                                  ),
+                                                  ).tr(),
                                                   onPressed: () {
                                                     Navigator.of(context).push(
                                                         MaterialPageRoute(
@@ -299,12 +297,12 @@ class _HomeState extends State<Home> {
                                                         color: myColor[100],
                                                       ),
                                                       Text(
-                                                        'Remove',
+                                                        LocaleKeys.Remove,
                                                         style: TextStyle(
                                                           color: myColor[100],
                                                           fontSize: 20,
                                                         ),
-                                                      ),
+                                                      ).tr(),
                                                     ],
                                                   ),
                                                 ),
@@ -342,7 +340,8 @@ class _HomeState extends State<Home> {
                                                       MaterialPageRoute(
                                                           builder: (ctx) =>
                                                               Check()));
-                                                  AppToast.showSucc('Deleted');
+                                                  AppToast.showSucc(
+                                                      LocaleKeys.Deleted.tr());
                                                 });
                                                 // Shows the information on Snackbar
                                               },
@@ -375,11 +374,11 @@ class _HomeState extends State<Home> {
                                                           children: [
                                                             Container(
                                                               child: Text(
-                                                                  'Branch Name : ${value.bookings[index].branchtable.split("_")[0]}'),
+                                                                  '${LocaleKeys.Booking.tr()} : ${value.bookings[index].branchtable.split("_")[0]}'),
                                                             ),
                                                             Container(
                                                               child: Text(
-                                                                  'Booking on:${value.bookings[index].slots} '),
+                                                                  '${LocaleKeys.Bookingon.tr()} : ${value.bookings[index].slots} '),
                                                             ),
                                                             Container(
                                                               child: Column(
@@ -479,10 +478,10 @@ class _HomeState extends State<Home> {
                         Card(
                           child: ExpansionTile(
                             title: Text(
-                              'Your Tokens',
+                              LocaleKeys.yourtokens,
                               style: TextStyle(
                                   fontSize: 16.0, fontWeight: FontWeight.w500),
-                            ),
+                            ).tr(),
                             children: <Widget>[
                               Container(
                                   height: height * 0.4,
@@ -495,7 +494,7 @@ class _HomeState extends State<Home> {
                                               SizedBox(
                                                 height: height * 0.1,
                                               ),
-                                              Text('No Tokens!!'),
+                                              Text(LocaleKeys.NoTokens).tr(),
                                               Container(
                                                 height: height * 0.08,
                                                 margin:
@@ -507,7 +506,7 @@ class _HomeState extends State<Home> {
                                                             10)),
                                                 child: FlatButton(
                                                   child: Text(
-                                                    'Create Token',
+                                                    LocaleKeys.createtoken,
                                                     style: TextStyle(
                                                         color: myColor[100]),
                                                   ),
@@ -546,12 +545,12 @@ class _HomeState extends State<Home> {
                                                         color: myColor[100],
                                                       ),
                                                       Text(
-                                                        'Remove',
+                                                        LocaleKeys.Remove,
                                                         style: TextStyle(
                                                           color: myColor[100],
                                                           fontSize: 20,
                                                         ),
-                                                      ),
+                                                      ).tr(),
                                                     ],
                                                   ),
                                                 ),
@@ -590,7 +589,8 @@ class _HomeState extends State<Home> {
                                                     MaterialPageRoute(
                                                         builder: (ctx) =>
                                                             Check()));
-                                                AppToast.showSucc('Deleted');
+                                                AppToast.showSucc(
+                                                    LocaleKeys.Deleted.tr());
                                               },
                                               child: Container(
                                                 height: height * 0.2,
@@ -627,7 +627,7 @@ class _HomeState extends State<Home> {
                                                       ),
                                                       Container(
                                                         child: Text(
-                                                            'Counter Number : ${value.tokens[index].employeeid}'),
+                                                            '${LocaleKeys.CounterNumber.tr()} : ${value.tokens[index].employeeid}'),
                                                       ),
                                                       Row(
                                                         children: [
@@ -674,7 +674,7 @@ class _HomeState extends State<Home> {
                                                                     width * 0.4,
                                                                 child: Center(
                                                                   child: Text(
-                                                                    'Estimated Time : 10',
+                                                                    '${LocaleKeys.EstimatedTime.tr()} : 10',
                                                                     style: TextStyle(
                                                                         fontWeight:
                                                                             FontWeight.bold),

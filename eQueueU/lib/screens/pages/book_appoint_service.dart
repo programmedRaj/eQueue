@@ -6,8 +6,10 @@ import 'package:eQueue/provider/check_slot.dart';
 import 'package:eQueue/provider/department_booking_provider.dart';
 import 'package:eQueue/provider/department_token_provider.dart';
 import 'package:eQueue/screens/pages/book_appointment.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SelectService extends StatefulWidget {
   final int id;
@@ -56,7 +58,7 @@ class _SelectServiceState extends State<SelectService> {
       builder: (context, value, child) {
         return Scaffold(
             appBar: AppBar(
-              title: Text('Time Slot'),
+              title: Text(LocaleKeys.TimeSlot).tr(),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -82,7 +84,7 @@ class _SelectServiceState extends State<SelectService> {
                         Container(
                           margin: EdgeInsets.only(top: height * 0.02),
                           child: Text(
-                            'Company Name : ${widget.companyname}',
+                            '${LocaleKeys.CompanyName.tr()} : ${widget.companyname}',
                             style: TextStyle(
                               fontSize: 16,
                             ),
@@ -91,7 +93,7 @@ class _SelectServiceState extends State<SelectService> {
                         Container(
                           margin: EdgeInsets.only(top: height * 0.01),
                           child: Text(
-                            'Branch Name : ${widget.branchname}',
+                            '${LocaleKeys.BranchName.tr()}: ${widget.branchname}',
                             style: TextStyle(
                               fontSize: 16,
                             ),
@@ -100,7 +102,7 @@ class _SelectServiceState extends State<SelectService> {
                         Container(
                           margin: EdgeInsets.only(top: height * 0.01),
                           child: Text(
-                            'Branch Type : ${widget.type}',
+                            '${LocaleKeys.BranchType.tr()} : ${widget.type}',
                             style: TextStyle(
                               fontSize: 16,
                             ),
@@ -139,13 +141,13 @@ class _SelectServiceState extends State<SelectService> {
                                     ? Container(
                                         width: width * 0.45,
                                         child: Text(
-                                          'Choose Service',
+                                          LocaleKeys.ChooseService,
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   .highlightColor,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w800),
-                                        ),
+                                        ).tr(),
                                       )
                                     : Text(
                                         dropval,
@@ -184,8 +186,8 @@ class _SelectServiceState extends State<SelectService> {
                             child: ListView(
                               children: [
                                 serdes != null
-                                    ? Text('Service Description : ${serdes}')
-                                    : Text('No Description'),
+                                    ? Text('${serdes}')
+                                    : Text(LocaleKeys.NoDescription).tr(),
                               ],
                             ))
                       ],
@@ -217,9 +219,9 @@ class _SelectServiceState extends State<SelectService> {
                             )));
                   },
                   child: Text(
-                    'Schedule Time',
+                    LocaleKeys.ScheduleTime,
                     style: TextStyle(color: myColor[100]),
-                  )),
+                  ).tr()),
             ));
       },
     );

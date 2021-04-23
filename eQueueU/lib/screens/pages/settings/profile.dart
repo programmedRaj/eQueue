@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:eQueue/api/models/userdetails.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -33,7 +35,7 @@ class _ProfileState extends State<Profile> {
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Profile'),
+            title: Text(LocaleKeys.Profile).tr(),
           ),
           body: value.users.length == 0 || value.users == null
               ? Center(
@@ -60,13 +62,13 @@ class _ProfileState extends State<Profile> {
                               child: FlatButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Edit Photo',
+                                    LocaleKeys.EditPhoto,
                                     style: TextStyle(
                                       color: myColor[50],
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  )),
+                                  ).tr()),
                             )
                           ],
                         ),
@@ -83,7 +85,7 @@ class _ProfileState extends State<Profile> {
                                   keyboardType: TextInputType.phone,
                                   initialValue: value.users[0].name,
                                   decoration: InputDecoration(
-                                    hintText: 'Name',
+                                    hintText: LocaleKeys.Name.tr(),
                                     prefixIcon: Icon(
                                       Icons.person,
                                       color: myColor[250],
@@ -151,7 +153,7 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.text,
                                 initialValue: value.users[0].address1,
                                 decoration: InputDecoration(
-                                  hintText: 'Address 1',
+                                  hintText: LocaleKeys.Address1.tr(),
                                   prefixIcon: Icon(
                                     Icons.location_city,
                                     color: myColor[250],
@@ -188,7 +190,7 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.text,
                                 initialValue: value.users[0].address2,
                                 decoration: InputDecoration(
-                                  hintText: 'Address 2',
+                                  hintText: LocaleKeys.Address2.tr(),
                                   prefixIcon: Icon(
                                     Icons.phone,
                                     color: myColor[250],
@@ -225,7 +227,7 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.text,
                                 initialValue: value.users[0].province,
                                 decoration: InputDecoration(
-                                  hintText: 'Province',
+                                  hintText: LocaleKeys.Province.tr(),
                                   prefixIcon: Icon(
                                     Icons.phone,
                                     color: myColor[250],
@@ -262,7 +264,7 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.text,
                                 initialValue: value.users[0].city,
                                 decoration: InputDecoration(
-                                  hintText: 'City',
+                                  hintText: LocaleKeys.City.tr(),
                                   prefixIcon: Icon(
                                     Icons.phone,
                                     color: myColor[250],
@@ -299,7 +301,7 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.text,
                                 initialValue: value.users[0].postalcode,
                                 decoration: InputDecoration(
-                                  hintText: 'Postal Code',
+                                  hintText: LocaleKeys.PostalCode.tr(),
                                   prefixIcon: Icon(
                                     Icons.phone,
                                     color: myColor[250],
@@ -340,9 +342,9 @@ class _ProfileState extends State<Profile> {
                               child: FlatButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Update Profile',
+                                    LocaleKeys.UpdateProfile,
                                     style: TextStyle(color: myColor[100]),
-                                  )),
+                                  ).tr()),
                             )
                           ],
                         )),
