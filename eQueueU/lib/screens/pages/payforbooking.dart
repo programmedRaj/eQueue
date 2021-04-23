@@ -4,11 +4,13 @@ import 'package:eQueue/provider/send_booking.dart';
 import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
 import 'package:eQueue/screens/home_screen.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 import 'package:eQueue/components/color.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PayFor extends StatefulWidget {
   final String companyname;
@@ -46,7 +48,7 @@ class _PayForState extends State<PayFor> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment Details'),
+        title: Text(LocaleKeys.PaymentDetails.tr()),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -54,7 +56,7 @@ class _PayForState extends State<PayFor> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CheckboxGroup(
-                  labels: <String>["Insurance"],
+                  labels: <String>[LocaleKeys.Insurance.tr()],
                   onSelected: (val) {
                     setState(() {
                       isinsu = !isinsu;
@@ -70,7 +72,7 @@ class _PayForState extends State<PayFor> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: 'Insurance No.',
+                          hintText: LocaleKeys.InsuranceNo.tr(),
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
@@ -110,15 +112,15 @@ class _PayForState extends State<PayFor> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Details',
+                      LocaleKeys.Details,
                       style: TextStyle(
                         fontSize: 18,
                       ),
-                    ),
+                    ).tr(),
                     Container(
                       margin: EdgeInsets.only(top: height * 0.02),
                       child: Text(
-                        'Company Name : ${widget.companyname}',
+                        '${LocaleKeys.CompanyName.tr()} : ${widget.companyname}',
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -127,7 +129,7 @@ class _PayForState extends State<PayFor> {
                     Container(
                       margin: EdgeInsets.only(top: height * 0.01),
                       child: Text(
-                        'Branch Name : ${widget.branchname}',
+                        '${LocaleKeys.BranchName.tr()} : ${widget.branchname}',
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -136,7 +138,7 @@ class _PayForState extends State<PayFor> {
                     Container(
                       margin: EdgeInsets.only(top: height * 0.01),
                       child: Text(
-                        'Service Name : ${widget.servicename}',
+                        '${LocaleKeys.ServiceName.tr()} : ${widget.servicename}',
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -145,7 +147,7 @@ class _PayForState extends State<PayFor> {
                     Container(
                       margin: EdgeInsets.only(top: height * 0.01),
                       child: Text(
-                        'Date : ${widget.date}',
+                        '${LocaleKeys.Date.tr()} : ${widget.date}',
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -154,7 +156,7 @@ class _PayForState extends State<PayFor> {
                     Container(
                       margin: EdgeInsets.only(top: height * 0.01),
                       child: Text(
-                        'Time Slot : ${widget.time}',
+                        '${LocaleKeys.ScheduleTime.tr()} : ${widget.time}',
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -163,7 +165,7 @@ class _PayForState extends State<PayFor> {
                     Container(
                       margin: EdgeInsets.only(top: height * 0.01),
                       child: Text(
-                        'Service Rate : \$${widget.servicerate} ',
+                        '${LocaleKeys.ServiceRate.tr()} : \$${widget.servicerate} ',
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -172,7 +174,7 @@ class _PayForState extends State<PayFor> {
                     Container(
                       margin: EdgeInsets.only(top: height * 0.01),
                       child: Text(
-                        'Service Description : ${widget.servicedess}',
+                        '${LocaleKeys.ServiceDescription.tr()} : ${widget.servicedess}',
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -225,15 +227,15 @@ class _PayForState extends State<PayFor> {
           },
           child: isinsu
               ? Text(
-                  'Book Now',
+                  LocaleKeys.BookNow,
                   style: TextStyle(
                     color: myColor[100],
                     fontWeight: FontWeight.w800,
                     fontSize: 18,
                   ),
-                )
+                ).tr()
               : Text(
-                  'Pay Now - \$${widget.servicerate}',
+                  '${LocaleKeys.PayNow.tr()} - \$${widget.servicerate}',
                   style: TextStyle(
                     color: myColor[100],
                     fontWeight: FontWeight.w800,
@@ -258,7 +260,7 @@ class _PayForState extends State<PayFor> {
             .getPayment(totalservicecharge, double.parse(bonus), 'booking');
         return transid;
       } else {
-        AppToast.showErr('Insufficient Balance');
+        AppToast.showErr(LocaleKeys.InsufficientBalance.tr());
       }
     } else if (totalbonustoint < double.parse(bonus)) {
       var totalservicecharge =
@@ -270,7 +272,7 @@ class _PayForState extends State<PayFor> {
 
         return transid;
       } else {
-        AppToast.showErr('Insufficient Balance');
+        AppToast.showErr(LocaleKeys.InsufficientBalance.tr());
       }
     } else if (double.parse(bonus) == 0) {
       if (double.parse(money) >= double.parse(widget.servicerate)) {
@@ -279,7 +281,7 @@ class _PayForState extends State<PayFor> {
                 'booking');
         return transid;
       } else {
-        AppToast.showErr('Insufficient Balance');
+        AppToast.showErr(LocaleKeys.InsufficientBalance.tr());
       }
     }
   }

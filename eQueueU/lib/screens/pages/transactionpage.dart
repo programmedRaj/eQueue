@@ -1,7 +1,9 @@
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/provider/transaction_provider.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TransactionDets extends StatefulWidget {
   @override
@@ -23,12 +25,12 @@ class _TransactionDetsState extends State<TransactionDets> {
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Transaction'),
+            title: Text(LocaleKeys.Transaction).tr(),
           ),
           body: value.trans == null || value.trans.length == 0
               ? Container(
                   child: Center(
-                    child: Text('No Transactions'),
+                    child: Text(LocaleKeys.NoTransactions).tr(),
                   ),
                 )
               : ListView.builder(
@@ -49,11 +51,12 @@ class _TransactionDetsState extends State<TransactionDets> {
                       ),
                       child: ListTile(
                         title: Text(
-                          'Transaction ID : ${value.trans[i].tid}',
+                          '${LocaleKeys.TransactionID.tr()} : ${value.trans[i].tid}',
                           style: TextStyle(
                               color: myColor[250], fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text('Amount : ${value.trans[i].amount}'),
+                        subtitle: Text(
+                            '${LocaleKeys.Amount.tr()} : ${value.trans[i].amount}'),
                         trailing: value.trans[i].status == "success"
                             ? CircleAvatar(
                                 radius: 20,

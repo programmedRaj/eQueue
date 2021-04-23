@@ -2,9 +2,11 @@ import 'package:eQueue/components/color.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
 import 'package:eQueue/screens/pages/transactionpage.dart';
 import 'package:eQueue/screens/pages/walletpage/add_money.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_to/swipe_to.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Wallet extends StatefulWidget {
   @override
@@ -29,7 +31,7 @@ class _WalletState extends State<Wallet> {
         return Scaffold(
           appBar: AppBar(
             leading: Container(),
-            title: Text('Your Wallet'),
+            title: Text(LocaleKeys.yourwallet).tr(),
           ),
           body: Container(
             child: Column(
@@ -57,14 +59,14 @@ class _WalletState extends State<Wallet> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'My Balance',
+                              LocaleKeys.MyBalance,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
+                            ).tr(),
                             value.users.length == 0 || value.users == null
                                 ? Text(
-                                    'loading',
-                                  )
+                                    LocaleKeys.loading,
+                                  ).tr()
                                 : Text(
                                     '\$${value.users[0].money}',
                                     style: TextStyle(
@@ -148,9 +150,9 @@ class _WalletState extends State<Wallet> {
                       Container(
                         child: Center(
                             child: Text(
-                          'Swipe Right to Add',
+                          LocaleKeys.swiperighttoadd,
                           style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
+                        ).tr()),
                       ),
                     ],
                   ),
@@ -173,7 +175,7 @@ class _WalletState extends State<Wallet> {
                           )
                         ]),
                     child: ListTile(
-                      title: Text('My Transaction'),
+                      title: Text(LocaleKeys.mytransactions).tr(),
                       trailing: Icon(Icons.arrow_forward_ios),
                     ),
                   ),

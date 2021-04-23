@@ -2,8 +2,10 @@ import 'package:eQueue/api/models/displaybooking.dart';
 import 'package:eQueue/api/models/displaytoken.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/provider/token_bookings_dikhao.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class History extends StatefulWidget {
   @override
@@ -27,7 +29,7 @@ class _HistoryState extends State<History> {
           length: 2,
           child: Scaffold(
               appBar: AppBar(
-                title: Text('History'),
+                title: Text(LocaleKeys.History).tr(),
                 bottom: TabBar(
                   // onTap: (index) {
                   //  // Tab index when user select it, it start from zero
@@ -35,11 +37,11 @@ class _HistoryState extends State<History> {
                   tabs: [
                     Tab(
                       icon: Icon(Icons.attach_money),
-                      child: Text('Tokens'),
+                      child: Text(LocaleKeys.Token).tr(),
                     ),
                     Tab(
                       icon: Icon(Icons.book_online),
-                      child: Text('Bookings'),
+                      child: Text(LocaleKeys.Booking).tr(),
                     ),
                   ],
                 ),
@@ -92,8 +94,8 @@ class _HistoryState extends State<History> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Created on : ${tob[i].createdon}'),
-                  Text('Booking : ${tob[i].bookings}'),
+                  Text('${LocaleKeys.Createdon.tr()} : ${tob[i].createdon}'),
+                  Text('${LocaleKeys.Booking.tr()} : ${tob[i].bookings}'),
                 ],
               ),
             ),
@@ -130,8 +132,8 @@ class _HistoryState extends State<History> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Created on : ${tob[i].createdon}'),
-                  Text('Booking : ${tob[i].token}'),
+                  Text('${LocaleKeys.Createdon.tr()} : ${tob[i].createdon}'),
+                  Text('${LocaleKeys.Booking.tr()} : ${tob[i].token}'),
                 ],
               ),
             ),

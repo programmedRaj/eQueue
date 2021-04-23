@@ -5,11 +5,13 @@ import 'package:eQueue/api/service/baseurl.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/screens/auth/otp.dart';
 import 'package:eQueue/screens/auth/register.dart';
-import 'package:eQueue/screens/auth/verification.dart';
 import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:eQueue/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -80,7 +82,7 @@ class _LoginState extends State<Login> {
           ));
     } else {
       setState(() {
-        error = 'User does not exist';
+        error = LocaleKeys.Userdoesnotexist.tr();
       });
     }
   }
@@ -146,7 +148,7 @@ class _LoginState extends State<Login> {
                               ],
                               validator: (name) {
                                 if (name.isEmpty) {
-                                  return 'Please enter phone number';
+                                  return LocaleKeys.Pleaseenterphonenumber.tr();
                                 } else
                                   return null;
                               },
@@ -173,7 +175,7 @@ class _LoginState extends State<Login> {
                                     borderSide: BorderSide(
                                         color: Colors.white, width: 2.0),
                                   ),
-                                  hintText: "Phone",
+                                  hintText: LocaleKeys.Phone.tr(),
                                   hintStyle: TextStyle(color: Colors.white)),
                               onChanged: (v) {
                                 setState(() {
@@ -217,11 +219,11 @@ class _LoginState extends State<Login> {
                       },
                       child: type == 0
                           ? Text(
-                              "Get Otp",
+                              LocaleKeys.GetOtp,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 20),
-                            )
+                            ).tr()
                           : type == 1
                               ? CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
@@ -238,11 +240,11 @@ class _LoginState extends State<Login> {
                     alignment: Alignment.bottomCenter,
                     child: FlatButton(
                       child: Text(
-                        "Create account ?",
+                        LocaleKeys.Createaccount,
                         style: TextStyle(
                           color: Colors.white,
                         ),
-                      ),
+                      ).tr(),
                       onPressed: () {
                         Navigator.push(
                             context,

@@ -7,9 +7,11 @@ import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:eQueue/screens/pages/book_appoint_service.dart';
 import 'package:eQueue/screens/pages/book_appointment.dart';
 import 'package:eQueue/screens/pages/book_token.dart';
+import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BranchScreen extends StatefulWidget {
   final int id;
@@ -67,7 +69,7 @@ class _BranchScreenState extends State<BranchScreen> {
               branch[i].address2.contains(v)) {
           } else {
             setState(() {
-              noprod = 'No branch';
+              noprod = LocaleKeys.nobranches.tr();
             });
           }
         }
@@ -109,7 +111,7 @@ class _BranchScreenState extends State<BranchScreen> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Search Branches',
+                                hintText: LocaleKeys.SearchBranches.tr(),
                                 suffixIcon: Icon(Icons.search)),
                           )),
                     ),
@@ -133,12 +135,12 @@ class _BranchScreenState extends State<BranchScreen> {
                         margin: EdgeInsets.only(top: height / 2.5),
                         child: Center(
                           child: Text(
-                            'No Branches',
+                            LocaleKeys.nobranches,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                                 color: AppColor.mainBlue),
-                          ),
+                          ).tr(),
                         ),
                       )
                     : Flexible(
@@ -294,9 +296,9 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                             branchsearch
                                                                                 .isNotEmpty
                                                                         ? Text(
-                                                                            'Address Line 1 : ${branchsearch[i].address1}')
+                                                                            ' ${LocaleKeys.Address1.tr()} : ${branchsearch[i].address1}')
                                                                         : Text(
-                                                                            'Address Line 1 : ${value.branches[i].address1}'),
+                                                                            '${LocaleKeys.Address1.tr()} : ${value.branches[i].address1}'),
                                                                   ),
                                                                   Container(
                                                                     width:
@@ -306,9 +308,9 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                             branchsearch
                                                                                 .isNotEmpty
                                                                         ? Text(
-                                                                            'Address Line 2 : ${branchsearch[i].address2}')
+                                                                            '${LocaleKeys.Address2.tr()} : ${branchsearch[i].address2}')
                                                                         : Text(
-                                                                            'Address Line 2 : ${value.branches[i].address2}'),
+                                                                            '${LocaleKeys.Address2.tr()} : ${value.branches[i].address2}'),
                                                                   ),
                                                                   Container(
                                                                     width:
@@ -318,9 +320,9 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                             branchsearch
                                                                                 .isNotEmpty
                                                                         ? Text(
-                                                                            'Province : ${branchsearch[i].province}')
+                                                                            '${LocaleKeys.Province.tr()} : ${branchsearch[i].province}')
                                                                         : Text(
-                                                                            'Province : ${value.branches[i].province}'),
+                                                                            '${LocaleKeys.Province.tr()} : ${value.branches[i].province}'),
                                                                   ),
                                                                   Container(
                                                                     width:
@@ -330,9 +332,9 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                             branchsearch
                                                                                 .isNotEmpty
                                                                         ? Text(
-                                                                            'City : ${branchsearch[i].city}')
+                                                                            '${LocaleKeys.City.tr()} : ${branchsearch[i].city}')
                                                                         : Text(
-                                                                            'City : ${value.branches[i].city}'),
+                                                                            '${LocaleKeys.City.tr()} : ${value.branches[i].city}'),
                                                                   ),
                                                                   Container(
                                                                     width:
@@ -342,9 +344,9 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                             branchsearch
                                                                                 .isNotEmpty
                                                                         ? Text(
-                                                                            'Postal code : ${branchsearch[i].postalcode}')
+                                                                            '${LocaleKeys.PostalCode.tr()} : ${branchsearch[i].postalcode}')
                                                                         : Text(
-                                                                            'Postal code : ${value.branches[i].postalcode}'),
+                                                                            '${LocaleKeys.PostalCode.tr()} : ${value.branches[i].postalcode}'),
                                                                   ),
                                                                 ],
                                                               ),
@@ -359,13 +361,13 @@ class _BranchScreenState extends State<BranchScreen> {
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
-                                                        'View Details',
+                                                        LocaleKeys.ViewDetails,
                                                         style: TextStyle(
                                                           decoration:
                                                               TextDecoration
                                                                   .underline,
                                                         ),
-                                                      ),
+                                                      ).tr(),
                                                     ),
                                                   )
                                                 ],
@@ -468,10 +470,10 @@ class _BranchScreenState extends State<BranchScreen> {
                                                     }
                                                   },
                                                   child: Text(
-                                                    'Book Now',
+                                                    LocaleKeys.BookNow,
                                                     style: TextStyle(
                                                         color: myColor[100]),
-                                                  )),
+                                                  ).tr()),
                                             )
                                           ],
                                         ),
@@ -591,7 +593,7 @@ class _MyDState extends State<MyD> {
                                 type: 'branch')
                             .then((value) => Navigator.of(context).pop());
                       },
-                      child: Text('Ok')),
+                      child: Text(LocaleKeys.Ok).tr()),
                   SizedBox(
                     width: width * 0.02,
                   ),
@@ -599,7 +601,7 @@ class _MyDState extends State<MyD> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Cancel'))
+                      child: Text(LocaleKeys.Cancel).tr())
                 ],
               ),
             )

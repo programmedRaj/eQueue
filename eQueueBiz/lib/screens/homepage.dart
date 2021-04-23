@@ -79,6 +79,20 @@ class _HomePageState extends State<HomePage> {
                                                 "Edit/Manage branches details"))
                                         : SizedBox(),
                                     authProv.authinfo.userType ==
+                                            UserEnum.Employee
+                                        ? InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Bookings(),
+                                                  ));
+                                            },
+                                            child: _cards("Bookings",
+                                                "Edit/Manage Booking details"))
+                                        : SizedBox(),
+                                    authProv.authinfo.userType ==
                                             UserEnum.Company
                                         ? InkWell(
                                             onTap: () {
