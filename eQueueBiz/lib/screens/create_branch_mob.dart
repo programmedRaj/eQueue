@@ -769,7 +769,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     for (var i = 0; i < 7; i++) {
       if ((startTimeList[i] != null && endTimeList[i] != null)) {
         // perDayHrs.insert(i, "${endTimeList[i].hour - startTimeList[i]?.hour}");
-        perDayHrs.add("${endTimeList[i].hour - startTimeList[i]?.hour}");
+        perDayHrs.add(
+            "${(((endTimeList[i].hour) - (startTimeList[i]?.hour)).abs())}");
       } else if (startTimeList[i] == null && endTimeList[i] == null) {
         perDayHrs.add("");
       } else if (startTimeList[i] == null && endTimeList[i] != null) {

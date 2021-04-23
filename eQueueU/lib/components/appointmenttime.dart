@@ -65,6 +65,8 @@ class _AppTimeState extends State<AppTime> {
     );
   }
 
+  List tlist = [];
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -87,30 +89,29 @@ class _AppTimeState extends State<AppTime> {
       builder: (context, value, child) {
         var datefrommob = widget.day.toString().substring(0, 11);
         print(datefrommob);
-        print(value.booking[0].date);
 
-        List<BookingSlot> datet = value.booking
-            .where((element) =>
-                element.date.replaceAll(new RegExp(r"\s+"), "") ==
-                datefrommob.replaceAll(new RegExp(r"\s+"), ""))
-            .toList();
+        if (value.bookings.length != 0) {
+          List<BookingSlot> datet = value.booking
+              .where((element) =>
+                  element.date.replaceAll(new RegExp(r"\s+"), "") ==
+                  datefrommob.replaceAll(new RegExp(r"\s+"), ""))
+              .toList();
 
-        List tlist = [];
+          for (int i = 0; i < datet.length; i++) {
+            var t = datet[i].time.contains('PM');
+            if (t) {
+              var tt = datet[i].time.toString().split(':')[0];
+              var ttt = int.parse(tt) + 12;
+              print(ttt);
 
-        for (int i = 0; i < datet.length; i++) {
-          var t = datet[i].time.contains('PM');
-          if (t) {
-            var tt = datet[i].time.toString().split(':')[0];
-            var ttt = int.parse(tt) + 12;
-            print(ttt);
-
-            String t4 = ttt.toString() +
-                ':' +
-                datet[i].time.toString().split(':')[1].substring(0, 2);
-            tlist.add(t4);
-          } else if (datet[i].time.contains('AM') &&
-              datet[i].time.contains('12')) {
-            tlist.add('00:00');
+              String t4 = ttt.toString() +
+                  ':' +
+                  datet[i].time.toString().split(':')[1].substring(0, 2);
+              tlist.add(t4);
+            } else if (datet[i].time.contains('AM') &&
+                datet[i].time.contains('12')) {
+              tlist.add('00:00');
+            }
           }
         }
         return Scaffold(

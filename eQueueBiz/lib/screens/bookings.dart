@@ -1,6 +1,11 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/providers/auth_prov.dart';
+import 'package:equeuebiz/providers/booking_prov.dart';
+import 'package:equeuebiz/providers/branches_data_prov.dart';
+import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Bookings extends StatefulWidget {
   @override
@@ -9,6 +14,18 @@ class Bookings extends StatefulWidget {
 
 class _BookingsState extends State<Bookings> {
   DateTime _selectedDate = DateTime.now();
+  AuthProv authProv;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //   Provider.of<BookingDet>(context, listen: false).getbookdets(
+      //       bid, bname, DateTime.now().toString(), authProv.authinfo.jwtToken);
+      Provider.of<BookingBranDet>(context, listen: false)
+          .getbookdets(authProv.authinfo.jwtToken);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

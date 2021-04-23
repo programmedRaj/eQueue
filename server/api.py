@@ -2332,7 +2332,7 @@ def booking_status():
             resp.status_code = 200
             return resp
         else:
-            resp = jsonify({"message": "All slots are available."})
+            resp = jsonify({"bookings":[]})
             resp.status_code = 403
             return resp
 

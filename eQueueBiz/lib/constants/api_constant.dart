@@ -17,4 +17,11 @@ class DepartmentApi {
 class Employee {
   static const createEditDeleteEmp = "http://127.0.0.1:5000/create_employee";
   static const getEmpolyee = "http://127.0.0.1:5000/fetch_employees";
+  static const empdet = "http://127.0.0.1:5000/getbr_emp ";
+}
+
+class BookingApi {
+  static const bookingdetails = "http://127.0.0.1:5000/sort_bookings";
+  static const viewbookinguserdetails =
+      "http://127.0.0.1:5000/viewuser_details_bookings";
 }
