@@ -46,6 +46,8 @@ dependencies:
   stripe_payment: ^1.0.6
   google_maps_flutter: ^2.0.3
   easy_localization: ^3.0.0
+  overlay_support: ^1.2.1
+  flutter_local_notifications: ^5.0.0+1
  
 
 

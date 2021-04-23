@@ -6,9 +6,11 @@ import 'package:eQueue/screens/pages/notification_screen.dart';
 import 'package:eQueue/screens/pages/settings/settings.dart';
 import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -18,10 +20,58 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex;
   int sizz;
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  FlutterLocalNotificationsPlugin fltNotification;
+
   @override
   void initState() {
+    notitficationPermission();
+    initMessaging();
     super.initState();
     currentIndex = 0;
+  }
+
+  void initMessaging() {
+    var androiInit = AndroidInitializationSettings('ic_launcher');
+
+    var iosInit = IOSInitializationSettings();
+
+    var initSetting = InitializationSettings(android: androiInit, iOS: iosInit);
+
+    fltNotification = FlutterLocalNotificationsPlugin();
+
+    fltNotification.initialize(initSetting);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      showNotification();
+    });
+  }
+
+  void showNotification() async {
+    var androidDetails =
+        AndroidNotificationDetails('1', 'channelName', 'channel Description');
+
+    var iosDetails = IOSNotificationDetails();
+
+    var generalNotificationDetails =
+        NotificationDetails(android: androidDetails, iOS: iosDetails);
+
+    await fltNotification.show(0, 'title', 'body', generalNotificationDetails,
+        payload: 'Notification');
+  }
+
+  void notitficationPermission() async {
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
   }
 
   void changePage(int index) {
