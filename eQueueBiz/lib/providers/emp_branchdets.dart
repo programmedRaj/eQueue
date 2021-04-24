@@ -12,13 +12,13 @@ class BookingBranDet with ChangeNotifier {
   getbookdets(String token) async {
     var response = await retry(
       () => http.get(
-        Uri.parse(BookingApi.bookingdetails),
+        Uri.parse(Employee.empdet),
         headers: {"Authorization": token},
       ).timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
     var k = response.body;
     var n = json.decode(k);
-    print(n);
+    print('--- $n');
   }
 }

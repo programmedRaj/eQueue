@@ -4,6 +4,7 @@ import 'package:equeuebiz/enum/company_enum.dart';
 import 'package:equeuebiz/enum/user_type.dart';
 import 'package:equeuebiz/locale/app_localization.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
+import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:equeuebiz/screens/bookings.dart';
 import 'package:equeuebiz/screens/branches.dart';
 import 'package:equeuebiz/screens/employees.dart';
@@ -37,6 +38,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Consumer<AuthProv>(
       builder: (context, authProv, child) {
+        print(authProv.authinfo.jwtToken);
+        Provider.of<BookingBranDet>(context)
+            .getbookdets(authProv.authinfo.jwtToken);
         return authProv.authinfo.userType == null
             ? Container(
                 color: Colors.white,

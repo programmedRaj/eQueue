@@ -2,6 +2,7 @@ import 'package:equeuebiz/check.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
+import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:equeuebiz/providers/emp_data_provider.dart';
 import 'package:equeuebiz/screens/login_page.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AuthProv>(
           create: (context) => AuthProv(),
+        ),
+        ChangeNotifierProvider<BookingBranDet>(
+          create: (context) => BookingBranDet(),
         ),
         ChangeNotifierProvider<BranchDataProv>(
           create: (context) => BranchDataProv(),

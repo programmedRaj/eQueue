@@ -27,52 +27,52 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    notitficationPermission();
-    initMessaging();
+    // notitficationPermission();
+    // initMessaging();
     super.initState();
     currentIndex = 0;
   }
 
-  void initMessaging() {
-    var androiInit = AndroidInitializationSettings('ic_launcher');
+  // void initMessaging() {
+  //   var androiInit = AndroidInitializationSettings('ic_launcher');
 
-    var iosInit = IOSInitializationSettings();
+  //   var iosInit = IOSInitializationSettings();
 
-    var initSetting = InitializationSettings(android: androiInit, iOS: iosInit);
+  //   var initSetting = InitializationSettings(android: androiInit, iOS: iosInit);
 
-    fltNotification = FlutterLocalNotificationsPlugin();
+  //   fltNotification = FlutterLocalNotificationsPlugin();
 
-    fltNotification.initialize(initSetting);
+  //   fltNotification.initialize(initSetting);
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      showNotification();
-    });
-  }
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //     showNotification();
+  //   });
+  // }
 
-  void showNotification() async {
-    var androidDetails =
-        AndroidNotificationDetails('1', 'channelName', 'channel Description');
+  // void showNotification() async {
+  //   var androidDetails =
+  //       AndroidNotificationDetails('1', 'channelName', 'channel Description');
 
-    var iosDetails = IOSNotificationDetails();
+  //   var iosDetails = IOSNotificationDetails();
 
-    var generalNotificationDetails =
-        NotificationDetails(android: androidDetails, iOS: iosDetails);
+  //   var generalNotificationDetails =
+  //       NotificationDetails(android: androidDetails, iOS: iosDetails);
 
-    await fltNotification.show(0, 'title', 'body', generalNotificationDetails,
-        payload: 'Notification');
-  }
+  //   await fltNotification.show(0, 'title', 'body', generalNotificationDetails,
+  //       payload: 'Notification');
+  // }
 
-  void notitficationPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-  }
+  // void notitficationPermission() async {
+  //   NotificationSettings settings = await messaging.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: false,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
+  // }
 
   void changePage(int index) {
     setState(() {

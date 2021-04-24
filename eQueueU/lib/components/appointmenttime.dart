@@ -88,7 +88,6 @@ class _AppTimeState extends State<AppTime> {
     return Consumer<SlotProvider>(
       builder: (context, value, child) {
         var datefrommob = widget.day.toString().substring(0, 11);
-        print(datefrommob);
 
         if (value.bookings.length != 0) {
           List<BookingSlot> datet = value.booking
