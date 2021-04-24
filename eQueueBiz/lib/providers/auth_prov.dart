@@ -29,8 +29,7 @@ class AuthProv extends ChangeNotifier {
         return true;
       } else {
         isLoading = false;
-        notifyListeners(); //hataa sab breakpoints
-
+        notifyListeners();
 
         //
         return false;

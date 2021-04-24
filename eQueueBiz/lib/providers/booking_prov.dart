@@ -24,8 +24,6 @@ class BookingDet with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    bro tu karle phele fir me karta hu heelooooooooobitch
-    mee aake karegaa
-    jaa raha huu
+    print(n);
   }
 }

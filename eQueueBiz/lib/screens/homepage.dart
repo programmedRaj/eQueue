@@ -28,8 +28,7 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var email = prefs.get('email');
     var password = prefs.get('pass');
-    print(email);
-    print(password);
+   
 
     Provider.of<AuthProv>(context, listen: false).execLogin(email, password);
   }
