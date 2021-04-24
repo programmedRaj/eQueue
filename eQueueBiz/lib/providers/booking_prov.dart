@@ -11,9 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class BookingDet with ChangeNotifier {
   getbookdets(String bid, String bname, String date, String token) async {
     var map = new Map<String, dynamic>();
-    map['branch_id'] = bid;
-    map['branch_name'] = bname;
-    map['date_sort'] = date;
+    map['branch_id'] = bid.toString();
+    map['branch_name'] = bname.toString();
+    map['date_sort'] = date.toString();
 
     var response = await retry(
       () => http
@@ -24,8 +24,8 @@ class BookingDet with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    var tid = n['transaction_id'];
-
-    return tid;
+    bro tu karle phele fir me karta hu heelooooooooobitch
+    mee aake karegaa
+    jaa raha huu
   }
 }

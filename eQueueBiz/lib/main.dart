@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'locale/app_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'providers/booking_prov.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: BookingDet()),
         ChangeNotifierProvider<AuthProv>(
           create: (context) => AuthProv(),
         ),

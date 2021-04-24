@@ -1358,9 +1358,9 @@ def sort_bookings():
     conn = mysql.connect()
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
-    branch_id = request.json["branch_id"]
-    branch_name = request.json["branch_name"]
-    date_sort = request.json["date_sort"]
+    branch_id = request.form["branch_id"]
+    branch_name = request.form["branch_name"]
+    date_sort = request.form["date_sort"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "employee":
@@ -1375,13 +1375,13 @@ def sort_bookings():
             if r:
                 getbranches = cur.execute(
                     "Select * from "
-                    + str(branch_name + str(branch_id))
-                    + " WHERE slots = '"
+                    + str(branch_name + "_" + str(branch_id))
+                    + " WHERE slots LIKE '"
                     + str(date_sort)
-                    + "' ORDER BY id DESC"
+                    + "%' ORDER BY id DESC"
                 )
                 if getbranches:
-                    resp = jsonify({"bookings": getbranches})
+                    resp = jsonify({"bookings": cur.fetchall()})
                     resp.status_code = 200
                     return resp
                 resp = jsonify({"bookings": "NO Bookings for" + str(date_sort) + "!!"})
@@ -2369,7 +2369,7 @@ def booking_status():
             resp.status_code = 200
             return resp
         else:
-            resp = jsonify({"bookings":[]})
+            resp = jsonify({"bookings": []})
             resp.status_code = 403
             return resp
 

@@ -8,6 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Bookings extends StatefulWidget {
+  final String branchid;
+  final String branchname;
+  final String token;
+  Bookings({this.branchid, this.branchname, this.token});
   @override
   _BookingsState createState() => _BookingsState();
 }
@@ -19,10 +23,11 @@ class _BookingsState extends State<Bookings> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //   Provider.of<BookingDet>(context, listen: false).getbookdets(
-      //       bid, bname, DateTime.now().toString(), authProv.authinfo.jwtToken);
-      Provider.of<BookingBranDet>(context, listen: false)
-          .getbookdets(authProv.authinfo.jwtToken);
+      Provider.of<BookingDet>(context, listen: false).getbookdets(
+          widget.branchid,
+          widget.branchname,
+          DateTime.now().toString(),
+          widget.token);
     });
   }
 
