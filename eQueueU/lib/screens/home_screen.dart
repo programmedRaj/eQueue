@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/main.dart';
 import 'package:eQueue/screens/pages/home.dart';
 import 'package:eQueue/screens/pages/mapss.dart';
 import 'package:eQueue/screens/pages/notification_screen.dart';
@@ -11,6 +14,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
+
+class MessagingExampleApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Messaging Example App',
+      theme: ThemeData.dark(),
+      routes: {
+        // '/': (context) => Application(),
+        // '/message': (context) => MessageView(),
+      },
+    );
+  }
+}
+
+// Crude counter to make messages unique
+int _messageCount = 0;
+
+/// The API endpoint here accepts a raw FCM payload for demonstration purposes.
+String constructFCMPayload(String token) {
+  _messageCount++;
+  return jsonEncode({
+    'token': token,
+    'data': {
+      'via': 'FlutterFire Cloud Messaging!!!',
+      'count': _messageCount.toString(),
+    },
+    'notification': {
+      'title': 'Hello FlutterFire!',
+      'body': 'This notification (#$_messageCount) was created via FCM!',
+    },
+  });
+}
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -21,57 +58,37 @@ class _MyHomePageState extends State<MyHomePage> {
   int currentIndex;
   int sizz;
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  FlutterLocalNotificationsPlugin fltNotification;
+  String _token;
 
   @override
   void initState() {
-    notitficationPermission();
-    initMessaging();
-    super.initState();
     currentIndex = 0;
-  }
+    super.initState();
 
-  void initMessaging() {
-    var androiInit = AndroidInitializationSettings('ic_launcher');
+    var initialzationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings =
+        InitializationSettings(android: initialzationSettingsAndroid);
 
-    var iosInit = IOSInitializationSettings();
-
-    var initSetting = InitializationSettings(android: androiInit, iOS: iosInit);
-
-    fltNotification = FlutterLocalNotificationsPlugin();
-
-    fltNotification.initialize(initSetting);
-
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      showNotification();
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                icon: 'launch_background',
+              ),
+            ));
+      }
     });
-  }
-
-  void showNotification() async {
-    var androidDetails =
-        AndroidNotificationDetails('1', 'channelName', 'channel Description');
-
-    var iosDetails = IOSNotificationDetails();
-
-    var generalNotificationDetails =
-        NotificationDetails(android: androidDetails, iOS: iosDetails);
-
-    await fltNotification.show(0, 'title', 'body', generalNotificationDetails,
-        payload: 'Notification');
-  }
-
-  void notitficationPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
   }
 
   void changePage(int index) {
