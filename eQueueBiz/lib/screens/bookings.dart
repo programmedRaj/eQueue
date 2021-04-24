@@ -78,6 +78,12 @@ class _BookingsState extends State<Bookings> {
             setState(() {
               _selectedDate = value;
             });
+            var d = _selectedDate.toString().substring(0, 10);
+            Provider.of<BookingDet>(context, listen: false).getbookdets(
+                widget.branchid,
+                widget.branchname,
+                d.toString(), // 2021-04-26itna dena hai input sirffffff cool
+                widget.token);
           }
         });
       },
