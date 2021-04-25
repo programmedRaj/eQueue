@@ -20,3 +20,6 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 app.config["SECRET_KEY"] = "eQueue2021keyFREEloc"
 app.config["ADMIN_SECRET_KEY"] = "eQueueADMIN2021keyFREEloc"
 app.config["USER_SECRET_KEY"] = "eQueueUSERS2021keyFREEloc"
+
+JSON_UPLOAD_FOLDER = os.getcwd() + "\\jsons\\"
+app.config["JSON_UPLOAD_FOLDER"] = JSON_UPLOAD_FOLDER

@@ -28,7 +28,7 @@ import eqadmin as eqadmin
 import equser as equser
 import string
 import random
-
+import fcmmanger as fcm
 
 CORS(app)
 
@@ -495,7 +495,7 @@ def delete_company():
         conn.close()
 
 
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+def id_generator(size=6, chars=string.digits):
     return "".join(random.choice(chars) for _ in range(size))
 
 
@@ -1412,6 +1412,56 @@ def viewuser_details():
     branch_id = request.json["branch_id"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
+        if user["type"] == "employee":
+            r = cur.execute(
+                "Select * from employee_details WHERE branch_id = '"
+                + str(branch_id)
+                + "' AND employee_id ='"
+                + str(user["id"])
+                + "'"
+            )
+            r = cur.fetchone()
+            if r:
+                r = cur.execute(
+                    "Select * from user_details WHERE id = '" + str(user_id) + "'"
+                )
+                r = cur.fetchone()
+                if r:
+                    resp = jsonify({"userdetails": r})
+                    resp.status_code = 200
+                    return resp
+                resp = jsonify({"bookings": "NO user found !!"})
+                resp.status_code = 403
+                return resp
+            else:
+                resp = jsonify({"message": "NO employee found"})
+                resp.status_code = 407
+                return resp
+
+        resp = jsonify({"message": "ONLY employees can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/status_booking_chng", methods=["POST"])
+@check_for_token
+def status_booking_chng():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    user_id = request.json["user_id"]
+    branch_id = request.json["branch_id"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        tokens = [
+            "frQB5SAVQQOybvQk3ao5PU:APA91bEt495eQs39S40DQGo6zTS1SnDr3sv-CNooAAM4MNAVE6Rgzdz4VIBan8vL7PoHjjl7FICLoNW80sZGi95WXeB4ZVVF30iyyYnYSR1mJ4Y3PIJcZpyfa_mAUZv1c0U629AtQCnX"
+        ]
+        statusfcm = fcm.sendPush("Hi", "This is my next msg", tokens)
+
         if user["type"] == "employee":
             r = cur.execute(
                 "Select * from employee_details WHERE branch_id = '"
