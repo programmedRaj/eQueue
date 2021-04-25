@@ -25,3 +25,9 @@ class BookingApi {
   static const viewbookinguserdetails =
       "http://127.0.0.1:5000/viewuser_details_bookings";
 }
+
+class TokenApi {
+  static const tokendetails = "http://127.0.0.1:5000/all_tokens";
+
+  static const status_check = "http://127.0.0.1:5000/status_booking_chng";
+}
