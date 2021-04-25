@@ -1569,14 +1569,13 @@ def status_booking_chng():
             resp = jsonify({"message": "invalid status."})
             resp.status_code = 405
             return resp
-
-        #         resp = jsonify({"message": "NO employee found"})
-        #         resp.status_code = 407
-        #         return resp
-
-        # resp = jsonify({"message": "ONLY employees can access."})
-        # resp.status_code = 405
-        # return resp
+        if op == 200:
+            resp = jsonify({"message": "Success"})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "Failed ERROR."})
+        resp.status_code = 403
+        return resp
 
     finally:
         cur.close()
