@@ -1453,15 +1453,149 @@ def status_booking_chng():
     conn = mysql.connect()
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
-    user_id = request.json["user_id"]
+
+    status = request.json["status"]
+    user_id = request.json["user_id"]  # userid jisne banaya booking
+    booking_id = request.json["booking_id"]
     branch_id = request.json["branch_id"]
+    branch_name = request.json["branch_name"]
+    counter_number = request.json["counter_number"]
+
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        tokens = [
-            "frQB5SAVQQOybvQk3ao5PU:APA91bEt495eQs39S40DQGo6zTS1SnDr3sv-CNooAAM4MNAVE6Rgzdz4VIBan8vL7PoHjjl7FICLoNW80sZGi95WXeB4ZVVF30iyyYnYSR1mJ4Y3PIJcZpyfa_mAUZv1c0U629AtQCnX"
-        ]
-        statusfcm = fcm.sendPush("Hi", "This is my next msg", tokens)
+        if status == "completed":
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'completed', employee_id = '"
+                + str(user["id"])
+                + "', counter_number ='"
+                + str(counter_number)
+                + "' WHERE id = '"
+                + str(booking_id)
+                + "' "
+            )
+            conn.commit()
 
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE bookingshistory SET status = 'completed', employee_id = '"
+                + str(user["id"])
+                + "' WHERE booking = '"
+                + str(branch_name[:3] + "-" + str(booking_id))
+                + "' "
+            )
+            conn.commit()
+            if r and rr:
+                op = 200
+            op = 403
+
+        elif status == "cancelled":
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'cancelled', employee_id = '"
+                + str(user["id"])
+                + "', counter_number ='"
+                + str(counter_number)
+                + "' WHERE id = '"
+                + str(booking_id)
+                + "' "
+            )
+            conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE bookingshistory SET status = 'cancelled', employee_id = '"
+                + str(user["id"])
+                + "' WHERE booking = '"
+                + str(branch_name[:3] + "-" + str(booking_id))
+                + "' "
+            )
+            conn.commit()
+            if r and rr:
+                op = 200
+            op = 403
+
+        elif status == "ongoing":
+            r = cur.execute(
+                "Select * from "
+                + str(branch_name + "_" + str(branch_id))
+                + " WHERE status = 'onqueue' ORDER BY id DESC;"
+            )
+            # SELECT * FROM equeue.hey_8 WHERE NOT('status' = 'cancelled' OR 'status' ='completed') ORDER BY id DESC;
+            r = cur.fetchall()
+            ids = []
+            dts = []
+            for row in r:
+                ids.append(row["id"])
+                dts.append(row["device_token"])
+
+            index = ids.index(booking_id)
+            lenids = len(ids)
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'ongoing', employee_id = '"
+                + str(user["id"])
+                + "', counter_number ='"
+                + str(counter_number)
+                + "' WHERE id = '"
+                + str(booking_id)
+                + "' "
+            )
+            conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE bookingshistory SET status = 'ongoing', employee_id = '"
+                + str(user["id"])
+                + "' WHERE booking = '"
+                + str(branch_name[:3] + "-" + str(booking_id))
+                + "' "
+            )
+            conn.commit()
+
+            if r and rr:
+                tokens = [
+                    "frQB5SAVQQOybvQk3ao5PU:APA91bEt495eQs39S40DQGo6zTS1SnDr3sv-CNooAAM4MNAVE6Rgzdz4VIBan8vL7PoHjjl7FICLoNW80sZGi95WXeB4ZVVF30iyyYnYSR1mJ4Y3PIJcZpyfa_mAUZv1c0U629AtQCnX"
+                ]
+                statusfcm = fcm.sendPush("Hi", "This is my next msg", tokens)
+                op = 200
+
+            op = 403
+
+        else:
+            resp = jsonify({"message": "invalid status."})
+            resp.status_code = 405
+            return resp
+
+        #         resp = jsonify({"message": "NO employee found"})
+        #         resp.status_code = 407
+        #         return resp
+
+        # resp = jsonify({"message": "ONLY employees can access."})
+        # resp.status_code = 405
+        # return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+# token masti
+
+
+@app.route("/all_tokens", methods=["POST"])
+@check_for_token
+def all_tokens():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    branch_id = request.form["branch_id"]
+    branch_name = request.form["branch_name"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
         if user["type"] == "employee":
             r = cur.execute(
                 "Select * from employee_details WHERE branch_id = '"
@@ -1472,17 +1606,17 @@ def status_booking_chng():
             )
             r = cur.fetchone()
             if r:
-                r = cur.execute(
-                    "Select * from user_details WHERE id = '" + str(user_id) + "'"
+                all_tokens = cur.execute(
+                    "Select * from " + str(branch_name + "_" + str(branch_id)) + ""
                 )
-                r = cur.fetchone()
-                if r:
-                    resp = jsonify({"userdetails": r})
+                if all_tokens:
+                    resp = jsonify({"tokens": cur.fetchall()})
                     resp.status_code = 200
                     return resp
-                resp = jsonify({"bookings": "NO user found !!"})
+                resp = jsonify({"message": "NO Tokens generated !!"})
                 resp.status_code = 403
                 return resp
+
             else:
                 resp = jsonify({"message": "NO employee found"})
                 resp.status_code = 407
