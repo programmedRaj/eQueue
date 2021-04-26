@@ -24,10 +24,10 @@ class BookingApi {
   static const bookingdetails = "http://91.99.96.87:8080/sort_bookings";
   static const viewbookinguserdetails =
       "http://91.99.96.87:8080/viewuser_details_bookings";
+
+  static const status_check = "http://91.99.96.87:8080/status_booking_chng";
 }
 
 class TokenApi {
   static const tokendetails = "http://91.99.96.87:8080/all_tokens";
-
-  static const status_check = "http://91.99.96.87:8080/status_booking_chng";
 }

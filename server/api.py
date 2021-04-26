@@ -1384,7 +1384,7 @@ def sort_bookings():
                     resp = jsonify({"bookings": cur.fetchall()})
                     resp.status_code = 200
                     return resp
-                resp = jsonify({"bookings": "NO Bookings for" + str(date_sort) + "!!"})
+                resp = jsonify({"bookings": []})
                 resp.status_code = 403
                 return resp
 
@@ -1454,12 +1454,13 @@ def status_booking_chng():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
 
-    status = request.json["status"]
-    user_id = request.json["user_id"]  # userid jisne banaya booking
-    booking_id = request.json["booking_id"]
-    branch_id = request.json["branch_id"]
-    branch_name = request.json["branch_name"]
-    counter_number = request.json["counter_number"]
+    status = request.form["status"]
+    user_id = request.form["user_id"]  # userid jisne banaya booking
+    booking_id = request.form["booking_id"]
+    branch_id = request.form["branch_id"]
+    branch_name = request.form["branch_name"]
+    bookingdept = request.form["bookingdept"]
+    device_token = request.form["device_token"]
 
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
@@ -1469,20 +1470,17 @@ def status_booking_chng():
                 + str(branch_name + "_" + str(branch_id))
                 + " SET status = 'completed', employee_id = '"
                 + str(user["id"])
-                + "', counter_number ='"
-                + str(counter_number)
                 + "' WHERE id = '"
                 + str(booking_id)
                 + "' "
             )
             conn.commit()
-
             cur = conn.cursor(pymysql.cursors.DictCursor)
             rr = cur.execute(
                 "UPDATE bookingshistory SET status = 'completed', employee_id = '"
                 + str(user["id"])
                 + "' WHERE booking = '"
-                + str(branch_name[:3] + "-" + str(booking_id))
+                + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
@@ -1496,8 +1494,6 @@ def status_booking_chng():
                 + str(branch_name + "_" + str(branch_id))
                 + " SET status = 'cancelled', employee_id = '"
                 + str(user["id"])
-                + "', counter_number ='"
-                + str(counter_number)
                 + "' WHERE id = '"
                 + str(booking_id)
                 + "' "
@@ -1509,7 +1505,7 @@ def status_booking_chng():
                 "UPDATE bookingshistory SET status = 'cancelled', employee_id = '"
                 + str(user["id"])
                 + "' WHERE booking = '"
-                + str(branch_name[:3] + "-" + str(booking_id))
+                + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
@@ -1531,35 +1527,30 @@ def status_booking_chng():
                 ids.append(row["id"])
                 dts.append(row["device_token"])
 
-            index = ids.index(booking_id)
-            lenids = len(ids)
+            # index = ids.index(booking_id)
+            # lenids = len(ids)
             r = cur.execute(
                 "UPDATE "
                 + str(branch_name + "_" + str(branch_id))
                 + " SET status = 'ongoing', employee_id = '"
                 + str(user["id"])
-                + "', counter_number ='"
-                + str(counter_number)
                 + "' WHERE id = '"
                 + str(booking_id)
                 + "' "
             )
             conn.commit()
-
             cur = conn.cursor(pymysql.cursors.DictCursor)
             rr = cur.execute(
                 "UPDATE bookingshistory SET status = 'ongoing', employee_id = '"
                 + str(user["id"])
                 + "' WHERE booking = '"
-                + str(branch_name[:3] + "-" + str(booking_id))
+                + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
 
             if r and rr:
-                tokens = [
-                    "frQB5SAVQQOybvQk3ao5PU:APA91bEt495eQs39S40DQGo6zTS1SnDr3sv-CNooAAM4MNAVE6Rgzdz4VIBan8vL7PoHjjl7FICLoNW80sZGi95WXeB4ZVVF30iyyYnYSR1mJ4Y3PIJcZpyfa_mAUZv1c0U629AtQCnX"
-                ]
+                tokens = [device_token]
                 statusfcm = fcm.sendPush("Hi", "This is my next msg", tokens)
                 op = 200
 
@@ -2726,4 +2717,4 @@ def not_found(error=None):
 # if __name__ == "__main__":
 #     app.run(debug=False)
 if __name__ == "__main__":
-    app.run(host="nobatdeh.com", port=8080, debug=True)
+    app.run(host="91.99.96.87", port=8080, debug=True)

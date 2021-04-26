@@ -1,9 +1,9 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/model/bookinh_model.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/booking_prov.dart';
-import 'package:equeuebiz/providers/branches_data_prov.dart';
-import 'package:equeuebiz/providers/emp_branchdets.dart';
+import 'package:equeuebiz/providers/sort_check.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,49 +19,54 @@ class Bookings extends StatefulWidget {
 class _BookingsState extends State<Bookings> {
   DateTime _selectedDate = DateTime.now();
   AuthProv authProv;
+  String _chosen;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<BookingDet>(context, listen: false).getbookdets(
-          widget.branchid,
+          widget.branchid.toString(),
           widget.branchname,
-          DateTime.now().toString(),
-          widget.token);
+          DateTime.now().toString().substring(0, 10),
+          widget.token.toString());
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          "Bookings",
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [_dateFilter()],
-      ),
-      body: Container(
-          alignment: Alignment.topCenter,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 1200),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [_tokenCard()],
+    return Consumer<BookingDet>(
+      builder: (context, value, child) {
+        return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
+              title: Text(
+                "Bookings",
+                style: TextStyle(color: Colors.black),
+              ),
+              actions: [_dateFilter()],
             ),
-          )),
+            body: value.bms.length < 0 || value.bms.isEmpty
+                ? Container(
+                    child: Center(
+                      child: Text('No Booking found today'),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: value.bms.length,
+                    itemBuilder: (context, index) {
+                      return _tokenCard(value.bms[index]);
+                    },
+                  ));
+      },
     );
   }
 
@@ -80,7 +85,7 @@ class _BookingsState extends State<Bookings> {
             });
             var d = _selectedDate.toString().substring(0, 10);
             Provider.of<BookingDet>(context, listen: false).getbookdets(
-                widget.branchid,
+                widget.branchid.toString(),
                 widget.branchname,
                 d.toString(), // 2021-04-26itna dena hai input sirffffff cool
                 widget.token);
@@ -110,7 +115,7 @@ class _BookingsState extends State<Bookings> {
     );
   }
 
-  Widget _tokenCard() {
+  Widget _tokenCard(BookingModel bd) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -124,14 +129,16 @@ class _BookingsState extends State<Bookings> {
           children: [
             Center(
               child: Text(
-                "Booking Number",
+                "Booking Number : ${bd.id}",
                 style: blackBoldFS16,
               ),
             ),
             SizedBox(
               height: 10,
             ),
-            Text("booking details desc  s SD<C S<JD JC S<JDBC<JSB<JC "),
+            bd.insurance == 'paid'
+                ? Text('paid by cash')
+                : Text("insurance : ${bd.insurance}"),
             Row(
               children: [
                 Container(
@@ -141,7 +148,7 @@ class _BookingsState extends State<Bookings> {
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: AppColor.mainBlue)),
                   child: Text(
-                    "2:30 - 3:00",
+                    bd.slots,
                     style: TextStyle(
                         color: AppColor.mainBlue, fontWeight: FontWeight.bold),
                   ),
@@ -156,7 +163,7 @@ class _BookingsState extends State<Bookings> {
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: AppColor.mainBlue)),
                   child: Text(
-                    "Dept",
+                    bd.department,
                     style: TextStyle(
                         color: AppColor.mainBlue, fontWeight: FontWeight.bold),
                   ),
@@ -170,11 +177,70 @@ class _BookingsState extends State<Bookings> {
             InkWell(
               onTap: () {},
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    "View More",
-                    style: TextStyle(
-                        color: AppColor.mainBlue, fontWeight: FontWeight.bold),
+                  Container(
+                    child: DropdownButton<String>(
+                      focusColor: Colors.white,
+                      value: _chosen == null ? bd.status : _chosen,
+                      //elevation: 5,
+                      style: TextStyle(color: Colors.white),
+                      iconEnabledColor: Colors.black,
+                      items: <String>[
+                        'onqueue',
+                        'ongoing',
+                        'completed',
+                        'cancelled',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                      hint: Text(
+                        "Status",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (String value) {
+                        setState(() {
+                          _chosen = value;
+                        });
+                        Provider.of<SortCheck>(context, listen: false)
+                            .getSortdets(
+                          bid: widget.branchid.toString(),
+                          bname: widget.branchname,
+                          status: value,
+                          bookingid: bd.id,
+                          userid: bd.userid,
+                          dep: bd.department.substring(0, 3),
+                          dt: bd.devicetoken,
+                        );
+                      },
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      print('ji');
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Text(
+                            "View More",
+                            style: TextStyle(
+                                color: AppColor.mainBlue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,

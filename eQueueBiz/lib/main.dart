@@ -4,6 +4,7 @@ import 'package:equeuebiz/providers/branches_data_prov.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
 import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:equeuebiz/providers/emp_data_provider.dart';
+import 'package:equeuebiz/providers/sort_check.dart';
 import 'package:equeuebiz/screens/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: BookingDet()),
+        ChangeNotifierProvider.value(value: SortCheck()),
         ChangeNotifierProvider<AuthProv>(
           create: (context) => AuthProv(),
         ),

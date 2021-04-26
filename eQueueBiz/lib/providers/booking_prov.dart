@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:equeuebiz/constants/api_constant.dart';
 import 'package:equeuebiz/model/bookinh_model.dart';
 import 'package:equeuebiz/model/branch_model.dart';
+import 'package:equeuebiz/services/app_toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';
@@ -26,25 +27,28 @@ class BookingDet with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    print(n['bookings'][0]['branch_id']);
+    print(n);
 
     removebook();
-    if (n['bookings'].length > 0)
+    if (n['bookings'].length > 0) {
       for (int i = 0; i < n['bookings'].length; i++) {
         addbms(
-          branchid: n['bookings'][i]['branch_id'],
-          counter: n['bookings'][i]['counter_number'],
+          branchid: n['bookings'][i]['branch_id'].toString(),
+          counter: n['bookings'][i]['counter_number'].toString(),
           createtime: n['bookings'][i]['create_time'],
           department: n['bookings'][i]['department'],
           devicetoken: n['bookings'][i]['device_token'],
-          employeeid: n['bookings'][i]['employee_id'],
-          id: n['bookings'][i]['id'],
+          employeeid: n['bookings'][i]['employee_id'].toString(),
+          id: n['bookings'][i]['id'].toString(),
           insurance: n['bookings'][i]['insurance'],
           slots: n['bookings'][i]['slots'],
           status: n['bookings'][i]['status'],
-          userid: n['bookings'][i]['user_id'],
+          userid: n['bookings'][i]['user_id'].toString(),
         );
       }
+    } else {
+      AppToast.showErr('No Bookings found');
+    }
   }
 
   List<BookingModel> bm = [];
