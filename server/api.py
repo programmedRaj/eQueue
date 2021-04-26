@@ -2723,5 +2723,7 @@ def not_found(error=None):
     return resp
 
 
+# if __name__ == "__main__":
+#     app.run(debug=False)
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(host="nobatdeh.com", port=8080, debug=True)
