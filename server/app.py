@@ -23,3 +23,11 @@ app.config["USER_SECRET_KEY"] = "eQueueUSERS2021keyFREEloc"
 
 JSON_UPLOAD_FOLDER = os.getcwd() + "/jsons/"
 app.config["JSON_UPLOAD_FOLDER"] = JSON_UPLOAD_FOLDER
+
+# /var/www/html/rew
+# /home/admin/domains/nobatdeh.com/public_html
+# /home/admin/domains/equeue.com/public_html
+
+
+# NEW API SMS ROUTE
+# https://sms.bewin.one/sms/services/send.php?key=2d4f10360b952be6f4b460c03ae68b77f5279741&number=%2B14164000119&message=reeee&devices=3|0

@@ -1,6 +1,8 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/enum/company_enum.dart';
 import 'package:equeuebiz/model/bizdetsmo.dart';
+import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:equeuebiz/widgets/resize_helper.dart';
@@ -84,11 +86,17 @@ class _ProfileState extends State<Profile> {
                     ),
                     _photo(profileurl),
                     IgnorePointer(child: _textField("Name", name)),
-                    _textField("Acc Name", acn),
-                    _textField("Acc No", acnum),
-                    _textField("Bank Name", bname),
+                    type == 'booking'
+                        ? _textField("Acc Name", acn)
+                        : SizedBox(),
+                    type == 'booking'
+                        ? _textField("Acc No", acnum)
+                        : SizedBox(),
+                    type == 'booking'
+                        ? _textField("Bank Name", bname)
+                        : SizedBox(),
                     _textField("Description", descr),
-                    _textField("Ifsc", ifsc),
+                    type == 'booking' ? _textField("Ifsc", ifsc) : SizedBox(),
                     IgnorePointer(child: _textField("Type", type)),
                     addCancel()
                   ],
@@ -105,7 +113,7 @@ class _ProfileState extends State<Profile> {
       height: 100,
       decoration:
           BoxDecoration(shape: BoxShape.circle, color: AppColor.purpleBlue),
-      child: Image.network(r'D:\eQueue\server\uploads\${p}'),
+      // child: Image.network('$p'),
     );
   }
 
@@ -116,6 +124,11 @@ class _ProfileState extends State<Profile> {
           color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: TextFormField(
+        onChanged: (v) {
+          setState(() {
+            acn = v;
+          });
+        },
         initialValue: val,
         decoration: InputDecoration(
           hintText: hintText,
