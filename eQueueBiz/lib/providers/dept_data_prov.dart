@@ -26,8 +26,15 @@ class DeptDataProv extends ChangeNotifier {
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
         print(decodedResp);
-        for (var item in decodedResp['services']) {
-          deptsList.add(item);
+        if (decodedResp['services'] == null) {
+          for (var item in decodedResp['departments']) {
+            deptsList.add(item);
+          }
+        }
+        if (decodedResp['services'] != null) {
+          for (var item in decodedResp['services']) {
+            deptsList.add(item);
+          }
         }
         isLoading = false;
         notifyListeners();
@@ -39,6 +46,7 @@ class DeptDataProv extends ChangeNotifier {
         return deptsList;
       }
     } catch (e) {
+      print(e);
       isLoading = false;
       error = true;
       notifyListeners();

@@ -296,15 +296,17 @@ def active_companies():
         check = cur.execute("Select * FROM companydetails;")
         if check:
             records = cur.fetchall()
-            check = cur.execute("Select email,status,created_on FROM bizusers;")
-            if check:
-                recordss = cur.fetchall()
-                resp = jsonify({"companies": records, "comp_emails_status": recordss})
-                resp.status_code = 200
-                return resp
-            resp = jsonify({"message": "no companies details found."})
-            resp.status_code = 403
+
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            check = cur.execute("Select * FROM bizusers WHERE comp_type = 'company' ")
+            recordss = cur.fetchall()
+            resp = jsonify({"companies": records, "comp_emails_status": recordss})
+            resp.status_code = 200
             return resp
+            # resp = jsonify({"message": "no companies details found."})
+            # resp.status_code = 403
+            # return resp
         resp = jsonify({"message": "no companies found."})
         resp.status_code = 403
         return resp
@@ -2827,7 +2829,7 @@ def not_found(error=None):
     return resp
 
 
-# if __name__ == "__main__":
-#     app.run(debug=False)
 if __name__ == "__main__":
-    app.run(host="91.99.96.87", port=8080, debug=True)
+    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(host="91.99.96.87", port=8080, debug=True)

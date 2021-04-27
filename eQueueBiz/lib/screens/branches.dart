@@ -33,6 +33,7 @@ class _BranchesState extends State<Branches> {
     return Consumer<BranchDataProv>(
       builder: (context, value, child) {
         print(value.branchesWithDetail);
+        print(value.branchWithImages);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
