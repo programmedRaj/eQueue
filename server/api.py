@@ -1746,12 +1746,14 @@ def login_otp():
         if check:
             otp = id_generator()
             res = requests.get(
-                "https://sms.bewin.one/api/sms-gateway.php?number="
+                "https://sms.bewin.one/sms/services/send.php?key=2d4f10360b952be6f4b460c03ae68b77f5279741&number=%2B"
                 + str(request.form["number"])
-                + "&message=your otp for login is:"
+                + "&message=your otp for login is: "
                 + str(otp)
-                + ""
+                + "&devices=3|0"
             )
+            # "https://sms.bewin.one/api/sms-gateway.php?number="
+
             if res.status_code == 200:
                 cur.execute(
                     "UPDATE equeue_users SET code ='"
@@ -1972,6 +1974,8 @@ def login_register():
                 + str(request.form["referral_code"])
                 + "';"
             )
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
 
             phoneee = str(request.form["countrycode"]) + str(
                 request.form["phonenumber"]
@@ -2823,7 +2827,7 @@ def not_found(error=None):
     return resp
 
 
-if __name__ == "__main__":
-    app.run(debug=False)
 # if __name__ == "__main__":
-#     app.run(host="91.99.96.87", port=8080, debug=True)
+#     app.run(debug=False)
+if __name__ == "__main__":
+    app.run(host="91.99.96.87", port=8080, debug=True)
