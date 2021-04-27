@@ -48,31 +48,41 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 30),
-                        child: Column(
-                          children: [
-                            Container(
-                              child: CircleAvatar(
-                                radius: 70,
-                                backgroundColor: myColor[50],
-                              ),
-                            ),
-                            Container(
-                              child: FlatButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    LocaleKeys.EditPhoto,
-                                    style: TextStyle(
-                                      color: myColor[50],
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                      value.users[0].profileurl == 'null' ||
+                              value.users[0].profileurl == "default.png"
+                          ? Container(
+                              margin: EdgeInsets.only(top: 30),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    child: CircleAvatar(
+                                      radius: 70,
+                                      backgroundColor: myColor[50],
                                     ),
-                                  ).tr()),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                        onPressed: () {},
+                                        child: Text(
+                                          LocaleKeys.EditPhoto,
+                                          style: TextStyle(
+                                            color: myColor[50],
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ).tr()),
+                                  )
+                                ],
+                              ),
                             )
-                          ],
-                        ),
-                      ),
+                          : Container(
+                              height: height * 0.1,
+                              width: width * 0.2,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          value.users[0].profileurl))),
+                            ),
                       Container(
                         margin: EdgeInsets.all(15),
                         child: Form(

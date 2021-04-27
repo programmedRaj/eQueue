@@ -12,6 +12,6 @@ app.config["MYSQL_DATABASE_DB"] = "admin_equeue"
 # app.config["MYSQL_DATABASE_DB"] = "equeue"
 app.config["MYSQL_DATABASE_HOST"] = "localhost"
 app.config["MYSQL_DATABASE_PORT"] = 3306
-# app.config["MYSQL_DATABASE_PORT"] = 3306
+# app.config["MYSQL_DATABASE_PORT"] = 3308
 
 mysql.init_app(app)

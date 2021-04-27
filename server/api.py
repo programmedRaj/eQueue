@@ -546,6 +546,115 @@ def biz_signin():
         conn.close()
 
 
+@app.route("/biz_details")
+@check_for_token
+def biz_details():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    try:
+        check = cur.execute(
+            "Select * FROM companydetails WHERE id ='" + str(user["id"]) + "';"
+        )
+        if check:
+            r = cur.fetchone()
+            resp = jsonify({"details": r})
+            resp.status_code = 200
+            return resp
+        else:
+            resp = jsonify({"message": "No company Found"})
+            resp.status_code = 403
+            return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/biz_details_update", methods=["POST"])
+@check_for_token
+def biz_details_update():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if request.files["company_logo"]:
+            company_logo = request.files["company_logo"]
+            filename = secure_filename(company_logo.filename)
+            company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        else:
+            filename = request.form["existing_img"]
+
+        if request.form["acc_type"] == "booking":
+            desc = request.form["desc"]
+            bank_name = request.form["bankname"]
+            ifsc = request.form["ifsc_code"]
+            account_number = request.form["accountnumber"]
+            account_name = request.form["accountname"]
+            q = cur.execute(
+                "UPDATE companydetails SET profile_url ='"
+                + str(filename)
+                + "', descr = '"
+                + str(desc)
+                + "',bankname = '"
+                + str(bank_name)
+                + "',ifsc = '"
+                + str(ifsc)
+                + "',account_number = '"
+                + str(account_number)
+                + "',account_name = '"
+                + str(account_name)
+                + "' WHERE id = '"
+                + str(user["id"])
+                + "'"
+            )
+            conn.commit()
+
+        elif request.form["acc_type"] == "token":
+            desc = request.form["desc"]
+            q = cur.execute(
+                "UPDATE companydetails SET profile_url ='"
+                + str(filename)
+                + "', descr = '"
+                + str(desc)
+                + "' WHERE id = '"
+                + str(user["id"])
+                + "'"
+            )
+            conn.commit()
+
+        elif request.form["acc_type"] == "multitoken":
+            desc = request.form["desc"]
+            q = cur.execute(
+                "UPDATE companydetails SET profile_url ='"
+                + str(filename)
+                + "', descr = '"
+                + str(desc)
+                + "' WHERE id = '"
+                + str(user["id"])
+                + "'"
+            )
+            conn.commit()
+        else:
+            resp = jsonify({"message": "INVALID company type."})
+            resp.status_code = 405
+            return resp
+        if q:
+            resp = jsonify({"message": "updated succesfully."})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "Error Occured retry."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        cur2.close()
+        conn.close()
+
+
 @app.route("/getbr_emp")
 @check_for_token
 def getbr_emp():
@@ -1384,7 +1493,7 @@ def sort_bookings():
                     resp = jsonify({"bookings": cur.fetchall()})
                     resp.status_code = 200
                     return resp
-                resp = jsonify({"bookings": "NO Bookings for" + str(date_sort) + "!!"})
+                resp = jsonify({"bookings": []})
                 resp.status_code = 403
                 return resp
 
@@ -1454,12 +1563,13 @@ def status_booking_chng():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
 
-    status = request.json["status"]
-    user_id = request.json["user_id"]  # userid jisne banaya booking
-    booking_id = request.json["booking_id"]
-    branch_id = request.json["branch_id"]
-    branch_name = request.json["branch_name"]
-    counter_number = request.json["counter_number"]
+    status = request.form["status"]
+    user_id = request.form["user_id"]  # userid jisne banaya booking
+    booking_id = request.form["booking_id"]
+    branch_id = request.form["branch_id"]
+    branch_name = request.form["branch_name"]
+    bookingdept = request.form["bookingdept"]
+    device_token = request.form["device_token"]
 
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
@@ -1469,20 +1579,17 @@ def status_booking_chng():
                 + str(branch_name + "_" + str(branch_id))
                 + " SET status = 'completed', employee_id = '"
                 + str(user["id"])
-                + "', counter_number ='"
-                + str(counter_number)
                 + "' WHERE id = '"
                 + str(booking_id)
                 + "' "
             )
             conn.commit()
-
             cur = conn.cursor(pymysql.cursors.DictCursor)
             rr = cur.execute(
                 "UPDATE bookingshistory SET status = 'completed', employee_id = '"
                 + str(user["id"])
                 + "' WHERE booking = '"
-                + str(branch_name[:3] + "-" + str(booking_id))
+                + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
@@ -1496,8 +1603,6 @@ def status_booking_chng():
                 + str(branch_name + "_" + str(branch_id))
                 + " SET status = 'cancelled', employee_id = '"
                 + str(user["id"])
-                + "', counter_number ='"
-                + str(counter_number)
                 + "' WHERE id = '"
                 + str(booking_id)
                 + "' "
@@ -1509,7 +1614,7 @@ def status_booking_chng():
                 "UPDATE bookingshistory SET status = 'cancelled', employee_id = '"
                 + str(user["id"])
                 + "' WHERE booking = '"
-                + str(branch_name[:3] + "-" + str(booking_id))
+                + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
@@ -1531,35 +1636,30 @@ def status_booking_chng():
                 ids.append(row["id"])
                 dts.append(row["device_token"])
 
-            index = ids.index(booking_id)
-            lenids = len(ids)
+            # index = ids.index(booking_id)
+            # lenids = len(ids)
             r = cur.execute(
                 "UPDATE "
                 + str(branch_name + "_" + str(branch_id))
                 + " SET status = 'ongoing', employee_id = '"
                 + str(user["id"])
-                + "', counter_number ='"
-                + str(counter_number)
                 + "' WHERE id = '"
                 + str(booking_id)
                 + "' "
             )
             conn.commit()
-
             cur = conn.cursor(pymysql.cursors.DictCursor)
             rr = cur.execute(
                 "UPDATE bookingshistory SET status = 'ongoing', employee_id = '"
                 + str(user["id"])
                 + "' WHERE booking = '"
-                + str(branch_name[:3] + "-" + str(booking_id))
+                + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
 
             if r and rr:
-                tokens = [
-                    "frQB5SAVQQOybvQk3ao5PU:APA91bEt495eQs39S40DQGo6zTS1SnDr3sv-CNooAAM4MNAVE6Rgzdz4VIBan8vL7PoHjjl7FICLoNW80sZGi95WXeB4ZVVF30iyyYnYSR1mJ4Y3PIJcZpyfa_mAUZv1c0U629AtQCnX"
-                ]
+                tokens = [device_token]
                 statusfcm = fcm.sendPush("Hi", "This is my next msg", tokens)
                 op = 200
 
@@ -1646,12 +1746,14 @@ def login_otp():
         if check:
             otp = id_generator()
             res = requests.get(
-                "https://sms.bewin.one/api/sms-gateway.php?number="
+                "https://sms.bewin.one/sms/services/send.php?key=2d4f10360b952be6f4b460c03ae68b77f5279741&number=%2B"
                 + str(request.form["number"])
-                + "&message=your otp for login is:"
+                + "&message=your otp for login is: "
                 + str(otp)
-                + ""
+                + "&devices=3|0"
             )
+            # "https://sms.bewin.one/api/sms-gateway.php?number="
+
             if res.status_code == 200:
                 cur.execute(
                     "UPDATE equeue_users SET code ='"
@@ -1872,6 +1974,8 @@ def login_register():
                 + str(request.form["referral_code"])
                 + "';"
             )
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
 
             phoneee = str(request.form["countrycode"]) + str(
                 request.form["phonenumber"]
@@ -2726,4 +2830,4 @@ def not_found(error=None):
 # if __name__ == "__main__":
 #     app.run(debug=False)
 if __name__ == "__main__":
-    app.run(host="nobatdeh.com", port=8080, debug=True)
+    app.run(host="91.99.96.87", port=8080, debug=True)

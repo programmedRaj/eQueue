@@ -3,7 +3,9 @@ import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/enum/company_enum.dart';
 import 'package:equeuebiz/enum/user_type.dart';
 import 'package:equeuebiz/locale/app_localization.dart';
+import 'package:equeuebiz/model/bizdetsmo.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
+import 'package:equeuebiz/providers/biz_details.dart';
 import 'package:equeuebiz/providers/booking_prov.dart';
 import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:equeuebiz/screens/bookings.dart';
@@ -30,114 +32,155 @@ class _HomePageState extends State<HomePage> {
     var email = prefs.get('email');
     var password = prefs.get('pass');
 
-    Provider.of<AuthProv>(context, listen: false).execLogin(email, password);
+    Provider.of<AuthProv>(context, listen: false)
+        .execLogin(email, password)
+        .then((value) {
+      Provider.of<BizUserDets>(context, listen: false).getBizUserdets();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProv>(
-      builder: (context, authProv, child) {
-        print(authProv.authinfo.jwtToken);
-        Provider.of<BookingBranDet>(context)
-            .getbookdets(authProv.authinfo.jwtToken);
-        return authProv.authinfo.userType == null
-            ? Container(
-                color: Colors.white,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation(AppColor.mainBlue),
-                  ),
-                ),
-              )
-            : Scaffold(
-                /* appBar: AppBar(
-          title: Text("Home"),
-          actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
-        ), */
-                body: Consumer<BookingBranDet>(
-                  builder: (context, value, child) {
-                    return SafeArea(
-                      child: Container(
-                          alignment: Alignment.center,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: 1200),
-                            child: Column(
-                              children: [
-                                _profileWidget(authProv),
-                                _branchEmployee(),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        authProv.authinfo.userType ==
-                                                UserEnum.Company
-                                            ? InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Branches(),
-                                                      ));
-                                                },
-                                                child: _cards("Branches",
-                                                    "Edit/Manage branches details"))
-                                            : SizedBox(),
-                                        authProv.authinfo.userType ==
-                                                UserEnum.Employee
-                                            ? InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Bookings(
-                                                          branchid: value.bid,
-                                                          branchname:
-                                                              value.bname,
-                                                          token: authProv
-                                                              .authinfo
-                                                              .jwtToken,
-                                                        ),
-                                                      ));
-                                                },
-                                                child: _cards("Bookings",
-                                                    "Edit/Manage Booking details"))
-                                            : SizedBox(),
-                                        authProv.authinfo.userType ==
-                                                UserEnum.Company
-                                            ? InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Employees(),
-                                                      ));
-                                                },
-                                                child: _cards("Employee",
-                                                    "Edit/Manage employee details"))
-                                            : SizedBox(),
-                                        _cards("Privacy & Policy",
-                                            "Click to view"),
-                                        _cards("Terms & Conditions",
-                                            "Click to view"),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )),
-                    );
-                  },
-                ),
-              );
+    return Consumer<BizUserDets>(
+      builder: (context, bizdets, child) {
+        return Consumer<AuthProv>(
+          builder: (context, authProv, child) {
+            print(authProv.authinfo.companyType);
+            Provider.of<BookingBranDet>(context)
+                .getbookdets(authProv.authinfo.jwtToken);
+            return authProv.authinfo.userType == null
+                ? Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(AppColor.mainBlue),
+                      ),
+                    ),
+                  )
+                : Scaffold(
+                    /* appBar: AppBar(
+            title: Text("Home"),
+            actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
+          ), */
+                    body: Consumer<BookingBranDet>(
+                      builder: (context, value, child) {
+                        return SafeArea(
+                          child: Container(
+                              alignment: Alignment.center,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: 1200),
+                                child: Column(
+                                  children: [
+                                    _profileWidget(authProv, bizdets.ss),
+                                    _branchEmployee(),
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Company
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    Branches(),
+                                                          ));
+                                                    },
+                                                    child: _cards("Branches",
+                                                        "Edit/Manage branches details"))
+                                                : SizedBox(),
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Employee
+                                                ? authProv.authinfo
+                                                                .companyType ==
+                                                            CompanyEnum.Token ||
+                                                        authProv.authinfo
+                                                                .companyType ==
+                                                            CompanyEnum
+                                                                .MultiToken
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          Tokens()));
+                                                        },
+                                                        child: _cards(
+                                                            "Bookings",
+                                                            "Edit/Manage Booking details"))
+                                                    : SizedBox()
+                                                : SizedBox(),
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Employee
+                                                ? authProv.authinfo
+                                                            .companyType ==
+                                                        CompanyEnum.Booking
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Bookings(
+                                                                  branchid:
+                                                                      value.bid,
+                                                                  branchname:
+                                                                      value
+                                                                          .bname,
+                                                                  token: authProv
+                                                                      .authinfo
+                                                                      .jwtToken,
+                                                                ),
+                                                              ));
+                                                        },
+                                                        child: _cards(
+                                                            "Bookings",
+                                                            "Edit/Manage Booking details"))
+                                                    : SizedBox()
+                                                : SizedBox(),
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Company
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    Employees(),
+                                                          ));
+                                                    },
+                                                    child: _cards("Employee",
+                                                        "Edit/Manage employee details"))
+                                                : SizedBox(),
+                                            _cards("Privacy & Policy",
+                                                "Click to view"),
+                                            _cards("Terms & Conditions",
+                                                "Click to view"),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )),
+                        );
+                      },
+                    ),
+                  );
+          },
+        );
       },
     );
   }
 
-  Widget _profileWidget(AuthProv authProv) {
+  Widget _profileWidget(AuthProv authProv, List<BizDets> b) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
       child: Row(
@@ -146,7 +189,20 @@ class _HomePageState extends State<HomePage> {
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Profile(),
+                  builder: (context) => Profile(
+                    acn: b[0].acn,
+                    acnum: b[0].acnum,
+                    bname: b[0].bname,
+                    descr: b[0].descr,
+                    id: b[0].id,
+                    earned: b[0].earned,
+                    ifsc: b[0].ifsc,
+                    name: b[0].name,
+                    moneyearned: b[0].moneyearned,
+                    profileurl:
+                        b[0].profileurl, //profileurl
+                    type: b[0].type,
+                  ),
                 )),
             child: Row(
               children: [
@@ -162,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   children: [
                     Text(
-                      "Denise Rew",
+                      b[0].name,
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                     Text(userEnumToString(authProv.authinfo.userType))

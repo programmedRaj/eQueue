@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:retry/retry.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProv extends ChangeNotifier {
   AuthModel authinfo;
@@ -37,8 +38,11 @@ class AuthProv extends ChangeNotifier {
 
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
-        print(decodedResp);
+        print('hee ee ee $decodedResp');
         authinfo = AuthModel.fromJson(decodedResp);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('tokens', authinfo.jwtToken);
+
         print("token : " + authinfo.jwtToken);
         isLoading = false;
         notifyListeners();

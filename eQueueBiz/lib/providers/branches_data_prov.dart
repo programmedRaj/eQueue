@@ -36,7 +36,7 @@ class BranchDataProv extends ChangeNotifier {
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
         print(decodedResp['branches'][0]['profile_photo_url']);
-
+        print(decodedResp);
         for (var item in decodedResp['branches']) {
           branches.putIfAbsent(item['id'], () => item['bname']);
         }
