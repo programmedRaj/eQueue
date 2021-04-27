@@ -1,5 +1,6 @@
 import 'package:equeuebiz/check.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
+import 'package:equeuebiz/providers/biz_details.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
 import 'package:equeuebiz/providers/emp_branchdets.dart';
@@ -12,6 +13,7 @@ import 'locale/app_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'providers/booking_prov.dart';
+import 'providers/booking_userdets.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,7 +28,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: BookingDet()),
+        ChangeNotifierProvider.value(value: BizUserDets()),
         ChangeNotifierProvider.value(value: SortCheck()),
+        ChangeNotifierProvider.value(value: BookingDetUserDets()),
         ChangeNotifierProvider<AuthProv>(
           create: (context) => AuthProv(),
         ),

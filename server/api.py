@@ -546,6 +546,31 @@ def biz_signin():
         conn.close()
 
 
+@app.route("/biz_details")
+@check_for_token
+def biz_details():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    try:
+        check = cur.execute(
+            "Select * FROM companydetails WHERE id ='" + str(user["id"]) + "';"
+        )
+        if check:
+            r = cur.fetchone()
+            resp = jsonify({"details": r})
+            resp.status_code = 200
+            return resp
+        else:
+            resp = jsonify({"message": "No company Found"})
+            resp.status_code = 403
+            return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/getbr_emp")
 @check_for_token
 def getbr_emp():
@@ -2714,7 +2739,7 @@ def not_found(error=None):
     return resp
 
 
-# if __name__ == "__main__":
-#     app.run(debug=False)
 if __name__ == "__main__":
-    app.run(host="91.99.96.87", port=8080, debug=True)
+    app.run(debug=False)
+# if __name__ == "__main__":
+#     app.run(host="91.99.96.87", port=8080, debug=True)

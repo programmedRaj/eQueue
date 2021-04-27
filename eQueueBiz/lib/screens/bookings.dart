@@ -4,6 +4,7 @@ import 'package:equeuebiz/model/bookinh_model.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/booking_prov.dart';
 import 'package:equeuebiz/providers/sort_check.dart';
+import 'package:equeuebiz/screens/userdets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -226,8 +227,13 @@ class _BookingsState extends State<Bookings> {
                     ),
                   ),
                   GestureDetector(
+                   
                     onTap: () {
-                      print('ji');
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => UserDets(
+                                bid: bd.branchid,
+                                userid: bd.userid,
+                              )));
                     },
                     child: Container(
                       child: Row(
@@ -238,14 +244,14 @@ class _BookingsState extends State<Bookings> {
                                 color: AppColor.mainBlue,
                                 fontWeight: FontWeight.bold),
                           ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: AppColor.mainBlue,
+                          )
                         ],
                       ),
                     ),
                   ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: AppColor.mainBlue,
-                  )
                 ],
               ),
             )

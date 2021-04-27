@@ -70,98 +70,132 @@ class _LoginPageState extends State<LoginPage> {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-            body: Container(
-              alignment: Alignment.center,
-              color: Colors.white,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 400),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        color: AppColor.mainBlue,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(color: Colors.black26, blurRadius: 5)
-                        ]),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(child: _userNameTextField()),
-                        Flexible(
-                          child: SizedBox(
-                            height: 20,
-                          ),
-                        ),
-                        Flexible(child: _passwordTextField()),
-                        Flexible(
-                            child: SizedBox(
-                          height: 20,
-                        )),
-                        Flexible(
-                          child: InkWell(
-                            onTap: () async {
-                              bool success = await value.execLogin(
-                                  emailControler.text, passwordControler.text);
-                              if (success) {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                prefs.setString('email', emailControler.text);
-                                prefs.setString('pass', passwordControler.text);
-
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => HomePage(),
-                                    ));
-                              } else {
-                                AppToast.showErr("Error logging !");
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
-                              decoration: BoxDecoration(
-                                  color: AppColor.darkBlue,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: value.isLoading
-                                  ? Center(
-                                      child: SizedBox(
-                                        height: 20,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      ),
-                                    )
-                                  : Text(
-                                      AppLocalization.of(context).login,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ForgotPassPage(),
-                                ));
-                          },
-                          child: Text(
-                            AppLocalization.of(context).forgetpassword + " ?",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
-                      ],
+            backgroundColor: Colors.white,
+            body: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                  ),
+                  Container(
+                    height: 80,
+                    width: 80,
+                    child: Image.asset(
+                      'lib/assets/bizlogo.png',
+                      fit: BoxFit.fill,
                     ),
                   ),
-                ),
+                  Container(
+                    margin: EdgeInsets.all(20),
+                    child: Text(
+                      'eQueue Biz',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 400),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              color: AppColor.mainBlue,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(color: Colors.black26, blurRadius: 5)
+                              ]),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(child: _userNameTextField()),
+                              Flexible(
+                                child: SizedBox(
+                                  height: 20,
+                                ),
+                              ),
+                              Flexible(child: _passwordTextField()),
+                              Flexible(
+                                  child: SizedBox(
+                                height: 20,
+                              )),
+                              Flexible(
+                                child: InkWell(
+                                  onTap: () async {
+                                    bool success = await value.execLogin(
+                                        emailControler.text,
+                                        passwordControler.text);
+                                    if (success) {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.setString(
+                                          'email', emailControler.text);
+                                      prefs.setString(
+                                          'pass', passwordControler.text);
+
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => HomePage(),
+                                          ));
+                                    } else {
+                                      AppToast.showErr("Error logging !");
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    decoration: BoxDecoration(
+                                        color: AppColor.darkBlue,
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: value.isLoading
+                                        ? Center(
+                                            child: SizedBox(
+                                              height: 20,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            ),
+                                          )
+                                        : Text(
+                                            AppLocalization.of(context).login,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ForgotPassPage(),
+                                      ));
+                                },
+                                child: Text(
+                                  AppLocalization.of(context).forgetpassword +
+                                      " ?",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

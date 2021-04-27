@@ -58,7 +58,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
-              appBar: whiteAppBar(context, "Create Branch"),
+              appBar: whiteAppBar(context, "Forget Password"),
               body: Container(
                 alignment: Alignment.center,
                 color: Colors.white,

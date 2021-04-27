@@ -1,16 +1,69 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/model/bizdetsmo.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:equeuebiz/widgets/resize_helper.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
+  String acn;
+  String acnum;
+  String bname;
+  String descr;
+  String earned;
+  String id;
+  String ifsc;
+  String moneyearned;
+  String name;
+  String profileurl;
+  String type;
+  Profile(
+      {this.acn,
+      this.acnum,
+      this.bname,
+      this.descr,
+      this.earned,
+      this.id,
+      this.ifsc,
+      this.moneyearned,
+      this.name,
+      this.profileurl,
+      this.type});
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  String acn;
+  String acnum;
+  String bname;
+  String descr;
+  String earned;
+  String id;
+  String ifsc;
+  String moneyearned;
+  String name;
+  String profileurl;
+  String type;
+
+  @override
+  void initState() {
+    setState(() {
+      acn = widget.acn;
+      acnum = widget.acnum;
+      bname = widget.bname;
+      descr = widget.descr;
+      earned = widget.earned;
+      id = widget.id;
+      ifsc = widget.ifsc;
+      name = widget.name;
+      profileurl = widget.profileurl;
+      type = widget.type;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,11 +82,14 @@ class _ProfileState extends State<Profile> {
                     SizedBox(
                       height: 15,
                     ),
-                    _photo(),
-                    _textField("Name"),
-                    _textField("Email ID"),
-                    _textField("Location"),
-                    _textField("Company"),
+                    _photo(profileurl),
+                    IgnorePointer(child: _textField("Name", name)),
+                    _textField("Acc Name", acn),
+                    _textField("Acc No", acnum),
+                    _textField("Bank Name", bname),
+                    _textField("Description", descr),
+                    _textField("Ifsc", ifsc),
+                    IgnorePointer(child: _textField("Type", type)),
                     addCancel()
                   ],
                 ),
@@ -43,22 +99,24 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _photo() {
+  Widget _photo(String p) {
     return Container(
       width: 100,
       height: 100,
       decoration:
           BoxDecoration(shape: BoxShape.circle, color: AppColor.purpleBlue),
+      child: Image.network(r'D:\eQueue\server\uploads\${p}'),
     );
   }
 
-  Widget _textField(String hintText) {
+  Widget _textField(String hintText, String val) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
           color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-      child: TextField(
+      child: TextFormField(
+        initialValue: val,
         decoration: InputDecoration(
           hintText: hintText,
           focusedBorder: InputBorder.none,

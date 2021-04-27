@@ -283,20 +283,25 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             "State/Province", _provinceController, false),
                         _textField("Contact", _phoneNoController, true),
                         _textField("Postal Code", _postalCodeController, false),
-                        _textField("Time Zone", _timezoneController, false),
-                        RaisedButton(
-                            child: Text('Notify Time'),
-                            onPressed: () {
-                              showTimePicker(
-                                      context: context,
-                                      initialTime: TimeOfDay.now())
-                                  .then((value) {
-                                setState(() {
-                                  _notifytimeDescController.text =
-                                      value.toString();
-                                });
-                              });
-                            }),
+                        authProv.authinfo.companyType == CompanyEnum.Booking
+                            ? _textField(
+                                "Time Zone", _timezoneController, false)
+                            : SizedBox(),
+                        authProv.authinfo.companyType == CompanyEnum.Booking
+                            ? RaisedButton(
+                                child: Text('Notify Time'),
+                                onPressed: () {
+                                  showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.now())
+                                      .then((value) {
+                                    setState(() {
+                                      _notifytimeDescController.text =
+                                          value.toString();
+                                    });
+                                  });
+                                })
+                            : SizedBox(),
                         authProv.authinfo.companyType == CompanyEnum.Booking
                             ? SizedBox()
                             : _textField(
