@@ -571,6 +571,90 @@ def biz_details():
         conn.close()
 
 
+@app.route("/biz_details_update", methods=["POST"])
+@check_for_token
+def biz_details_update():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur2 = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if request.files["company_logo"]:
+            company_logo = request.files["company_logo"]
+            filename = secure_filename(company_logo.filename)
+            company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        else:
+            filename = request.form["existing_img"]
+
+        if request.form["acc_type"] == "booking":
+            desc = request.form["desc"]
+            bank_name = request.form["bankname"]
+            ifsc = request.form["ifsc_code"]
+            account_number = request.form["accountnumber"]
+            account_name = request.form["accountname"]
+            q = cur.execute(
+                "UPDATE companydetails SET profile_url ='"
+                + str(filename)
+                + "', descr = '"
+                + str(desc)
+                + "',bankname = '"
+                + str(bank_name)
+                + "',ifsc = '"
+                + str(ifsc)
+                + "',account_number = '"
+                + str(account_number)
+                + "',account_name = '"
+                + str(account_name)
+                + "' WHERE id = '"
+                + str(user["id"])
+                + "'"
+            )
+            conn.commit()
+
+        elif request.form["acc_type"] == "token":
+            desc = request.form["desc"]
+            q = cur.execute(
+                "UPDATE companydetails SET profile_url ='"
+                + str(filename)
+                + "', descr = '"
+                + str(desc)
+                + "' WHERE id = '"
+                + str(user["id"])
+                + "'"
+            )
+            conn.commit()
+
+        elif request.form["acc_type"] == "multitoken":
+            desc = request.form["desc"]
+            q = cur.execute(
+                "UPDATE companydetails SET profile_url ='"
+                + str(filename)
+                + "', descr = '"
+                + str(desc)
+                + "' WHERE id = '"
+                + str(user["id"])
+                + "'"
+            )
+            conn.commit()
+        else:
+            resp = jsonify({"message": "INVALID company type."})
+            resp.status_code = 405
+            return resp
+        if q:
+            resp = jsonify({"message": "updated succesfully."})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "Error Occured retry."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        cur2.close()
+        conn.close()
+
+
 @app.route("/getbr_emp")
 @check_for_token
 def getbr_emp():
