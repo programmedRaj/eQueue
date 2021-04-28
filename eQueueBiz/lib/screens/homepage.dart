@@ -45,10 +45,10 @@ class _HomePageState extends State<HomePage> {
       builder: (context, bizdets, child) {
         return Consumer<AuthProv>(
           builder: (context, authProv, child) {
-            print(authProv.authinfo.companyType);
+            print("${authProv.authinfo?.companyType}");
             Provider.of<BookingBranDet>(context)
-                .getbookdets(authProv.authinfo.jwtToken);
-            return authProv.authinfo.userType == null
+                .getbookdets(authProv.authinfo?.jwtToken);
+            return authProv.authinfo?.userType == null
                 ? Container(
                     color: Colors.white,
                     child: Center(
@@ -199,8 +199,7 @@ class _HomePageState extends State<HomePage> {
                     ifsc: b[0].ifsc,
                     name: b[0].name,
                     moneyearned: b[0].moneyearned,
-                    profileurl:
-                        b[0].profileurl, //profileurl
+                    profileurl: b[0].profileurl, //profileurl
                     type: b[0].type,
                   ),
                 )),
@@ -218,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   children: [
                     Text(
-                      b[0].name,
+                      b.isEmpty ? "" : b[0].name,
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                     Text(userEnumToString(authProv.authinfo.userType))

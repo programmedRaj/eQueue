@@ -79,11 +79,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       noofBookingsC.add(TextEditingController());
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        if (widget.branchDets != null) {
+      if (widget.branchDets != null) {
+        setState(() {
           preFill();
-        }
-      });
+        });
+      }
     });
   }
 
@@ -95,6 +95,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     _provinceController.text = widget.branchDets.province;
     _phoneNoController.text = widget.branchDets.phoneNo;
     _postalCodeController.text = widget.branchDets.postalCode;
+    _timezoneController.value =
+        TextEditingValue(text: widget.branchDets.timeZone);
 
     _geoLocationController.text = widget.branchDets.geoLoaction;
     if (Provider.of<AuthProv>(context, listen: false).authinfo.companyType ==
