@@ -189,7 +189,8 @@ class _BooktokenState extends State<Booktoken> {
                               branchid: widget.bid,
                               branchname: widget.branchname,
                               department: dropval,
-                              tokenorbooking: widget.type)
+                              tokenorbooking: widget.type,
+                              comp: widget.companyname)
                           .then((value) {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (ctx) => MyHomePage()));
