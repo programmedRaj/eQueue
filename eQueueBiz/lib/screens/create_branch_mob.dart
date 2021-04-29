@@ -30,7 +30,9 @@ class CreateBranchMob extends StatefulWidget {
 class _CreateBranchMobState extends State<CreateBranchMob> {
   File uploadedImageMob;
   bool _isErr = false;
+  String imagee;
   File filename;
+  String images;
   List<String> departments = [];
   TextEditingController _departmentController = TextEditingController();
   List<TimeOfDay> startTimeList = [null, null, null, null, null, null, null];
@@ -88,6 +90,10 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
   }
 
   preFill() {
+    setState(() {
+      images = widget.images;
+      imagee = 'https://www.nobatdeh.com/uploads/${widget.images}';
+    });
     _branchNameController.text = widget.branchDets.branchName;
     _addr1Controller.text = widget.branchDets.addr1;
     _addr2Controller.text = widget.branchDets.addr2;
@@ -245,13 +251,22 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        SizedBox(
+                          height: 20,
+                        ),
                         uploadedImageMob != null
-                            ? Image.file(
-                                uploadedImageMob,
-                                height: size.height * 0.3,
-                                fit: BoxFit.fill,
+                            ? CircleAvatar(
+                                radius: 60,
+                                backgroundImage: FileImage(
+                                  uploadedImageMob,
+                                ),
                               )
-                            : SizedBox(),
+                            : imagee != null
+                                ? CircleAvatar(
+                                    radius: 60,
+                                    backgroundImage: NetworkImage(imagee),
+                                  )
+                                : SizedBox(),
                         SizedBox(
                           height: 20,
                         ),
@@ -386,9 +401,9 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
           "Enter Services",
           style: blackBoldFS16,
         ),
-        _textField("Service Name", _serviceNameController, false),
-        _textField("Service Rate", _serviceRateController, true),
-        _textField("Service Description", _serviceDescController, false),
+        _servicetextField("Service Name", _serviceNameController, false),
+        _servicetextField("Service Rate", _serviceRateController, true),
+        _servicetextField("Service Description", _serviceDescController, false),
         ElevatedButton(
             onPressed: () {
               setState(() {
@@ -638,6 +653,26 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: TextFormField(
         validator: (value) => value.isEmpty ? 'Enter $hintText' : null,
+        controller: _controller,
+        keyboardType: number ? TextInputType.phone : TextInputType.text,
+        decoration: InputDecoration(
+          hintText: hintText,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _servicetextField(
+      String hintText, TextEditingController _controller, bool number) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      decoration: BoxDecoration(
+          color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+      child: TextFormField(
         controller: _controller,
         keyboardType: number ? TextInputType.phone : TextInputType.text,
         decoration: InputDecoration(

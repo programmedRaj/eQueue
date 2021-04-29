@@ -12,8 +12,10 @@ import 'package:equeuebiz/screens/bookings.dart';
 import 'package:equeuebiz/screens/branches.dart';
 import 'package:equeuebiz/screens/employees.dart';
 import 'package:equeuebiz/screens/multi_tokens.dart';
+import 'package:equeuebiz/screens/privacypolicy.dart';
 import 'package:equeuebiz/screens/profile.dart';
 import 'package:equeuebiz/screens/settings.dart';
+import 'package:equeuebiz/screens/tnc.dart';
 import 'package:equeuebiz/screens/tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -159,10 +161,27 @@ class _HomePageState extends State<HomePage> {
                                                     child: _cards("Employee",
                                                         "Edit/Manage employee details"))
                                                 : SizedBox(),
-                                            _cards("Privacy & Policy",
-                                                "Click to view"),
-                                            _cards("Terms & Conditions",
-                                                "Click to view"),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            Policy()));
+                                              },
+                                              child: _cards("Privacy & Policy",
+                                                  "Click to view"),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            TermsCondition()));
+                                              },
+                                              child: _cards(
+                                                  "Terms & Conditions",
+                                                  "Click to view"),
+                                            ),
                                           ],
                                         ),
                                       ),

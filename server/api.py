@@ -948,6 +948,14 @@ def create_branch():
 
                     check = cur.fetchone()
                     if check:
+                        if request.files["profile_photo_url"]:
+                            company_logo = request.files["profile_photo_url"]
+                            filename = secure_filename(company_logo.filename)
+                            company_logo.save(
+                                os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                            )
+                        else:
+                            filename = check["profile_photo_url"]
                         branchid = check["id"]
 
                         if user["comp_type"] == "booking":

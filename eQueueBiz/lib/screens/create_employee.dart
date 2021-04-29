@@ -86,6 +86,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           ? widget.empDets.services
           : widget.empDets.departments;
     }
+    print(widget.empDets.services);
   }
 
   @override
