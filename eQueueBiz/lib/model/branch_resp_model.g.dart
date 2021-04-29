@@ -10,12 +10,12 @@ BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
   return BranchRespModel(
     addr1: json['address1'] as String,
     addr2: json['address2'] as String,
-    // bookingPerday: (jsonDecode(json['booking_per_day']) as List)
-    //     ?.map((e) => e as String)
-    //     ?.toList(),
-    // bookingPerDayhrs: (jsonDecode(json['per_day_hours']) as List)
-    //     ?.map((e) => e as String)
-    //     ?.toList(),
+    bookingPerday: (jsonDecode(json['booking_per_day']) as List)
+        ?.map((e) => e as String)
+        ?.toList(),
+    bookingPerDayhrs: (jsonDecode(json['per_day_hours']) as List)
+        ?.map((e) => e as String)
+        ?.toList(),
     branchId: json['id'] as int,
     branchName: json['bname'] as String,
     city: json['city'] as String,
@@ -27,10 +27,10 @@ BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
     phoneNo: json['phone_number'] as String,
     postalCode: json['postalcode'] as String,
     province: json['province'] as String,
-    // services: json['services'] == null
-    //     ? null
-    //     : Services.fromJson(
-    //         jsonDecode(json['services']) as Map<String, dynamic>),
+    services: json['services'] == null
+        ? null
+        : Services.fromJson(
+            jsonDecode(json['services']) as Map<String, dynamic>),
     threshold: json['threshold'] as String,
     timeZone: json['timezone'] as String,
     workingHrs: json['working_hours'] == null
@@ -80,27 +80,27 @@ Map<String, dynamic> _$ServicesToJson(Services instance) => <String, dynamic>{
 
 WorkingHrs _$WorkingHrsFromJson(Map<String, dynamic> json) {
   return WorkingHrs(
-    friday: json['Friday'] == null
+    friday: json['friday'] == null
         ? null
-        : WhrsTiming.fromJson(json['Friday'] as Map<String, dynamic>),
-    monday: json['Monday'] == null
+        : WhrsTiming.fromJson(json['friday'] as Map<String, dynamic>),
+    monday: json['monday'] == null
         ? null
-        : WhrsTiming.fromJson(json['Monday'] as Map<String, dynamic>),
-    saturday: json['Saturday'] == null
+        : WhrsTiming.fromJson(json['monday'] as Map<String, dynamic>),
+    saturday: json['saturday'] == null
         ? null
-        : WhrsTiming.fromJson(json['Saturday'] as Map<String, dynamic>),
-    sunday: json['Sunday'] == null
+        : WhrsTiming.fromJson(json['saturday'] as Map<String, dynamic>),
+    sunday: json['sunday'] == null
         ? null
-        : WhrsTiming.fromJson(json['Sunday'] as Map<String, dynamic>),
-    thursday: json['Thursday'] == null
+        : WhrsTiming.fromJson(json['sunday'] as Map<String, dynamic>),
+    thursday: json['thursday'] == null
         ? null
-        : WhrsTiming.fromJson(json['Thursday'] as Map<String, dynamic>),
-    tuesday: json['Tuesday'] == null
+        : WhrsTiming.fromJson(json['thursday'] as Map<String, dynamic>),
+    tuesday: json['tuesday'] == null
         ? null
-        : WhrsTiming.fromJson(json['Tuesday'] as Map<String, dynamic>),
-    wednesday: json['Wednesday'] == null
+        : WhrsTiming.fromJson(json['tuesday'] as Map<String, dynamic>),
+    wednesday: json['wednesday'] == null
         ? null
-        : WhrsTiming.fromJson(json['Wednesday'] as Map<String, dynamic>),
+        : WhrsTiming.fromJson(json['wednesday'] as Map<String, dynamic>),
   );
 }
 

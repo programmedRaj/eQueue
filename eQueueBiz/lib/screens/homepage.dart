@@ -12,8 +12,10 @@ import 'package:equeuebiz/screens/bookings.dart';
 import 'package:equeuebiz/screens/branches.dart';
 import 'package:equeuebiz/screens/employees.dart';
 import 'package:equeuebiz/screens/multi_tokens.dart';
+import 'package:equeuebiz/screens/privacypolicy.dart';
 import 'package:equeuebiz/screens/profile.dart';
 import 'package:equeuebiz/screens/settings.dart';
+import 'package:equeuebiz/screens/tnc.dart';
 import 'package:equeuebiz/screens/tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,10 +47,10 @@ class _HomePageState extends State<HomePage> {
       builder: (context, bizdets, child) {
         return Consumer<AuthProv>(
           builder: (context, authProv, child) {
-            print(authProv.authinfo.companyType);
+            print("${authProv.authinfo?.companyType}");
             Provider.of<BookingBranDet>(context)
-                .getbookdets(authProv.authinfo.jwtToken);
-            return authProv.authinfo.userType == null
+                .getbookdets(authProv.authinfo?.jwtToken);
+            return authProv.authinfo?.userType == null
                 ? Container(
                     color: Colors.white,
                     child: Center(
@@ -159,10 +161,27 @@ class _HomePageState extends State<HomePage> {
                                                     child: _cards("Employee",
                                                         "Edit/Manage employee details"))
                                                 : SizedBox(),
-                                            _cards("Privacy & Policy",
-                                                "Click to view"),
-                                            _cards("Terms & Conditions",
-                                                "Click to view"),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            Policy()));
+                                              },
+                                              child: _cards("Privacy & Policy",
+                                                  "Click to view"),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            TermsCondition()));
+                                              },
+                                              child: _cards(
+                                                  "Terms & Conditions",
+                                                  "Click to view"),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -199,8 +218,7 @@ class _HomePageState extends State<HomePage> {
                     ifsc: b[0].ifsc,
                     name: b[0].name,
                     moneyearned: b[0].moneyearned,
-                    profileurl:
-                        b[0].profileurl, //profileurl
+                    profileurl: b[0].profileurl, //profileurl
                     type: b[0].type,
                   ),
                 )),
@@ -218,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   children: [
                     Text(
-                      b[0].name,
+                      b.isEmpty ? "" : b[0].name,
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                     Text(userEnumToString(authProv.authinfo.userType))

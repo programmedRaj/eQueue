@@ -299,14 +299,15 @@ def active_companies():
 
             conn.commit()
             cur = conn.cursor(pymysql.cursors.DictCursor)
-            check = cur.execute("Select * FROM bizusers WHERE comp_type = 'company' ")
+            check = cur.execute("Select * FROM bizusers  WHERE type = 'company';")
             recordss = cur.fetchall()
-            resp = jsonify({"companies": records, "comp_emails_status": recordss})
-            resp.status_code = 200
+            if recordss:
+                resp = jsonify({"companies": records, "comp_emails_status": recordss})
+                resp.status_code = 200
+                return resp
+            resp = jsonify({"message": "no companies details found."})
+            resp.status_code = 403
             return resp
-            # resp = jsonify({"message": "no companies details found."})
-            # resp.status_code = 403
-            # return resp
         resp = jsonify({"message": "no companies found."})
         resp.status_code = 403
         return resp
@@ -947,6 +948,14 @@ def create_branch():
 
                     check = cur.fetchone()
                     if check:
+                        if request.files["profile_photo_url"]:
+                            company_logo = request.files["profile_photo_url"]
+                            filename = secure_filename(company_logo.filename)
+                            company_logo.save(
+                                os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                            )
+                        else:
+                            filename = check["profile_photo_url"]
                         branchid = check["id"]
 
                         if user["comp_type"] == "booking":

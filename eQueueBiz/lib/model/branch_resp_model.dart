@@ -93,19 +93,19 @@ class Services {
 
 @JsonSerializable()
 class WorkingHrs {
-  @JsonKey(name: "Monday")
+  @JsonKey(name: "monday")
   WhrsTiming monday;
-  @JsonKey(name: "Tuesday")
+  @JsonKey(name: "tuesday")
   WhrsTiming tuesday;
-  @JsonKey(name: "Wednesday")
+  @JsonKey(name: "wednesday")
   WhrsTiming wednesday;
-  @JsonKey(name: "Thursday")
+  @JsonKey(name: "thursday")
   WhrsTiming thursday;
-  @JsonKey(name: "Friday")
+  @JsonKey(name: "friday")
   WhrsTiming friday;
-  @JsonKey(name: "Saturday")
+  @JsonKey(name: "saturday")
   WhrsTiming saturday;
-  @JsonKey(name: "Sunday")
+  @JsonKey(name: "sunday")
   WhrsTiming sunday;
 
   WorkingHrs(
