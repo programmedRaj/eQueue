@@ -94,8 +94,7 @@ class _EmployeesState extends State<Employees> {
                           )
                         : bdp.noBranches
                             ? Center(
-                                child:
-                                    Text("No branches & employees to display"),
+                                child: Text("No employees to display"),
                               )
                             : bdp.error
                                 ? Center(

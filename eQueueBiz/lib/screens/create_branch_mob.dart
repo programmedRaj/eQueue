@@ -512,15 +512,15 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       child: TextField(
         controller: _departmentController,
         onChanged: (val) {
-          if (val.endsWith(",")) {
-            if (departments.contains(val.replaceAll(",", ""))) {
+          if (val.endsWith(".")) {
+            if (departments.contains(val.replaceAll(".", ""))) {
               AppToast.showErr("Already present");
               _departmentController.value = TextEditingValue.empty;
 
               return;
             }
             setState(() {
-              departments.add(val.replaceAll(",", ""));
+              departments.add(val.replaceAll(".", ""));
               _departmentController.value = TextEditingValue.empty;
             });
           }

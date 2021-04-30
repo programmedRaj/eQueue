@@ -60,13 +60,13 @@ class _CompanyState extends State<Company> {
                             child: RaisedButton(
                               color: Theme.of(context).primaryColor,
                               onPressed: () {
-                                /* Navigator.push(
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => AddCompanyPage(),
                                     )).then((val) {
                                   value.getCompanyDets();
-                                }); */
+                                });
                               },
                               child: Text(
                                 'Add Company',
@@ -86,13 +86,13 @@ class _CompanyState extends State<Company> {
                             child: RaisedButton(
                               color: Theme.of(context).primaryColor,
                               onPressed: () {
-                                /*  Navigator.push(
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => AddCompanyPage(),
                                     )).then((val) {
                                   value.getCompanyDets();
-                                }); */
+                                });
                               },
                               child: Text(
                                 'Add Company',
@@ -137,7 +137,7 @@ class _CompanyState extends State<Company> {
                                 DataColumn(label: Text("Actions"))
                               ],
                               source: Dts(width, height, context,
-                                  value.companyFullDetails , loginProv),
+                                  value.companyFullDetails, loginProv),
                               onRowsPerPageChanged: (val) {
                                 setState(() {
                                   _rowperpage = val;
@@ -176,7 +176,7 @@ class Dts extends DataTableSource {
       children: [
         InkWell(
             onTap: () {
-              /* Navigator.push(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AddCompanyPage(
@@ -186,7 +186,7 @@ class Dts extends DataTableSource {
                   )).then((value) {
                 Provider.of<CompFullDetsProv>(context, listen: false)
                     .getCompanyDets();
-              }); */
+              });
             },
             child: Icon(
               Icons.edit,
@@ -200,10 +200,7 @@ class Dts extends DataTableSource {
             bool success =
                 await Provider.of<CompMoreOptsProv>(context, listen: false)
                     .disableCompany(
-              companyDets,
-              compEmailStatus,
-              loginProv.jwtToken
-            );
+                        companyDets, compEmailStatus, loginProv.jwtToken);
             if (success) {
               Provider.of<CompFullDetsProv>(context, listen: false)
                   .getCompanyDets();
