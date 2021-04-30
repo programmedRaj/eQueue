@@ -9,6 +9,7 @@ class ForgotPassProv extends ChangeNotifier {
   bool isLoading = false;
   bool error = false;
   bool vanishEmail = false;
+  bool showBottom2fields = false;
   Future<bool> execForgotPassSndOtp(String email) async {
     isLoading = true;
     notifyListeners();
@@ -18,12 +19,13 @@ class ForgotPassProv extends ChangeNotifier {
     };
     try {
       var resp = await httpPostRequest(AuthenticationApi.forgotPass, header, {
-        "email": email,
+        "email": email.trim(),
       });
 
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
         vanishEmail = true;
+        showBottom2fields = true;
         print("opt" + decodedResp["otp"]);
         notifyListeners();
         return true;
@@ -49,7 +51,7 @@ class ForgotPassProv extends ChangeNotifier {
     };
     try {
       var resp = await httpPostRequest(AuthenticationApi.changeForgotPass,
-          header, {"email": email, "otp": otp, "new_passw": newPass});
+          header, {"email": email.trim(), "otp": otp, "new_passw": newPass});
 
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);

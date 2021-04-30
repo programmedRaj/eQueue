@@ -20,8 +20,8 @@ class EmployeeModel {
   final String req;
   @JsonKey(name: 'employee_id')
   final int employeeId;
-  @JsonKey(name: 'counter_no')
-  int counterNumber;
+  @JsonKey(name: 'counter_number')
+  String counterNumber;
   @JsonKey(name: 'ratings')
   int ratings;
   String services;

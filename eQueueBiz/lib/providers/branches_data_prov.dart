@@ -66,7 +66,7 @@ class BranchDataProv extends ChangeNotifier {
     }
   }
 
-  getbranchesWithDetail(String jwtToken) async {
+  Future<bool> getbranchesWithDetail(String jwtToken) async {
     var header = {
       'Content-Type': 'application/json',
       'Authorization': jwtToken
@@ -88,10 +88,12 @@ class BranchDataProv extends ChangeNotifier {
       }
       isLoading = false;
       notifyListeners();
+      return error;
     } else {
       isLoading = false;
       error = true;
       notifyListeners();
+      return error;
     }
     /* try {
       

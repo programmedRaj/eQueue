@@ -10,18 +10,16 @@ BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
   return BranchRespModel(
     addr1: json['address1'] as String,
     addr2: json['address2'] as String,
-    bookingPerday: (jsonDecode(json['booking_per_day']) as List)
+    bookingPerday: (jsonDecode(json['booking_per_day'] ?? '[]') as List)
         ?.map((e) => e as String)
         ?.toList(),
-    bookingPerDayhrs: (jsonDecode(json['per_day_hours']) as List)
+    bookingPerDayhrs: (jsonDecode(json['per_day_hours'] ?? '[]') as List)
         ?.map((e) => e as String)
         ?.toList(),
     branchId: json['id'] as int,
     branchName: json['bname'] as String,
     city: json['city'] as String,
-    // department: (jsonDecode(json['department'] ?? "[]") as List)
-    // ?.map((e) => e as String)
-    // ?.toList(),
+    department: getDepts(json),
     geoLoaction: json['geolocation'] as String,
     notify: json['notify_time'] as String,
     phoneNo: json['phone_number'] as String,
@@ -39,6 +37,17 @@ BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
             jsonDecode(json['working_hours']) as Map<String, dynamic>),
     counter: json['counter_count'] as String,
   );
+}
+
+List<String> getDepts(Map json) {
+  var temp;
+  List tempList = [];
+  temp = (jsonDecode(json['department'] ?? "{}"));
+  tempList = temp['department'];
+
+  return tempList?.map((e) {
+    e.toString();
+  })?.toList();
 }
 
 Map<String, dynamic> _$BranchRespModelToJson(BranchRespModel instance) =>

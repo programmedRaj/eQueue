@@ -37,6 +37,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   File uploadedImageMob;
   AuthProv authProv;
   File filename;
+  bool error = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _nameC = TextEditingController();
@@ -44,10 +45,21 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   TextEditingController _passwordC = TextEditingController();
   TextEditingController _phoneC = TextEditingController();
   TextEditingController _counterC = TextEditingController();
+  int couterCount = 1;
 
   @override
   void initState() {
     super.initState();
+
+    Provider.of<BranchDataProv>(context, listen: false)
+        .getbranchesWithDetail(
+            Provider.of<AuthProv>(context, listen: false).authinfo.jwtToken)
+        .then((value) {
+      setState(() {
+        error = value;
+      });
+    });
+
     Provider.of<BranchDataProv>(context, listen: false)
         .getBranches(context,
             Provider.of<AuthProv>(context, listen: false).authinfo.jwtToken)
@@ -93,9 +105,15 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     authProv = Provider.of<AuthProv>(context);
+
     return Consumer<BranchDataProv>(
       builder: (context, bdp, child) {
         branchesList = bdp.branches;
+        bdp.branchesWithDetail?.forEach((element) {
+          if (element.branchId == widget.empDets.branchId) {
+            couterCount = num.parse(element.counter);
+          }
+        });
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
@@ -110,137 +128,162 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                     ? Center(
                         child: Text("Error occured while fetching branches"),
                       )
-                    : Container(
-                        alignment: Alignment.topCenter,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: 1200),
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  _selectBranch(),
-                                  Consumer<DeptDataProv>(
-                                    builder: (context, deptDataprov, child) {
-                                      if (!deptDataprov.isLoading &&
-                                          _chosenBranch == null) {
-                                        return SizedBox();
-                                      }
-                                      if (deptDataprov.isLoading) {
-                                        return Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                      if (deptDataprov.error) {
-                                        return Center(
-                                          child: Text(
-                                              "Error fetching departments"),
-                                        );
-                                      }
-                                      departmentsList = deptDataprov.deptsList;
-                                      return Column(
-                                        children: [
-                                          uploadedImageMob != null
-                                              ? Image.file(
-                                                  uploadedImageMob,
-                                                  height: size.height * 0.3,
-                                                  fit: BoxFit.fill,
-                                                )
-                                              : SizedBox(),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          ElevatedButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        AppColor.mainBlue)),
-                                            onPressed: () async {
-                                              var img = await ImagePicker()
-                                                  .getImage(
-                                                      source:
-                                                          ImageSource.gallery);
-                                              if (img != null) {
-                                                uploadedImageMob =
-                                                    File(img.path);
-                                                filename = File(
-                                                    img.path.split("/").last);
-                                                print(filename);
-                                                setState(() {});
-                                              }
-                                            },
-                                            child: Text(
-                                              'Upload Image',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                          _textField("Name", _nameC, false),
-                                          widget.uporadd
-                                              ? Container()
-                                              : _textField(
-                                                  "Email ID", _emailC, true),
-                                          widget.uporadd
-                                              ? Container()
-                                              : _textField("Password",
-                                                  _passwordC, false),
-                                          _textField(
-                                              "Phone number", _phoneC, false),
-                                          Container(
-                                            height: 50,
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: authProv.authinfo
-                                                              .companyType ==
-                                                          CompanyEnum.Booking
-                                                      ? SizedBox()
-                                                      : Container(
-                                                          width:
-                                                              size.width * 0.5,
-                                                          child: _textField(
-                                                              "Counter",
-                                                              _counterC,
-                                                              false)),
+                    : error
+                        ? Center(
+                            child: Text('Error fetching counter counts'),
+                          )
+                        : Container(
+                            alignment: Alignment.topCenter,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: 1200),
+                              child: SingleChildScrollView(
+                                child: Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      _selectBranch(),
+                                      Consumer<DeptDataProv>(
+                                        builder:
+                                            (context, deptDataprov, child) {
+                                          if (!deptDataprov.isLoading &&
+                                              _chosenBranch == null) {
+                                            return SizedBox();
+                                          }
+                                          if (deptDataprov.isLoading) {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          }
+                                          if (deptDataprov.error) {
+                                            return Center(
+                                              child: Text(
+                                                  "Error fetching departments"),
+                                            );
+                                          }
+                                          departmentsList =
+                                              deptDataprov.deptsList;
+                                          return Column(
+                                            children: [
+                                              uploadedImageMob != null
+                                                  ? Image.file(
+                                                      uploadedImageMob,
+                                                      height: size.height * 0.3,
+                                                      fit: BoxFit.fill,
+                                                    )
+                                                  : SizedBox(),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(AppColor
+                                                                .mainBlue)),
+                                                onPressed: () async {
+                                                  var img = await ImagePicker()
+                                                      .getImage(
+                                                          source: ImageSource
+                                                              .gallery);
+                                                  if (img != null) {
+                                                    uploadedImageMob =
+                                                        File(img.path);
+                                                    filename = File(img.path
+                                                        .split("/")
+                                                        .last);
+                                                    print(filename);
+                                                    setState(() {});
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Upload Image',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                 ),
-                                                SizedBox(
-                                                  width: 20,
+                                              ),
+                                              _textField("Name", _nameC, false),
+                                              widget.uporadd
+                                                  ? Container()
+                                                  : _textField("Email ID",
+                                                      _emailC, true),
+                                              widget.uporadd
+                                                  ? Container()
+                                                  : _textField("Password",
+                                                      _passwordC, false),
+                                              _textField("Phone number",
+                                                  _phoneC, false),
+                                              Container(
+                                                height: 50,
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: authProv.authinfo
+                                                                  .companyType ==
+                                                              CompanyEnum
+                                                                  .Booking
+                                                          ? SizedBox()
+                                                          : Container(
+                                                              width:
+                                                                  size.width *
+                                                                      0.5,
+                                                              child: _textField(
+                                                                  "Counter",
+                                                                  _counterC,
+                                                                  false)),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    Text("Status"),
+                                                    Switch(
+                                                        value: employeeStatus,
+                                                        onChanged: (val) {
+                                                          setState(() {
+                                                            employeeStatus =
+                                                                val;
+                                                          });
+                                                        })
+                                                  ],
                                                 ),
-                                                Text("Status"),
-                                                Switch(
-                                                    value: employeeStatus,
-                                                    onChanged: (val) {
-                                                      setState(() {
-                                                        employeeStatus = val;
-                                                      });
-                                                    })
-                                              ],
-                                            ),
-                                          ),
-                                          _selectDepartment(),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 8, horizontal: 16),
-                                            height: 50,
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                    child: InkWell(
-                                                  onTap: () async {
-                                                    if (_formKey.currentState
-                                                        .validate()) {
-                                                      if (_chosenBranch ==
-                                                              null ||
-                                                          _chosenDept == null) {
-                                                        AppToast.showErr(
-                                                            "Choose branch and dept. properly");
-                                                      }
-                                                      bool success =
-                                                          await EmployeeOperationProv()
+                                              ),
+                                              _selectDepartment(),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 16),
+                                                height: 50,
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                        child: InkWell(
+                                                      onTap: () async {
+                                                        if (num.parse(_counterC
+                                                                    .text) >
+                                                                couterCount ||
+                                                            num.parse(_counterC
+                                                                    .text) ==
+                                                                0) {
+                                                          AppToast.showErr(
+                                                              'Enter valid counter number');
+                                                          return;
+                                                        }
+                                                        if (_formKey
+                                                            .currentState
+                                                            .validate()) {
+                                                          if (_chosenBranch ==
+                                                                  null ||
+                                                              _chosenDept ==
+                                                                  null) {
+                                                            AppToast.showErr(
+                                                                "Choose branch and dept. properly");
+                                                          }
+                                                          bool success = await EmployeeOperationProv()
                                                               .createEmployee(
                                                                   authProv
                                                                       .authinfo
@@ -252,58 +295,69 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                                   widget
                                                                       .images);
 
-                                                      if (success) {
-                                                        Navigator.pushReplacement(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      HomePage(),
-                                                            ));
-                                                      }
-                                                    } else {
-                                                      AppToast.showErr(
-                                                          'Fill Missing Value');
-                                                    }
-                                                  },
-                                                  child: Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 16),
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            AppColor.mainBlue,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4)),
-                                                    alignment: Alignment.center,
-                                                    child: Text(
-                                                      widget.empDets == null
-                                                          ? "ADD"
-                                                          : "UPDATE",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
+                                                          if (success) {
+                                                            Navigator
+                                                                .pushReplacement(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              HomePage(),
+                                                                    ));
+                                                          }
+                                                        } else {
+                                                          AppToast.showErr(
+                                                              'Fill Missing Value');
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 16),
+                                                        decoration: BoxDecoration(
+                                                            color: AppColor
+                                                                .mainBlue,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        4)),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          widget.empDets == null
+                                                              ? "ADD"
+                                                              : "UPDATE",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                      width: 25,
                                                     ),
-                                                  ),
-                                                )),
-                                                SizedBox(
-                                                  width: 25,
+                                                    Expanded(
+                                                        child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: CustomWidgets()
+                                                          .hollowButton(
+                                                              "CANCEL"),
+                                                    ))
+                                                  ],
                                                 ),
-                                                Expanded(
-                                                    child: CustomWidgets()
-                                                        .hollowButton("CANCEL"))
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  )
-                                ],
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )),
+                            )),
           ),
         );
       },
@@ -420,6 +474,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
 
   EmployeeModel getDetails() {
     int _branchId;
+
     branchesList.forEach((key, value) {
       if (value == _chosenBranch) {
         _branchId = key;
@@ -431,8 +486,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
             email: _emailC.text,
             phoneNo: _phoneC.text,
             password: _passwordC.text,
-            counterNumber:
-                _counterC.text.length == 0 ? null : num.parse(_counterC.text),
+            counterNumber: _counterC.text.length == 0 ? null : _counterC.text,
             branchId: _branchId,
             employeeId: widget.empDets.employeeId,
             empStatus: employeeStatus ? 1 : 0,
@@ -444,8 +498,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
             email: _emailC.text,
             phoneNo: _phoneC.text,
             password: _passwordC.text,
-            counterNumber:
-                _counterC.text.length == 0 ? null : num.parse(_counterC.text),
+            counterNumber: _counterC.text.length == 0 ? null : (_counterC.text),
             branchId: _branchId,
             //  employeeId: widget.empDets.employeeId,
             empStatus: employeeStatus ? 1 : 0,

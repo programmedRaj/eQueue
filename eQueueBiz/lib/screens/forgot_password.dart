@@ -87,12 +87,18 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                                     height: 20,
                                   ),
                                 ),
-                          Flexible(child: _otpTextField()),
-                          Flexible(
-                              child: SizedBox(
-                            height: 20,
-                          )),
-                          Flexible(child: _newPassTextField()),
+                          value.showBottom2fields
+                              ? Flexible(child: _otpTextField())
+                              : SizedBox(),
+                          value.showBottom2fields
+                              ? Flexible(
+                                  child: SizedBox(
+                                  height: 20,
+                                ))
+                              : SizedBox(),
+                          value.showBottom2fields
+                              ? Flexible(child: _newPassTextField())
+                              : SizedBox(),
                           Flexible(
                               child: SizedBox(
                             height: 20,
@@ -160,7 +166,6 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
   Widget _emailTextField() {
     return TextFormField(
       controller: emailControler,
-      keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 20.5),
       decoration: InputDecoration(
         //focusColor: Colors.green,
@@ -221,7 +226,6 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
   Widget _newPassTextField() {
     return TextFormField(
       controller: passwordControler,
-      keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 20.5),
       decoration: InputDecoration(
         //focusColor: Colors.green,
