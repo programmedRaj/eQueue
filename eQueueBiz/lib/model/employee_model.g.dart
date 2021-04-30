@@ -17,7 +17,7 @@ EmployeeModel _$EmployeeModelFromJson(Map<String, dynamic> json) {
     phoneNo: json['number'] as String,
     profileUrl: json['profile_url'] as String,
     req: json['req'] as String,
-    counterNumber: json['counter_no'] as int,
+    counterNumber: json['counter_number'] as String,
     services: json['services'] as String,
     empStatus: json['emp_status'] as int,
   );
@@ -34,7 +34,7 @@ Map<String, dynamic> _$EmployeeModelToJson(EmployeeModel instance) =>
       'departments': instance.departments,
       'req': instance.req,
       'employee_id': instance.employeeId,
-      'counter_no': instance.counterNumber,
+      'counter_number': instance.counterNumber,
       'services': instance.services,
       'emp_status': instance.empStatus,
     };
