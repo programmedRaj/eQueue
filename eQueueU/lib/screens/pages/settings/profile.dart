@@ -5,6 +5,7 @@ import 'package:eQueue/components/color.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -19,12 +20,26 @@ class _ProfileState extends State<Profile> {
   String city;
   String postalcode;
   String province;
-  File image;
+  File _image;
+  final picker = ImagePicker();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     Provider.of<UserDetails>(context, listen: false).getUserDet();
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        print(_image);
+      } else {
+        print('No image selected.');
+      }
+    });
   }
 
   @override
@@ -48,41 +63,48 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      value.users[0].profileurl == 'null' ||
-                              value.users[0].profileurl == "default.png"
-                          ? Container(
-                              margin: EdgeInsets.only(top: 30),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    child: CircleAvatar(
-                                      radius: 70,
-                                      backgroundColor: myColor[50],
-                                    ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      _image == null
+                          ? value.users[0].profileurl == 'null'
+                              ? Container(
+                                  margin: EdgeInsets.only(top: 30),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        child: CircleAvatar(
+                                          radius: 70,
+                                          backgroundColor: myColor[50],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Container(
-                                    child: FlatButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          LocaleKeys.EditPhoto,
-                                          style: TextStyle(
-                                            color: myColor[50],
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ).tr()),
-                                  )
-                                ],
-                              ),
-                            )
-                          : Container(
-                              height: height * 0.1,
-                              width: width * 0.2,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          value.users[0].profileurl))),
+                                )
+                              : CircleAvatar(
+                                  radius: 60,
+                                  backgroundImage: NetworkImage(
+                                      'https://www.nobatdeh.com/uploads/usersprofile/' +
+                                          '${value.users[0].profileurl}'),
+                                )
+                          : CircleAvatar(
+                              radius: 60,
+                              backgroundImage: FileImage(_image),
                             ),
+                      Container(
+                        child: FlatButton(
+                            onPressed: () {
+                              getImage();
+                            },
+                            child: Text(
+                              LocaleKeys.EditPhoto,
+                              style: TextStyle(
+                                color: myColor[50],
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ).tr()),
+                      ),
                       Container(
                         margin: EdgeInsets.all(15),
                         child: Form(

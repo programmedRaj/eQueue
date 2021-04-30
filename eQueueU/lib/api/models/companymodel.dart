@@ -13,6 +13,7 @@ class CompanyModel {
   String onliner;
   String profileurl;
   String type;
+  String insurance;
   CompanyModel({
     this.acname,
     this.acnum,
@@ -26,6 +27,7 @@ class CompanyModel {
     this.onliner,
     this.profileurl,
     this.type,
+    this.insurance,
   });
 
   CompanyModel copyWith({
@@ -41,6 +43,7 @@ class CompanyModel {
     String onliner,
     String profileurl,
     String type,
+    String insurance,
   }) {
     return CompanyModel(
       acname: acname ?? this.acname,
@@ -55,6 +58,7 @@ class CompanyModel {
       onliner: onliner ?? this.onliner,
       profileurl: profileurl ?? this.profileurl,
       type: type ?? this.type,
+      insurance: insurance ?? this.insurance,
     );
   }
 
@@ -72,6 +76,7 @@ class CompanyModel {
       onliner: model.onliner ?? this.onliner,
       profileurl: model.profileurl ?? this.profileurl,
       type: model.type ?? this.type,
+      insurance: model.insurance ?? this.insurance,
     );
   }
 
@@ -89,6 +94,7 @@ class CompanyModel {
       'onliner': onliner,
       'profileurl': profileurl,
       'type': type,
+      'insurance': insurance,
     };
   }
 
@@ -108,6 +114,7 @@ class CompanyModel {
       onliner: map['onliner'],
       profileurl: map['profileurl'],
       type: map['type'],
+      insurance: map['insurance'],
     );
   }
 
@@ -118,7 +125,7 @@ class CompanyModel {
 
   @override
   String toString() {
-    return 'CompanyModel(acname: $acname, acnum: $acnum, bankname: $bankname, descr: $descr, earnedtilldate: $earnedtilldate, id: $id, ifsc: $ifsc, moneyearned: $moneyearned, name: $name, onliner: $onliner, profileurl: $profileurl, type: $type)';
+    return 'CompanyModel(acname: $acname, acnum: $acnum, bankname: $bankname, descr: $descr, earnedtilldate: $earnedtilldate, id: $id, ifsc: $ifsc, moneyearned: $moneyearned, name: $name, onliner: $onliner, profileurl: $profileurl, type: $type, insurance: $insurance)';
   }
 
   @override
@@ -137,7 +144,8 @@ class CompanyModel {
         o.name == name &&
         o.onliner == onliner &&
         o.profileurl == profileurl &&
-        o.type == type;
+        o.type == type &&
+        o.insurance == insurance;
   }
 
   @override
@@ -153,6 +161,7 @@ class CompanyModel {
         name.hashCode ^
         onliner.hashCode ^
         profileurl.hashCode ^
-        type.hashCode;
+        type.hashCode ^
+        insurance.hashCode;
   }
 }

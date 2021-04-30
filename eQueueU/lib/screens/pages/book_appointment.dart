@@ -22,7 +22,9 @@ class Calen extends StatefulWidget {
   final String servicerate;
   final String servicedess;
   final String type;
+  final String i;
   const Calen({
+    this.i,
     this.type,
     this.wk,
     this.book,
@@ -151,6 +153,7 @@ class _CalenState extends State<Calen> {
                               servicename: widget.servicename,
                               servicerate: widget.servicerate,
                               type: widget.type,
+                              i: widget.i,
                             )));
                   } else {
                     AppToast.showErr(LocaleKeys.Branchisclosed.tr());
