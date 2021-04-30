@@ -9,6 +9,10 @@ import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingBranDet with ChangeNotifier {
+  String bid;
+  String get bids => bid;
+  String bname;
+  String get bnames => bname;
   getbookdets(String token) async {
     var response = await retry(
       () => http.get(
@@ -23,9 +27,4 @@ class BookingBranDet with ChangeNotifier {
     bid = n['bid'];
     bname = n['bname'];
   }
-
-  String bid;
-  String get bids => bid;
-  String bname;
-  String get bnames => bname;
 }

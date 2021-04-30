@@ -1,7 +1,10 @@
 import 'package:equeuebiz/constants/appcolor.dart';
+import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/screens/homepage.dart';
 import 'package:equeuebiz/screens/login_page.dart';
+import 'package:equeuebiz/services/app_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Check extends StatefulWidget {
@@ -19,14 +22,23 @@ class _CheckState extends State<Check> {
 
   Future s() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('email');
+    var email = prefs.getString('email');
+    var pass = prefs.getString('pass');
 
-    if (token == null) {
+    if (email == null) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (ctx) => LoginPage()));
     } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => HomePage()));
+      Provider.of<AuthProv>(context, listen: false)
+          .execLogin(email, pass)
+          .then((value) {
+        if (value) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => HomePage()));
+        } else {
+          AppToast.showErr("Problem logging");
+        }
+      });
     }
   }
 

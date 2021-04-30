@@ -46,9 +46,9 @@ class _HomePageState extends State<HomePage> {
         return Consumer<AuthProv>(
           builder: (context, authProv, child) {
             // print(authProv.authinfo.companyType);
-            Provider.of<BookingBranDet>(context)
-                .getbookdets(authProv.authinfo.jwtToken);
-            return authProv.authinfo.userType == null
+            Provider.of<BookingBranDet>(context, listen: false)
+                .getbookdets(authProv.authinfo?.jwtToken);
+            return authProv.authinfo?.userType == null
                 ? Container(
                     color: Colors.white,
                     child: Center(
@@ -62,123 +62,117 @@ class _HomePageState extends State<HomePage> {
             title: Text("Home"),
             actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
           ), */
-                    body: authProv.authinfo.userType == UserEnum.Company
-                        ? Container()
-                        : Consumer<BookingBranDet>(
-                            builder: (context, value, child) {
-                              return SafeArea(
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    child: ConstrainedBox(
-                                      constraints:
-                                          BoxConstraints(maxWidth: 1200),
-                                      child: Column(
-                                        children: [
-                                          _profileWidget(authProv, bizdets.ss),
-                                          _branchEmployee(),
-                                          Expanded(
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                children: [
-                                                  authProv.authinfo.userType ==
-                                                          UserEnum.Company
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
+                    body: Consumer<BookingBranDet>(
+                      builder: (context, value, child) {
+                        return SafeArea(
+                          child: Container(
+                              alignment: Alignment.center,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: 1200),
+                                child: Column(
+                                  children: [
+                                    _profileWidget(authProv, bizdets.ss),
+                                    _branchEmployee(),
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Company
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    Branches(),
+                                                          ));
+                                                    },
+                                                    child: _cards("Branches",
+                                                        "Edit/Manage branches details"))
+                                                : SizedBox(),
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Employee
+                                                ? authProv.authinfo
+                                                                .companyType ==
+                                                            CompanyEnum.Token ||
+                                                        authProv.authinfo
+                                                                .companyType ==
+                                                            CompanyEnum
+                                                                .MultiToken
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
                                                                   builder:
                                                                       (context) =>
-                                                                          Branches(),
-                                                                ));
-                                                          },
-                                                          child: _cards(
-                                                              "Branches",
-                                                              "Edit/Manage branches details"))
-                                                      : SizedBox(),
-                                                  authProv.authinfo.userType ==
-                                                          UserEnum.Employee
-                                                      ? authProv.authinfo
-                                                                      .companyType ==
-                                                                  CompanyEnum
-                                                                      .Token ||
-                                                              authProv.authinfo
-                                                                      .companyType ==
-                                                                  CompanyEnum
-                                                                      .MultiToken
-                                                          ? InkWell(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                Tokens()));
-                                                              },
-                                                              child: _cards(
-                                                                  "Bookings",
-                                                                  "Edit/Manage Booking details"))
-                                                          : SizedBox()
-                                                      : SizedBox(),
-                                                  authProv.authinfo.userType ==
-                                                          UserEnum.Employee
-                                                      ? authProv.authinfo
-                                                                  .companyType ==
-                                                              CompanyEnum
-                                                                  .Booking
-                                                          ? InkWell(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              Bookings(
-                                                                        branchid:
-                                                                            value.bid,
-                                                                        branchname:
-                                                                            value.bname,
-                                                                        token: authProv
-                                                                            .authinfo
-                                                                            .jwtToken,
-                                                                      ),
-                                                                    ));
-                                                              },
-                                                              child: _cards(
-                                                                  "Bookings",
-                                                                  "Edit/Manage Booking details"))
-                                                          : SizedBox()
-                                                      : SizedBox(),
-                                                  authProv.authinfo.userType ==
-                                                          UserEnum.Company
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          Employees(),
-                                                                ));
-                                                          },
-                                                          child: _cards(
-                                                              "Employee",
-                                                              "Edit/Manage employee details"))
-                                                      : SizedBox(),
-                                                  _cards("Privacy & Policy",
-                                                      "Click to view"),
-                                                  _cards("Terms & Conditions",
-                                                      "Click to view"),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        ],
+                                                                          Tokens()));
+                                                        },
+                                                        child: _cards(
+                                                            "Bookings",
+                                                            "Edit/Manage Booking details"))
+                                                    : SizedBox()
+                                                : SizedBox(),
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Employee
+                                                ? authProv.authinfo
+                                                            .companyType ==
+                                                        CompanyEnum.Booking
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Bookings(
+                                                                  branchid:
+                                                                      value.bid,
+                                                                  branchname:
+                                                                      value
+                                                                          .bname,
+                                                                  token: authProv
+                                                                      .authinfo
+                                                                      .jwtToken,
+                                                                ),
+                                                              ));
+                                                        },
+                                                        child: _cards(
+                                                            "Bookings",
+                                                            "Edit/Manage Booking details"))
+                                                    : SizedBox()
+                                                : SizedBox(),
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Company
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    Employees(),
+                                                          ));
+                                                    },
+                                                    child: _cards("Employee",
+                                                        "Edit/Manage employee details"))
+                                                : SizedBox(),
+                                            _cards("Privacy & Policy",
+                                                "Click to view"),
+                                            _cards("Terms & Conditions",
+                                                "Click to view"),
+                                          ],
+                                        ),
                                       ),
-                                    )),
-                              );
-                            },
-                          ),
+                                    )
+                                  ],
+                                ),
+                              )),
+                        );
+                      },
+                    ),
                   );
           },
         );
@@ -223,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   children: [
                     Text(
-                      b[0].name,
+                      'b[0].name',
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                     Text(userEnumToString(authProv.authinfo.userType))

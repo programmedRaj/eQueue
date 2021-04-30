@@ -219,7 +219,7 @@ class _RegisterState extends State<Register> {
                           return null;
                       },
                       decoration: InputDecoration(
-                        hintText: LocaleKeys.Name.tr(),
+                        hintText: '${LocaleKeys.Name.tr()}*',
                         hintStyle: TextStyle(
                             color: Colors
                                 .white), //AppLocalization.of(context).nickname,
@@ -559,6 +559,10 @@ class _RegisterState extends State<Register> {
                           margin: EdgeInsets.only(bottom: height * 0.035),
                           height: sizz == 2 ? height * 0.06 : height * 0.03,
                           width: width / 5.5,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border:
+                                  Border.all(color: myColor[100], width: 2)),
                           child: ElevatedButton(
                             child: _selectedCountry == null
                                 ? Text('+',
@@ -609,7 +613,7 @@ class _RegisterState extends State<Register> {
                                     borderSide: BorderSide(
                                         color: Colors.white, width: 2.0),
                                   ),
-                                  hintText: LocaleKeys.Phone.tr(),
+                                  hintText: '${LocaleKeys.Phone.tr()}*',
                                   hintStyle: TextStyle(color: Colors.white)),
                               onChanged: (v) {
                                 setState(() {
