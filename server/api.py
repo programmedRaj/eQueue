@@ -1741,6 +1741,142 @@ def all_tokens():
         conn.close()
 
 
+@app.route("/status_token_chng", methods=["POST"])
+@check_for_token
+def status_token_chng():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+
+    status = request.form["status"]
+    user_id = request.form["user_id"]  # userid jisne banaya booking
+    booking_id = request.form["token_id"]
+    branch_id = request.form["branch_id"]
+    branch_name = request.form["branch_name"]
+    bookingdept = request.form["dept"]
+    device_token = request.form["device_token"]
+
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if status == "completed":
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'completed', employee_id = '"
+                + str(user["id"])
+                + "' WHERE id = '"
+                + str(booking_id)
+                + "' "
+            )
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE tokenshistory SET status = 'completed', employee_id = '"
+                + str(user["id"])
+                + "' WHERE token = '"
+                + str(bookingdept + "-" + str(booking_id))
+                + "' "
+            )
+            conn.commit()
+            if r and rr:
+                op = 200
+            op = 403
+
+        elif status == "cancelled":
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'cancelled', employee_id = '"
+                + str(user["id"])
+                + "' WHERE id = '"
+                + str(booking_id)
+                + "' "
+            )
+            conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE tokenshistory SET status = 'cancelled', employee_id = '"
+                + str(user["id"])
+                + "' WHERE token = '"
+                + str(bookingdept + "-" + str(booking_id))
+                + "' "
+            )
+            conn.commit()
+            if r and rr:
+                op = 200
+            op = 403
+
+        elif status == "ongoing":
+            r = cur.execute(
+                "Select * from "
+                + str(branch_name + "_" + str(branch_id))
+                + " WHERE status = 'onqueue' ORDER BY id DESC;"
+            )
+            # SELECT * FROM equeue.hey_8 WHERE NOT('status' = 'cancelled' OR 'status' ='completed') ORDER BY id DESC;
+            r = cur.fetchall()
+            ids = []
+            dts = []
+            for row in r:
+                ids.append(row["id"])
+                dts.append(row["device_token"])
+
+            index = ids.index(int(booking_id))
+            lenids = len(ids)
+            if index == 0:
+                print("send msg notification.")
+
+            else:
+                m = index
+                for i in range(0, lenids):
+                    if m > 0:
+                        m = m - 1
+                        print("send notification. to dts[m]")
+
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'ongoing', employee_id = '"
+                + str(user["id"])
+                + "' WHERE id = '"
+                + str(booking_id)
+                + "' "
+            )
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE tokenshistory SET status = 'ongoing', employee_id = '"
+                + str(user["id"])
+                + "' WHERE token = '"
+                + str(bookingdept + "-" + str(booking_id))
+                + "' "
+            )
+            conn.commit()
+
+            if r and rr:
+                tokens = [device_token]
+                statusfcm = fcm.sendPush("Hi", "This is my next msg", tokens)
+                op = 200
+
+            op = 403
+
+        else:
+            resp = jsonify({"message": "invalid status."})
+            resp.status_code = 405
+            return resp
+        if op == 200:
+            resp = jsonify({"message": "Success"})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "Failed ERROR."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 # USER APIs STARTS HERE
 
 
