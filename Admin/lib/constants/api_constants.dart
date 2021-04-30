@@ -9,3 +9,4 @@ class CompanyApi {
   static const disableComp = "http://91.99.96.87:8080/disable_company";
   static const deleteComp = "http://91.99.96.87:8080/delete_company";
 }
+ 

@@ -1,8 +1,10 @@
 import 'package:equeue_admin/models/company_full_details.dart';
 import 'package:equeue_admin/pages/add_company_page.dart';
 import 'package:equeue_admin/pages/comp_more_opts.dart';
+import 'package:equeue_admin/pages/login_page.dart';
 import 'package:equeue_admin/providers/comp_more_opts_prov.dart';
 import 'package:equeue_admin/providers/company_full_dets_prov.dart';
+import 'package:equeue_admin/providers/login_prov.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,7 @@ class Company extends StatefulWidget {
 class _CompanyState extends State<Company> {
   int _rowperpage = PaginatedDataTable.defaultRowsPerPage;
   List searchlist = [];
+  LoginProv loginProv;
 
   @override
   void initState() {
@@ -30,6 +33,7 @@ class _CompanyState extends State<Company> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    loginProv = Provider.of<LoginProv>(context);
     /* var dts = searchlist == null || searchlist.isEmpty
         ? Dts(width, height, context , )
         : Dts(width, height, context); */
@@ -56,13 +60,13 @@ class _CompanyState extends State<Company> {
                             child: RaisedButton(
                               color: Theme.of(context).primaryColor,
                               onPressed: () {
-                                Navigator.push(
+                                /* Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => AddCompanyPage(),
                                     )).then((val) {
                                   value.getCompanyDets();
-                                });
+                                }); */
                               },
                               child: Text(
                                 'Add Company',
@@ -82,13 +86,13 @@ class _CompanyState extends State<Company> {
                             child: RaisedButton(
                               color: Theme.of(context).primaryColor,
                               onPressed: () {
-                                Navigator.push(
+                                /*  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => AddCompanyPage(),
                                     )).then((val) {
                                   value.getCompanyDets();
-                                });
+                                }); */
                               },
                               child: Text(
                                 'Add Company',
@@ -133,7 +137,7 @@ class _CompanyState extends State<Company> {
                                 DataColumn(label: Text("Actions"))
                               ],
                               source: Dts(width, height, context,
-                                  value.companyFullDetails),
+                                  value.companyFullDetails , loginProv),
                               onRowsPerPageChanged: (val) {
                                 setState(() {
                                   _rowperpage = val;
@@ -158,7 +162,9 @@ class Dts extends DataTableSource {
   List srno;
   BuildContext context;
   CompanyFullDetails companyFullDetails;
-  Dts(this.width, this.height, this.context, this.companyFullDetails);
+  LoginProv loginProv;
+  Dts(this.width, this.height, this.context, this.companyFullDetails,
+      this.loginProv);
   String password;
   String password2;
   String error;
@@ -170,7 +176,7 @@ class Dts extends DataTableSource {
       children: [
         InkWell(
             onTap: () {
-              Navigator.push(
+              /* Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AddCompanyPage(
@@ -180,7 +186,7 @@ class Dts extends DataTableSource {
                   )).then((value) {
                 Provider.of<CompFullDetsProv>(context, listen: false)
                     .getCompanyDets();
-              });
+              }); */
             },
             child: Icon(
               Icons.edit,
@@ -193,7 +199,11 @@ class Dts extends DataTableSource {
           onTap: () async {
             bool success =
                 await Provider.of<CompMoreOptsProv>(context, listen: false)
-                    .disableCompany(companyDets, compEmailStatus);
+                    .disableCompany(
+              companyDets,
+              compEmailStatus,
+              loginProv.jwtToken
+            );
             if (success) {
               Provider.of<CompFullDetsProv>(context, listen: false)
                   .getCompanyDets();

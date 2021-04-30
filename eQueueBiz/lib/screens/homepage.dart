@@ -45,9 +45,9 @@ class _HomePageState extends State<HomePage> {
       builder: (context, bizdets, child) {
         return Consumer<AuthProv>(
           builder: (context, authProv, child) {
-            print(authProv.authinfo.companyType);
-            Provider.of<BookingBranDet>(context)
-                .getbookdets(authProv.authinfo.jwtToken);
+            // print(authProv.authinfo.companyType);
+            // Provider.of<BookingBranDet>(context)
+            //     .getbookdets(authProv.authinfo.jwtToken);
             return authProv.authinfo.userType == null
                 ? Container(
                     color: Colors.white,

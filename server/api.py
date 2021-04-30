@@ -2046,19 +2046,19 @@ def update_myprofile():
             province = request.form["province"]
 
         cur2.execute(
-            "UPDATE user_details SET address1 = "
+            "UPDATE user_details SET address1 = '"
             + str(address1)
-            + ", address2 = "
+            + "', address2 = '"
             + str(address2)
-            + ", postalcode = "
+            + "', postalcode = '"
             + str(postalcode)
-            + ", city = "
+            + "', city = '"
             + str(city)
-            + ", province = "
+            + "', province = '"
             + str(province)
-            + ", profile_url = "
+            + "', profile_url = '"
             + str(filename)
-            + " WHERE id = '"
+            + "' WHERE id = '"
             + str(user["user_id"])
             + "';"
         )
@@ -2826,7 +2826,7 @@ def my_tokens_bookings():
             r = cur.execute(
                 "Select * from bookingshistory WHERE user_id = "
                 + str(user["user_id"])
-                + ""
+                + " AND NOT('status' = 'cancelled')"
             )
             texti = "No bookings found"
             textin = "bookings"
@@ -2834,7 +2834,7 @@ def my_tokens_bookings():
             r = cur.execute(
                 "Select * from tokenshistory WHERE user_id = "
                 + str(user["user_id"])
-                + ""
+                + " AND NOT('status' = 'cancelled')"
             )
             texti = "No tokens found"
             textin = "tokens"
