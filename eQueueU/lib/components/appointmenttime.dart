@@ -19,7 +19,9 @@ class AppTime extends StatefulWidget {
   final String servicerate;
   final String servicedess;
   final String type;
+  final String i;
   const AppTime({
+    this.i,
     this.type,
     this.day,
     this.slots,

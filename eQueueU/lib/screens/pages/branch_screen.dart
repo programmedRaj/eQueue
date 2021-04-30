@@ -17,8 +17,9 @@ class BranchScreen extends StatefulWidget {
   final int id;
   final String comp_type;
   final String companyname;
+  final String comp_ins;
 
-  BranchScreen({this.id, this.comp_type, this.companyname});
+  BranchScreen({this.id, this.comp_type, this.companyname, this.comp_ins});
   @override
   _BranchScreenState createState() => _BranchScreenState();
 }
@@ -37,7 +38,6 @@ class _BranchScreenState extends State<BranchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.companyname);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     if (width <= 320.0) {
@@ -67,6 +67,29 @@ class _BranchScreenState extends State<BranchScreen> {
               branch[i].address2.toLowerCase().contains(v) ||
               branch[i].address2.toUpperCase().contains(v) ||
               branch[i].address2.contains(v)) {
+            branchsearch.add(BranchModel(
+              address1: branch[i].address1,
+              address2: branch[i].address2,
+              bname: branch[i].bname,
+              bookingperday: branch[i].bookingperday,
+              city: branch[i].city,
+              companyid: branch[i].companyid,
+              countercount: branch[i].countercount,
+              department: branch[i].department,
+              geolocation: branch[i].geolocation,
+              id: branch[i].id,
+              moneyearned: branch[i].moneyearned,
+              notifytime: branch[i].notifytime,
+              perdayhours: branch[i].perdayhours,
+              phonenumber: branch[i].phonenumber,
+              postalcode: branch[i].postalcode,
+              profilephotourl: branch[i].profilephotourl,
+              province: branch[i].province,
+              services: branch[i].services,
+              threshold: branch[i].threshold,
+              timezone: branch[i].timezone,
+              workinghours: branch[i].workinghours,
+            ));
           } else {
             setState(() {
               noprod = LocaleKeys.nobranches.tr();
@@ -406,6 +429,7 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                       widget.comp_type ==
                                                                               "booking"
                                                                           ? SelectService(
+                                                                              i: widget.comp_ins,
                                                                               companyname: widget.companyname,
                                                                               branchname: branchsearch[i].bname,
                                                                               bid: branchsearch[i].id,
@@ -432,6 +456,8 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                               .comp_type ==
                                                                           "booking"
                                                                       ? SelectService(
+                                                                          i: widget
+                                                                              .comp_ins,
                                                                           companyname:
                                                                               widget.companyname,
                                                                           branchname: value

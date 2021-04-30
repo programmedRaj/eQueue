@@ -39,7 +39,7 @@ class CompanyProvider extends ChangeNotifier {
     var response = await http.Response.fromStream(res);
 
     var n = jsonDecode(response.body);
-
+    print(n);
     removeedu();
 
     if (sort) {
@@ -58,6 +58,7 @@ class CompanyProvider extends ChangeNotifier {
             profileurl: n['comp_details'][i]['profile_url'],
             id: n['comp_details'][i]['id'],
             type: n['comp_details'][i]['type'],
+            insurance: n['comp_details'][i]['insurance'].toString(),
           );
         }
     } else {
@@ -76,6 +77,7 @@ class CompanyProvider extends ChangeNotifier {
           profileurl: n['comp_details'][i]['profile_url'],
           id: n['comp_details'][i]['id'],
           type: n['comp_details'][i]['type'],
+          insurance: n['comp_details'][i]['insurance'].toString(),
         );
       }
     }
@@ -98,8 +100,10 @@ class CompanyProvider extends ChangeNotifier {
     String onliner,
     String profileurl,
     String type,
+    String insurance,
   }) {
     companies.add(CompanyModel(
+        insurance: insurance,
         acname: acname,
         acnum: acnum,
         bankname: bankname,

@@ -20,8 +20,10 @@ class PayFor extends StatefulWidget {
   final String servicerate;
   final String servicedess;
   final String time;
+  final String i;
   final String date;
   PayFor({
+    this.i,
     this.companyname,
     this.branchname,
     this.branchid,
@@ -56,13 +58,15 @@ class _PayForState extends State<PayFor> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CheckboxGroup(
-                  labels: <String>[LocaleKeys.Insurance.tr()],
-                  onSelected: (val) {
-                    setState(() {
-                      isinsu = !isinsu;
-                    });
-                  }),
+              widget.i == '1'
+                  ? CheckboxGroup(
+                      labels: <String>[LocaleKeys.Insurance.tr()],
+                      onSelected: (val) {
+                        setState(() {
+                          isinsu = !isinsu;
+                        });
+                      })
+                  : Container(),
               isinsu
                   ? Container(
                       margin: EdgeInsets.all(10),

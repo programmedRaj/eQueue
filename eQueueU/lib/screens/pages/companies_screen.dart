@@ -68,6 +68,7 @@ class _CompanyState extends State<Company> {
               onliner: company[i].onliner,
               profileurl: company[i].profileurl,
               type: company[i].type,
+              insurance: company[i].insurance,
             ));
           } else {
             setState(() {
@@ -384,6 +385,10 @@ class _CompanyState extends State<Company> {
                                                                   companysearch
                                                                       .isNotEmpty
                                                               ? BranchScreen(
+                                                                  comp_ins:
+                                                                      companysearch[
+                                                                              i]
+                                                                          .insurance,
                                                                   id: companysearch[
                                                                           i]
                                                                       .id,
@@ -397,6 +402,9 @@ class _CompanyState extends State<Company> {
                                                                           .name,
                                                                 )
                                                               : BranchScreen(
+                                                                  comp_ins: comp[
+                                                                          i]
+                                                                      .insurance,
                                                                   id: comp[i]
                                                                       .id,
                                                                   comp_type:

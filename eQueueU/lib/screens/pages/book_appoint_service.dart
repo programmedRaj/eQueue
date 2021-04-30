@@ -20,8 +20,10 @@ class SelectService extends StatefulWidget {
   final String wk;
   final String book;
   final String perday;
+  final String i;
   SelectService(
       {this.id,
+      this.i,
       this.bid,
       this.type,
       this.wk,
@@ -215,6 +217,7 @@ class _SelectServiceState extends State<SelectService> {
                               book: widget.book,
                               perday: widget.perday,
                               wk: widget.wk,
+                              i: widget.i,
                               type: widget.type,
                             )));
                   },
