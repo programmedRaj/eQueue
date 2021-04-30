@@ -15,7 +15,8 @@ class SendToken with ChangeNotifier {
       {String branchname,
       int branchid,
       String tokenorbooking,
-      String department}) async {
+      String department,
+      String comp}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     var devicetoken = prefs.getString('devicetoken');
@@ -26,6 +27,7 @@ class SendToken with ChangeNotifier {
     map['token_or_booking'] = tokenorbooking;
     map['device_token'] = devicetoken;
     map['department'] = department;
+    map['comp_name'] = comp;
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.createtoken),

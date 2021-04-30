@@ -40,6 +40,7 @@ class _PayForState extends State<PayFor> {
   bool isinsu = false;
   String insno;
   String transid;
+  bool onepress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -189,60 +190,70 @@ class _PayForState extends State<PayFor> {
         height: height * 0.06,
         width: width,
         decoration: BoxDecoration(color: myColor[50]),
-        child: FlatButton(
-          onPressed: () async {
-            var moneybonus =
-                await Provider.of<UserDetails>(context, listen: false)
-                    .getUserDet();
-            print('---${moneybonus[1]}');
+        child: onepress
+            ? FlatButton(onPressed: () {}, child: Text(LocaleKeys.BookNow))
+            : FlatButton(
+                onPressed: () async {
+                  var moneybonus =
+                      await Provider.of<UserDetails>(context, listen: false)
+                          .getUserDet();
+                  print('---${moneybonus[1]}');
 
-            monbon(moneybonus[0], moneybonus[1]).then((value) async {
-              if (isinsu) {
-                await Provider.of<SendBooking>(context, listen: false)
-                    .generatetoken(
-                  company: widget.companyname,
-                  branchid: widget.branchid,
-                  branchname: widget.branchname,
-                  tokenorbooking: 'booking',
-                  insurance: insno,
-                  service: widget.servicename,
-                  slot: '${widget.date} - ${widget.time}',
-                );
-              } else {
-                await Provider.of<SendBooking>(context, listen: false)
-                    .generatetoken(
-                  branchid: widget.branchid,
-                  company: widget.companyname,
-                  branchname: widget.branchname,
-                  tokenorbooking: 'booking',
-                  insurance: value,
-                  service: widget.servicename,
-                  slot: '${widget.date} - ${widget.time}',
-                );
-              }
-            }).then((value) {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (ctx) => MyHomePage()));
-            });
-          },
-          child: isinsu
-              ? Text(
-                  LocaleKeys.BookNow,
-                  style: TextStyle(
-                    color: myColor[100],
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18,
-                  ),
-                ).tr()
-              : Text(
-                  '${LocaleKeys.PayNow.tr()} - \$${widget.servicerate}',
-                  style: TextStyle(
-                    color: myColor[100],
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18,
-                  ),
-                ),
-        ),
+                  if (isinsu) {
+                    await Provider.of<SendBooking>(context, listen: false)
+                        .generatetoken(
+                      company: widget.companyname,
+                      branchid: widget.branchid,
+                      branchname: widget.branchname,
+                      tokenorbooking: 'booking',
+                      insurance: insno,
+                      service: widget.servicename,
+                      slot: '${widget.date} - ${widget.time}',
+                    );
+                    setState(() {
+                      onepress = true;
+                    });
+                  }
+                  if (!isinsu)
+                    monbon(moneybonus[0], moneybonus[1]).then((value) async {
+                      if (!isinsu) {
+                        await Provider.of<SendBooking>(context, listen: false)
+                            .generatetoken(
+                          branchid: widget.branchid,
+                          company: widget.companyname,
+                          branchname: widget.branchname,
+                          tokenorbooking: 'booking',
+                          insurance: value,
+                          service: widget.servicename,
+                          slot: '${widget.date} - ${widget.time}',
+                        );
+                      }
+                      setState(() {
+                        onepress = true;
+                      });
+                    }).then((value) {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (ctx) => MyHomePage()));
+                    });
+                },
+                child: isinsu
+                    ? Text(
+                        LocaleKeys.BookNow,
+                        style: TextStyle(
+                          color: myColor[100],
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18,
+                        ),
+                      ).tr()
+                    : Text(
+                        '${LocaleKeys.PayNow.tr()} - \$${widget.servicerate}',
+                        style: TextStyle(
+                          color: myColor[100],
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18,
+                        ),
+                      ),
+              ),
       ),
     );
   }
