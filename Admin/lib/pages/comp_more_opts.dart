@@ -2,6 +2,7 @@ import 'package:equeue_admin/models/add_company.dart';
 import 'package:equeue_admin/models/company_full_details.dart';
 import 'package:equeue_admin/pages/add_company_page.dart';
 import 'package:equeue_admin/providers/comp_more_opts_prov.dart';
+import 'package:equeue_admin/providers/login_prov.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,14 +31,14 @@ class _CompMoreOptsState extends State<CompMoreOpts> {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  /*  Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddCompanyPage(
                           compEmailStatus: widget.compEmailStatus,
                           companyDets: widget.companyDets,
                         ),
-                      ));
+                      )); */
                 },
                 child: Text("EDIT")),
             SizedBox(
@@ -46,7 +47,9 @@ class _CompMoreOptsState extends State<CompMoreOpts> {
             ElevatedButton(
                 onPressed: () async {
                   bool success = await prov.disableCompany(
-                      widget.companyDets, widget.compEmailStatus);
+                      widget.companyDets,
+                      widget.compEmailStatus,
+                      Provider.of<LoginProv>(context, listen: false).jwtToken);
                   if (success) {
                     Navigator.pop(context);
                   }

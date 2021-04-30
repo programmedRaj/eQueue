@@ -8,11 +8,11 @@ import 'package:flutter/cupertino.dart';
 class CompMoreOptsProv extends ChangeNotifier {
   bool isDisableLoading = false;
   bool isDisableErr = false;
-  Future<bool> disableCompany(
-      CompanyDets companyDets, CompEmailStatus compEmailStatus) async {
-    var header = {
+  Future<bool> disableCompany(CompanyDets companyDets,
+      CompEmailStatus compEmailStatus, jwtToken) async {
+    Map<String, String> header = {
       'Content-Type': 'application/json',
-      'Authorization': Token.statToken
+      'Authorization': jwtToken
     };
     var body = {
       "email": compEmailStatus.email,
