@@ -17,4 +17,5 @@ class BaseUrl {
   final String addmoney = "$basic/add_money";
   final String addmap = "$basic/branch_map";
   final String deletetokenbooking = "$basic/cancel_token_booking";
+  final String updateuserdetails = "$basic/update_myprofile";
 }

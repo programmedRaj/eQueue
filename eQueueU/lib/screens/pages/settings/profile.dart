@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:eQueue/api/models/userdetails.dart';
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/provider/update_userdetails.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +23,14 @@ class _ProfileState extends State<Profile> {
   String province;
   File _image;
   final picker = ImagePicker();
+  UserDets userDets;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Provider.of<UserDetails>(context, listen: false).getUserDet();
+    if (userDets == null) {
+      Provider.of<UserDetails>(context, listen: false).getUserDet();
+    }
   }
 
   Future getImage() async {
@@ -48,6 +52,9 @@ class _ProfileState extends State<Profile> {
     var width = MediaQuery.of(context).size.width;
     return Consumer<UserDetails>(
       builder: (context, value, child) {
+        if (value.userd.isNotEmpty) {
+          userDets = value.userd[0];
+        }
         return Scaffold(
           appBar: AppBar(
             title: Text(LocaleKeys.Profile).tr(),
@@ -372,7 +379,25 @@ class _ProfileState extends State<Profile> {
                                   color: myColor[50],
                                   borderRadius: BorderRadius.circular(10)),
                               child: FlatButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Provider.of<UpUserDetails>(context,
+                                            listen: false)
+                                        .upUserDet(
+                                      _image,
+                                      address1,
+                                      address2,
+                                      city,
+                                      postalcode,
+                                      province,
+                                    )
+                                        .then((value) {
+                                      Provider.of<UserDetails>(context,
+                                              listen: false)
+                                          .getUserDet();
+                                      setState(() {});
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
                                   child: Text(
                                     LocaleKeys.UpdateProfile,
                                     style: TextStyle(color: myColor[100]),

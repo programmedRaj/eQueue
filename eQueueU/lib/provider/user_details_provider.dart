@@ -10,8 +10,10 @@ import 'dart:convert';
 import 'dart:io';
 
 class UserDetails with ChangeNotifier {
+  List<UserDets> userd = [];
   BaseUrl baseUrl = BaseUrl();
-  getUserDet() async {
+  Future getUserDet() async {
+    userd.clear();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     var response = await retry(
@@ -26,6 +28,11 @@ class UserDetails with ChangeNotifier {
 
     String money = n['userdetails']['money'];
     String bonus = n['userdetails']['bonus'];
+    String address1 = n['userdetails']['address1'];
+    String address2 = n['userdetails']['address2'];
+    String city = n['userdetails']['city'];
+    String postalcode = n['userdetails']['postalcode'];
+    String province = n['userdetails']['province'];
 
     getdet(
       name: n['userdetails']['name'],
@@ -40,10 +47,9 @@ class UserDetails with ChangeNotifier {
       phone: n['userdetails']['phone_number'],
     );
 
-    return [money, bonus];
+    return [money, bonus, address1, address2, province, postalcode, city];
   }
 
-  List<UserDets> userd = [];
   List<UserDets> get users => userd;
 
   getdet({

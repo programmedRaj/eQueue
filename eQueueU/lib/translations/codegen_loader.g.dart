@@ -152,7 +152,7 @@ static const Map<String,dynamic> en_US = {
   "Createdon": "Created on :",
   "Bookingg": "Booking :",
   "PrivacyPolicy": "Privacy Policy",
-  "MyInformation": "My Information",
+  "MyInformation": "My Profile",
   "MyHistory": "My History",
   "Language": "Language",
   "Payments": "Payments",

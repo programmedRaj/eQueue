@@ -23,6 +23,7 @@ class Booktoken extends StatefulWidget {
 
 class _BooktokenState extends State<Booktoken> {
   String dropval;
+  bool onpress = false;
 
   @override
   void didChangeDependencies() {
@@ -41,169 +42,191 @@ class _BooktokenState extends State<Booktoken> {
     return Consumer<DepProvider>(
       builder: (context, value, child) {
         return Scaffold(
-            appBar: AppBar(
-              title: Text(LocaleKeys.TimeSlot).tr(),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: myColor[100],
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[300],
-                            blurRadius: 4,
-                          )
-                        ],
-                      ),
-                      margin: EdgeInsets.all(20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: height * 0.02),
-                            child: Text(
-                              '${LocaleKeys.CompanyName.tr()} : ${widget.companyname}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: height * 0.01),
-                            child: Text(
-                              '${LocaleKeys.BranchName.tr()} : ${widget.branchname}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: height * 0.01),
-                            child: Text(
-                              '${LocaleKeys.BranchType.tr()} : ${widget.type}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
+          appBar: AppBar(
+            title: Text(LocaleKeys.TimeSlot).tr(),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
                     width: width,
+                    decoration: BoxDecoration(
+                      color: myColor[100],
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey[300],
+                          blurRadius: 4,
+                        )
+                      ],
+                    ),
+                    margin: EdgeInsets.all(20),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          width: width,
-                          margin: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).accentColor,
-                                  width: 1),
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.all(10),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                                items: value.departs.map((val) {
-                                  return new DropdownMenuItem<String>(
-                                    value: val,
-                                    child: new Text(val),
-                                  );
-                                }).toList(),
-                                hint: dropval == null
-                                    ? Container(
-                                        width: width * 0.45,
-                                        child: Text(
-                                          LocaleKeys.ChooseDepartment,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .highlightColor,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w800),
-                                        ).tr(),
-                                      )
-                                    : Text(
-                                        dropval,
+                          margin: EdgeInsets.only(top: height * 0.02),
+                          child: Text(
+                            '${LocaleKeys.CompanyName.tr()} : ${widget.companyname}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: Text(
+                            '${LocaleKeys.BranchName.tr()} : ${widget.branchname}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: Text(
+                            '${LocaleKeys.BranchType.tr()} : ${widget.type}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: width,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: width,
+                        margin: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).accentColor, width: 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: EdgeInsets.all(10),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                              items: value.departs.map((val) {
+                                return new DropdownMenuItem<String>(
+                                  value: val,
+                                  child: new Text(val),
+                                );
+                              }).toList(),
+                              hint: dropval == null
+                                  ? Container(
+                                      width: width * 0.45,
+                                      child: Text(
+                                        LocaleKeys.ChooseDepartment,
                                         style: TextStyle(
                                             color: Theme.of(context)
                                                 .highlightColor,
                                             fontSize: 20,
                                             fontWeight: FontWeight.w800),
-                                      ),
-                                onChanged: (newVal) {
-                                  dropval = newVal;
-                                  this.setState(() {});
-                                }),
-                          ),
+                                      ).tr(),
+                                    )
+                                  : Text(
+                                      dropval,
+                                      style: TextStyle(
+                                          color:
+                                              Theme.of(context).highlightColor,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                              onChanged: (newVal) {
+                                dropval = newVal;
+                                this.setState(() {});
+                              }),
                         ),
-                        // Container(
-                        //   height: height * 0.3,
-                        //   width: width,
-                        //   margin: EdgeInsets.all(15),
-                        //   decoration: BoxDecoration(
-                        //     color: myColor[50],
-                        //     borderRadius: BorderRadius.circular(10),
-                        //     boxShadow: [
-                        //       BoxShadow(
-                        //         color: Colors.grey,
-                        //         blurRadius: 0.4,
-                        //       )
-                        //     ],
-                        //   ),
-                        //   child: Center(
-                        //       child: Text(
-                        //     'ABC123',
-                        //     style: TextStyle(
-                        //         color: myColor[100],
-                        //         fontSize: 40,
-                        //         letterSpacing: 25,
-                        //         fontWeight: FontWeight.w800),
-                        //   )),
-                        // )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      ),
+                      // Container(
+                      //   height: height * 0.3,
+                      //   width: width,
+                      //   margin: EdgeInsets.all(15),
+                      //   decoration: BoxDecoration(
+                      //     color: myColor[50],
+                      //     borderRadius: BorderRadius.circular(10),
+                      //     boxShadow: [
+                      //       BoxShadow(
+                      //         color: Colors.grey,
+                      //         blurRadius: 0.4,
+                      //       )
+                      //     ],
+                      //   ),
+                      //   child: Center(
+                      //       child: Text(
+                      //     'ABC123',
+                      //     style: TextStyle(
+                      //         color: myColor[100],
+                      //         fontSize: 40,
+                      //         letterSpacing: 25,
+                      //         fontWeight: FontWeight.w800),
+                      //   )),
+                      // )
+                    ],
+                  ),
+                )
+              ],
             ),
-            bottomNavigationBar: Container(
-              height: height * 0.06,
-              margin: EdgeInsets.all(15),
-              width: width,
-              decoration: BoxDecoration(
-                  color: myColor[50], borderRadius: BorderRadius.circular(10)),
-              child: FlatButton(
-                  onPressed: () async {
-                    if (dropval != null) {
-                      await Provider.of<SendToken>(context, listen: false)
-                          .generatetoken(
-                              branchid: widget.bid,
-                              branchname: widget.branchname,
-                              department: dropval,
-                              tokenorbooking: widget.type,
-                              comp: widget.companyname)
-                          .then((value) {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (ctx) => MyHomePage()));
-                      });
-                    } else {
-                      AppToast.showErr(LocaleKeys.Pleaseselectdepartment.tr());
-                    }
-                  },
-                  child: Text(
-                    LocaleKeys.GenerateToken,
-                    style: TextStyle(color: myColor[100]),
-                  ).tr()),
-            ));
+          ),
+          bottomNavigationBar: onpress
+              ? IgnorePointer(
+                  child: Container(
+                    height: height * 0.06,
+                    margin: EdgeInsets.all(15),
+                    width: width,
+                    decoration: BoxDecoration(
+                        color: myColor[150],
+                        borderRadius: BorderRadius.circular(10)),
+                    child: FlatButton(
+                        onPressed: () async {},
+                        child: Text(
+                          LocaleKeys.GenerateToken,
+                          style: TextStyle(color: myColor[100]),
+                        ).tr()),
+                  ),
+                )
+              : Container(
+                  height: height * 0.06,
+                  margin: EdgeInsets.all(15),
+                  width: width,
+                  decoration: BoxDecoration(
+                      color: myColor[50],
+                      borderRadius: BorderRadius.circular(10)),
+                  child: FlatButton(
+                      onPressed: () async {
+                        if (dropval != null) {
+                          await Provider.of<SendToken>(context, listen: false)
+                              .generatetoken(
+                                  branchid: widget.bid,
+                                  branchname: widget.branchname,
+                                  department: dropval,
+                                  tokenorbooking: widget.type,
+                                  comp: widget.companyname)
+                              .then((value) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (ctx) => MyHomePage()));
+                          });
+                          setState(() {
+                            onpress = true;
+                          });
+                        } else {
+                          AppToast.showErr(
+                              LocaleKeys.Pleaseselectdepartment.tr());
+                        }
+                      },
+                      child: Text(
+                        LocaleKeys.GenerateToken,
+                        style: TextStyle(color: myColor[100]),
+                      ).tr()),
+                ),
+        );
       },
     );
   }

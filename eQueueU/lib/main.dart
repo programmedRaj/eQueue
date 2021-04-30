@@ -12,6 +12,7 @@ import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/token_bookings_dikhao.dart';
 import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:eQueue/provider/transaction_provider.dart';
+import 'package:eQueue/provider/update_userdetails.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
 import 'package:eQueue/translations/codegen_loader.g.dart';
 
@@ -162,6 +163,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: PayProvider()),
         ChangeNotifierProvider.value(value: DisplayTokenBook()),
         ChangeNotifierProvider.value(value: TransactionProvider()),
+        ChangeNotifierProvider.value(value: UpUserDetails()),
       ],
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,

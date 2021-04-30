@@ -87,10 +87,6 @@ class _RegisterState extends State<Register> {
           filename: '_logo'));
     }
 
-    print(countrycode.substring(1) + phonenumber);
-    print(countrycode.substring(1));
-    print(countrycode + phonenumber);
-
     request.fields['name'] = name;
     request.fields['number'] = countrycode.substring(1) + phonenumber;
     request.fields['phonenumber'] = phonenumber;
