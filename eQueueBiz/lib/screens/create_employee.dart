@@ -38,6 +38,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   AuthProv authProv;
   File filename;
   bool error = false;
+  String imagee;
+  String images;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _nameC = TextEditingController();
@@ -81,6 +83,11 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   }
 
   prefill() {
+    setState(() {
+      images = widget.images;
+      imagee = 'https://www.nobatdeh.com/uploads/biz-logos/${widget.images}';
+      print('$imagee');
+    });
     _nameC.text = widget.empDets.name;
     _emailC.text = widget.empDets.email;
     _passwordC.text = widget.empDets.password;
@@ -110,7 +117,10 @@ class _CreateEmployeeState extends State<CreateEmployee> {
       builder: (context, bdp, child) {
         branchesList = bdp.branches;
         bdp.branchesWithDetail?.forEach((element) {
-          if (element.branchId == widget.empDets.branchId) {
+          if (authProv.authinfo.companyType == CompanyEnum.Token ||
+              authProv.authinfo.companyType ==
+                  CompanyEnum.MultiToken) if (element.branchId ==
+              widget.empDets.branchId) {
             couterCount = num.parse(element.counter);
           }
         });
@@ -167,12 +177,21 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                           return Column(
                                             children: [
                                               uploadedImageMob != null
-                                                  ? Image.file(
-                                                      uploadedImageMob,
-                                                      height: size.height * 0.3,
-                                                      fit: BoxFit.fill,
+                                                  ? CircleAvatar(
+                                                      radius: 60,
+                                                      backgroundImage:
+                                                          FileImage(
+                                                        uploadedImageMob,
+                                                      ),
                                                     )
-                                                  : SizedBox(),
+                                                  : imagee != null
+                                                      ? CircleAvatar(
+                                                          radius: 60,
+                                                          backgroundImage:
+                                                              NetworkImage(
+                                                                  imagee),
+                                                        )
+                                                      : SizedBox(),
                                               SizedBox(
                                                 height: 20,
                                               ),
@@ -263,15 +282,24 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                     Expanded(
                                                         child: InkWell(
                                                       onTap: () async {
-                                                        if (num.parse(_counterC
-                                                                    .text) >
-                                                                couterCount ||
-                                                            num.parse(_counterC
-                                                                    .text) ==
-                                                                0) {
-                                                          AppToast.showErr(
-                                                              'Enter valid counter number');
-                                                          return;
+                                                        if (authProv.authinfo
+                                                                    .companyType ==
+                                                                CompanyEnum
+                                                                    .Token ||
+                                                            authProv.authinfo
+                                                                    .companyType ==
+                                                                CompanyEnum
+                                                                    .MultiToken) {
+                                                          if (num.parse(_counterC
+                                                                      .text) >
+                                                                  couterCount ||
+                                                              num.parse(_counterC
+                                                                      .text) ==
+                                                                  0) {
+                                                            AppToast.showErr(
+                                                                'Enter valid counter number');
+                                                            return;
+                                                          }
                                                         }
                                                         if (_formKey
                                                             .currentState

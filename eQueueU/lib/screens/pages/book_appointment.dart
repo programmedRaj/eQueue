@@ -68,6 +68,8 @@ class _CalenState extends State<Calen> {
               width: width,
               child: TableCalendar(
                 // calendarStyle: CalendarStyle(holidayStyle: ),
+                initialSelectedDay: DateTime.now(),
+
                 onDaySelected: (day, events, holidays) {
                   String dateFormat = DateFormat('EEEE').format(day);
                   String dayy = dateFormat.toLowerCase();
@@ -139,22 +141,25 @@ class _CalenState extends State<Calen> {
                     var start = ti[1].split(' ')[2];
 
                     print('$start --- $end');
-
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => AppTime(
-                              day: day,
-                              starttime: start,
-                              endtime: end,
-                              slots: slots,
-                              branchid: widget.branchid,
-                              branchname: widget.branchname,
-                              companyname: widget.companyname,
-                              servicedess: widget.servicedess,
-                              servicename: widget.servicename,
-                              servicerate: widget.servicerate,
-                              type: widget.type,
-                              i: widget.i,
-                            )));
+                    if (DateTime.now().isAfter(day)) {
+                      AppToast.showErr('This Date has Been Passed');
+                    } else {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => AppTime(
+                                day: day,
+                                starttime: start,
+                                endtime: end,
+                                slots: slots,
+                                branchid: widget.branchid,
+                                branchname: widget.branchname,
+                                companyname: widget.companyname,
+                                servicedess: widget.servicedess,
+                                servicename: widget.servicename,
+                                servicerate: widget.servicerate,
+                                type: widget.type,
+                                i: widget.i,
+                              )));
+                    }
                   } else {
                     AppToast.showErr(LocaleKeys.Branchisclosed.tr());
                   }

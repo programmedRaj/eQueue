@@ -37,8 +37,7 @@ class _EmployeesState extends State<Employees> {
     return Consumer<BranchDataProv>(
       builder: (context, bdp, child) {
         branchesList = bdp.branches;
-
-        if (_chosenBranch == null) {
+        if (branchesList.isNotEmpty) if (_chosenBranch == null) {
           var temp = bdp.branches.values.toList();
           _chosenBranch = temp[0];
         }
@@ -94,8 +93,7 @@ class _EmployeesState extends State<Employees> {
                           )
                         : bdp.noBranches
                             ? Center(
-                                child:
-                                    Text("No branches & employees to display"),
+                                child: Text("No employees to display"),
                               )
                             : bdp.error
                                 ? Center(

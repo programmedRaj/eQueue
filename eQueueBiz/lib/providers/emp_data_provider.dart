@@ -42,6 +42,7 @@ class EmpDataProv extends ChangeNotifier {
       int i = 0;
       for (var item in decodedResp['employee_details']) {
         EmployeeModel employee = EmployeeModel.fromJson(item);
+        print(employee.branchId);
         employee.empStatus = decodedResp['empoyee_statuses'][i];
         employeesWithDetail.add(employee);
         i++;

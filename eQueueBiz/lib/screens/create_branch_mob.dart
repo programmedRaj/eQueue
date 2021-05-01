@@ -93,6 +93,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     setState(() {
       images = widget.images;
       imagee = 'https://www.nobatdeh.com/uploads/${widget.images}';
+      print(imagee);
     });
     _branchNameController.text = widget.branchDets.branchName;
     _addr1Controller.text = widget.branchDets.addr1;
@@ -353,7 +354,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             : Column(
                                 children: [
                                   Text(
-                                    "Press a comma to add a department",
+                                    "Press a '.' to add a department",
                                     style: blackBoldFS16,
                                   ),
                                   _departmentTextfield(),
@@ -512,15 +513,15 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       child: TextField(
         controller: _departmentController,
         onChanged: (val) {
-          if (val.endsWith(",")) {
-            if (departments.contains(val.replaceAll(",", ""))) {
+          if (val.endsWith(".")) {
+            if (departments.contains(val.replaceAll(".", ""))) {
               AppToast.showErr("Already present");
               _departmentController.value = TextEditingValue.empty;
 
               return;
             }
             setState(() {
-              departments.add(val.replaceAll(",", ""));
+              departments.add(val.replaceAll(".", ""));
               _departmentController.value = TextEditingValue.empty;
             });
           }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:equeue_admin/constants/api_constants.dart';
 import 'package:equeue_admin/services/http_services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginProv extends ChangeNotifier {
   String jwtToken;
@@ -22,6 +23,8 @@ class LoginProv extends ChangeNotifier {
         var decodedResp = jsonDecode(resp.body);
         if (decodedResp["message"] == true) {
           jwtToken = decodedResp["token"];
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('token', jwtToken);
           print(jwtToken);
           success = true;
           notifyListeners();
