@@ -33,18 +33,20 @@ def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
         conn = mysql.connect()
         cur = conn.cursor(pymysql.cursors.DictCursor)
         cur.execute(
-            "DELETE FROM "
+            "UPDATE "
             + str(tablename)
-            + " WHERE user_id='"
+            + " SET status = 'cancelled' WHERE user_id='"
             + str(uid)
             + "' AND id = '"
             + str(number)
             + "';"
         )
+        conn.commit()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+
         if type == "token":
             r = cur.execute(
-                "DELETE FROM "
-                + "tokenshistory WHERE branchtable='"
+                "UPDATE tokenshistory SET status = 'cancelled' WHERE branchtable='"
                 + str(tablename)
                 + "' AND user_id = '"
                 + str(uid)
@@ -52,6 +54,8 @@ def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
                 + str(tok_booking_num)
                 + "';"
             )
+            conn.commit()
+
             if r:
                 return 200
             else:
@@ -59,8 +63,7 @@ def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
 
         else:
             r = cur.execute(
-                "DELETE FROM "
-                + "bookingshistory WHERE branchtable='"
+                "UPDATE bookingshistory SET status = 'cancelled' WHERE branchtable='"
                 + str(tablename)
                 + "' AND user_id = '"
                 + str(uid)
@@ -68,6 +71,8 @@ def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
                 + str(tok_booking_num)
                 + "';"
             )
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
 
             rr = cur.execute(
                 "UPDATE user_details SET money = '"

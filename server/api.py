@@ -1877,6 +1877,202 @@ def status_token_chng():
         conn.close()
 
 
+# multitoken masti
+
+
+@app.route("/allmulti_tokens", methods=["POST"])
+@check_for_token
+def allmulti_tokens():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    branch_id = request.form["branch_id"]
+    branch_name = request.form["branch_name"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if user["type"] == "employee":
+            r = cur.execute(
+                "Select * from employee_details WHERE branch_id = '"
+                + str(branch_id)
+                + "' AND employee_id ='"
+                + str(user["id"])
+                + "'"
+            )
+            r = cur.fetchone()
+            if r:
+                all_tokens = cur.execute(
+                    "Select COUNT(id) from "
+                    + str(branch_name + "_" + str(branch_id))
+                    + ""
+                )
+                r = cur.fetchone()
+                if r:
+                    resp = jsonify({"tokens": r["COUNT(id)"]})
+                    resp.status_code = 200
+                    return resp
+                resp = jsonify({"message": "NO MultiTokens generated !!"})
+                resp.status_code = 403
+                return resp
+
+            else:
+                resp = jsonify({"message": "NO employee found"})
+                resp.status_code = 407
+                return resp
+
+        resp = jsonify({"message": "ONLY employees can access."})
+        resp.status_code = 405
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/status_mtoken_chng", methods=["POST"])
+@check_for_token
+def status_mtoken_chng():
+    conn = mysql.connect()
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+
+    status = request.form["status"]
+    limit = request.form["limit"]
+    branch_id = request.form["branch_id"]
+    branch_name = request.form["branch_name"]
+
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        if status == "completed":
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'completed', employee_id = '"
+                + str(user["id"])
+                + "' WHERE status = 'ongoing' LIMIT "
+                + str(limit)
+                + ""
+            )
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE tokenshistory SET status = 'completed', employee_id = '"
+                + str(user["id"])
+                + "' WHERE status = 'ongoing' AND branchtable = '"
+                + str(branch_name + "_" + str(branch_id))
+                + "' LIMIT "
+                + str(limit)
+                + ""
+            )
+            conn.commit()
+            if r and rr:
+                op = 200
+            op = 403
+
+        elif status == "cancelled":
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'cancelled', employee_id = '"
+                + str(user["id"])
+                + "' WHERE status = 'onqueue' LIMIT "
+                + str(limit)
+                + ""
+            )
+            conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE tokenshistory SET status = 'cancelled', employee_id = '"
+                + str(user["id"])
+                + "' WHERE status = 'onqueue' AND branchtable = '"
+                + str(bookingdept + "-" + str(booking_id))
+                + "' LIMIT "
+                + str(limit)
+                + ""
+            )
+            conn.commit()
+            if r and rr:
+                op = 200
+            op = 403
+
+        elif status == "ongoing":
+            r = cur.execute(
+                "UPDATE "
+                + str(branch_name + "_" + str(branch_id))
+                + " SET status = 'ongoing', employee_id = '"
+                + str(user["id"])
+                + "' WHERE status = 'onqueue' LIMIT "
+                + str(limit)
+                + ""
+            )
+            conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE tokenshistory SET status = 'ongoing', employee_id = '"
+                + str(user["id"])
+                + "' WHERE status = 'onqueue' AND branchtable = '"
+                + str(bookingdept + "-" + str(booking_id))
+                + "' LIMIT "
+                + str(limit)
+                + ""
+            )
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+
+            if r and rr:
+                op = 200
+            op = 403
+            ll = cur.execute(
+                "Select * from "
+                + str(branch_name + "_" + str(branch_id))
+                + " WHERE status = 'onqueue' LIMIT "
+                + str(limit)
+                + ";"
+            )
+            # SELECT * FROM equeue.hey_8 WHERE NOT('status' = 'cancelled' OR 'status' ='completed') ORDER BY id DESC;
+            ll = cur.fetchall()
+            dts = []
+            for row in ll:
+                dts.append(row["device_token"])
+
+            cur.execute(
+                "Select * from branch_details WHERE  id = '" + str(branch_id) + "'; "
+            )
+            m = cur.fetchone()
+
+            cur.execute(
+                "Select * from companydetails WHERE  id = '" + str(m["comp_id"]) + "'; "
+            )
+            k = cur.fetchone()
+            j=k["oneliner"]
+
+            lenids = len(dts)
+            if lenids > 0:
+                tokens = [dts]
+                statusfcm = fcm.sendPush("Hi", str(j), tokens)
+
+            if r and rr:
+                op = 200
+            op = 403
+
+        else:
+            resp = jsonify({"message": "invalid status."})
+            resp.status_code = 405
+            return resp
+        if op == 200:
+            resp = jsonify({"message": "Success"})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "Failed ERROR."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 # USER APIs STARTS HERE
 
 
