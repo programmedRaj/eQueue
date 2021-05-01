@@ -138,8 +138,8 @@ class _BookingsState extends State<Bookings> {
               height: 10,
             ),
             bd.insurance == 'paid'
-                ? Text('paid by cash')
-                : Text("insurance : ${bd.insurance}"),
+                ? Text('Paid by cash.')
+                : Text("Insurance : ${bd.insurance}"),
             Row(
               children: [
                 Container(
@@ -227,7 +227,6 @@ class _BookingsState extends State<Bookings> {
                     ),
                   ),
                   GestureDetector(
-                   
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (ctx) => UserDets(
