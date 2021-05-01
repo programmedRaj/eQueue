@@ -1,8 +1,15 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/providers/auth_prov.dart';
+import 'package:equeuebiz/providers/dept_data_prov.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Tokens extends StatefulWidget {
+  final int bid;
+  final String token;
+  Tokens({this.bid, this.token});
   @override
   _TokensState createState() => _TokensState();
 }
@@ -10,47 +17,56 @@ class Tokens extends StatefulWidget {
 class _TokensState extends State<Tokens> {
   List<String> tokenStatusList = ["Call", "Complete", "Cancel"];
   String tokenStatus;
-  List<String> departmentsList = [
-    "Department 1",
-    "Department 2",
-    "Department 3"
-  ];
-  String selectedDept = "Department 1";
+  AuthProv authProv;
+  String selectedDept;
+
+  @override
+  void initState() {
+    Provider.of<DeptDataProv>(context, listen: false)
+        .getDepts(widget.token, widget.bid);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          "Tokens",
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [_departmentFilter()],
-      ),
-      body: Container(
-          alignment: Alignment.topCenter,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 1200),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [_tokenCard()],
+    return Consumer<DeptDataProv>(
+      builder: (context, value, child) {
+        print(value.deptsList);
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
               ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-          )),
+            title: Text(
+              "Tokens",
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: [_departmentFilter(value.deptsList)],
+          ),
+          body: Container(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 1200),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [_tokenCard()],
+                  ),
+                ),
+              )),
+        );
+      },
     );
   }
 
-  Widget _departmentFilter() {
+  Widget _departmentFilter(depList) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -65,7 +81,7 @@ class _TokensState extends State<Tokens> {
         //elevation: 5,
         style: TextStyle(color: Colors.white),
         iconEnabledColor: Colors.black,
-        items: departmentsList.map<DropdownMenuItem<String>>((String value) {
+        items: depList.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
