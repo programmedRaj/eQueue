@@ -309,7 +309,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                               _chosenDept ==
                                                                   null) {
                                                             AppToast.showErr(
-                                                                "Choose branch and dept. properly");
+                                                                "Choose branch and department value properly");
                                                           }
                                                           bool success = await EmployeeOperationProv()
                                                               .createEmployee(

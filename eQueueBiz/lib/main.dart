@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
           const Locale('fr', 'FR'), // french
           const Locale('fa', 'FA'), // farsi
         ],
-        title: 'Equeue Biz',
+        title: 'eQueue Biz',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
