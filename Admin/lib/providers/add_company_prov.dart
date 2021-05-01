@@ -5,18 +5,22 @@ import 'package:equeue_admin/constants/api_constants.dart';
 import 'package:equeue_admin/constants/appconstants.dart';
 import 'package:equeue_admin/enums/company_enum.dart';
 import 'package:equeue_admin/models/add_company.dart';
+import 'package:equeue_admin/providers/login_prov.dart';
 import 'package:equeue_admin/widgets/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddCompanyProv extends ChangeNotifier {
   List<int> comlogoint;
   Future<bool> execCreateComppany(Uint8List companyLogo, AddCompany addCompany,
       bool edit, bool _isCheck) async {
     var postUri = Uri.parse(edit ? CompanyApi.edit : CompanyApi.create);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
     var header = {
       'Content-Type': 'multipart/form-data',
-      'Authorization': Token.statToken
+      'Authorization': token,
     };
     comlogoint = companyLogo != null ? List.from(companyLogo) : null;
     var request = new http.MultipartRequest("POST", postUri)
@@ -31,7 +35,7 @@ class AddCompanyProv extends ChangeNotifier {
     request.fields['acc_type'] = companyEnumToString(addCompany.accType);
     request.fields['email'] = addCompany.email;
     request.fields['password'] = addCompany.password;
-    request.fields['insurance'] = ins.toString();
+    request.fields['insurance'] = ins == null ? '' : ins.toString();
     request.fields['name'] = addCompany.name;
     request.fields['desc'] = addCompany.desc;
     request.fields['bankname'] = addCompany.bankName;

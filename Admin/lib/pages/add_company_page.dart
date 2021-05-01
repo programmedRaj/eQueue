@@ -95,11 +95,11 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                             )
                           : profileUrl != null
                               ? Image.network(
-                                  profileUrl,
-                                  height: _height * 0.3,
-                                  width: _width * 0.2,
-                                  fit: BoxFit.fill,
-                                )
+                                  'https://www.nobatdeh.com/uploads/$profileUrl')
+                              // height: _height * 0.3,
+                              // width: _width * 0.2,
+                              // fit: BoxFit.fill,
+                              // )
                               : SizedBox(),
                       SizedBox(
                         height: 20,

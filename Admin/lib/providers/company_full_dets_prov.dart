@@ -5,6 +5,7 @@ import 'package:equeue_admin/constants/appconstants.dart';
 import 'package:equeue_admin/models/company_full_details.dart';
 import 'package:equeue_admin/services/http_services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompFullDetsProv extends ChangeNotifier {
   CompanyFullDetails companyFullDetails;
@@ -12,12 +13,11 @@ class CompFullDetsProv extends ChangeNotifier {
   bool isError = false;
 
   getCompanyDets() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
     try {
-      var resp = await httpGetRequest(CompanyApi.compfullDets, {
-        "Authorization":
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQGVxdWV1ZS5hcHAiLCJpZCI6MSwidXNlcm5hbWUiOiJIb3NzZWluIiwiZXhwIjoxNjIyMzYzNzAzfQ.3q6BB6u8H3_8cuDSf_BvgyVivqY8YsgnLNnMb2FfSf0',
-        'Content-Type': 'application/json'
-      });
+      var resp = await httpGetRequest(CompanyApi.compfullDets,
+          {"Authorization": token, 'Content-Type': 'application/json'});
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
         companyFullDetails = CompanyFullDetails.fromJson(decodedResp);
