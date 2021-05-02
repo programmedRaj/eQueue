@@ -236,7 +236,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                   ? Container()
                                                   : _textField("Password",
                                                       _passwordC, false),
-                                              _textField("Phone number",
+                                              _ptextField("Phone number",
                                                   _phoneC, false),
                                               Container(
                                                 height: 50,
@@ -244,9 +244,13 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                   children: [
                                                     Flexible(
                                                       child: authProv.authinfo
-                                                                  .companyType ==
-                                                              CompanyEnum
-                                                                  .Booking
+                                                                      .companyType ==
+                                                                  CompanyEnum
+                                                                      .Booking ||
+                                                              authProv.authinfo
+                                                                      .companyType ==
+                                                                  CompanyEnum
+                                                                      .MultiToken
                                                           ? SizedBox()
                                                           : Container(
                                                               width:
@@ -495,6 +499,27 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: TextFormField(
+        controller: controller,
+        validator: (value) => value.isEmpty ? "Please enter a $hintText" : null,
+        decoration: InputDecoration(
+          hintText: hintText,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _ptextField(
+      String hintText, TextEditingController controller, bool email) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      decoration: BoxDecoration(
+          color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+      child: TextFormField(
+        keyboardType: TextInputType.phone,
         controller: controller,
         validator: (value) => value.isEmpty ? "Please enter a $hintText" : null,
         decoration: InputDecoration(

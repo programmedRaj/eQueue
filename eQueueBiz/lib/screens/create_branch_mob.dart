@@ -92,7 +92,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
   preFill() {
     setState(() {
       images = widget.images;
-      imagee = 'https://www.nobatdeh.com/uploads/${widget.images}';
+      imagee = 'https://www.nobatdeh.com/uploads/biz-logos/${widget.images}';
       print(imagee);
     });
     _branchNameController.text = widget.branchDets.branchName;
@@ -311,7 +311,12 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             : SizedBox(),
                         authProv.authinfo.companyType == CompanyEnum.Booking
                             ? RaisedButton(
-                                child: Text('Notify Time'),
+                                child: _notifytimeDescController.text == null
+                                    ? Text('Notify Time')
+                                    : Text(_notifytimeDescController.text
+                                        .toString()
+                                        .split('(')[1]
+                                        .replaceAll(')', '')),
                                 onPressed: () {
                                   showTimePicker(
                                           context: context,
@@ -324,14 +329,18 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                                   });
                                 })
                             : SizedBox(),
-                        authProv.authinfo.companyType == CompanyEnum.Booking
+                        authProv.authinfo.companyType == CompanyEnum.Booking ||
+                                authProv.authinfo.companyType ==
+                                    CompanyEnum.MultiToken
                             ? SizedBox()
                             : _textField(
                                 "No. of counters", _counterController, false),
-                        authProv.authinfo.companyType != CompanyEnum.Booking
-                            ? _textField("Threshold in minutes",
-                                _thresholdController, true)
-                            : SizedBox(),
+                        authProv.authinfo.companyType == CompanyEnum.Booking ||
+                                authProv.authinfo.companyType ==
+                                    CompanyEnum.MultiToken
+                            ? SizedBox()
+                            : _textField("Threshold in minutes",
+                                _thresholdController, true),
                         _textField(
                             "Geo Location", _geoLocationController, true),
                         GestureDetector(
