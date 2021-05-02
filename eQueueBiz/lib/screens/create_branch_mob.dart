@@ -798,6 +798,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         workingHrs: getWorkingHrs(),
         counter: _counterController.text,
         reqType: widget.branchDets == null ? "create" : "update",
+        counterCount: _counterController.text,
         department: {"department": departments});
   }
 

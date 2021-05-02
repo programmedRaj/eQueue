@@ -23,6 +23,7 @@ class BranchModel {
   String reqType;
   String threshold;
   Map<String, dynamic> department;
+  String counterCount;
   String branchId;
   String counter;
 
@@ -36,6 +37,7 @@ class BranchModel {
       this.city,
       this.department,
       this.geoLoaction,
+      this.counterCount,
       this.notify,
       this.phoneNo,
       this.postalCode,

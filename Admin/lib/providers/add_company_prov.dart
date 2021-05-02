@@ -30,7 +30,9 @@ class AddCompanyProv extends ChangeNotifier {
 
     request.files.add(http.MultipartFile.fromBytes(
         'company_logo', comlogoint ?? [],
-        filename: comlogoint == null ? "" : "${addCompany.name}_logo.png"));
+        filename: comlogoint == null
+            ? ""
+            : "${addCompany.name}_${DateTime.now().millisecondsSinceEpoch}_logo.png"));
 
     request.fields['acc_type'] = companyEnumToString(addCompany.accType);
     request.fields['email'] = addCompany.email;

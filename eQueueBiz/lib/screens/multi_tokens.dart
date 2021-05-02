@@ -27,6 +27,7 @@ class _MultiTokensState extends State<MultiTokens> {
   Widget build(BuildContext context) {
     return Consumer<AllMToken>(
       builder: (context, value, child) {
+        print(value.totalM);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,

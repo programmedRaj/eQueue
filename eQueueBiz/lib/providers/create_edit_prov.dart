@@ -66,6 +66,8 @@ class CreateEditBanchProv extends ChangeNotifier {
     request.fields["threshold"] = branch.threshold;
     request.fields["department"] = jsonEncode(branch.department);
     request.fields["branchid"] = branch.branchId;
+    request.fields["counter_count"] = branch.counterCount;
+
     request.fields["counter"] = branch.counter;
 
     var resp = await request.send();
