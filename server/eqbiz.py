@@ -126,7 +126,7 @@ def create_branch(
 
         elif acctype == "multitoken":
             q = (
-                "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,money_earned) VALUES ('"
+                "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,counter_count,money_earned) VALUES ('"
                 + str(bname)
                 + "','"
                 + str(pnum)
@@ -152,6 +152,8 @@ def create_branch(
                 + str(threshold)
                 + "','"
                 + str(filename)
+                + "','"
+                + str(counter)
                 + "','0');"
             )
 

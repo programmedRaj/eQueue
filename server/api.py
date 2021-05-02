@@ -413,7 +413,9 @@ def edit_company():
                     + str(filename)
                     + "',descr = '"
                     + str(desc)
-                    + "';"
+                    + "' WHERE id ="
+                    + str(emp_id)
+                    + ";"
                 )
             elif request.form["acc_type"] == "multitoken":
                 name = request.form["name"]
@@ -428,7 +430,9 @@ def edit_company():
                     + str(desc)
                     + "',oneliner = '"
                     + str(oneliner)
-                    + "';"
+                    + "' WHERE id ="
+                    + str(emp_id)
+                    + ";"
                 )
             else:
                 resp = jsonify({"message": "INVALID company type."})
@@ -869,6 +873,8 @@ def create_branch():
                     elif user["comp_type"] == "multitoken":
                         threshold = request.form["threshold"]
                         department = request.form["department"]
+                        counter = request.form["counter"]
+
                         op = eqbiz.create_branch(
                             user["comp_type"],
                             bname,
@@ -889,7 +895,7 @@ def create_branch():
                             filename,
                             threshold,
                             department,
-                            0,
+                            counter,
                         )
 
                     elif user["comp_type"] == "token":
