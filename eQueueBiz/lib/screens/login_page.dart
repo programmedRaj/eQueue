@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _userNameTextField() {
     return TextFormField(
       controller: emailControler,
-      style: TextStyle(fontSize: 20.5),
+      style: TextStyle(fontSize: 20.5, color: Colors.white),
       decoration: InputDecoration(
         //focusColor: Colors.green,
         focusedBorder:
@@ -236,7 +236,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _passwordTextField() {
     return TextFormField(
       controller: passwordControler,
-      style: TextStyle(fontSize: 20.5),
+      obscureText: true,
+      style: TextStyle(fontSize: 20.5, color: Colors.white),
       decoration: InputDecoration(
         //focusColor: Colors.green,
         enabledBorder:

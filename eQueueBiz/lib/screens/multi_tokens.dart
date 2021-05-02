@@ -15,90 +15,99 @@ class MultiTokens extends StatefulWidget {
 
 class _MultiTokensState extends State<MultiTokens> {
   double _currentSliderValue = 0.0;
+  int tokenMax;
 
   @override
   void initState() {
     Provider.of<AllMToken>(context, listen: false)
-        .getTokeMndets(widget.bid.toString(), widget.bname, widget.token);
+        .getTokeMndets(widget.bid.toString(), widget.bname, widget.token)
+        .then((value) {
+      print('$value yy');
+      setState(() {
+        tokenMax = value;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AllMToken>(
-      builder: (context, value, child) {
-        print(value.totalM);
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            title: Text(
-              "Tokens",
-              style: TextStyle(color: Colors.black),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
           ),
-          body: Container(
-              alignment: Alignment.center,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 1200),
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.38,
-                      ),
-                      Center(
-                        child: Slider(
-                          value: _currentSliderValue,
-                          min: 0,
-                          max: 100, //idr var,.
-                          divisions: 10,
-                          label: _currentSliderValue.round().toString(),
-                          activeColor: Colors.green,
-                          onChanged: (double value) {
-                            setState(() {
-                              _currentSliderValue = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Spacer(),
-                      Align(
-                          alignment: Alignment.bottomCenter,
-                          child: _callButton())
-                    ],
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          "Tokens",
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      body: Container(
+          alignment: Alignment.center,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1200),
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.38,
                   ),
-                ),
-              )),
-        );
-      },
+                  Center(
+                    child: tokenMax == 0
+                        ? Container(
+                            child: Center(
+                              child: Text("No Tokens"),
+                            ),
+                          )
+                        : Slider(
+                            value: _currentSliderValue,
+                            min: 0,
+                            max: double.parse(tokenMax.toString()), //idr var,.
+                            divisions: 10,
+                            label: _currentSliderValue.round().toString(),
+                            activeColor: Colors.green,
+                            onChanged: (double value) {
+                              setState(() {
+                                _currentSliderValue = value;
+                              });
+                            },
+                          ),
+                  ),
+                  Spacer(),
+                  Align(alignment: Alignment.bottomCenter, child: _callButton())
+                ],
+              ),
+            ),
+          )),
     );
   }
 
   Widget _callButton() {
     return Padding(
       padding: const EdgeInsets.all(25.0),
-      child: Container(
-        //width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-            color: AppColor.mainBlue, borderRadius: BorderRadius.circular(4)),
-        alignment: Alignment.center,
-        child: Text(
-          "CALL",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
+      child: tokenMax == 0
+          ? Container()
+          : Container(
+              //width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              decoration: BoxDecoration(
+                  color: AppColor.mainBlue,
+                  borderRadius: BorderRadius.circular(4)),
+              alignment: Alignment.center,
+              child: Text(
+                "CALL",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
     );
   }
 
