@@ -1143,7 +1143,7 @@ def dept_services():
     branch_id = request.json["branch_id"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        if user["type"] == "company":
+        if user["type"] == "company" or user["type"] == "employee":
             r = cur.execute(
                 "Select * from branch_details WHERE id = '" + str(branch_id) + "'"
             )
@@ -2045,7 +2045,7 @@ def status_mtoken_chng():
                 "Select * from companydetails WHERE  id = '" + str(m["comp_id"]) + "'; "
             )
             k = cur.fetchone()
-            j=k["oneliner"]
+            j = k["oneliner"]
 
             lenids = len(dts)
             if lenids > 0:
