@@ -698,7 +698,7 @@ def gettokens_bookings(t_b, bname, branch_id, user_id):
         kk = str(bname) + "_" + str(branch_id)
         if t_b == "token":
             check = cur.execute(
-                "select * from "
+                "select COUNT(*) from "
                 + str(kk)
                 + " WHERE user_id ='"
                 + str(user_id)
@@ -707,15 +707,15 @@ def gettokens_bookings(t_b, bname, branch_id, user_id):
 
         if t_b == "booking":
             check = cur.execute(
-                "select * from "
+                "select COUNT(*) from "
                 + str(kk)
                 + " WHERE user_id ='"
                 + str(user_id)
                 + "' AND status ='onqueue';"
             )
-
+        rc = cur.fetchone()
         conn.commit()
-        if check:
+        if rc["COUNT(*)"] > 0:
             return 200
         return 403
 
