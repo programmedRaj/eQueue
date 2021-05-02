@@ -99,12 +99,34 @@ class _HomePageState extends State<HomePage> {
                                             authProv.authinfo.userType ==
                                                     UserEnum.Employee
                                                 ? authProv.authinfo
-                                                                .companyType ==
-                                                            CompanyEnum.Token ||
-                                                        authProv.authinfo
-                                                                .companyType ==
-                                                            CompanyEnum
-                                                                .MultiToken
+                                                            .companyType ==
+                                                        CompanyEnum.MultiToken
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          MultiTokens(
+                                                                            bid:
+                                                                                int.parse(valueb.bid),
+                                                                            token:
+                                                                                authProv.authinfo.jwtToken,
+                                                                            bname:
+                                                                                valueb.bname,
+                                                                          )));
+                                                        },
+                                                        child: _cards(
+                                                            "MutliTokens",
+                                                            "Edit/Manage Booking details"))
+                                                    : SizedBox()
+                                                : SizedBox(),
+                                            authProv.authinfo.userType ==
+                                                    UserEnum.Employee
+                                                ? authProv.authinfo
+                                                            .companyType ==
+                                                        CompanyEnum.Token
                                                     ? InkWell(
                                                         onTap: () {
                                                           Navigator.push(
@@ -117,6 +139,8 @@ class _HomePageState extends State<HomePage> {
                                                                                 int.parse(valueb.bid),
                                                                             token:
                                                                                 authProv.authinfo.jwtToken,
+                                                                            bname:
+                                                                                valueb.bname,
                                                                           )));
                                                         },
                                                         child: _cards("Token",

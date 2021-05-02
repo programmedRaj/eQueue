@@ -48,6 +48,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   TextEditingController _phoneC = TextEditingController();
   TextEditingController _counterC = TextEditingController();
   int couterCount = 1;
+  int chosenBranchId;
 
   @override
   void initState() {
@@ -97,6 +98,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
     branchesList.forEach((key, value) {
       if (key == widget.empDets.branchId) {
         _chosenBranch = value;
+        chosenBranchId = widget.empDets.branchId;
       }
     });
     if (departmentsList.contains(widget.empDets.services) ||
@@ -116,14 +118,17 @@ class _CreateEmployeeState extends State<CreateEmployee> {
     return Consumer<BranchDataProv>(
       builder: (context, bdp, child) {
         branchesList = bdp.branches;
-        bdp.branchesWithDetail?.forEach((element) {
-          if (authProv.authinfo.companyType == CompanyEnum.Token ||
-              authProv.authinfo.companyType ==
-                  CompanyEnum.MultiToken) if (element.branchId ==
-              widget.empDets.branchId) {
-            couterCount = num.parse(element.counter);
-          }
-        });
+        if ((true)) {
+          bdp.branchesWithDetail?.forEach((element) {
+            if (authProv.authinfo.companyType == CompanyEnum.Token ||
+                authProv.authinfo.companyType == CompanyEnum.MultiToken) {
+              if (element.branchId == widget.empDets?.branchId ||
+                  element.branchId == chosenBranchId) {
+                couterCount = num.parse(element.counter);
+              }
+            }
+          });
+        }
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
@@ -425,9 +430,11 @@ class _CreateEmployeeState extends State<CreateEmployee> {
         ),
         onChanged: (String val) {
           int _branchId;
+
           branchesList.forEach((key, value) {
             if (value == val) {
               _branchId = key;
+              chosenBranchId = _branchId;
             }
           });
           Provider.of<DeptDataProv>(context, listen: false).getDepts(

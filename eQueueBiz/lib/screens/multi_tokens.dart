@@ -1,8 +1,14 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/providers/all_multitoken.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MultiTokens extends StatefulWidget {
+  final int bid;
+  final String token;
+  final String bname;
+  MultiTokens({this.bid, this.token, this.bname});
   @override
   _MultiTokensState createState() => _MultiTokensState();
 }
@@ -11,57 +17,70 @@ class _MultiTokensState extends State<MultiTokens> {
   double _currentSliderValue = 0.0;
 
   @override
+  void initState() {
+    Provider.of<AllMToken>(context, listen: false)
+        .getTokeMndets(widget.bid.toString(), widget.bname, widget.token);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          "Tokens",
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: Container(
-          alignment: Alignment.center,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 1200),
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.38,
-                  ),
-                  Center(
-                    child: Slider(
-                      value: _currentSliderValue,
-                      min: 0,
-                      max: 100,
-                      divisions: 10,
-                      label: _currentSliderValue.round().toString(),
-                      activeColor: Colors.green,
-                      onChanged: (double value) {
-                        setState(() {
-                          _currentSliderValue = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Spacer(),
-                  Align(alignment: Alignment.bottomCenter, child: _callButton())
-                ],
+    return Consumer<AllMToken>(
+      builder: (context, value, child) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
               ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-          )),
+            title: Text(
+              "Tokens",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          body: Container(
+              alignment: Alignment.center,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 1200),
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.38,
+                      ),
+                      Center(
+                        child: Slider(
+                          value: _currentSliderValue,
+                          min: 0,
+                          max: 100, //idr var,.
+                          divisions: 10,
+                          label: _currentSliderValue.round().toString(),
+                          activeColor: Colors.green,
+                          onChanged: (double value) {
+                            setState(() {
+                              _currentSliderValue = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Spacer(),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: _callButton())
+                    ],
+                  ),
+                ),
+              )),
+        );
+      },
     );
   }
 

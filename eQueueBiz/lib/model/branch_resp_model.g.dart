@@ -42,12 +42,14 @@ BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
 List<String> getDepts(Map json) {
   var temp;
   List tempList = [];
+  List<String> tempLString = [];
   temp = (jsonDecode(json['department'] ?? "{}"));
   tempList = temp['department'];
+  tempList.forEach((element) {
+    tempLString.add(element as String);
+  });
 
-  return tempList?.map((e) {
-    e.toString();
-  })?.toList();
+  return tempLString;
 }
 
 Map<String, dynamic> _$BranchRespModelToJson(BranchRespModel instance) =>

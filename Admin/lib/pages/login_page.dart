@@ -5,6 +5,7 @@ import 'package:equeue_admin/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,10 +16,33 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailControler = TextEditingController();
   TextEditingController passwordControler = TextEditingController();
   String lang;
+  String email;
+  String pass;
+  bool procAutoLogin = true;
 
   @override
   void initState() {
     super.initState();
+    getEmailPassword();
+  }
+
+  getEmailPassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    email = prefs.getString("email");
+    pass = prefs.getString("pass");
+    if (email != null && pass != null) {
+      Provider.of<LoginProv>(context, listen: false)
+          .executeLogin(email, pass)
+          .then((value) {
+        setState(() {
+          procAutoLogin = false;
+        });
+      });
+    } else {
+      setState(() {
+        procAutoLogin = false;
+      });
+    }
   }
 
   @override
@@ -27,6 +51,11 @@ class _LoginPageState extends State<LoginPage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(body: Consumer<LoginProv>(
         builder: (context, value, child) {
+          if (procAutoLogin) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           if (value.success) {
             SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
               Navigator.pushReplacement(

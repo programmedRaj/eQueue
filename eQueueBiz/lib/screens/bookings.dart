@@ -3,7 +3,7 @@ import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/model/bookinh_model.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/booking_prov.dart';
-import 'package:equeuebiz/providers/sort_check.dart';
+import 'package:equeuebiz/providers/status_booking.dart';
 import 'package:equeuebiz/screens/userdets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

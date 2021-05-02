@@ -1,11 +1,12 @@
 import 'package:equeuebiz/check.dart';
+import 'package:equeuebiz/providers/all_tokens.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/biz_details.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
 import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:equeuebiz/providers/emp_data_provider.dart';
-import 'package:equeuebiz/providers/sort_check.dart';
+import 'package:equeuebiz/providers/status_booking.dart';
 import 'package:equeuebiz/providers/token_dep_prov.dart';
 import 'package:equeuebiz/screens/login_page.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,10 @@ import 'package:provider/provider.dart';
 import 'locale/app_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'providers/all_multitoken.dart';
 import 'providers/booking_prov.dart';
 import 'providers/booking_userdets.dart';
+import 'providers/status_token.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,10 +32,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: DeptTokenDataProv()),
+        ChangeNotifierProvider.value(value: AllToken()),
+        ChangeNotifierProvider.value(value: AllMToken()),
         ChangeNotifierProvider.value(value: BookingDet()),
         ChangeNotifierProvider.value(value: BizUserDets()),
         ChangeNotifierProvider.value(value: SortCheck()),
         ChangeNotifierProvider.value(value: BookingDetUserDets()),
+        ChangeNotifierProvider.value(value: TokenStatus()),
         ChangeNotifierProvider<AuthProv>(
           create: (context) => AuthProv(),
         ),

@@ -5,6 +5,7 @@ import 'package:equeue_admin/providers/company_full_dets_prov.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:equeue_admin/providers/login_prov.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/home/home.dart';
 import 'widgets/color.dart';
 
@@ -48,6 +49,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String email;
+  String pass;
+
   @override
   void initState() {
     super.initState();
