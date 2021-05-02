@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun 23 17:56:30 2020
-
-@author: user
-"""
 import json
 import pymysql
 import jwt
@@ -1717,7 +1711,9 @@ def all_tokens():
             r = cur.fetchone()
             if r:
                 all_tokens = cur.execute(
-                    "Select * from " + str(branch_name + "_" + str(branch_id)) + ""
+                    "Select * from "
+                    + str(branch_name + "_" + str(branch_id))
+                    + " WHERE NOT(status = 'cancelled')"
                 )
                 if all_tokens:
                     resp = jsonify({"tokens": cur.fetchall()})
@@ -1821,17 +1817,17 @@ def status_token_chng():
                 ids.append(row["id"])
                 dts.append(row["device_token"])
 
-            index = ids.index(int(booking_id))
-            lenids = len(ids)
-            if index == 0:
-                print("send msg notification.")
+            # index = ids.index(int(booking_id))
+            # lenids = len(ids)
+            # if index == 0:
+            #     print("send msg notification.")
 
-            else:
-                m = index
-                for i in range(0, lenids):
-                    if m > 0:
-                        m = m - 1
-                        print("send notification. to dts[m]")
+            # else:
+            #     m = index
+            #     for i in range(0, lenids):
+            #         if m > 0:
+            #             m = m - 1
+            #             print("send notification. to dts[m]")
 
             r = cur.execute(
                 "UPDATE "
@@ -3022,7 +3018,7 @@ def my_tokens_bookings():
             r = cur.execute(
                 "Select * from bookingshistory WHERE user_id = "
                 + str(user["user_id"])
-                + " AND NOT('status' = 'cancelled')"
+                + " AND NOT(status = 'cancelled')"
             )
             texti = "No bookings found"
             textin = "bookings"
@@ -3030,7 +3026,7 @@ def my_tokens_bookings():
             r = cur.execute(
                 "Select * from tokenshistory WHERE user_id = "
                 + str(user["user_id"])
-                + " AND NOT('status' = 'cancelled')"
+                + " AND NOT(status = 'cancelled')"
             )
             texti = "No tokens found"
             textin = "tokens"
