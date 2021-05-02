@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'locale/app_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'providers/all_multitoken.dart';
 import 'providers/booking_prov.dart';
 import 'providers/booking_userdets.dart';
 import 'providers/status_token.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: DeptTokenDataProv()),
         ChangeNotifierProvider.value(value: AllToken()),
+        ChangeNotifierProvider.value(value: AllMToken()),
         ChangeNotifierProvider.value(value: BookingDet()),
         ChangeNotifierProvider.value(value: BizUserDets()),
         ChangeNotifierProvider.value(value: SortCheck()),

@@ -85,6 +85,7 @@ class BranchDataProv extends ChangeNotifier {
       }
       for (var item in decodedResp['branches']) {
         branchesWithDetail.add(BranchRespModel.fromJson(item));
+        print(branchesWithDetail);
       }
       isLoading = false;
       notifyListeners();

@@ -102,8 +102,10 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     _provinceController.text = widget.branchDets.province;
     _phoneNoController.text = widget.branchDets.phoneNo;
     _postalCodeController.text = widget.branchDets.postalCode;
+    _thresholdController.text = widget.branchDets.threshold;
+    _counterController.text = widget.branchDets.counter;
     _timezoneController.value =
-        TextEditingValue(text: widget.branchDets.timeZone);
+        TextEditingValue(text: widget.branchDets?.timeZone ?? "");
 
     _geoLocationController.text = widget.branchDets.geoLoaction;
     if (Provider.of<AuthProv>(context, listen: false).authinfo.companyType ==
@@ -117,8 +119,10 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     }
     wrkingHrsPrefill();
 
-    for (var i = 0; i < 6; i++) {
-      noofBookingsC[i].text = widget.branchDets.bookingPerday[i];
+    if (widget.branchDets.bookingPerday.isNotEmpty) {
+      for (var i = 0; i < 6; i++) {
+        noofBookingsC[i].text = widget.branchDets.bookingPerday[i];
+      }
     }
   }
 

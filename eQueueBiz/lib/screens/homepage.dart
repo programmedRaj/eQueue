@@ -106,14 +106,16 @@ class _HomePageState extends State<HomePage> {
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
-                                                                  builder: (context) => MultiTokens(
-                                                                      // bid:
-                                                                      //     int.parse(valueb.bid),
-                                                                      // token:
-                                                                      //     authProv.authinfo.jwtToken,
-                                                                      // bname:
-                                                                      //     valueb.bname,
-                                                                      )));
+                                                                  builder:
+                                                                      (context) =>
+                                                                          MultiTokens(
+                                                                            bid:
+                                                                                int.parse(valueb.bid),
+                                                                            token:
+                                                                                authProv.authinfo.jwtToken,
+                                                                            bname:
+                                                                                valueb.bname,
+                                                                          )));
                                                         },
                                                         child: _cards(
                                                             "MutliTokens",

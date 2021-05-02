@@ -23,7 +23,7 @@ class BookingBranDet with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    print('--- $n');
+
     bid = n['bid'];
     bname = n['bname'];
   }
