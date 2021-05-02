@@ -72,7 +72,7 @@ abstract class  LocaleKeys {
   static const Fill_Missing_Value = 'Fill_Missing_Value';
   static const ADD = 'ADD';
   static const Select_a_Branch = 'Select_a_Branch';
-  static const Select_a_Department/Service = 'Select_a_Department/Service';
+  static const Select_a_DepartmentService = 'Select_a_DepartmentService';
   static const Employees = 'Employees';
   static const No_employees_to_display = 'No_employees_to_display';
   static const Something_went_wrong = 'Something_went_wrong';
@@ -101,10 +101,9 @@ abstract class  LocaleKeys {
   static const Tokens = 'Tokens';
   static const CALL = 'CALL';
   static const Token_Number = 'Token_Number';
-  static const Privacy Policy = 'Privacy Policy';
   static const Save = 'Save';
   static const Settings = 'Settings';
-  static const Log Out = 'Log Out';
+  static const LogOut = 'LogOut';
   static const Profile = 'Profile';
   static const Acc_Name = 'Acc_Name';
   static const Acc_No = 'Acc_No';
@@ -113,9 +112,9 @@ abstract class  LocaleKeys {
   static const Ifsc = 'Ifsc';
   static const Type = 'Type';
   static const Select = 'Select';
-  static const Token Number = 'Token Number';
-  static const Select a status = 'Select a status';
-  static const User Details = 'User Details';
+  static const TokenNumber = 'TokenNumber';
+  static const Selectastatus = 'Selectastatus';
+  static const UserDetails = 'UserDetails';
   static const Are_you_sure = 'Are_you_sure';
   static const Do_you_want_to_exit_an_App = 'Do_you_want_to_exit_an_App';
   static const NO = 'NO';
