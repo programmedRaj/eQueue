@@ -560,7 +560,36 @@ def biz_details():
         )
         if check:
             r = cur.fetchone()
-            resp = jsonify({"details": r})
+            check = cur.execute(
+                "Select COUNT(id) FROM branch_details WHERE comp_id ='"
+                + str(user["id"])
+                + "';"
+            )
+            counterbranches = cur.fetchone()
+            countb = counterbranches["COUNT(id)"]
+            checkk = cur.execute(
+                "Select id,profile_photo_url FROM branch_details WHERE comp_id ='"
+                + str(user["id"])
+                + "';"
+            )
+            r = cur.fetchall()
+            k = []
+            for row in r:
+                k.append(row["id"])
+
+            deptcounter = 0
+            for i in range(0, len(k)):
+                cur.execute(
+                    "Select COUNT(employee_id) FROM employee_details WHERE branch_id ='"
+                    + str(k[i])
+                    + "';"
+                )
+                ec = cur.fetchone()
+                deptcounter = deptcounter + int(ec["COUNT(employee_id)"])
+
+            resp = jsonify(
+                {"details": r, "counterbranches": countb, "counteremps": deptcounter}
+            )
             resp.status_code = 200
             return resp
         else:
@@ -871,9 +900,7 @@ def create_branch():
                         )  # threshold, department
 
                     elif user["comp_type"] == "multitoken":
-                        threshold = request.form["threshold"]
                         department = request.form["department"]
-                        counter = request.form["counter"]
 
                         op = eqbiz.create_branch(
                             user["comp_type"],
@@ -893,9 +920,9 @@ def create_branch():
                             0,
                             0,
                             filename,
-                            threshold,
+                            0,
                             department,
-                            counter,
+                            0,
                         )
 
                     elif user["comp_type"] == "token":
@@ -989,7 +1016,6 @@ def create_branch():
                             )
 
                         elif user["comp_type"] == "multitoken":
-                            threshold = request.form["threshold"]
                             department = request.form["department"]
                             op = eqbiz.edit_branch(
                                 user["comp_type"],
@@ -1010,7 +1036,7 @@ def create_branch():
                                 0,
                                 0,
                                 filename,
-                                threshold,
+                                0,
                                 department,
                                 0,
                             )
