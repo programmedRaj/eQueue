@@ -1,7 +1,10 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
+import 'package:equeuebiz/model/all_tokens.dart';
+import 'package:equeuebiz/providers/all_tokens.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
+import 'package:equeuebiz/providers/status_token.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,21 +12,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Tokens extends StatefulWidget {
   final int bid;
   final String token;
-  Tokens({this.bid, this.token});
+  final String bname;
+  Tokens({this.bid, this.token, this.bname});
   @override
   _TokensState createState() => _TokensState();
 }
 
 class _TokensState extends State<Tokens> {
-  List<String> tokenStatusList = ["Call", "Complete", "Cancel"];
-  String tokenStatus;
+  List<String> tokenStatusList = [
+    'onqueue',
+    'ongoing',
+    'completed',
+    'cancelled',
+  ];
+  String _chosen;
   AuthProv authProv;
   String selectedDept;
+  List<TokenAll> tok = [];
 
   @override
   void initState() {
     Provider.of<DeptDataProv>(context, listen: false)
         .getDepts(widget.token, widget.bid);
+    Provider.of<AllToken>(context, listen: false)
+        .getTokendets(widget.bid.toString(), widget.bname, widget.token);
     super.initState();
   }
 
@@ -31,36 +43,48 @@ class _TokensState extends State<Tokens> {
   Widget build(BuildContext context) {
     return Consumer<DeptDataProv>(
       builder: (context, value, child) {
-        print(value.deptsList);
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            title: Text(
-              "Tokens",
-              style: TextStyle(color: Colors.black),
-            ),
-            actions: [_departmentFilter(value.deptsList)],
-          ),
-          body: Container(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 1200),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [_tokenCard()],
+        return Consumer<AllToken>(
+          builder: (context, value1, child) {
+            if (selectedDept != null) {
+              tok = value1.tok
+                  .where((element) => element.department == selectedDept)
+                  .toList();
+            }
+            return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.white,
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
+                  title: Text(
+                    "Tokens",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  actions: [_departmentFilter(value.deptsList)],
                 ),
-              )),
+                body: value1.toks.length < 0 || value1.toks.isEmpty
+                    ? Container(
+                        child: Center(
+                          child: Text('No tokens found '),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: selectedDept == null
+                            ? value1.toks.length
+                            : tok.length,
+                        itemBuilder: (context, index) {
+                          return selectedDept == null
+                              ? _tokenCard(value1.toks[index])
+                              : _tokenCard(tok[index]);
+                        },
+                      ));
+          },
         );
       },
     );
@@ -104,7 +128,7 @@ class _TokensState extends State<Tokens> {
     );
   }
 
-  Widget _tokenCard() {
+  Widget _tokenCard(TokenAll tokenL) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -118,7 +142,7 @@ class _TokensState extends State<Tokens> {
           children: [
             Center(
               child: Text(
-                "Token Number",
+                "${tokenL.department}-${tokenL.id}",
                 style: blackBoldFS16,
               ),
             ),
@@ -127,37 +151,20 @@ class _TokensState extends State<Tokens> {
             ),
             //Text("Token desc  s SD<C S<JD JC S<JDBC<JSB<JC "),
             Divider(),
+
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  border: Border.all(color: AppColor.mainBlue)),
-              child: Text(
-                "Department : Ban",
-                style: TextStyle(
-                    color: AppColor.mainBlue, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                  border: Border.all(color: AppColor.mainBlue),
-                  borderRadius: BorderRadius.circular(4)),
               child: DropdownButton<String>(
-                underline: SizedBox(),
-                isExpanded: true,
                 focusColor: Colors.white,
-                value: tokenStatus,
+                value: _chosen == null ? tokenL.status : _chosen,
                 //elevation: 5,
                 style: TextStyle(color: Colors.white),
                 iconEnabledColor: Colors.black,
-                items: tokenStatusList
-                    .map<DropdownMenuItem<String>>((String value) {
+                items: <String>[
+                  'onqueue',
+                  'ongoing',
+                  'completed',
+                  'cancelled',
+                ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(
@@ -167,7 +174,7 @@ class _TokensState extends State<Tokens> {
                   );
                 }).toList(),
                 hint: Text(
-                  "Select a status",
+                  "Status",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 14,
@@ -175,11 +182,21 @@ class _TokensState extends State<Tokens> {
                 ),
                 onChanged: (String value) {
                   setState(() {
-                    tokenStatus = value;
+                    _chosen = value;
                   });
+                  Provider.of<TokenStatus>(context, listen: false)
+                      .getTokenstatusdets(
+                    bid: widget.bid.toString(),
+                    bname: widget.bname,
+                    status: value,
+                    bookingid: tokenL.id,
+                    userid: tokenL.userid,
+                    dep: tokenL.department.substring(0, 3),
+                    dt: tokenL.devicetoken,
+                  );
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -214,7 +231,7 @@ class _TokensState extends State<Tokens> {
     return InkWell(
       onTap: () {
         setState(() {
-          tokenStatus = text;
+          _chosen = text;
         });
         Navigator.pop(context);
       },

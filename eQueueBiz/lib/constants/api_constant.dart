@@ -34,4 +34,5 @@ class BookingApi {
 
 class TokenApi {
   static const tokendetails = "http://91.99.96.87:8080/all_tokens";
+  static const tokenchange = "http://91.99.96.87:8080/status_token_chng";
 }

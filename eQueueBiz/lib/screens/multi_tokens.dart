@@ -45,7 +45,7 @@ class _MultiTokensState extends State<MultiTokens> {
                     child: Slider(
                       value: _currentSliderValue,
                       min: 0,
-                      max: 100,
+                      max: 100, //idr var,.
                       divisions: 10,
                       label: _currentSliderValue.round().toString(),
                       activeColor: Colors.green,

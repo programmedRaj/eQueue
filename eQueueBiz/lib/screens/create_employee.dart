@@ -116,14 +116,16 @@ class _CreateEmployeeState extends State<CreateEmployee> {
     return Consumer<BranchDataProv>(
       builder: (context, bdp, child) {
         branchesList = bdp.branches;
-        bdp.branchesWithDetail?.forEach((element) {
-          if (authProv.authinfo.companyType == CompanyEnum.Token ||
-              authProv.authinfo.companyType ==
-                  CompanyEnum.MultiToken) if (element.branchId ==
-              widget.empDets.branchId) {
-            couterCount = num.parse(element.counter);
-          }
-        });
+        if (widget.uporadd) {
+          bdp.branchesWithDetail?.forEach((element) {
+            if (authProv.authinfo.companyType == CompanyEnum.Token ||
+                authProv.authinfo.companyType == CompanyEnum.MultiToken) {
+              if (element.branchId == widget.empDets.branchId) {
+                couterCount = num.parse(element.counter);
+              }
+            }
+          });
+        }
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
