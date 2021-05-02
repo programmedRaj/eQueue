@@ -65,7 +65,9 @@ class _HomePageState extends State<HomePage> {
             actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
           ), */
                     body: Consumer<BookingBranDet>(
-                      builder: (context, value, child) {
+                      builder: (context, valueb, child) {
+                        print(authProv.authinfo.userType);
+                        print(authProv.authinfo.companyType);
                         return SafeArea(
                           child: Container(
                               alignment: Alignment.center,
@@ -110,10 +112,14 @@ class _HomePageState extends State<HomePage> {
                                                               MaterialPageRoute(
                                                                   builder:
                                                                       (context) =>
-                                                                          Tokens()));
+                                                                          Tokens(
+                                                                            bid:
+                                                                                int.parse(valueb.bid),
+                                                                            token:
+                                                                                authProv.authinfo.jwtToken,
+                                                                          )));
                                                         },
-                                                        child: _cards(
-                                                            "Bookings",
+                                                        child: _cards("Token",
                                                             "Edit/Manage Booking details"))
                                                     : SizedBox()
                                                 : SizedBox(),
@@ -131,9 +137,10 @@ class _HomePageState extends State<HomePage> {
                                                                     (context) =>
                                                                         Bookings(
                                                                   branchid:
-                                                                      value.bid,
+                                                                      valueb
+                                                                          .bid,
                                                                   branchname:
-                                                                      value
+                                                                      valueb
                                                                           .bname,
                                                                   token: authProv
                                                                       .authinfo

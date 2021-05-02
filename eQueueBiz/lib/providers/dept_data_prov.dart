@@ -12,10 +12,12 @@ class DeptDataProv extends ChangeNotifier {
   List<String> deptsList = [];
 
   Future<List<String>> getDepts(String jwtToken, int branchId) async {
+    print(jwtToken);
     var header = {
       'Content-Type': 'application/json',
       'Authorization': jwtToken
     };
+    print(branchId);
     var postBody = {'branch_id': branchId};
     try {
       var resp = await httpPostRequest(DepartmentApi.getDept, header, postBody);
@@ -23,12 +25,13 @@ class DeptDataProv extends ChangeNotifier {
       error = false;
       deptsList = [];
       notifyListeners();
+      var decodedResp = jsonDecode(resp.body);
+      print(decodedResp);
       if (resp.statusCode == 200) {
-        var decodedResp = jsonDecode(resp.body);
-        print(decodedResp);
         if (decodedResp['services'] == null) {
           for (var item in decodedResp['departments']) {
             deptsList.add(item);
+            print('dep dep ${decodedResp['departments']}');
           }
         }
         if (decodedResp['services'] != null) {
