@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equeuebiz/check.dart';
 import 'package:equeuebiz/providers/all_tokens.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
@@ -18,9 +19,30 @@ import 'providers/all_multitoken.dart';
 import 'providers/booking_prov.dart';
 import 'providers/booking_userdets.dart';
 import 'providers/status_token.dart';
+import 'translations/codegen_loader.g.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await EasyLocalization.ensureInitialized();
+
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  runApp(
+    EasyLocalization(
+      fallbackLocale: Locale('en', 'US'),
+      assetLoader: CodegenLoader(),
+      child: MyApp(),
+      supportedLocales: [
+        Locale('en', 'US'), //english
+        Locale('es', 'ES'), // spanish
+        Locale('ar', 'AR'), // Arabic
+        Locale('fr', 'FR'), // french
+        Locale('fa', 'FA'),
+        Locale('hi', 'IN'),
+      ],
+      path: 'lib/assets/translations',
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -56,21 +78,11 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        localizationsDelegates: [
-          GlobalCupertinoLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          _localeOverrideDelegate
-        ],
-        supportedLocales: [
-          const Locale('en', 'US'), //english
-          const Locale('es', 'ES'), // spanish
-          const Locale('ar', 'AR'), // Arabic
-          const Locale('fr', 'FR'), // french
-          const Locale('fa', 'FA'), // farsi
-        ],
-        title: 'eQueue Biz',
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         debugShowCheckedModeBanner: false,
+        title: 'eQueue Biz',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
