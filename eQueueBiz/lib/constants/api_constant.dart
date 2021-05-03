@@ -39,4 +39,5 @@ class TokenApi {
 
 class MutliTokenApi {
   static const allmulti = 'http://91.99.96.87:8080/allmulti_tokens';
+  static const callmulti = 'http://91.99.96.87:8080/status_mtoken_chng';
 }

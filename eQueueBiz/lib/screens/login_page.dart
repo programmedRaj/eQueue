@@ -7,6 +7,7 @@ import 'package:equeuebiz/providers/forgot_pass_prov.dart';
 import 'package:equeuebiz/screens/forgot_password.dart';
 import 'package:equeuebiz/screens/homepage.dart';
 import 'package:equeuebiz/services/app_toast.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    getlang();
   }
 
   // executeLogin(String email, String password) async {
@@ -42,26 +42,6 @@ class _LoginPageState extends State<LoginPage> {
   //     print(e);
   //   }
   // }
-
-  getlang() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      lang = prefs.getString('language');
-    });
-    if (lang == 'French') {
-      AppLocalization.load(Locale('fr', 'FR'));
-    } else if (lang == 'Spanish') {
-      AppLocalization.load(Locale('es', 'ES'));
-    } else if (lang == 'فارسی(Persian)') {
-      AppLocalization.load(Locale('fa', 'FA'));
-    } else if (lang == 'عربی(Arabic)') {
-      AppLocalization.load(Locale('ar', 'AR'));
-    } else if (lang == 'English') {
-      AppLocalization.load(Locale('en', 'US'));
-    } else {
-      AppLocalization.load(Locale('en', 'US'));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                                             ),
                                           )
                                         : Text(
-                                            AppLocalization.of(context).login,
+                                            'Login',
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
@@ -184,8 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ));
                                 },
                                 child: Text(
-                                  AppLocalization.of(context).forgetpassword +
-                                      " ?",
+                                  "Forgot password ?",
                                   style: TextStyle(color: Colors.white),
                                 ),
                               )

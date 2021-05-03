@@ -4,6 +4,7 @@ import 'package:equeuebiz/providers/all_tokens.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/biz_details.dart';
 import 'package:equeuebiz/providers/branches_data_prov.dart';
+import 'package:equeuebiz/providers/call_multitoken.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
 import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:equeuebiz/providers/emp_data_provider.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: DeptTokenDataProv()),
+        ChangeNotifierProvider.value(value: CallMToken()),
         ChangeNotifierProvider.value(value: AllToken()),
         ChangeNotifierProvider.value(value: AllMToken()),
         ChangeNotifierProvider.value(value: BookingDet()),

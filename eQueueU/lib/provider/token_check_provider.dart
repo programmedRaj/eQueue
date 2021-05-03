@@ -16,10 +16,13 @@ class TokenChecker with ChangeNotifier {
       {String branchname, int branchid, String tokenorbooking}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
+    print(tokenorbooking);
+
     var map = new Map<String, dynamic>();
     map['branch_name'] = branchname;
     map['branch_id'] = branchid.toString();
-    map['token_or_booking'] = tokenorbooking;
+    map['token_or_booking'] =
+        tokenorbooking == 'multitoken' ? 'token' : tokenorbooking;
 
     var response = await retry(
       () => http

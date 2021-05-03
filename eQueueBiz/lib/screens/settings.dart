@@ -1,9 +1,13 @@
 import 'package:equeuebiz/constants/appcolor.dart';
-import 'package:equeuebiz/locale/app_localization.dart';
 import 'package:equeuebiz/screens/change_password.dart';
 import 'package:equeuebiz/screens/login_page.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import '../check.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -11,10 +15,27 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  List<String> languagesList = ["English", "Hindi", "Spanish", "French"];
+  String lang;
+  String _picked;
+
+  langs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _picked = prefs.getString('language');
+    });
+  }
+
+  List<String> languagesList = [
+    'English',
+    'Hindi',
+    'عربی(Arabic)',
+    'French',
+    'Spanish',
+  ];
   String _chosenLanguage = "English";
   @override
   Widget build(BuildContext context) {
+    langs();
     return Scaffold(
       appBar: whiteAppBar(context, "Settings"),
       body: ConstrainedBox(
@@ -41,47 +62,87 @@ class _SettingsState extends State<Settings> {
 
   Widget _languageDropdown() {
     return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-          border: Border.all(color: AppColor.mainBlue),
-          borderRadius: BorderRadius.circular(4)),
-      child: DropdownButton<String>(
-        underline: SizedBox(),
-        isExpanded: true,
-        focusColor: Colors.white,
-        value: _chosenLanguage,
-        //elevation: 5,
-        style: TextStyle(color: Colors.white),
-        iconEnabledColor: Colors.black,
-        items: languagesList.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: TextStyle(color: Colors.black),
-            ),
-          );
-        }).toList(),
-        hint: Text(
-          "Select a Branch",
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        onChanged: (String value) {
-          setState(() {
-            _chosenLanguage = value;
-            if (value == "French") {
-              AppLocalization.load(Locale('fr', 'FR'));
-            }
-            if (value == "Spanish") {
-              AppLocalization.load(Locale('es', 'ES'));
-            }
-          });
-        },
-      ),
-    );
+        margin: EdgeInsets.only(top: 20),
+        child: RadioButtonGroup(
+          activeColor: AppColor.mainBlue,
+          picked: _picked,
+          onSelected: (String selected) async {
+            setState(() {
+              _picked = selected;
+            });
+            setState(() async {
+              if (_picked == 'English') {
+                this.setState(() async {
+                  await context.setLocale(
+                    Locale('en', 'US'),
+                  );
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setString('language', 'English');
+
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (ctx) => Check()));
+                });
+              } else if (_picked == 'Hindi') {
+                this.setState(() async {
+                  await context.setLocale(
+                    Locale('hi', 'IN'),
+                  );
+
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (ctx) => Check()));
+                  prefs.setString('language', 'Hindi');
+                });
+              } else if (_picked == 'عربی(Arabic)') {
+                this.setState(() async {
+                  await context.setLocale(
+                    Locale('ar', 'AR'),
+                  );
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (ctx) => Check()));
+                  prefs.setString('language', 'عربی(Arabic)');
+                });
+              } else if (_picked == 'French') {
+                this.setState(() async {
+                  await context.setLocale(
+                    Locale('fr', 'FR'),
+                  );
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setString('language', 'French');
+
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (ctx) => Check()));
+                });
+              } else if (_picked == 'Spanish') {
+                this.setState(() async {
+                  await context.setLocale(
+                    Locale('es', 'ES'),
+                  );
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setString('language', 'Spanish');
+
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (ctx) => Check()));
+                });
+              }
+            });
+          },
+          labels: <String>[
+            'English',
+            'Hindi',
+            'عربی(Arabic)',
+            'French',
+            'Spanish',
+          ],
+        ));
   }
 
   Widget _changePass() {

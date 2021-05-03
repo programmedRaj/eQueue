@@ -11,12 +11,14 @@ import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:equeuebiz/screens/bookings.dart';
 import 'package:equeuebiz/screens/branches.dart';
 import 'package:equeuebiz/screens/employees.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equeuebiz/screens/multi_tokens.dart';
 import 'package:equeuebiz/screens/privacypolicy.dart';
 import 'package:equeuebiz/screens/profile.dart';
 import 'package:equeuebiz/screens/settings.dart';
 import 'package:equeuebiz/screens/tnc.dart';
 import 'package:equeuebiz/screens/tokens.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     Provider.of<AuthProv>(context, listen: false)
         .execLogin(email, password)
         .then((value) {
-      // Provider.of<BizUserDets>(context, listen: false).getBizUserdets();
+      Provider.of<BizUserDets>(context, listen: false).getBizUserdets();
     });
   }
 
@@ -45,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Consumer<BizUserDets>(
       builder: (context, bizdets, child) {
+        print('${bizdets.counterbranches} kya');
         return Consumer<AuthProv>(
           builder: (context, authProv, child) {
             // print(authProv.authinfo.companyType);
@@ -76,7 +79,14 @@ class _HomePageState extends State<HomePage> {
                                 child: Column(
                                   children: [
                                     _profileWidget(authProv, bizdets.ss),
-                                    _branchEmployee(),
+                                    authProv.authinfo.userType ==
+                                            UserEnum.Company
+                                        ? bizdets.counterbranches == null
+                                            ? _branchEmployee(0, 0)
+                                            : _branchEmployee(
+                                                bizdets.counterbranches,
+                                                bizdets.counteremps)
+                                        : SizedBox(),
                                     Expanded(
                                       child: SingleChildScrollView(
                                         child: Column(
@@ -93,8 +103,12 @@ class _HomePageState extends State<HomePage> {
                                                                     Branches(),
                                                           ));
                                                     },
-                                                    child: _cards("Branches",
-                                                        "Edit/Manage branches details"))
+                                                    child: _cards(
+                                                        LocaleKeys.Branches
+                                                            .tr(),
+                                                        LocaleKeys
+                                                                .Edit_Manage_branches_details
+                                                            .tr()))
                                                 : SizedBox(),
                                             authProv.authinfo.userType ==
                                                     UserEnum.Employee
@@ -143,7 +157,9 @@ class _HomePageState extends State<HomePage> {
                                                                                 valueb.bname,
                                                                           )));
                                                         },
-                                                        child: _cards("Token",
+                                                        child: _cards(
+                                                            LocaleKeys.Tokens
+                                                                .tr(),
                                                             "Edit/Manage Booking details"))
                                                     : SizedBox()
                                                 : SizedBox(),
@@ -210,7 +226,8 @@ class _HomePageState extends State<HomePage> {
                                                             TermsCondition()));
                                               },
                                               child: _cards(
-                                                  "Terms & Conditions",
+                                                  LocaleKeys.Terms_Conditions
+                                                      .tr(),
                                                   "Click to view"),
                                             ),
                                           ],
@@ -267,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   children: [
                     Text(
-                      'b[0].name',
+                      'Hello',
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                     Text(userEnumToString(authProv.authinfo.userType))
@@ -293,7 +310,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _branchEmployee() {
+  Widget _branchEmployee(int cb, int ce) {
     return Container(
       decoration: BoxDecoration(
           color: AppColor.mainBlue,
@@ -309,7 +326,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   Text(
-                    "0",
+                    cb.toString(),
                     style: whiteColorBoldFS20,
                   ),
                   SizedBox(
@@ -334,7 +351,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   Text(
-                    "0",
+                    ce.toString(),
                     style: whiteColorBoldFS20,
                   ),
                   SizedBox(
