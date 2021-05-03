@@ -588,7 +588,12 @@ def biz_details():
                 deptcounter = deptcounter + int(ec["COUNT(employee_id)"])
 
             resp = jsonify(
-                {"details": rows, "counterbranches": countb, "counteremps": deptcounter}
+                {
+                    "details": rows,
+                    "counterbranches": countb,
+                    "counteremps": deptcounter,
+                    "cname": rows["name"],
+                }
             )
             resp.status_code = 200
             return resp
