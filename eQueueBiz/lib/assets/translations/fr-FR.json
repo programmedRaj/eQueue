@@ -116,5 +116,11 @@
   "Are_you_sure": "Êtes-vous sûr?",
   "Do_you_want_to_exit_an_App": "Voulez-vous quitter une application",
   "NO": "NON",
-  "YES": "OUI"
+  "YES": "OUI",
+  "LogIn": "Connexion",
+  "ForgetPassword": "Mot de passe oublié",
+  "Multitoken": "Jeton multiple",
+  "EditManagetokendetails": "Modifier / gérer les détails des jetons",
+  "EditManageMultitoken_details": "Modifier / gérer les détails de plusieurs jetons",
+  "Pleaseselectvaluegreaterthan": "Veuillez sélectionner une valeur supérieure à 0"
 }

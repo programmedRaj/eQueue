@@ -116,5 +116,11 @@
   "Are_you_sure": "هل أنت واثق؟",
   "Do_you_want_to_exit_an_App": "هل تريد الخروج من التطبيق",
   "NO": "لا",
-  "YES": "نعم"
+  "YES": "نعم",
+  "LogIn": "تسجيل الدخول",
+  "ForgetPassword": "نسيت كلمة المرور",
+  "Multitoken": "متعدد الرموز",
+  "EditManagetokendetails": "تحرير / إدارة تفاصيل الرمز المميز",
+  "EditManageMultitoken_details": "تحرير / إدارة تفاصيل الرموز المتعددة",
+  "Pleaseselectvaluegreaterthan": "الرجاء تحديد قيمة أكبر من 0"
 }

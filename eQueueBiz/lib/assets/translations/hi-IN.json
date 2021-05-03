@@ -116,5 +116,11 @@
   "Are_you_sure": "क्या आपको यकीन है?",
   "Do_you_want_to_exit_an_App": "क्या आप किसी ऐप से बाहर निकलना चाहते हैं",
   "NO": "नहीं न",
-  "YES": "हाँ"
+  "YES": "हाँ",
+  "LogIn": "लॉग इन करें",
+  "ForgetPassword": "पासवर्ड भूल गए",
+  "Multitoken": "मल्टी टोकन",
+  "EditManagetokendetails": "संपादित करें / टोकन विवरण प्रबंधित करें",
+  "EditManageMultitoken_details": "मल्टी टोकन विवरण संपादित / प्रबंधित करें",
+  "Pleaseselectvaluegreaterthan": "कृपया 0 से अधिक मूल्य का चयन करें"
 }

@@ -116,5 +116,11 @@
   "Are_you_sure": "¿Está seguro?",
   "Do_you_want_to_exit_an_App": "¿Quieres salir de una aplicación?",
   "NO": "NO",
-  "YES": "SÍ"
+  "YES": "SÍ",
+  "LogIn": "Acceso",
+  "ForgetPassword": "Contraseña olvidada",
+  "Multitoken": "Token múltiple",
+  "EditManagetokendetails": "Editar / administrar los detalles del token",
+  "EditManageMultitoken_details": "Editar / administrar detalles de token múltiple",
+  "Pleaseselectvaluegreaterthan": "Seleccione un valor mayor que 0"
 }
