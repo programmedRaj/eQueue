@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:equeuebiz/providers/emp_data_provider.dart';
 import 'package:equeuebiz/services/app_toast.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:equeuebiz/constants/api_constant.dart';
-import 'package:equeuebiz/model/branch_model.dart';
 import 'package:equeuebiz/model/branch_resp_model.dart';
 import 'package:equeuebiz/services/http_services.dart';
 import 'package:flutter/cupertino.dart';

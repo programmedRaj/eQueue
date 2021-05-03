@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:equeuebiz/constants/api_constant.dart';
-import 'package:equeuebiz/model/branch_model.dart';
 import 'package:equeuebiz/services/http_services.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart';
 
 class DeptDataProv extends ChangeNotifier {
   bool isLoading = false;

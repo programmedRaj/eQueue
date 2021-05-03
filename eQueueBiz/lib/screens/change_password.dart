@@ -1,6 +1,4 @@
 import 'package:equeuebiz/constants/appcolor.dart';
-import 'package:equeuebiz/constants/textstyle.dart';
-import 'package:equeuebiz/generated/l10n.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/change_pass_prov.dart';
 import 'package:equeuebiz/services/app_toast.dart';

@@ -1,14 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:equeuebiz/constants/api_constant.dart';
 import 'package:equeuebiz/model/auth_model.dart';
 import 'package:equeuebiz/services/http_services.dart';
 import 'package:flutter/cupertino.dart';
-
-import 'package:http/http.dart' as http;
-import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProv extends ChangeNotifier {

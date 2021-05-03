@@ -4,13 +4,10 @@ import 'dart:io';
 
 import 'package:equeuebiz/constants/api_constant.dart';
 import 'package:equeuebiz/model/all_tokens.dart';
-import 'package:equeuebiz/model/bookinh_model.dart';
-import 'package:equeuebiz/model/branch_model.dart';
 import 'package:equeuebiz/services/app_toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AllToken with ChangeNotifier {
   getTokendets(String bid, String bname, String token) async {
