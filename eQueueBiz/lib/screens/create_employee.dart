@@ -11,11 +11,13 @@ import 'package:equeuebiz/providers/create_edit_delete_emp.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
 import 'package:equeuebiz/screens/homepage.dart';
 import 'package:equeuebiz/services/app_toast.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:equeuebiz/widgets/resize_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 class CreateEmployee extends StatefulWidget {
@@ -133,19 +135,21 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             appBar: widget.uporadd
-                ? whiteAppBar(context, "Update Employee")
-                : whiteAppBar(context, "Create Employee"),
+                ? whiteAppBar(context, LocaleKeys.Update_Employee.tr())
+                : whiteAppBar(context, LocaleKeys.Create_Employee.tr()),
             body: bdp.isLoading
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
                 : bdp.error
                     ? Center(
-                        child: Text("Error occured while fetching branches"),
+                        child: Text(LocaleKeys
+                            .Error_occured_while_fetching_branches.tr()),
                       )
                     : error
                         ? Center(
-                            child: Text('Error fetching counter counts'),
+                            child: Text(
+                                LocaleKeys.Error_fetching_counter_counts.tr()),
                           )
                         : Container(
                             alignment: Alignment.topCenter,
@@ -173,8 +177,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                           }
                                           if (deptDataprov.error) {
                                             return Center(
-                                              child: Text(
-                                                  "Error fetching departments"),
+                                              child: Text(LocaleKeys
+                                                      .Error_fetching_departments
+                                                  .tr()),
                                             );
                                           }
                                           departmentsList =
@@ -222,22 +227,29 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                   }
                                                 },
                                                 child: Text(
-                                                  'Upload Image',
+                                                  LocaleKeys.Upload_Image.tr(),
                                                   style: TextStyle(
                                                       color: Colors.white),
                                                 ),
                                               ),
-                                              _textField("Name", _nameC, false),
+                                              _textField(LocaleKeys.Name.tr(),
+                                                  _nameC, false),
                                               widget.uporadd
                                                   ? Container()
-                                                  : _textField("Email ID",
-                                                      _emailC, true),
+                                                  : _textField(
+                                                      LocaleKeys.Email_ID.tr(),
+                                                      _emailC,
+                                                      true),
                                               widget.uporadd
                                                   ? Container()
-                                                  : _textField("Password",
-                                                      _passwordC, false),
-                                              _ptextField("Phone number",
-                                                  _phoneC, false),
+                                                  : _textField(
+                                                      LocaleKeys.Password.tr(),
+                                                      _passwordC,
+                                                      false),
+                                              _ptextField(
+                                                  LocaleKeys.PhoneNo.tr(),
+                                                  _phoneC,
+                                                  false),
                                               Container(
                                                 height: 50,
                                                 child: Row(
@@ -257,14 +269,17 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                                   size.width *
                                                                       0.5,
                                                               child: _textField(
-                                                                  "Counter",
+                                                                  LocaleKeys
+                                                                          .Counter
+                                                                      .tr(),
                                                                   _counterC,
                                                                   false)),
                                                     ),
                                                     SizedBox(
                                                       width: 20,
                                                     ),
-                                                    Text("Status"),
+                                                    Text(
+                                                        LocaleKeys.Status.tr()),
                                                     Switch(
                                                         value: employeeStatus,
                                                         onChanged: (val) {
@@ -306,7 +321,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                                       .text) ==
                                                                   0) {
                                                             AppToast.showErr(
-                                                                'Enter valid counter number');
+                                                                LocaleKeys
+                                                                        .Enter_valid_counter_number
+                                                                    .tr());
                                                             return;
                                                           }
                                                         }
@@ -318,7 +335,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                               _chosenDept ==
                                                                   null) {
                                                             AppToast.showErr(
-                                                                "Choose branch and department value properly");
+                                                                LocaleKeys
+                                                                        .Choose_branch_and_department_value_properly
+                                                                    .tr());
                                                           }
                                                           bool success = await EmployeeOperationProv()
                                                               .createEmployee(
@@ -344,7 +363,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                           }
                                                         } else {
                                                           AppToast.showErr(
-                                                              'Fill Missing Value');
+                                                              LocaleKeys
+                                                                      .Fill_Missing_Value
+                                                                  .tr());
                                                         }
                                                       },
                                                       child: Container(
@@ -363,8 +384,11 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                             Alignment.center,
                                                         child: Text(
                                                           widget.empDets == null
-                                                              ? "ADD"
-                                                              : "UPDATE",
+                                                              ? LocaleKeys.ADD
+                                                                  .tr()
+                                                              : LocaleKeys
+                                                                  .UPDATE
+                                                                  .tr(),
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white),
@@ -381,7 +405,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                       },
                                                       child: CustomWidgets()
                                                           .hollowButton(
-                                                              "CANCEL"),
+                                                              LocaleKeys.CANCEL
+                                                                  .tr()),
                                                     ))
                                                   ],
                                                 ),
@@ -428,7 +453,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           );
         }).toList(),
         hint: Text(
-          "Select a Branch",
+          LocaleKeys.Select_a_Branch.tr(),
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
         ),
@@ -478,7 +503,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           );
         }).toList(),
         hint: Text(
-          "Select a Department/Service",
+          LocaleKeys.Select_a_DepartmentService.tr(),
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
         ),

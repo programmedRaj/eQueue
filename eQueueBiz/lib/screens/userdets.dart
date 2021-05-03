@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserDets extends StatefulWidget {
- final String bid;
- final String userid;
- final String token;
+  final String bid;
+  final String userid;
+  final String token;
   UserDets({this.bid, this.userid, this.token});
   @override
   _UserDetsState createState() => _UserDetsState();

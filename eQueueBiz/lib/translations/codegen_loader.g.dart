@@ -132,7 +132,13 @@ class CodegenLoader extends AssetLoader{
   "Are_you_sure": "هل أنت واثق؟",
   "Do_you_want_to_exit_an_App": "هل تريد الخروج من التطبيق",
   "NO": "لا",
-  "YES": "نعم"
+  "YES": "نعم",
+  "LogIn": "تسجيل الدخول",
+  "ForgetPassword": "نسيت كلمة المرور",
+  "Multitoken": "متعدد الرموز",
+  "EditManagetokendetails": "تحرير / إدارة تفاصيل الرمز المميز",
+  "EditManageMultitoken_details": "تحرير / إدارة تفاصيل الرموز المتعددة",
+  "Pleaseselectvaluegreaterthan": "الرجاء تحديد قيمة أكبر من 0"
 };
 static const Map<String,dynamic> en_US = {
   "Bookings": "Bookings",
@@ -252,7 +258,13 @@ static const Map<String,dynamic> en_US = {
   "Are_you_sure": "Are you sure?",
   "Do_you_want_to_exit_an_App": "Do you want to exit an App",
   "NO": "NO",
-  "YES": "YES"
+  "YES": "YES",
+  "LogIn": "Log In",
+  "ForgetPassword": "Forget Password",
+  "Multitoken": "Multi token",
+  "EditManagetokendetails": "Edit/Manage token details",
+  "EditManageMultitoken_details": "Edit/Manage Multi token details",
+  "Pleaseselectvaluegreaterthan": "Please select value greater than 0"
 };
 static const Map<String,dynamic> es_ES = {
   "Bookings": "Reservaciones",
@@ -372,7 +384,13 @@ static const Map<String,dynamic> es_ES = {
   "Are_you_sure": "¿Está seguro?",
   "Do_you_want_to_exit_an_App": "¿Quieres salir de una aplicación?",
   "NO": "NO",
-  "YES": "SÍ"
+  "YES": "SÍ",
+  "LogIn": "Acceso",
+  "ForgetPassword": "Contraseña olvidada",
+  "Multitoken": "Token múltiple",
+  "EditManagetokendetails": "Editar / administrar los detalles del token",
+  "EditManageMultitoken_details": "Editar / administrar detalles de token múltiple",
+  "Pleaseselectvaluegreaterthan": "Seleccione un valor mayor que 0"
 };
 static const Map<String,dynamic> fa_FA = {
   "Bookings": "رزرو",
@@ -492,7 +510,13 @@ static const Map<String,dynamic> fa_FA = {
   "Are_you_sure": "آیا مطمین هستید؟",
   "Do_you_want_to_exit_an_App": "آیا میخواهید خارج شوید؟",
   "NO": "خیر",
-  "YES": "بلی"
+  "YES": "بلی",
+  "LogIn": "ورود ",
+  "ForgetPassword": "رمز عبور را فراموش کرده ام",
+  "Multitoken": "چند شماره ای",
+  "EditManagetokendetails": "ویرایش جزیات شماره",
+  "EditManageMultitoken_details": "ویرایش جزیات چند شماره ای",
+  "Pleaseselectvaluegreaterthan": "شماره از 0 باید بزرگتر باشد"
 };
 static const Map<String,dynamic> fr_FR = {
   "Bookings": "Réservations",
@@ -612,7 +636,13 @@ static const Map<String,dynamic> fr_FR = {
   "Are_you_sure": "Êtes-vous sûr?",
   "Do_you_want_to_exit_an_App": "Voulez-vous quitter une application",
   "NO": "NON",
-  "YES": "OUI"
+  "YES": "OUI",
+  "LogIn": "Connexion",
+  "ForgetPassword": "Mot de passe oublié",
+  "Multitoken": "Jeton multiple",
+  "EditManagetokendetails": "Modifier / gérer les détails des jetons",
+  "EditManageMultitoken_details": "Modifier / gérer les détails de plusieurs jetons",
+  "Pleaseselectvaluegreaterthan": "Veuillez sélectionner une valeur supérieure à 0"
 };
 static const Map<String,dynamic> hi_IN = {
   "Bookings": "बुकिंग के",
@@ -732,7 +762,13 @@ static const Map<String,dynamic> hi_IN = {
   "Are_you_sure": "क्या आपको यकीन है?",
   "Do_you_want_to_exit_an_App": "क्या आप किसी ऐप से बाहर निकलना चाहते हैं",
   "NO": "नहीं न",
-  "YES": "हाँ"
+  "YES": "हाँ",
+  "LogIn": "लॉग इन करें",
+  "ForgetPassword": "पासवर्ड भूल गए",
+  "Multitoken": "मल्टी टोकन",
+  "EditManagetokendetails": "संपादित करें / टोकन विवरण प्रबंधित करें",
+  "EditManageMultitoken_details": "मल्टी टोकन विवरण संपादित / प्रबंधित करें",
+  "Pleaseselectvaluegreaterthan": "कृपया 0 से अधिक मूल्य का चयन करें"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar_AR": ar_AR, "en_US": en_US, "es_ES": es_ES, "fa_FA": fa_FA, "fr_FR": fr_FR, "hi_IN": hi_IN};
 }

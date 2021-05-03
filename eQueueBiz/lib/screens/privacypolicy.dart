@@ -1,5 +1,7 @@
 import 'package:equeuebiz/constants/appcolor.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Policy extends StatelessWidget {
   @override
@@ -8,8 +10,8 @@ class Policy extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColor.mainBlue,
         title: Text(
-          'Privacy Policy',
-        ),
+          LocaleKeys.Privacy_Policy,
+        ).tr(),
       ),
       body: SingleChildScrollView(
         child: Container(

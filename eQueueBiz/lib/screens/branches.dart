@@ -6,8 +6,10 @@ import 'package:equeuebiz/providers/branches_data_prov.dart';
 import 'package:equeuebiz/providers/create_edit_prov.dart';
 import 'package:equeuebiz/screens/create_branch_mob.dart';
 import 'package:equeuebiz/screens/create_branch_web.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Branches extends StatefulWidget {
   @override
@@ -32,8 +34,6 @@ class _BranchesState extends State<Branches> {
     authProv = Provider.of<AuthProv>(context);
     return Consumer<BranchDataProv>(
       builder: (context, value, child) {
-        print(value.branchesWithDetail);
-        print(value.branchWithImages);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
@@ -47,9 +47,9 @@ class _BranchesState extends State<Branches> {
               },
             ),
             title: Text(
-              "Branches",
+              LocaleKeys.Branches,
               style: TextStyle(color: Colors.black),
-            ),
+            ).tr(),
             actions: [
               IconButton(
                   onPressed: () {
@@ -77,7 +77,9 @@ class _BranchesState extends State<Branches> {
                             child: CircularProgressIndicator(),
                           )
                         : value.error
-                            ? Center(child: Text("No Branches Found."))
+                            ? Center(
+                                child: Text(
+                                    '${LocaleKeys.NO.tr()} ${LocaleKeys.Branches.tr()}'))
                             : Container(
                                 height: size.height,
                                 child: ListView.builder(
@@ -150,9 +152,9 @@ class _BranchesState extends State<Branches> {
             children: [
               Center(
                 child: Text(
-                  "Create Branch",
+                  LocaleKeys.Create_Branch,
                   style: TextStyle(color: Colors.white, fontSize: 35),
-                ),
+                ).tr(),
               ),
             ],
           ),

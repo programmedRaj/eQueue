@@ -47,7 +47,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Consumer<BizUserDets>(
       builder: (context, bizdets, child) {
-        print('${bizdets.counterbranches} kya');
         return Consumer<AuthProv>(
           builder: (context, authProv, child) {
             // print(authProv.authinfo.companyType);
@@ -132,8 +131,12 @@ class _HomePageState extends State<HomePage> {
                                                                           )));
                                                         },
                                                         child: _cards(
-                                                            "MutliTokens",
-                                                            "Edit/Manage Booking details"))
+                                                            LocaleKeys
+                                                                    .Multitoken
+                                                                .tr(),
+                                                            LocaleKeys
+                                                                    .EditManageMultitoken_details
+                                                                .tr()))
                                                     : SizedBox()
                                                 : SizedBox(),
                                             authProv.authinfo.userType ==
@@ -160,7 +163,9 @@ class _HomePageState extends State<HomePage> {
                                                         child: _cards(
                                                             LocaleKeys.Tokens
                                                                 .tr(),
-                                                            "Edit/Manage Booking details"))
+                                                            LocaleKeys
+                                                                    .EditManagetokendetails
+                                                                .tr()))
                                                     : SizedBox()
                                                 : SizedBox(),
                                             authProv.authinfo.userType ==
@@ -189,8 +194,11 @@ class _HomePageState extends State<HomePage> {
                                                               ));
                                                         },
                                                         child: _cards(
-                                                            "Bookings",
-                                                            "Edit/Manage Booking details"))
+                                                            LocaleKeys.Bookings
+                                                                .tr(),
+                                                            LocaleKeys
+                                                                    .Edit_Manage_Booking_details
+                                                                .tr()))
                                                     : SizedBox()
                                                 : SizedBox(),
                                             authProv.authinfo.userType ==
@@ -205,8 +213,12 @@ class _HomePageState extends State<HomePage> {
                                                                     Employees(),
                                                           ));
                                                     },
-                                                    child: _cards("Employee",
-                                                        "Edit/Manage employee details"))
+                                                    child: _cards(
+                                                        LocaleKeys.Employee
+                                                            .tr(),
+                                                        LocaleKeys
+                                                                .Edit_Manage_employee_details
+                                                            .tr()))
                                                 : SizedBox(),
                                             GestureDetector(
                                               onTap: () {
@@ -215,8 +227,11 @@ class _HomePageState extends State<HomePage> {
                                                         builder: (ctx) =>
                                                             Policy()));
                                               },
-                                              child: _cards("Privacy & Policy",
-                                                  "Click to view"),
+                                              child: _cards(
+                                                  LocaleKeys.Privacy_Policy
+                                                      .tr(),
+                                                  LocaleKeys.Click_to_view
+                                                      .tr()),
                                             ),
                                             GestureDetector(
                                               onTap: () {
@@ -228,7 +243,8 @@ class _HomePageState extends State<HomePage> {
                                               child: _cards(
                                                   LocaleKeys.Terms_Conditions
                                                       .tr(),
-                                                  "Click to view"),
+                                                  LocaleKeys.Click_to_view
+                                                      .tr()),
                                             ),
                                           ],
                                         ),
@@ -333,7 +349,7 @@ class _HomePageState extends State<HomePage> {
                     height: 20,
                   ),
                   Text(
-                    "Branches",
+                    LocaleKeys.Branches.tr(),
                     style: whiteColorBoldFS20,
                   )
                 ],
@@ -358,7 +374,7 @@ class _HomePageState extends State<HomePage> {
                     height: 20,
                   ),
                   Text(
-                    "Employees",
+                    LocaleKeys.Employees.tr(),
                     style: whiteColorBoldFS20,
                   )
                 ],

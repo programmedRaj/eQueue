@@ -5,9 +5,10 @@ import 'package:equeuebiz/providers/all_tokens.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/dept_data_prov.dart';
 import 'package:equeuebiz/providers/status_token.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Tokens extends StatefulWidget {
   final int bid;
@@ -63,15 +64,16 @@ class _TokensState extends State<Tokens> {
                     },
                   ),
                   title: Text(
-                    "Tokens",
+                    LocaleKeys.Tokens,
                     style: TextStyle(color: Colors.black),
-                  ),
+                  ).tr(),
                   actions: [_departmentFilter(value.deptsList)],
                 ),
                 body: value1.toks.length < 0 || value1.toks.isEmpty
                     ? Container(
                         child: Center(
-                          child: Text('No tokens found '),
+                          child: Text(
+                              '${LocaleKeys.NO.tr} ${LocaleKeys.Tokens.tr}'),
                         ),
                       )
                     : ListView.builder(
@@ -174,7 +176,7 @@ class _TokensState extends State<Tokens> {
                   );
                 }).toList(),
                 hint: Text(
-                  "Status",
+                  LocaleKeys.Status.tr(),
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 14,

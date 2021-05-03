@@ -1,16 +1,11 @@
-import 'dart:convert';
-
 import 'package:equeuebiz/constants/appcolor.dart';
-import 'package:equeuebiz/locale/app_localization.dart';
-import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/forgot_pass_prov.dart';
-import 'package:equeuebiz/screens/homepage.dart';
 import 'package:equeuebiz/services/app_toast.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import 'package:easy_localization/easy_localization.dart';
 
 class ForgotPassPage extends StatefulWidget {
   @override
@@ -26,27 +21,6 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
   @override
   void initState() {
     super.initState();
-    getlang();
-  }
-
-  getlang() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      lang = prefs.getString('language');
-    });
-    if (lang == 'French') {
-      AppLocalization.load(Locale('fr', 'FR'));
-    } else if (lang == 'Spanish') {
-      AppLocalization.load(Locale('es', 'ES'));
-    } else if (lang == 'فارسی(Persian)') {
-      AppLocalization.load(Locale('fa', 'FA'));
-    } else if (lang == 'عربی(Arabic)') {
-      AppLocalization.load(Locale('ar', 'AR'));
-    } else if (lang == 'English') {
-      AppLocalization.load(Locale('en', 'US'));
-    } else {
-      AppLocalization.load(Locale('en', 'US'));
-    }
   }
 
   @override
@@ -58,7 +32,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
-              appBar: whiteAppBar(context, "Forget Password"),
+              appBar: whiteAppBar(context, LocaleKeys.Forget_Password.tr()),
               body: Container(
                 alignment: Alignment.center,
                 color: Colors.white,
@@ -107,28 +81,30 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                             child: InkWell(
                               onTap: () async {
                                 if (value.vanishEmail) {
-                                  AppToast.showSucc("verifying OTP");
+                                  AppToast.showSucc(
+                                      LocaleKeys.verifying_OTP.tr());
                                   bool succ =
                                       await value.execChangeForgotPassSndOtp(
                                           emailControler.text,
                                           otpControler.text,
                                           passwordControler.text);
                                   if (succ) {
-                                    AppToast.showSucc(
-                                        "Password has been changed successfully");
+                                    AppToast.showSucc(LocaleKeys
+                                        .Password_changed_successfully.tr());
                                     Navigator.pop(context);
                                   } else {
-                                    AppToast.showErr("Wrong OTP");
+                                    AppToast.showErr(LocaleKeys.Wrong_OTP.tr());
                                   }
                                 } else {
                                   bool isSuccess =
                                       await value.execForgotPassSndOtp(
                                           emailControler.text);
                                   if (isSuccess) {
-                                    AppToast.showSucc(
-                                        "OTP sent to your registerd email");
+                                    AppToast.showSucc(LocaleKeys
+                                        .OTP_sent_to_your_registerd_email.tr());
                                   } else {
-                                    AppToast.showErr("Uh Oh ! Wrong Email");
+                                    AppToast.showErr(
+                                        LocaleKeys.Uh_Oh_Wrong_Email.tr());
                                   }
                                 }
                               },
@@ -140,8 +116,8 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Text(
                                   value.vanishEmail
-                                      ? "Change Password"
-                                      : "Send OTP",
+                                      ? LocaleKeys.Change_Password.tr()
+                                      : LocaleKeys.Send_OTP.tr(),
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -179,7 +155,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
           size: 25.5,
         ),
         contentPadding: EdgeInsets.only(left: 0, top: 15, bottom: 0),
-        labelText: 'Enter email',
+        labelText: LocaleKeys.Enter_email.tr(),
         labelStyle: TextStyle(fontSize: 16, color: Colors.white),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -210,7 +186,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
           size: 25.5,
         ),
         contentPadding: EdgeInsets.only(left: 0, top: 15, bottom: 0),
-        labelText: 'Enter otp',
+        labelText: LocaleKeys.Enter_otp.tr(),
         labelStyle: TextStyle(fontSize: 16, color: Colors.white),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -240,7 +216,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
           size: 25.5,
         ),
         contentPadding: EdgeInsets.only(left: 0, top: 15, bottom: 0),
-        labelText: 'Enter New Password',
+        labelText: LocaleKeys.Enter_New_Password.tr(),
         labelStyle: TextStyle(fontSize: 16, color: Colors.white),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

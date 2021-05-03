@@ -6,10 +6,11 @@ import 'package:equeuebiz/providers/branches_data_prov.dart';
 import 'package:equeuebiz/providers/create_edit_delete_emp.dart';
 import 'package:equeuebiz/providers/emp_data_provider.dart';
 import 'package:equeuebiz/screens/create_employee.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'homepage.dart';
 
 class Employees extends StatefulWidget {
@@ -61,9 +62,9 @@ class _EmployeesState extends State<Employees> {
               },
             ),
             title: Text(
-              "Employees",
+              LocaleKeys.Employees,
               style: TextStyle(color: Colors.black),
-            ),
+            ).tr(),
             actions: [
               IconButton(
                   onPressed: () {
@@ -93,11 +94,13 @@ class _EmployeesState extends State<Employees> {
                           )
                         : bdp.noBranches
                             ? Center(
-                                child: Text("No employees to display"),
+                                child: Text(LocaleKeys.No_employees_to_display)
+                                    .tr(),
                               )
                             : bdp.error
                                 ? Center(
-                                    child: Text("Something went wrong"),
+                                    child: Text(LocaleKeys.Something_went_wrong)
+                                        .tr(),
                                   )
                                 : Consumer<EmpDataProv>(
                                     builder: (context, edp, child) {
@@ -117,8 +120,9 @@ class _EmployeesState extends State<Employees> {
                                                     0
                                                 ? Container(
                                                     child: Center(
-                                                      child:
-                                                          Text('No Employees'),
+                                                      child: Text(LocaleKeys
+                                                              .No_Employees)
+                                                          .tr(),
                                                     ),
                                                   )
                                                 : ListView.builder(
@@ -183,9 +187,9 @@ class _EmployeesState extends State<Employees> {
             children: [
               Center(
                 child: Text(
-                  "Create Employee",
+                  LocaleKeys.Create_Employee,
                   style: TextStyle(color: Colors.white, fontSize: 35),
-                ),
+                ).tr(),
               ),
             ],
           ),
@@ -221,10 +225,10 @@ class _EmployeesState extends State<Employees> {
           );
         }).toList(),
         hint: Text(
-          "Select a Branch",
+          LocaleKeys.Select_a_Branch,
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
-        ),
+        ).tr(),
         onChanged: (String val) {
           int _branchId;
           branchesList.forEach((key, value) {
@@ -263,11 +267,12 @@ class _EmployeesState extends State<Employees> {
               height: 10,
             ),
             empdets.services != null
-                ? Text('Service: ' + empdets.services)
-                : Text('Department: ' + empdets.departments),
+                ? Text('${LocaleKeys.Service_Name.tr()} ' + empdets.services)
+                : Text(
+                    '${LocaleKeys.Add_departments.tr()}' + empdets.departments),
             Divider(),
             Text(
-              "Phone No. : ${empdets.phoneNo}",
+              "${LocaleKeys.PhoneNo.tr()} : ${empdets.phoneNo}",
               style: TextStyle(color: AppColor.mainBlue),
             ),
             SizedBox(

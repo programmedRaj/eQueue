@@ -119,5 +119,11 @@ abstract class  LocaleKeys {
   static const Do_you_want_to_exit_an_App = 'Do_you_want_to_exit_an_App';
   static const NO = 'NO';
   static const YES = 'YES';
+  static const LogIn = 'LogIn';
+  static const ForgetPassword = 'ForgetPassword';
+  static const Multitoken = 'Multitoken';
+  static const EditManagetokendetails = 'EditManagetokendetails';
+  static const EditManageMultitoken_details = 'EditManageMultitoken_details';
+  static const Pleaseselectvaluegreaterthan = 'Pleaseselectvaluegreaterthan';
 
 }

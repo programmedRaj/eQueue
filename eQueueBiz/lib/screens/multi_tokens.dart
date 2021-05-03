@@ -3,8 +3,10 @@ import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/providers/all_multitoken.dart';
 import 'package:equeuebiz/providers/call_multitoken.dart';
 import 'package:equeuebiz/services/app_toast.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MultiTokens extends StatefulWidget {
   final int bid;
@@ -47,7 +49,7 @@ class _MultiTokensState extends State<MultiTokens> {
           },
         ),
         title: Text(
-          "Tokens",
+          LocaleKeys.Multitoken.tr(),
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -67,7 +69,8 @@ class _MultiTokensState extends State<MultiTokens> {
                     child: tokenMax == 0
                         ? Container(
                             child: Center(
-                              child: Text("No Tokens"),
+                              child: Text(
+                                  '${LocaleKeys.NO.tr()} ${LocaleKeys.Tokens.tr()}'),
                             ),
                           )
                         : Slider(
@@ -119,9 +122,9 @@ class _MultiTokensState extends State<MultiTokens> {
                     borderRadius: BorderRadius.circular(4)),
                 alignment: Alignment.center,
                 child: Text(
-                  "CALL",
+                  LocaleKeys.CALL,
                   style: TextStyle(color: Colors.white),
-                ),
+                ).tr(),
               ),
             ),
     );

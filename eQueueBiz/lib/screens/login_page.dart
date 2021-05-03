@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:equeuebiz/constants/appcolor.dart';
-import 'package:equeuebiz/locale/app_localization.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
-import 'package:equeuebiz/providers/forgot_pass_prov.dart';
 import 'package:equeuebiz/screens/forgot_password.dart';
 import 'package:equeuebiz/screens/homepage.dart';
 import 'package:equeuebiz/services/app_toast.dart';
@@ -11,7 +7,7 @@ import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import 'package:easy_localization/easy_localization.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -123,7 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                                             builder: (context) => HomePage(),
                                           ));
                                     } else {
-                                      AppToast.showErr("Error logging !");
+                                      AppToast.showErr(
+                                          LocaleKeys.Error_logging_.tr());
                                     }
                                   },
                                   child: Container(
@@ -145,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                                             ),
                                           )
                                         : Text(
-                                            'Login',
+                                            LocaleKeys.LogIn.tr(),
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
@@ -164,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ));
                                 },
                                 child: Text(
-                                  "Forgot password ?",
+                                  LocaleKeys.ForgetPassword.tr(),
                                   style: TextStyle(color: Colors.white),
                                 ),
                               )
@@ -199,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
           size: 25.5,
         ),
         contentPadding: EdgeInsets.only(left: 0, top: 15, bottom: 0),
-        labelText: 'Enter username',
+        labelText: LocaleKeys.Enter_username.tr(),
         labelStyle: TextStyle(fontSize: 16, color: Colors.white),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -230,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
           size: 25.5,
         ),
         contentPadding: EdgeInsets.only(left: 0, top: 15, bottom: 0),
-        labelText: 'Enter password',
+        labelText: LocaleKeys.Enter_username.tr(),
         labelStyle: TextStyle(fontSize: 16, color: Colors.white),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

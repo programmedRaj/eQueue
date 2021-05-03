@@ -1,6 +1,7 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/screens/change_password.dart';
 import 'package:equeuebiz/screens/login_page.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
@@ -154,7 +155,7 @@ class _SettingsState extends State<Settings> {
               builder: (context) => ChangePassword(),
             ));
       },
-      child: Text("Change Password"),
+      child: Text(LocaleKeys.Change_Password.tr()),
     );
   }
 
@@ -168,7 +169,7 @@ class _SettingsState extends State<Settings> {
             ),
             (route) => false);
       },
-      child: Text("Log Out"),
+      child: Text(LocaleKeys.LogOut.tr()),
     );
   }
 }

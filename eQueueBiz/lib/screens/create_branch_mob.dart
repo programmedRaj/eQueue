@@ -9,6 +9,7 @@ import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/create_edit_prov.dart';
 import 'package:equeuebiz/screens/homepage.dart';
 import 'package:equeuebiz/services/app_toast.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:equeuebiz/widgets/resize_helper.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CreateBranchMob extends StatefulWidget {
   final BranchRespModel branchDets;
@@ -231,7 +233,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         headers: <String, String>{'my_header_key': 'my_header_value'},
       );
     } else {
-      throw 'Could not launch $url';
+      throw '${LocaleKeys.NO.tr()} $url';
     }
   }
 
@@ -245,7 +247,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
-          appBar: whiteAppBar(context, "Create Branch"),
+          appBar: whiteAppBar(context, LocaleKeys.Create_Branch.tr()),
           body: Container(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
@@ -290,24 +292,30 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             }
                           },
                           child: Text(
-                            'Upload Logo',
+                            LocaleKeys.Upload_Image,
                             style: TextStyle(color: Colors.white),
-                          ),
+                          ).tr(),
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        _textField("Branch Name", _branchNameController, false),
-                        _textField("Address Line 1", _addr1Controller, false),
-                        _textField("Address Line 2", _addr2Controller, false),
-                        _textField("City", _cityController, false),
+                        _textField(LocaleKeys.Branch_Name.tr(),
+                            _branchNameController, false),
+                        _textField(LocaleKeys.Address_Line_1.tr(),
+                            _addr1Controller, false),
+                        _textField(LocaleKeys.Address_Line_2.tr(),
+                            _addr2Controller, false),
                         _textField(
-                            "State/Province", _provinceController, false),
-                        _textField("Contact", _phoneNoController, true),
-                        _textField("Postal Code", _postalCodeController, false),
+                            LocaleKeys.City.tr(), _cityController, false),
+                        _textField(LocaleKeys.State_Province.tr(),
+                            _provinceController, false),
+                        _textField(
+                            LocaleKeys.Contact.tr(), _phoneNoController, true),
+                        _textField(LocaleKeys.Postal_Code.tr(),
+                            _postalCodeController, false),
                         authProv.authinfo.companyType == CompanyEnum.Booking
-                            ? _textField(
-                                "Time Zone", _timezoneController, false)
+                            ? _textField(LocaleKeys.Time_Zone,
+                                _timezoneController, false)
                             : SizedBox(),
                         authProv.authinfo.companyType == CompanyEnum.Booking
                             ? RaisedButton(
@@ -333,24 +341,24 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                                 authProv.authinfo.companyType ==
                                     CompanyEnum.MultiToken
                             ? SizedBox()
-                            : _textField(
-                                "No. of counters", _counterController, false),
+                            : _textField(LocaleKeys.No_of_counters.tr(),
+                                _counterController, false),
                         authProv.authinfo.companyType == CompanyEnum.Booking ||
                                 authProv.authinfo.companyType ==
                                     CompanyEnum.MultiToken
                             ? SizedBox()
-                            : _textField("Threshold in minutes",
+                            : _textField(LocaleKeys.Threshold_in_minutes.tr(),
                                 _thresholdController, true),
-                        _textField(
-                            "Geo Location", _geoLocationController, true),
+                        _textField(LocaleKeys.Geo_Location.tr(),
+                            _geoLocationController, true),
                         GestureDetector(
                             onTap: () {
                               _launchInBrowser('https://www.latlong.net/');
                             },
                             child: Text(
-                              'Click here to get geolocation',
+                              LocaleKeys.Click_here_to_get_geolocation,
                               style: TextStyle(color: Colors.blue),
-                            )),
+                            ).tr()),
                         SizedBox(
                           height: 8,
                         ),
@@ -360,16 +368,17 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                                   _addServicesWidget(),
                                   Container(
                                       padding: EdgeInsets.all(10),
-                                      child: Text(
-                                          'Tap on the service block to remove')),
+                                      child: Text(LocaleKeys
+                                              .Tap_on_the_service_block_to_remove)
+                                          .tr()),
                                 ],
                               )
                             : Column(
                                 children: [
                                   Text(
-                                    "Press a '.' to add a department",
+                                    LocaleKeys.Press_a_to_add_a_department,
                                     style: blackBoldFS16,
-                                  ),
+                                  ).tr(),
                                   _departmentTextfield(),
                                   Wrap(
                                     spacing: 8,
@@ -384,10 +393,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                           height: 8,
                         ),
                         Text(
-                          "Working hours and \n Bookings accepted per day",
+                          LocaleKeys
+                              .Working_hours_and_number_Bookings_accepted_per_day,
                           textAlign: TextAlign.center,
                           style: blackBoldFS16,
-                        ),
+                        ).tr(),
                         SizedBox(
                           height: 16,
                         ),
@@ -412,12 +422,15 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     return Column(
       children: [
         Text(
-          "Enter Services",
+          LocaleKeys.Enter_Services,
           style: blackBoldFS16,
-        ),
-        _servicetextField("Service Name", _serviceNameController, false),
-        _servicetextField("Service Rate", _serviceRateController, true),
-        _servicetextField("Service Description", _serviceDescController, false),
+        ).tr(),
+        _servicetextField(
+            LocaleKeys.Service_Name.tr(), _serviceNameController, false),
+        _servicetextField(
+            LocaleKeys.Service_Rate.tr(), _serviceRateController, true),
+        _servicetextField(
+            LocaleKeys.Service_Description.tr(), _serviceDescController, false),
         ElevatedButton(
             onPressed: () {
               setState(() {
@@ -427,12 +440,12 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                     _serviceRateController.text == null ||
                     _serviceDescController.text.length == 0 ||
                     _serviceDescController.text == null) {
-                  AppToast.showErr("Field cannot be empty");
+                  AppToast.showErr(LocaleKeys.Field_cannot_be_empty.tr());
                   return;
                 }
 
                 if (servicesName.contains(_serviceNameController.text)) {
-                  AppToast.showErr("Service already exists");
+                  AppToast.showErr(LocaleKeys.Service_already_exists.tr());
                   return;
                 } else {
                   servicesName.add(_serviceNameController.text);
@@ -441,7 +454,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                 }
               });
             },
-            child: Text("Add Service")),
+            child: Text(LocaleKeys.Add_Service.tr())),
         SizedBox(
           height: 10,
         ),
@@ -528,7 +541,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         onChanged: (val) {
           if (val.endsWith(".")) {
             if (departments.contains(val.replaceAll(".", ""))) {
-              AppToast.showErr("Already present");
+              AppToast.showErr(LocaleKeys.Already_present.tr());
               _departmentController.value = TextEditingValue.empty;
 
               return;
@@ -712,18 +725,20 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                   if (_formKey.currentState.validate()) {
                     var temp = getDetails();
                     if (temp == null) {
-                      AppToast.showErr("Check your details");
+                      AppToast.showErr(LocaleKeys.Check_your_details.tr());
 
                       return;
                     }
 
                     if (authProv.authinfo.companyType == CompanyEnum.Booking) {
                       if (servicesName.length == 0) {
-                        AppToast.showErr("Atleast 1 service is required");
+                        AppToast.showErr(
+                            LocaleKeys.Atleast_1_service_is_required.tr());
                         return;
                       }
                       if (perDayHrs.length == 0) {
-                        AppToast.showErr("Atleast 1 working day is required");
+                        AppToast.showErr(
+                            LocaleKeys.Atleast_1_working_day_is_required.tr());
                         return;
                       }
                     }
@@ -731,11 +746,13 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                         authProv.authinfo.companyType ==
                             CompanyEnum.MultiToken) {
                       if (departments.length == 0) {
-                        AppToast.showErr("Atleast 1 department is required");
+                        AppToast.showErr(
+                            LocaleKeys.Atleast_1_department_is_required.tr());
                         return;
                       }
                       if (perDayHrs.length == 0) {
-                        AppToast.showErr("Atleast 1 working day is required");
+                        AppToast.showErr(
+                            LocaleKeys.Atleast_1_working_day_is_required.tr());
                         return;
                       }
                     }
@@ -751,10 +768,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             builder: (context) => HomePage(),
                           ));
                     } else {
-                      AppToast.showErr('Please Fill Missing Value');
+                      AppToast.showErr(
+                          LocaleKeys.Please_Fill_Missing_Value.tr());
                     }
                   } else {
-                    AppToast.showErr('Please Fill Missing Value');
+                    AppToast.showErr(LocaleKeys.Please_Fill_Missing_Value.tr());
                   }
                 },
                 child: Container(
@@ -765,7 +783,9 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                       borderRadius: BorderRadius.circular(4)),
                   alignment: Alignment.center,
                   child: Text(
-                    widget.branchDets == null ? "CREATE" : "UPDATE",
+                    widget.branchDets == null
+                        ? LocaleKeys.CREATE.tr()
+                        : LocaleKeys.UPDATE.tr(),
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -775,7 +795,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
           SizedBox(
             width: 25,
           ),
-          Expanded(child: CustomWidgets().hollowButton("CANCEL"))
+          Expanded(child: CustomWidgets().hollowButton(LocaleKeys.CANCEL.tr()))
         ],
       ),
     );
@@ -831,7 +851,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       } else if (startTimeList[i] == null && endTimeList[i] == null) {
         perDayHrs.add("");
       } else if (startTimeList[i] == null && endTimeList[i] != null) {
-        AppToast.showErr("Check your timing field");
+        AppToast.showErr(LocaleKeys.Check_your_timing_field.tr());
 
         return null;
       }

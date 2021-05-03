@@ -1,11 +1,8 @@
 import 'package:equeuebiz/constants/appcolor.dart';
-import 'package:equeuebiz/constants/textstyle.dart';
-import 'package:equeuebiz/enum/company_enum.dart';
-import 'package:equeuebiz/model/bizdetsmo.dart';
-import 'package:equeuebiz/providers/auth_prov.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
-import 'package:equeuebiz/widgets/resize_helper.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -72,7 +69,7 @@ class _ProfileState extends State<Profile> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: whiteAppBar(context, "Profile"),
+        appBar: whiteAppBar(context, LocaleKeys.Profile.tr()),
         body: Container(
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
@@ -85,19 +82,23 @@ class _ProfileState extends State<Profile> {
                       height: 15,
                     ),
                     _photo(profileurl),
-                    IgnorePointer(child: _textField("Name", name)),
+                    IgnorePointer(
+                        child: _textField(LocaleKeys.Name.tr(), name)),
                     type == 'booking'
-                        ? _textField("Acc Name", acn)
+                        ? _textField(LocaleKeys.Acc_Name.tr(), acn)
                         : SizedBox(),
                     type == 'booking'
-                        ? _textField("Acc No", acnum)
+                        ? _textField(LocaleKeys.Acc_No.tr(), acnum)
                         : SizedBox(),
                     type == 'booking'
-                        ? _textField("Bank Name", bname)
+                        ? _textField(LocaleKeys.Bank_Name.tr(), bname)
                         : SizedBox(),
-                    _textField("Description", descr),
-                    type == 'booking' ? _textField("Ifsc", ifsc) : SizedBox(),
-                    IgnorePointer(child: _textField("Type", type)),
+                    _textField(LocaleKeys.Description.tr(), descr),
+                    type == 'booking'
+                        ? _textField(LocaleKeys.Ifsc.tr(), ifsc)
+                        : SizedBox(),
+                    IgnorePointer(
+                        child: _textField(LocaleKeys.Type.tr(), type)),
                     addCancel()
                   ],
                 ),
@@ -146,11 +147,11 @@ class _ProfileState extends State<Profile> {
       height: 50,
       child: Row(
         children: [
-          Expanded(child: CustomWidgets().filledButton("Save")),
+          Expanded(child: CustomWidgets().filledButton(LocaleKeys.Save.tr())),
           SizedBox(
             width: 25,
           ),
-          Expanded(child: CustomWidgets().hollowButton("CANCEL"))
+          Expanded(child: CustomWidgets().hollowButton(LocaleKeys.CANCEL.tr()))
         ],
       ),
     );

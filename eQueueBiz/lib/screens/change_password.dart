@@ -4,8 +4,10 @@ import 'package:equeuebiz/generated/l10n.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/change_pass_prov.dart';
 import 'package:equeuebiz/services/app_toast.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ChangePassword extends StatefulWidget {
   @override
@@ -31,9 +33,9 @@ class _ChangePasswordState extends State<ChangePassword> {
           },
         ),
         title: Text(
-          "Change Password",
+          LocaleKeys.Change_Password,
           style: TextStyle(color: Colors.black),
-        ),
+        ).tr(),
       ),
       body: Container(
           alignment: Alignment.center,
@@ -56,15 +58,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   InkWell(
                     onTap: () async {
-                      AppToast.showSucc("Changing password");
+                      AppToast.showSucc(LocaleKeys.Changing_password.tr());
                       bool success = await ChangePassProv().execChangePass(
                           authProv.authinfo.jwtToken,
                           _currentPassController.text,
                           _newPassController.text);
                       if (success) {
-                        AppToast.showSucc("Password changed successfully");
+                        AppToast.showSucc(
+                            LocaleKeys.Password_changed_successfully.tr());
                       } else {
-                        AppToast.showErr("Wrong old password");
+                        AppToast.showErr(LocaleKeys.Wrong_old_password.tr());
                       }
                     },
                     child: Container(
@@ -75,7 +78,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           borderRadius: BorderRadius.circular(4)),
                       alignment: Alignment.center,
                       child: Text(
-                        "Change Password",
+                        LocaleKeys.Change_Password.tr(),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -96,7 +99,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       child: TextField(
         controller: _currentPassController,
         decoration: InputDecoration(
-          hintText: "Enter current Password",
+          hintText: LocaleKeys.Enter_current_Password.tr(),
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
@@ -114,7 +117,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       child: TextField(
         controller: _newPassController,
         decoration: InputDecoration(
-          hintText: "Enter New Password",
+          hintText: LocaleKeys.Enter_New_Password.tr(),
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
