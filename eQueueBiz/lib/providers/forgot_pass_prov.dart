@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:equeuebiz/constants/api_constant.dart';
 import 'package:equeuebiz/services/http_services.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ForgotPassProv extends ChangeNotifier {
   bool isLoading = false;
@@ -15,7 +14,6 @@ class ForgotPassProv extends ChangeNotifier {
     notifyListeners();
     var header = {
       'Content-Type': 'application/json',
-      //'Authorization': Token.statToken
     };
     try {
       var resp = await httpPostRequest(AuthenticationApi.forgotPass, header, {
@@ -54,7 +52,6 @@ class ForgotPassProv extends ChangeNotifier {
           header, {"email": email.trim(), "otp": otp, "new_passw": newPass});
 
       if (resp.statusCode == 200) {
-        var decodedResp = jsonDecode(resp.body);
         isLoading = false;
         notifyListeners();
         return true;

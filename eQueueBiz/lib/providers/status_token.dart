@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:equeuebiz/constants/api_constant.dart';
-import 'package:equeuebiz/model/bookinh_model.dart';
-import 'package:equeuebiz/model/branch_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';

@@ -4,7 +4,6 @@ import 'package:equeuebiz/constants/api_constant.dart';
 import 'package:equeuebiz/model/employee_model.dart';
 import 'package:equeuebiz/services/app_toast.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/cupertino.dart';
 
 class EmployeeOperationProv {
   Future<bool> createEmployee(String token, File profilepic,

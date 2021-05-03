@@ -6,7 +6,6 @@ import 'package:equeuebiz/constants/api_constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingBranDet with ChangeNotifier {
   String bid;

@@ -10,11 +10,8 @@ import 'package:equeuebiz/providers/emp_branchdets.dart';
 import 'package:equeuebiz/providers/emp_data_provider.dart';
 import 'package:equeuebiz/providers/status_booking.dart';
 import 'package:equeuebiz/providers/token_dep_prov.dart';
-import 'package:equeuebiz/screens/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'locale/app_localization.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'providers/all_multitoken.dart';
 import 'providers/booking_prov.dart';
@@ -47,9 +44,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final AppLocalizationDelegate _localeOverrideDelegate =
-      AppLocalizationDelegate(Locale('en', 'US'));
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

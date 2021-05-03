@@ -555,47 +555,75 @@ def biz_details():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
     try:
-        check = cur.execute(
-            "Select * FROM companydetails WHERE id ='" + str(user["id"]) + "';"
-        )
-        if check:
-            rows = cur.fetchone()
+        if user["type"] == "company":
             check = cur.execute(
-                "Select COUNT(id) FROM branch_details WHERE comp_id ='"
-                + str(user["id"])
-                + "';"
+                "Select * FROM companydetails WHERE id ='" + str(user["id"]) + "';"
             )
-            counterbranches = cur.fetchone()
-            countb = counterbranches["COUNT(id)"]
-            checkk = cur.execute(
-                "Select id,profile_photo_url FROM branch_details WHERE comp_id ='"
-                + str(user["id"])
-                + "';"
-            )
-            r = cur.fetchall()
-            k = []
-            for row in r:
-                k.append(row["id"])
-
-            deptcounter = 0
-            for i in range(0, len(k)):
-                cur.execute(
-                    "Select COUNT(employee_id) FROM employee_details WHERE branch_id ='"
-                    + str(k[i])
+            if check:
+                rows = cur.fetchone()
+                check = cur.execute(
+                    "Select COUNT(id) FROM branch_details WHERE comp_id ='"
+                    + str(user["id"])
                     + "';"
                 )
-                ec = cur.fetchone()
-                deptcounter = deptcounter + int(ec["COUNT(employee_id)"])
+                counterbranches = cur.fetchone()
+                countb = counterbranches["COUNT(id)"]
+                checkk = cur.execute(
+                    "Select id,profile_photo_url FROM branch_details WHERE comp_id ='"
+                    + str(user["id"])
+                    + "';"
+                )
+                r = cur.fetchall()
+                k = []
+                for row in r:
+                    k.append(row["id"])
 
-            resp = jsonify(
-                {"details": rows, "counterbranches": countb, "counteremps": deptcounter}
+                deptcounter = 0
+                for i in range(0, len(k)):
+                    cur.execute(
+                        "Select COUNT(employee_id) FROM employee_details WHERE branch_id ='"
+                        + str(k[i])
+                        + "';"
+                    )
+                    ec = cur.fetchone()
+                    deptcounter = deptcounter + int(ec["COUNT(employee_id)"])
+
+                resp = jsonify(
+                    {
+                        "details": rows,
+                        "counterbranches": countb,
+                        "counteremps": deptcounter,
+                        "cname": rows["name"],
+                    }
+                )
+                resp.status_code = 200
+                return resp
+            else:
+                resp = jsonify({"message": "No company Found"})
+                resp.status_code = 403
+                return resp
+        elif user["type"] == "employee":
+            check = cur.execute(
+                "Select * FROM employee_details WHERE employee_id ='"
+                + str(user["id"])
+                + "';"
             )
-            resp.status_code = 200
-            return resp
+            if check:
+                rows = cur.fetchone()
+                resp = jsonify({"details": rows})
+                resp.status_code = 200
+                return resp
+
+            else:
+                resp = jsonify({"message": "No Employee Found"})
+                resp.status_code = 403
+                return resp
+
         else:
-            resp = jsonify({"message": "No company Found"})
-            resp.status_code = 403
+            resp = jsonify({"message": "hatt hacker kahike saste."})
+            resp.status_code = 407
             return resp
+
     finally:
         cur.close()
         conn.close()

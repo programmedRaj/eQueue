@@ -1,5 +1,3 @@
-import 'package:equeuebiz/enum/company_enum.dart';
-import 'package:equeuebiz/enum/user_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'branch_model.g.dart';

@@ -66,9 +66,9 @@ class _HomePageState extends State<HomePage> {
                     )
                   : Scaffold(
                       /* appBar: AppBar(
-              title: Text("Home"),
-              actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
-            ), */
+            title: Text("Home"),
+            actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
+          ), */
                       body: Consumer<BookingBranDet>(
                         builder: (context, valueb, child) {
                           print(authProv.authinfo.userType);
@@ -80,7 +80,8 @@ class _HomePageState extends State<HomePage> {
                                   constraints: BoxConstraints(maxWidth: 1200),
                                   child: Column(
                                     children: [
-                                      _profileWidget(authProv, bizdets.ss),
+                                      _profileWidget(
+                                          authProv, bizdets.ss, bizdets.cname),
                                       authProv.authinfo.userType ==
                                               UserEnum.Company
                                           ? bizdets.counterbranches == null
@@ -144,32 +145,6 @@ class _HomePageState extends State<HomePage> {
                                                   ? authProv.authinfo
                                                               .companyType ==
                                                           CompanyEnum.Token
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            Tokens(
-                                                                              bid: int.parse(valueb.bid),
-                                                                              token: authProv.authinfo.jwtToken,
-                                                                              bname: valueb.bname,
-                                                                            )));
-                                                          },
-                                                          child: _cards(
-                                                              LocaleKeys.Tokens
-                                                                  .tr(),
-                                                              LocaleKeys
-                                                                      .EditManagetokendetails
-                                                                  .tr()))
-                                                      : SizedBox()
-                                                  : SizedBox(),
-                                              authProv.authinfo.userType ==
-                                                      UserEnum.Employee
-                                                  ? authProv.authinfo
-                                                              .companyType ==
-                                                          CompanyEnum.Booking
                                                       ? InkWell(
                                                           onTap: () {
                                                             Navigator.push(
@@ -262,7 +237,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _profileWidget(AuthProv authProv, List<BizDets> b) {
+  Widget _profileWidget(AuthProv authProv, List<BizDets> b, String name) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
       child: Row(
@@ -272,6 +247,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Profile(
+                    usertype: authProv.authinfo.userType,
                     acn: b[0].acn,
                     acnum: b[0].acnum,
                     bname: b[0].bname,
@@ -287,22 +263,20 @@ class _HomePageState extends State<HomePage> {
                 )),
             child: Row(
               children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: AppColor.purpleBlue),
-                ),
                 SizedBox(
                   width: 20,
                 ),
                 Column(
                   children: [
+                    name == null
+                        ? Container()
+                        : Text(
+                            'Hello, ' + name,
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
                     Text(
-                      'Hello',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                      'View Profile',
                     ),
-                    Text(userEnumToString(authProv.authinfo.userType))
                   ],
                 )
               ],
