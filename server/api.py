@@ -559,7 +559,7 @@ def biz_details():
             "Select * FROM companydetails WHERE id ='" + str(user["id"]) + "';"
         )
         if check:
-            r = cur.fetchone()
+            rows = cur.fetchone()
             check = cur.execute(
                 "Select COUNT(id) FROM branch_details WHERE comp_id ='"
                 + str(user["id"])
@@ -588,7 +588,7 @@ def biz_details():
                 deptcounter = deptcounter + int(ec["COUNT(employee_id)"])
 
             resp = jsonify(
-                {"details": r, "counterbranches": countb, "counteremps": deptcounter}
+                {"details": rows, "counterbranches": countb, "counteremps": deptcounter}
             )
             resp.status_code = 200
             return resp
@@ -1996,94 +1996,57 @@ def status_mtoken_chng():
                 op = 200
             op = 403
 
-        elif status == "cancelled":
-            r = cur.execute(
-                "UPDATE "
-                + str(branch_name + "_" + str(branch_id))
-                + " SET status = 'cancelled', employee_id = '"
-                + str(user["id"])
-                + "' WHERE status = 'onqueue' LIMIT "
-                + str(limit)
-                + ""
-            )
-            conn.commit()
+        #     ll = cur.fetchall()
+        #     dts = []
+        #     for row in ll:
+        #         dts.append(row["device_token"])
 
-            cur = conn.cursor(pymysql.cursors.DictCursor)
-            rr = cur.execute(
-                "UPDATE tokenshistory SET status = 'cancelled', employee_id = '"
-                + str(user["id"])
-                + "' WHERE status = 'onqueue' AND branchtable = '"
-                + str(bookingdept + "-" + str(booking_id))
-                + "' LIMIT "
-                + str(limit)
-                + ""
-            )
-            conn.commit()
-            if r and rr:
-                op = 200
-            op = 403
+        #     cur.execute(
+        #         "Select * from branch_details WHERE  id = '" + str(branch_id) + "'; "
+        #     )
+        #     m = cur.fetchone()
 
-        elif status == "ongoing":
-            r = cur.execute(
-                "UPDATE "
-                + str(branch_name + "_" + str(branch_id))
-                + " SET status = 'ongoing', employee_id = '"
-                + str(user["id"])
-                + "' WHERE status = 'onqueue' LIMIT "
-                + str(limit)
-                + ""
-            )
-            conn.commit()
+        #     cur.execute(
+        #         "Select * from companydetails WHERE  id = '" + str(m["comp_id"]) + "'; "
+        #     )
+        #     k = cur.fetchone()
+        #     j = k["oneliner"]
 
-            cur = conn.cursor(pymysql.cursors.DictCursor)
-            rr = cur.execute(
-                "UPDATE tokenshistory SET status = 'ongoing', employee_id = '"
-                + str(user["id"])
-                + "' WHERE status = 'onqueue' AND branchtable = '"
-                + str(bookingdept + "-" + str(booking_id))
-                + "' LIMIT "
-                + str(limit)
-                + ""
-            )
-            conn.commit()
-            cur = conn.cursor(pymysql.cursors.DictCursor)
+        #     lenids = len(dts)
+        #     if lenids > 0:
+        #         tokens = [dts]
+        #         statusfcm = fcm.sendPush("Hi", str(j), tokens)
 
-            if r and rr:
-                op = 200
-            op = 403
-            ll = cur.execute(
-                "Select * from "
-                + str(branch_name + "_" + str(branch_id))
-                + " WHERE status = 'onqueue' LIMIT "
-                + str(limit)
-                + ";"
-            )
-            # SELECT * FROM equeue.hey_8 WHERE NOT('status' = 'cancelled' OR 'status' ='completed') ORDER BY id DESC;
-            ll = cur.fetchall()
-            dts = []
-            for row in ll:
-                dts.append(row["device_token"])
+        #     if r and rr:
+        #         op = 200
+        #     op = 403
 
-            cur.execute(
-                "Select * from branch_details WHERE  id = '" + str(branch_id) + "'; "
-            )
-            m = cur.fetchone()
+        # elif status == "cancelled":
+        #     r = cur.execute(
+        #         "UPDATE "
+        #         + str(branch_name + "_" + str(branch_id))
+        #         + " SET status = 'cancelled', employee_id = '"
+        #         + str(user["id"])
+        #         + "' WHERE status = 'onqueue' LIMIT "
+        #         + str(limit)
+        #         + ""
+        #     )
+        #     conn.commit()
 
-            cur.execute(
-                "Select * from companydetails WHERE  id = '" + str(m["comp_id"]) + "'; "
-            )
-            k = cur.fetchone()
-            j = k["oneliner"]
-
-            lenids = len(dts)
-            if lenids > 0:
-                tokens = [dts]
-                statusfcm = fcm.sendPush("Hi", str(j), tokens)
-
-            if r and rr:
-                op = 200
-            op = 403
-
+        #     cur = conn.cursor(pymysql.cursors.DictCursor)
+        #     rr = cur.execute(
+        #         "UPDATE tokenshistory SET status = 'cancelled', employee_id = '"
+        #         + str(user["id"])
+        #         + "' WHERE status = 'onqueue' AND branchtable = '"
+        #         + str(bookingdept + "-" + str(booking_id))
+        #         + "' LIMIT "
+        #         + str(limit)
+        #         + ""
+        #     )
+        #     conn.commit()
+        #     if r and rr:
+        #         op = 200
+        #     op = 403
         else:
             resp = jsonify({"message": "invalid status."})
             resp.status_code = 405
