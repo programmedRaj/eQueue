@@ -311,12 +311,14 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             : SizedBox(),
                         authProv.authinfo.companyType == CompanyEnum.Booking
                             ? RaisedButton(
-                                child: _notifytimeDescController.text == null
-                                    ? Text('Notify Time')
-                                    : Text(_notifytimeDescController.text
-                                        .toString()
-                                        .split('(')[1]
-                                        .replaceAll(')', '')),
+                                child:
+                                    // _notifytimeDescController.text == null
+                                    //     ?
+                                    Text('Notify Time'),
+                                // : Text(_notifytimeDescController.text
+                                //     .toString()
+                                //     .split('(')[1]
+                                //     .replaceAll(')', '')),
                                 onPressed: () {
                                   showTimePicker(
                                           context: context,

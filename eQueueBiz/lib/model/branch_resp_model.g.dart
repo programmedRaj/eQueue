@@ -45,7 +45,7 @@ List<String> getDepts(Map json) {
   List<String> tempLString = [];
   temp = (jsonDecode(json['department'] ?? "{}"));
   tempList = temp['department'];
-  tempList.forEach((element) {
+  tempList?.forEach((element) {
     tempLString.add(element as String);
   });
 
