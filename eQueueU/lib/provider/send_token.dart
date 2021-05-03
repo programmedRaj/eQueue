@@ -24,7 +24,8 @@ class SendToken with ChangeNotifier {
     var map = new Map<String, dynamic>();
     map['branch_name'] = branchname;
     map['branch_id'] = branchid.toString();
-    map['token_or_booking'] = tokenorbooking;
+    map['token_or_booking'] =
+        tokenorbooking == 'multitoken' ? 'token' : tokenorbooking;
     map['device_token'] = devicetoken;
     map['department'] = department;
     map['comp_name'] = comp;

@@ -12,9 +12,14 @@ import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BizUserDets with ChangeNotifier {
+  int counterbranches;
+  int get counterbranchess => counterbranches;
+  int counteremps;
+  int get counterempss => counteremps;
   getBizUserdets() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.get('tokens');
+    print(token);
 
     var response = await retry(
       () => http.get(
@@ -25,7 +30,9 @@ class BizUserDets with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    print('--${n['details']['account_name']}');
+    print(n);
+    counterbranches = n['counterbranches'];
+    counteremps = n['counteremps'];
     removedd();
     addets(
       acn: n['details']['account_name'],

@@ -5,8 +5,10 @@ import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/providers/booking_prov.dart';
 import 'package:equeuebiz/providers/status_booking.dart';
 import 'package:equeuebiz/screens/userdets.dart';
+import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Bookings extends StatefulWidget {
   final String branchid;
@@ -50,15 +52,15 @@ class _BookingsState extends State<Bookings> {
                 },
               ),
               title: Text(
-                "Bookings",
+                LocaleKeys.Bookings,
                 style: TextStyle(color: Colors.black),
-              ),
+              ).tr(),
               actions: [_dateFilter()],
             ),
             body: value.bms.length < 0 || value.bms.isEmpty
                 ? Container(
                     child: Center(
-                      child: Text('No Booking found today'),
+                      child: Text(LocaleKeys.No_Booking_found_today).tr(),
                     ),
                   )
                 : ListView.builder(
@@ -130,7 +132,7 @@ class _BookingsState extends State<Bookings> {
           children: [
             Center(
               child: Text(
-                "Booking Number : ${bd.id}",
+                "${LocaleKeys.Booking_Number.tr()} : ${bd.id}",
                 style: blackBoldFS16,
               ),
             ),
@@ -138,8 +140,8 @@ class _BookingsState extends State<Bookings> {
               height: 10,
             ),
             bd.insurance == 'paid'
-                ? Text('Paid by cash.')
-                : Text("Insurance : ${bd.insurance}"),
+                ? Text(LocaleKeys.Paid_by_cash).tr()
+                : Text("${LocaleKeys.Insurance.tr()} : ${bd.insurance}"),
             Row(
               children: [
                 Container(
@@ -203,12 +205,12 @@ class _BookingsState extends State<Bookings> {
                         );
                       }).toList(),
                       hint: Text(
-                        "Status",
+                        LocaleKeys.Status,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
-                      ),
+                      ).tr(),
                       onChanged: (String value) {
                         setState(() {
                           _chosen = value;
@@ -238,11 +240,11 @@ class _BookingsState extends State<Bookings> {
                       child: Row(
                         children: [
                           Text(
-                            "View More",
+                            LocaleKeys.View_More,
                             style: TextStyle(
                                 color: AppColor.mainBlue,
                                 fontWeight: FontWeight.bold),
-                          ),
+                          ).tr(),
                           Icon(
                             Icons.arrow_forward_ios,
                             color: AppColor.mainBlue,

@@ -37,6 +37,7 @@ dependencies:
   url_launcher: ^6.0.3
   email_validator: ^2.0.1
   easy_localization: ^3.0.0
+  grouped_buttons: ^1.0.4
   retry:
 
 dev_dependencies:

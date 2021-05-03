@@ -1,6 +1,8 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/providers/all_multitoken.dart';
+import 'package:equeuebiz/providers/call_multitoken.dart';
+import 'package:equeuebiz/services/app_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -96,16 +98,30 @@ class _MultiTokensState extends State<MultiTokens> {
       padding: const EdgeInsets.all(25.0),
       child: tokenMax == 0
           ? Container()
-          : Container(
-              //width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              decoration: BoxDecoration(
-                  color: AppColor.mainBlue,
-                  borderRadius: BorderRadius.circular(4)),
-              alignment: Alignment.center,
-              child: Text(
-                "CALL",
-                style: TextStyle(color: Colors.white),
+          : GestureDetector(
+              onTap: () {
+                if (tokenMax <= 0) {
+                  AppToast.showErr('Please select value greater than 0');
+                } else {
+                  Provider.of<CallMToken>(context, listen: false)
+                      .callTokeMndets(
+                          widget.bid.toString(),
+                          widget.bname,
+                          widget.token,
+                          (int.parse(tokenMax.toString())).toString());
+                }
+              },
+              child: Container(
+                //width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                    color: AppColor.mainBlue,
+                    borderRadius: BorderRadius.circular(4)),
+                alignment: Alignment.center,
+                child: Text(
+                  "CALL",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
     );
