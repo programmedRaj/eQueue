@@ -14,6 +14,9 @@ class BizUserDets with ChangeNotifier {
   int get counterbranchess => counterbranches;
   int counteremps;
   int get counterempss => counteremps;
+  String cname;
+  String get cn => cname;
+
   getBizUserdets() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.get('tokens');
@@ -31,6 +34,7 @@ class BizUserDets with ChangeNotifier {
     print(n);
     counterbranches = n['counterbranches'];
     counteremps = n['counteremps'];
+    cname = n['cname'];
     removedd();
     addets(
       acn: n['details']['account_name'],

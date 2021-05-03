@@ -1,5 +1,8 @@
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:equeuebiz/enum/company_enum.dart';
+import 'package:equeuebiz/enum/user_type.dart';
+import 'package:equeuebiz/providers/auth_prov.dart';
 import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
@@ -17,8 +20,10 @@ class Profile extends StatefulWidget {
   String name;
   String profileurl;
   String type;
+  var usertype;
   Profile(
       {this.acn,
+      this.usertype,
       this.acnum,
       this.bname,
       this.descr,
@@ -45,6 +50,8 @@ class _ProfileState extends State<Profile> {
   String name;
   String profileurl;
   String type;
+
+  AuthProv a;
 
   @override
   void initState() {
@@ -81,7 +88,10 @@ class _ProfileState extends State<Profile> {
                     SizedBox(
                       height: 15,
                     ),
-                    _photo(profileurl),
+                    widget.usertype == UserEnum.Company
+                        ? _photo('https://www.nobatdeh.com/uploads/$profileurl')
+                        : _photo(
+                            'https://www.nobatdeh.com/uploads/biz-logos/$profileurl'),
                     IgnorePointer(
                         child: _textField(LocaleKeys.Name.tr(), name)),
                     type == 'booking'
@@ -99,7 +109,7 @@ class _ProfileState extends State<Profile> {
                         : SizedBox(),
                     IgnorePointer(
                         child: _textField(LocaleKeys.Type.tr(), type)),
-                    addCancel()
+                    //   addCancel()
                   ],
                 ),
               ),
@@ -109,12 +119,9 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget _photo(String p) {
-    return Container(
-      width: 100,
-      height: 100,
-      decoration:
-          BoxDecoration(shape: BoxShape.circle, color: AppColor.purpleBlue),
-      // child: Image.network('$p'),
+    return CircleAvatar(
+      radius: 60,
+      backgroundImage: NetworkImage(p),
     );
   }
 
