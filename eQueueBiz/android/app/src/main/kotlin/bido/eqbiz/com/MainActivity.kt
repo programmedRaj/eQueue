@@ -1,4 +1,4 @@
-package com.bido.equeuebiz
+package bido.eqbiz.com
 
 import io.flutter.embedding.android.FlutterActivity
 

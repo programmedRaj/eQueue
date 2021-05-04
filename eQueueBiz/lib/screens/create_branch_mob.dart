@@ -103,6 +103,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     _cityController.text = widget.branchDets.city;
     _provinceController.text = widget.branchDets.province;
     _phoneNoController.text = widget.branchDets.phoneNo;
+    _notifytimeDescController.text = widget.branchDets.notify;
     _postalCodeController.text = widget.branchDets.postalCode;
     _thresholdController.text = widget.branchDets.threshold;
     _counterController.text = widget.branchDets.counter;
@@ -319,7 +320,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             : SizedBox(),
                         authProv.authinfo.companyType == CompanyEnum.Booking
                             ? RaisedButton(
-                                child: _notifytimeDescController.text == null
+                                child: _notifytimeDescController.text.isEmpty
                                     ? Text('Notify Time')
                                     : Text(_notifytimeDescController.text
                                         .toString()),
