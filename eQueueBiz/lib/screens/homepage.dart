@@ -150,6 +150,32 @@ class _HomePageState extends State<HomePage> {
                                                             Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            Tokens(
+                                                                              bid: int.parse(valueb.bid),
+                                                                              token: authProv.authinfo.jwtToken,
+                                                                              bname: valueb.bname,
+                                                                            )));
+                                                          },
+                                                          child: _cards(
+                                                              LocaleKeys.Tokens
+                                                                  .tr(),
+                                                              LocaleKeys
+                                                                      .EditManageMultitoken_details
+                                                                  .tr()))
+                                                      : SizedBox()
+                                                  : SizedBox(),
+                                              authProv.authinfo.userType ==
+                                                      UserEnum.Employee
+                                                  ? authProv.authinfo
+                                                              .companyType ==
+                                                          CompanyEnum.Booking
+                                                      ? InkWell(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
                                                                   builder:
                                                                       (context) =>
                                                                           Bookings(
@@ -271,12 +297,12 @@ class _HomePageState extends State<HomePage> {
                     name == null
                         ? Container()
                         : Text(
-                            'Hello, ' + name,
+                            '${LocaleKeys.hello.tr()}' + name,
                             style: TextStyle(fontWeight: FontWeight.w700),
                           ),
                     Text(
-                      'View Profile',
-                    ),
+                      LocaleKeys.View_More,
+                    ).tr(),
                   ],
                 )
               ],

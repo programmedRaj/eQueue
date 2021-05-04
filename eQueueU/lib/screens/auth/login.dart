@@ -142,6 +142,7 @@ class _LoginState extends State<Login> {
                             height: height * 0.1,
                             width: width,
                             child: TextFormField(
+                              style: TextStyle(color: Colors.white),
                               keyboardType: TextInputType.number,
                               inputFormatters: <TextInputFormatter>[
                                 FilteringTextInputFormatter.digitsOnly

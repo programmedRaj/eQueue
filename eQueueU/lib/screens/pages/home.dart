@@ -372,9 +372,20 @@ class _HomeState extends State<Home> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            Container(
-                                                              child: Text(
-                                                                  '${LocaleKeys.Booking.tr()} : ${value.bookings[index].branchtable.split("_")[0]}'),
+                                                            Row(
+                                                              children: [
+                                                                circle(value
+                                                                    .tokens[
+                                                                        index]
+                                                                    .status),
+                                                                SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                                Container(
+                                                                  child: Text(
+                                                                      '${LocaleKeys.Booking.tr()} : ${value.bookings[index].branchtable.split("_")[0]}'),
+                                                                ),
+                                                              ],
                                                             ),
                                                             Container(
                                                               child: Text(
@@ -614,10 +625,20 @@ class _HomeState extends State<Home> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Container(
-                                                        child: Text(value
-                                                            .tokens[index]
-                                                            .comp),
+                                                      Row(
+                                                        children: [
+                                                          circle(value
+                                                              .tokens[index]
+                                                              .status),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Container(
+                                                            child: Text(value
+                                                                .tokens[index]
+                                                                .comp),
+                                                          ),
+                                                        ],
                                                       ),
                                                       Container(
                                                         child: Text(value
@@ -862,5 +883,21 @@ class _HomeState extends State<Home> {
         ));
       },
     );
+  }
+
+  Widget circle(status) {
+    if (status == 'onqueue') {
+      return CircleAvatar(
+        radius: 10,
+        backgroundColor: Colors.amber,
+      );
+    } else if (status == 'ongoing') {
+      return CircleAvatar(
+        radius: 10,
+        backgroundColor: Colors.green,
+      );
+    } else {
+      return null;
+    }
   }
 }

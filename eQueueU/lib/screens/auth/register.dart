@@ -6,6 +6,7 @@ import 'package:country_calling_code_picker/picker.dart';
 import 'package:eQueue/api/service/baseurl.dart';
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/constants/appcolor.dart';
+import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/screens/auth/login.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,7 @@ class _RegisterState extends State<Register> {
     String countrycode,
     String referralcode,
   }) async {
+    print(images);
     Uri registeruri = Uri.parse(baseUrl.register);
     var header = {
       'Content-Type': 'multipart/form-data',
@@ -79,12 +81,12 @@ class _RegisterState extends State<Register> {
     var request = new http.MultipartRequest("POST", registeruri)
       ..headers.addAll(header);
 
-    if (images != null || images.path.isNotEmpty) {
+    if (images == null || images.path.isEmpty) {
+      request.files
+          .add(http.MultipartFile.fromBytes('profile_img', [], filename: ''));
+    } else {
       request.files
           .add(await http.MultipartFile.fromPath('profile_img', images.path));
-    } else {
-      request.files.add(await http.MultipartFile.fromBytes('profile_img', [],
-          filename: '_logo'));
     }
 
     request.fields['name'] = name;
@@ -103,7 +105,7 @@ class _RegisterState extends State<Register> {
     request.fields['referral_code'] =
         referralcode == null || referralcode.isEmpty
             ? "optional"
-            : referralcode + '@equeue';
+            : referralcode;
     var res = await request.send();
 
     var response = await http.Response.fromStream(res);
@@ -111,6 +113,7 @@ class _RegisterState extends State<Register> {
       Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => Login()));
     } else if (res.statusCode == 403) {
       error = LocaleKeys.YouAlreadyHaveanAccount.tr();
+      AppToast.showErr(error);
     } else {
       setState(() {
         error = LocaleKeys.Somethingwentwrong.tr();
@@ -197,8 +200,9 @@ class _RegisterState extends State<Register> {
                               child: Container(
                                 height: height * 0.15,
                                 width: width * 0.28,
+                                margin: EdgeInsets.all(20),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(60),
                                     image: DecorationImage(
                                         image: FileImage(_image),
                                         fit: BoxFit.fill)),
@@ -211,6 +215,7 @@ class _RegisterState extends State<Register> {
                     width: width,
                     margin: EdgeInsets.only(bottom: 15),
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
                       keyboardType: TextInputType.emailAddress,
                       validator: (name) {
                         if (name.isEmpty)
@@ -261,6 +266,7 @@ class _RegisterState extends State<Register> {
                     margin: EdgeInsets.only(bottom: 15),
                     width: width,
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
                       keyboardType: TextInputType.emailAddress,
                       // validator: (name) {
                       //   if (name.isEmpty)
@@ -311,6 +317,7 @@ class _RegisterState extends State<Register> {
                     margin: EdgeInsets.only(bottom: 15),
                     width: width,
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
                       keyboardType: TextInputType.emailAddress,
                       // validator: (name) {
                       //   if (name.isEmpty)
@@ -361,6 +368,7 @@ class _RegisterState extends State<Register> {
                     margin: EdgeInsets.only(bottom: 15),
                     width: width,
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
                       keyboardType: TextInputType.emailAddress,
                       // validator: (name) {
                       //   if (name.isEmpty)
@@ -411,6 +419,8 @@ class _RegisterState extends State<Register> {
                     margin: EdgeInsets.only(bottom: 15),
                     width: width,
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+
                       keyboardType: TextInputType.emailAddress,
                       // validator: (name) {
                       //   if (name.isEmpty)
@@ -461,6 +471,7 @@ class _RegisterState extends State<Register> {
                     margin: EdgeInsets.only(bottom: 15),
                     width: width,
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
                       keyboardType: TextInputType.emailAddress,
                       // validator: (name) {
                       //   if (name.isEmpty)
@@ -511,6 +522,7 @@ class _RegisterState extends State<Register> {
                     margin: EdgeInsets.only(bottom: 15),
                     width: width,
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: LocaleKeys.ReferalCode.tr(),
@@ -580,6 +592,7 @@ class _RegisterState extends State<Register> {
                             width: sizz == 1 ? width / 1.8 : width / 1.58,
                             margin: EdgeInsets.only(left: 15),
                             child: TextFormField(
+                              style: TextStyle(color: Colors.white),
                               keyboardType: TextInputType.number,
                               inputFormatters: <TextInputFormatter>[
                                 FilteringTextInputFormatter.digitsOnly

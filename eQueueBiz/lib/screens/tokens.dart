@@ -73,7 +73,7 @@ class _TokensState extends State<Tokens> {
                     ? Container(
                         child: Center(
                           child: Text(
-                              '${LocaleKeys.NO.tr} ${LocaleKeys.Tokens.tr}'),
+                              '${LocaleKeys.NO.tr()} ${LocaleKeys.Tokens.tr()}'),
                         ),
                       )
                     : ListView.builder(

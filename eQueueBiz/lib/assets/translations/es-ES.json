@@ -1,4 +1,5 @@
 {
+  "hello": "Hola",
   "Bookings": "Reservaciones",
   "No_Booking_found_today": "No se ha encontrado ninguna reserva hoy",
   "Booking_Number": "Número de reserva",

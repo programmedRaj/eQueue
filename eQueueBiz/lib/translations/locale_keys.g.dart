@@ -1,6 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const hello = 'hello';
   static const Bookings = 'Bookings';
   static const No_Booking_found_today = 'No_Booking_found_today';
   static const Booking_Number = 'Booking_Number';

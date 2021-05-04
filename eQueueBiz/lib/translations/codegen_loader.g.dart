@@ -15,6 +15,7 @@ class CodegenLoader extends AssetLoader{
   }
 
   static const Map<String,dynamic> ar_AR = {
+  "hello": "مرحبا",
   "Bookings": "الحجوزات",
   "No_Booking_found_today": "لم يتم العثور على حجز اليوم",
   "Booking_Number": "رقم الحجز",
@@ -141,6 +142,7 @@ class CodegenLoader extends AssetLoader{
   "Pleaseselectvaluegreaterthan": "الرجاء تحديد قيمة أكبر من 0"
 };
 static const Map<String,dynamic> en_US = {
+  "hello": "Hello",
   "Bookings": "Bookings",
   "No_Booking_found_today": "No Booking found today",
   "Booking_Number": "Booking Number",
@@ -267,6 +269,7 @@ static const Map<String,dynamic> en_US = {
   "Pleaseselectvaluegreaterthan": "Please select value greater than 0"
 };
 static const Map<String,dynamic> es_ES = {
+  "hello": "Hola",
   "Bookings": "Reservaciones",
   "No_Booking_found_today": "No se ha encontrado ninguna reserva hoy",
   "Booking_Number": "Número de reserva",
@@ -393,6 +396,7 @@ static const Map<String,dynamic> es_ES = {
   "Pleaseselectvaluegreaterthan": "Seleccione un valor mayor que 0"
 };
 static const Map<String,dynamic> fa_FA = {
+  "hello": "سلام",
   "Bookings": "رزرو",
   "No_Booking_found_today": "رزروی برای امروز یافت نشد",
   "Booking_Number": "شماره رزرو",
@@ -519,6 +523,7 @@ static const Map<String,dynamic> fa_FA = {
   "Pleaseselectvaluegreaterthan": "شماره از 0 باید بزرگتر باشد"
 };
 static const Map<String,dynamic> fr_FR = {
+  "hello": "Bonjour",
   "Bookings": "Réservations",
   "No_Booking_found_today": "Aucune réservation trouvée aujourd'hui",
   "Booking_Number": "Numéro de réservation",
@@ -645,6 +650,7 @@ static const Map<String,dynamic> fr_FR = {
   "Pleaseselectvaluegreaterthan": "Veuillez sélectionner une valeur supérieure à 0"
 };
 static const Map<String,dynamic> hi_IN = {
+  "hello": "नमस्ते",
   "Bookings": "बुकिंग के",
   "No_Booking_found_today": "आज कोई बुकिंग नहीं मिली",
   "Booking_Number": "बुकिंग संख्या",
