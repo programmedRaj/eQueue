@@ -48,6 +48,9 @@ dependencies:
   easy_localization: ^3.0.0
   overlay_support: ^1.2.1
   flutter_local_notifications: ^5.0.0
+  fluster: ^1.2.0
+  flutter_rating_bar: ^4.0.0
+  geolocator: ^7.0.3
 
 dev_dependencies:
   flutter_test:

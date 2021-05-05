@@ -11,7 +11,7 @@ import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // AIzaSyADhaiJj9t1y6YctqsK5uJr3sS3jNTl55w
 
-class DisplayTokenBook with ChangeNotifier {
+class DisplayTokenBookHome with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
   Future displayboth(String type, String where) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,7 +23,7 @@ class DisplayTokenBook with ChangeNotifier {
 
     var response = await retry(
       () => http
-          .post(Uri.parse(baseUrl.displaytokenbooking),
+          .post(Uri.parse(baseUrl.homescreendisplay),
               headers: {"Authorization": token}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
@@ -31,6 +31,14 @@ class DisplayTokenBook with ChangeNotifier {
     var k = response.body;
     var n = json.decode(k);
     print(n);
+
+    // if (n['message'] == 'No bookings found') {
+    //   removebooking();
+    // }
+
+    // if (n['message'] == 'No tokens found') {
+    //   removetoken();
+    // }
 
     if (type == "tokens") {
       if (n["tokens"] != null) {
@@ -111,6 +119,7 @@ class DisplayTokenBook with ChangeNotifier {
         userid: userid,
         employeeid: employeeid,
         slots: slots));
+
     notifyListeners();
   }
 

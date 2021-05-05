@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:eQueue/components/color.dart';
 import 'package:eQueue/components/tokenpage.dart';
 import 'package:eQueue/constants/apptoast.dart';
@@ -16,7 +18,14 @@ class Booktoken extends StatefulWidget {
   final String type;
   final String branchname;
   final String companyname;
-  Booktoken({this.id, this.bid, this.type, this.branchname, this.companyname});
+  final String wk;
+  Booktoken(
+      {this.id,
+      this.bid,
+      this.type,
+      this.branchname,
+      this.companyname,
+      this.wk});
   @override
   _BooktokenState createState() => _BooktokenState();
 }
@@ -24,6 +33,7 @@ class Booktoken extends StatefulWidget {
 class _BooktokenState extends State<Booktoken> {
   String dropval;
   bool onpress = false;
+  int whichday;
 
   @override
   void didChangeDependencies() {
@@ -201,25 +211,125 @@ class _BooktokenState extends State<Booktoken> {
                       borderRadius: BorderRadius.circular(10)),
                   child: FlatButton(
                       onPressed: () async {
-                        if (dropval != null) {
-                          await Provider.of<SendToken>(context, listen: false)
-                              .generatetoken(
-                                  branchid: widget.bid,
-                                  branchname: widget.branchname,
-                                  department: dropval,
-                                  tokenorbooking: widget.type,
-                                  comp: widget.companyname)
-                              .then((value) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => MyHomePage()));
-                          });
+                        String dateFormat =
+                            DateFormat('EEEE').format(DateTime.now());
+                        String dayy = dateFormat.toLowerCase();
+                        var wh = json.decode(widget.wk);
+                        print(wh);
+                        if (dayy == 'monday') {
                           setState(() {
-                            onpress = true;
+                            whichday = 0;
                           });
-                        } else {
-                          AppToast.showErr(
-                              LocaleKeys.Pleaseselectdepartment.tr());
+                        } else if (dayy == 'tuesday') {
+                          setState(() {
+                            whichday = 1;
+                          });
+                        } else if (dayy == 'wednesday') {
+                          setState(() {
+                            whichday = 2;
+                          });
+                        } else if (dayy == 'thursday') {
+                          setState(() {
+                            whichday = 3;
+                          });
+                        } else if (dayy == 'friday') {
+                          setState(() {
+                            whichday = 4;
+                          });
+                        } else if (dayy == 'saturday') {
+                          setState(() {
+                            whichday = 5;
+                          });
+                        } else if (dayy == 'sunday') {
+                          setState(() {
+                            whichday = 6;
+                          });
                         }
+
+                        String workday = wh[dayy]
+                            .toString()
+                            .replaceAll('{', '')
+                            .replaceAll('}', '');
+                        print('wk -- $workday');
+
+                        var t = workday.replaceAll('{', '').replaceAll('}', '');
+                        var ti = t.split(',');
+
+                        var starttime = ti[0].split(' ')[1] + '0';
+                        var endtime = ti[1].split(' ')[2] + '0';
+
+                        final currentTime = DateTime.now();
+                        // print(currentTime);
+                        var date = DateFormat('yyyy-MM-dd', 'en_US');
+                        var datetoday = date.format(currentTime);
+                        print(datetoday);
+                        var year = datetoday.substring(0, 4);
+                        var month = datetoday.substring(5, 7);
+                        var day = datetoday.substring(8);
+
+                        print(starttime);
+                        print(endtime);
+
+                        var stH = starttime.substring(0, 2);
+                        var stM = starttime.substring(3, 5);
+
+                        var endH = endtime.substring(0, 2);
+                        var endM = endtime.substring(3, 5);
+
+                        DateTime start = DateTime(
+                            int.parse(year),
+                            int.parse(month),
+                            int.parse(day),
+                            int.parse(stH),
+                            int.parse(stM));
+                        DateTime end = DateTime(
+                            int.parse(year),
+                            int.parse(month),
+                            int.parse(day),
+                            int.parse(endH),
+                            int.parse(endM));
+                        if (starttime != null && endtime != null) {
+                          if (currentTime.isAfter(start) &&
+                              currentTime.isBefore(end)) {
+                            if (dropval != null) {
+                              await Provider.of<SendToken>(context,
+                                      listen: false)
+                                  .generatetoken(
+                                      branchid: widget.bid,
+                                      branchname: widget.branchname,
+                                      department: dropval,
+                                      tokenorbooking: widget.type,
+                                      comp: widget.companyname)
+                                  .then((value) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => MyHomePage()));
+                              });
+                              setState(() {
+                                onpress = true;
+                              });
+                            } else {
+                              AppToast.showErr(
+                                  LocaleKeys.Pleaseselectdepartment.tr());
+                            }
+                          } else {
+                            AppToast.showErr('Branch Is Closed');
+                          }
+                        }
+
+                        // print(start);
+                        // if (start != null) {
+                        // } else {
+                        //   print('g');
+                        //   AppToast.showErr('Branch is Closed For Today');
+                        // }
+                        //else if (start != null && end != null) {
+                        // if (currentTime.isAfter(DateTime.parse(start)) &&
+                        //     currentTime.isBefore(DateTime.parse(end))) {
+                        //     AppToast.showErr('Branch is Closed For Now');
+                        //   }
+                        // } else if (start != null && end != null) {
+
+                        // }
                       },
                       child: Text(
                         LocaleKeys.GenerateToken,

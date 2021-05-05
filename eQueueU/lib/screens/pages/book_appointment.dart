@@ -147,8 +147,8 @@ class _CalenState extends State<Calen> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (ctx) => AppTime(
                                 day: day,
-                                starttime: start,
-                                endtime: end,
+                                starttime: end,
+                                endtime: start,
                                 slots: slots,
                                 branchid: widget.branchid,
                                 branchname: widget.branchname,

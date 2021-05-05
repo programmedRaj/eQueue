@@ -4,6 +4,7 @@ import 'package:eQueue/provider/branch_provider.dart';
 import 'package:eQueue/provider/check_slot.dart';
 import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/provider/delete_token_branch.dart';
+import 'package:eQueue/provider/homescreentokbok.dart';
 import 'package:eQueue/provider/map_marker.dart';
 import 'package:eQueue/provider/payment_provider.dart';
 import 'package:eQueue/provider/paymentdone.dart';
@@ -29,6 +30,7 @@ import 'package:provider/provider.dart';
 import 'components/color.dart';
 import 'provider/department_booking_provider.dart';
 import 'provider/department_token_provider.dart';
+import 'provider/rateemp.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -151,6 +153,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: DeletetokenProvider()),
         ChangeNotifierProvider.value(value: CompanyProvider()),
         ChangeNotifierProvider.value(value: MapMarker()),
+        ChangeNotifierProvider.value(value: Rateemp()),
         ChangeNotifierProvider.value(value: PaymentDoneProvider()),
         ChangeNotifierProvider.value(value: BranchProvider()),
         ChangeNotifierProvider.value(value: DepProvider()),
@@ -162,6 +165,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: UserDetails()),
         ChangeNotifierProvider.value(value: PayProvider()),
         ChangeNotifierProvider.value(value: DisplayTokenBook()),
+        ChangeNotifierProvider.value(value: DisplayTokenBookHome()),
         ChangeNotifierProvider.value(value: TransactionProvider()),
         ChangeNotifierProvider.value(value: UpUserDetails()),
       ],

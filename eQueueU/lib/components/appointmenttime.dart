@@ -86,34 +86,49 @@ class _AppTimeState extends State<AppTime> {
     final times = getTimes(startTime, endTime, step)
         .map((tod) => tod.format(context))
         .toList();
-
+    List<BookingSlot> datet = [];
     return Consumer<SlotProvider>(
       builder: (context, value, child) {
         var datefrommob = widget.day.toString().substring(0, 11);
 
         if (value.bookings.length != 0) {
-          List<BookingSlot> datet = value.booking
+          datet = value.booking
               .where((element) =>
                   element.date.replaceAll(new RegExp(r"\s+"), "") ==
                   datefrommob.replaceAll(new RegExp(r"\s+"), ""))
               .toList();
 
-          for (int i = 0; i < datet.length; i++) {
-            var t = datet[i].time.contains('PM');
-            if (t) {
-              var tt = datet[i].time.toString().split(':')[0];
-              var ttt = int.parse(tt) + 12;
-              print(ttt);
+          tlist.clear();
+          for (int j = 0; j < times.length; j++) {
+            for (int i = 0; i < datet.length; i++) {
+              if (datet[i].time.contains(times[j].substring(0, 4))) {
+                tlist.add(datet[i].time.substring(0, 4));
+              }
 
-              String t4 = ttt.toString() +
-                  ':' +
-                  datet[i].time.toString().split(':')[1].substring(0, 2);
-              tlist.add(t4);
-            } else if (datet[i].time.contains('AM') &&
-                datet[i].time.contains('12')) {
-              tlist.add('00:00');
+              // print(times[i]
+              //     .substring(0, 4)
+              //     .contains(datet[0].time.substring(0, 4)));
+              // print(datet[0].time.substring(0, 4));
             }
           }
+
+          print(tlist);
+
+          //   var t = datet[i].time.contains('PM');
+          //   if (t) {
+          //     var tt = datet[i].time.toString().split(':')[0];
+          //     var ttt = int.parse(tt) + 12;
+          //     print(ttt);
+
+          //     String t4 = ttt.toString() +
+          //         ':' +
+          //         datet[i].time.toString().split(':')[1].substring(0, 2);
+          //     tlist.add(t4);
+          //   } else if (datet[i].time.contains('AM') &&
+          //       datet[i].time.contains('12')) {
+          //     tlist.add('00:00');
+          //   }
+          // }
         }
         return Scaffold(
           appBar: AppBar(
@@ -125,7 +140,7 @@ class _AppTimeState extends State<AppTime> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, childAspectRatio: 1 / 0.5),
               itemBuilder: (context, i) {
-                return tlist.contains(times[i])
+                return tlist.contains(times[i].substring(0, 4))
                     ? GestureDetector(
                         onTap: () {
                           AppToast.showErr('Already Booked');
