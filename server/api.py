@@ -3027,32 +3027,35 @@ def booking_status():
         conn.close()
 
 
-@app.route("/my_tokens_bookings", methods=["POST"])
+                
+@app.route("/my_tokens_bookings_history", methods=["POST"])
 @check_for_user_token
-def my_tokens_bookings():
+def my_tokens_bookings_history():
     conn = mysql.connect()
     need = request.form["need"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
-
         if need == "bookings":
             r = cur.execute(
                 "Select * from bookingshistory WHERE user_id = "
                 + str(user["user_id"])
-                + " AND NOT(status = 'cancelled')"
+                + " AND NOT(status = 'cancelled' OR status ='completed')"
             )
             texti = "No bookings found"
             textin = "bookings"
+            rr = cur.fetchall()
+
         elif need == "tokens":
             r = cur.execute(
                 "Select * from tokenshistory WHERE user_id = "
                 + str(user["user_id"])
-                + " AND NOT(status = 'cancelled')"
+                + " AND NOT(status = 'cancelled' OR status ='completed')"
             )
             texti = "No tokens found"
             textin = "tokens"
+            rr = cur.fetchall()
 
         else:
             resp = jsonify({"message": "INVALID REQUEST."})
@@ -3060,7 +3063,7 @@ def my_tokens_bookings():
             return resp
 
         if r:
-            resp = jsonify({textin: cur.fetchall()})
+            resp = jsonify({textin: rr})
             resp.status_code = 200
             conn.commit()
             return resp
@@ -3068,6 +3071,60 @@ def my_tokens_bookings():
         else:
             resp = jsonify({"message": texti})
             resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+
+@app.route("/my_tokens_bookings", methods=["POST"])
+@check_for_user_token
+def my_tokens_bookings():
+    conn = mysql.connect()
+    need = request.form["need"]
+    where = request.form["where"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    try:
+        if where == "history":
+
+            if need == "bookings":
+                r = cur.execute(
+                    "Select * from bookingshistory WHERE user_id = "
+                    + str(user["user_id"])
+                    + " AND NOT(status = 'ongoing' OR status ='onqueue')"
+                )
+                texti = "No bookings found"
+                textin = "bookings"
+                rr = cur.fetchall()
+
+            elif need == "tokens":
+                r = cur.execute(
+                    "Select * from tokenshistory WHERE user_id = "
+                    + str(user["user_id"])
+                    + " AND NOT(status = 'ongoing' OR status ='onqueue')"
+                )
+                texti = "No tokens found"
+                textin = "tokens"
+                rr = cur.fetchall()
+
+            if r:
+                resp = jsonify({textin: rr})
+                resp.status_code = 200
+                conn.commit()
+                return resp
+
+            else:
+                resp = jsonify({"message": texti})
+                resp.status_code = 403
+                return resp
+
+        else:
+            resp = jsonify({"message": "INVALID REQUEST"})
+            resp.status_code = 405
             return resp
 
     finally:
@@ -3171,6 +3228,116 @@ def cancel_token():
             resp = jsonify({"message": "No user found."})
             resp.status_code = 405
             return resp
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/rate_emp", methods=["POST"])
+@check_for_user_token
+def rate_emp():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+
+    token_booking = request.form["token_booking"]
+    number = str(request.form["tok_book_num"])
+    employee_id = request.form["emp_id"]
+    ratingstars = request.form["ratingstars"]
+
+    try:
+        if token_booking == "token":
+            cur.execute(
+                "UPDATE tokenshistory SET emp_review = 1"
+                + " WHERE token = '"
+                + str(number)
+                + "' AND employee_id = "
+                + str(employee_id)
+                + ";"
+            )
+            conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            r = cur.execute(
+                "SELECT * FROM employee_details"
+                + " WHERE employee_id = "
+                + str(employee_id)
+                + ";"
+            )
+            rr = cur.fetchone()
+            stars = float(rr["ratings"]) + float(ratingstars)
+            counts = int(rr["rating_count"]) + 1
+
+            m = cur.execute(
+                "UPDATE employee_details SET ratings = "
+                + str(stars)
+                + " AND rating_count = "
+                + str(counts)
+                + " WHERE employee_id = "
+                + str(employee_id)
+                + ";"
+            )
+            conn.commit()
+            if r and m:
+                op = 200
+            else:
+                op = 403
+
+
+        if token_booking == "booking":
+            cur.execute(
+                "UPDATE bookingshistory SET emp_review = 1"
+                + " WHERE booking = '"
+                + str(number)
+                + "' AND employee_id = "
+                + str(employee_id)
+                + ";"
+            )
+            conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            r = cur.execute(
+                "SELECT * FROM employee_details"
+                + " WHERE employee_id = "
+                + str(employee_id)
+                + ";"
+            )
+            rr = cur.fetchone()
+            stars = float(rr["ratings"]) + float(ratingstars)
+            counts = int(rr["rating_count"]) + 1
+
+            m = cur.execute(
+                "UPDATE employee_details SET ratings = "
+                + str(stars)
+                + " AND rating_count = "
+                + str(counts)
+                + " WHERE employee_id = "
+                + str(employee_id)
+                + ";"
+            )
+            conn.commit()
+            if r and m:
+                op = 200
+            else:
+                op = 403
+
+
+        else:
+            resp = jsonify({"message": " tokens/bookings."})
+            resp.status_code = 405
+            return resp
+
+        if op == 200:
+            resp = jsonify({"message": "ThankYou!!"})
+            resp.status_code = 200
+            return resp
+        else:
+            resp = jsonify({"message": "ERROR Occured!!"})
+            resp.status_code = 403
+            return resp
+
+            
     finally:
         cur.close()
         conn.close()
