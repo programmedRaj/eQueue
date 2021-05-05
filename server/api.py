@@ -3027,7 +3027,6 @@ def booking_status():
         conn.close()
 
 
-                
 @app.route("/my_tokens_bookings_history", methods=["POST"])
 @check_for_user_token
 def my_tokens_bookings_history():
@@ -3076,7 +3075,6 @@ def my_tokens_bookings_history():
     finally:
         cur.close()
         conn.close()
-
 
 
 @app.route("/my_tokens_bookings", methods=["POST"])
@@ -3270,20 +3268,20 @@ def rate_emp():
             counts = int(rr["rating_count"]) + 1
 
             m = cur.execute(
-                "UPDATE employee_details SET ratings = "
+                "UPDATE employee_details SET ratings = '"
                 + str(stars)
-                + " AND rating_count = "
+                + "', rating_count = '"
                 + str(counts)
-                + " WHERE employee_id = "
+                + "' WHERE employee_id = "
                 + str(employee_id)
                 + ";"
             )
+
             conn.commit()
             if r and m:
                 op = 200
             else:
                 op = 403
-
 
         if token_booking == "booking":
             cur.execute(
@@ -3308,11 +3306,11 @@ def rate_emp():
             counts = int(rr["rating_count"]) + 1
 
             m = cur.execute(
-                "UPDATE employee_details SET ratings = "
+                "UPDATE employee_details SET ratings = '"
                 + str(stars)
-                + " AND rating_count = "
+                + "', rating_count = '"
                 + str(counts)
-                + " WHERE employee_id = "
+                + "' WHERE employee_id = "
                 + str(employee_id)
                 + ";"
             )
@@ -3321,7 +3319,6 @@ def rate_emp():
                 op = 200
             else:
                 op = 403
-
 
         else:
             resp = jsonify({"message": " tokens/bookings."})
@@ -3337,7 +3334,6 @@ def rate_emp():
             resp.status_code = 403
             return resp
 
-            
     finally:
         cur.close()
         conn.close()
