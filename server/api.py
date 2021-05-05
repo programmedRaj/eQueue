@@ -2300,7 +2300,7 @@ def login_register():
     cur2 = conn.cursor(pymysql.cursors.DictCursor)
     try:
 
-        filename = str(app.config["USER_UPLOAD_FOLDER"]) + "default.png"
+        filename = "default.png"
         if request.files["profile_img"]:
             company_logo = request.files["profile_img"]
             filename = secure_filename(company_logo.filename)
