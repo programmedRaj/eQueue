@@ -216,35 +216,6 @@ class _BooktokenState extends State<Booktoken> {
                         String dayy = dateFormat.toLowerCase();
                         var wh = json.decode(widget.wk);
                         print(wh);
-                        if (dayy == 'monday') {
-                          setState(() {
-                            whichday = 0;
-                          });
-                        } else if (dayy == 'tuesday') {
-                          setState(() {
-                            whichday = 1;
-                          });
-                        } else if (dayy == 'wednesday') {
-                          setState(() {
-                            whichday = 2;
-                          });
-                        } else if (dayy == 'thursday') {
-                          setState(() {
-                            whichday = 3;
-                          });
-                        } else if (dayy == 'friday') {
-                          setState(() {
-                            whichday = 4;
-                          });
-                        } else if (dayy == 'saturday') {
-                          setState(() {
-                            whichday = 5;
-                          });
-                        } else if (dayy == 'sunday') {
-                          setState(() {
-                            whichday = 6;
-                          });
-                        }
 
                         String workday = wh[dayy]
                             .toString()

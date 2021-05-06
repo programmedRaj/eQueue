@@ -16,7 +16,7 @@ class DisplayTokenBookHome with ChangeNotifier {
   Future displayboth(String type, String where) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    print(token);
+
     var map = new Map<String, dynamic>();
     map['need'] = type;
     map['where'] = where;
@@ -31,7 +31,6 @@ class DisplayTokenBookHome with ChangeNotifier {
     var k = response.body;
     var n = json.decode(k);
     print(n);
-
     // if (n['message'] == 'No bookings found') {
     //   removebooking();
     // }

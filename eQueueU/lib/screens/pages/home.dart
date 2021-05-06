@@ -11,7 +11,6 @@ import 'package:eQueue/screens/pages/mapss.dart';
 import 'package:eQueue/screens/pages/settings/langauge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -46,11 +45,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  getLoc() async {
-    Position p = await Geolocator.getCurrentPosition();
-    print('ppp ${p.latitude}');
-  }
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -69,7 +63,6 @@ class _HomeState extends State<Home> {
       builder: (context, snapshot) {
         return Consumer<DisplayTokenBookHome>(
           builder: (context, value, child) {
-            print(value.bookings);
             return SafeArea(
                 child: Scaffold(
               body: SingleChildScrollView(
@@ -300,180 +293,136 @@ class _HomeState extends State<Home> {
                                           : ListView.builder(
                                               itemCount: value.bookings.length,
                                               itemBuilder: (context, index) {
-                                                return Container(
-                                                  child: Text(value
-                                                      .bookings[index]
-                                                      .branchtable),
-                                                );
-
-                                                // Dismissible(
-                                                //   direction: DismissDirection
-                                                //       .endToStart,
-                                                //   key: UniqueKey(),
-                                                //   background: Container(
-                                                //     color: Colors.red,
-                                                //     child: Container(
-                                                //       margin:
-                                                //           EdgeInsets.all(10),
-                                                //       alignment:
-                                                //           Alignment.centerRight,
-                                                //       child: Row(
-                                                //         mainAxisAlignment:
-                                                //             MainAxisAlignment
-                                                //                 .end,
-                                                //         crossAxisAlignment:
-                                                //             CrossAxisAlignment
-                                                //                 .end,
-                                                //         children: [
-                                                //           Icon(
-                                                //             Icons.delete,
-                                                //             color: myColor[100],
-                                                //           ),
-                                                //           Text(
-                                                //             LocaleKeys.Remove,
-                                                //             style: TextStyle(
-                                                //               color:
-                                                //                   myColor[100],
-                                                //               fontSize: 20,
-                                                //             ),
-                                                //           ).tr(),
-                                                //         ],
-                                                //       ),
-                                                //     ),
-                                                //   ),
-                                                //   onDismissed: (direction) {
-                                                //     // Removes that item the list on swipwe
-                                                //     setState(() {
-                                                //       Provider.of<DeletetokenProvider>(
-                                                //               context,
-                                                //               listen: false)
-                                                //           .delettoken(
-                                                //               branchname: value
-                                                //                   .bookings[
-                                                //                       index]
-                                                //                   .branchtable
-                                                //                   .split(
-                                                //                       '_')[0],
-                                                //               branchid: value
-                                                //                   .bookings[
-                                                //                       index]
-                                                //                   .branchtable
-                                                //                   .split(
-                                                //                       '_')[1],
-                                                //               tokennumber: value
-                                                //                   .bookings[index]
-                                                //                   .bookings,
-                                                //               tokenstatus: value.bookings[index].status,
-                                                //               type: 'booking');
-                                                //       Provider.of<DisplayTokenBookHome>(
-                                                //               context,
-                                                //               listen: false)
-                                                //           .removebookinone(
-                                                //               token: value
-                                                //                   .bookings[
-                                                //                       index]
-                                                //                   .bookings);
-                                                //       Navigator.of(context).push(
-                                                //           MaterialPageRoute(
-                                                //               builder: (ctx) =>
-                                                //                   Check()));
-                                                //       AppToast.showSucc(
-                                                //           LocaleKeys.Deleted
-                                                //               .tr());
-                                                //     });
-                                                //     // Shows the information on Snackbar
-                                                //   },
-                                                //   child: Container(
-                                                //     height: height * 0.2,
-                                                //     width: width,
-                                                //     decoration: BoxDecoration(
-                                                //         color: myColor[100],
-                                                //         boxShadow: [
-                                                //           BoxShadow(
-                                                //               color: Colors
-                                                //                   .grey[600],
-                                                //               blurRadius: 4)
-                                                //         ]),
-                                                //     margin: EdgeInsets.all(5),
-                                                //     child: Row(
-                                                //       children: [
-                                                //         Flexible(
-                                                //           child: Container(
-                                                //             width: width,
-                                                //             margin:
-                                                //                 EdgeInsets.all(
-                                                //                     5),
-                                                //             child: Column(
-                                                //               mainAxisAlignment:
-                                                //                   MainAxisAlignment
-                                                //                       .start,
-                                                //               crossAxisAlignment:
-                                                //                   CrossAxisAlignment
-                                                //                       .start,
-                                                //               children: [
-                                                //                 Row(
-                                                //                   children: [
-                                                //                     // circle(value
-                                                //                     //     .tokens[
-                                                //                     //         index]
-                                                //                     //     .status),
-                                                //                     SizedBox(
-                                                //                       width: 10,
-                                                //                     ),
-                                                //                     Container(
-                                                //                       child: Text(
-                                                //                           '${LocaleKeys.Booking.tr()} : ${value.bookings[index].branchtable.split("_")[0]}'),
-                                                //                     ),
-                                                //                   ],
-                                                //                 ),
-                                                //                 Container(
-                                                //                     // child: Text(
-                                                //                     //     '${LocaleKeys.Bookingon.tr()} : ${value.bookings[index].slots} '),
-                                                //                     ),
-                                                //                 Container(
-                                                //                   child: Column(
-                                                //                     mainAxisAlignment:
-                                                //                         MainAxisAlignment
-                                                //                             .center,
-                                                //                     crossAxisAlignment:
-                                                //                         CrossAxisAlignment
-                                                //                             .center,
-                                                //                     children: [
-                                                //                       Container(
-                                                //                         height: height *
-                                                //                             0.07,
-                                                //                         width: width *
-                                                //                             0.4,
-                                                //                         margin: EdgeInsets.only(
-                                                //                             top:
-                                                //                                 8),
-                                                //                         decoration: BoxDecoration(
-                                                //                             borderRadius:
-                                                //                                 BorderRadius.circular(10),
-                                                //                             color: myColor[150]),
-                                                //                         child: Center(
-                                                //                             // child:
-                                                //                             //     Text(
-                                                //                             //   value.bookings[index].bookings,
-                                                //                             //   style: TextStyle(
-                                                //                             //       color: myColor[100],
-                                                //                             //       fontSize: 18,
-                                                //                             //       letterSpacing: 15,
-                                                //                             //       fontWeight: FontWeight.bold),
-                                                //                             // ),
-                                                //                             ),
-                                                //                       ),
-                                                //                     ],
-                                                //                   ),
-                                                //                 ),
-                                                //               ],
-                                                //             ),
-                                                //           ),
-                                                //         )
-                                                //       ],
-                                                //     ),
-                                                //   ),
-                                                // );
+                                                return value.bookings.length ==
+                                                        0
+                                                    ? Container()
+                                                    : Container(
+                                                        height: height * 0.2,
+                                                        width: width,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color: myColor[
+                                                                    100],
+                                                                boxShadow: [
+                                                              BoxShadow(
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      600],
+                                                                  blurRadius: 4)
+                                                            ]),
+                                                        margin:
+                                                            EdgeInsets.all(5),
+                                                        child: Row(
+                                                          children: [
+                                                            Flexible(
+                                                              child: Container(
+                                                                width: width,
+                                                                margin:
+                                                                    EdgeInsets
+                                                                        .all(5),
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        // Text(value
+                                                                        //     .bookings[index]
+                                                                        //     .status),
+                                                                        circle(value
+                                                                            .bookings[index]
+                                                                            .status),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        ),
+                                                                        Container(
+                                                                          child:
+                                                                              Text('${LocaleKeys.Booking.tr()} : ${value.bookings[index].branchtable.split("_")[0]}'),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    Container(
+                                                                      child: Text(
+                                                                          '${LocaleKeys.Bookingon.tr()} : ${value.bookings[index].slots} '),
+                                                                    ),
+                                                                    Container(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          Container(
+                                                                            height:
+                                                                                height * 0.07,
+                                                                            width:
+                                                                                width * 0.4,
+                                                                            margin:
+                                                                                EdgeInsets.only(top: 8),
+                                                                            decoration:
+                                                                                BoxDecoration(borderRadius: BorderRadius.circular(10), color: myColor[150]),
+                                                                            child:
+                                                                                Center(
+                                                                              child: Text(
+                                                                                value.bookings[index].bookings,
+                                                                                style: TextStyle(color: myColor[100], fontSize: 18, letterSpacing: 15, fontWeight: FontWeight.bold),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    //                     Container(
+                                                                    //                       child: ElevatedButton(
+                                                                    //                           style: ButtonStyle(
+                                                                    //                             backgroundColor:
+                                                                    //                                 MaterialStateProperty.all<Color>(Colors.red),
+                                                                    //                           ),
+                                                                    //                           onPressed: () {
+                                                                    //                             showDialog(
+                                                                    //                               context: context,
+                                                                    //                               builder: (context) {
+                                                                    //                                 return AlertDialog(
+                                                                    //                                   title: Text("AlertDialog"),
+                                                                    //                                   content: Text("Are you sure"),
+                                                                    //                                   actions: [
+                                                                    //                                     ElevatedButton(
+                                                                    //                                         onPressed: () {
+                                                                    //                                           if (value.bookings[index].status == "ongoing") {
+                                                                    //                                             AppToast.showErr('Booking is ongoing so cannot be cancelled');
+                                                                    //                                           } else {
+                                                                    //                                             Provider.of<DeletetokenProvider>(context, listen: false).delettoken(branchname: value.bookings[index].branchtable.split('_')[0], branchid: value.bookings[index].branchtable.split('_')[1], tokennumber: value.bookings[index].bookings, tokenstatus: value.bookings[index].status, type: 'booking');
+                                                                    //                                            // Provider.of<DisplayTokenBookHome>(context, listen: false).removebookinone(token: value.bookings[index].bookings);
+                                                                    //                                             Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => Check()));
+                                                                    //                                             AppToast.showSucc(LocaleKeys.Deleted.tr());
+                                                                    //                                           }
+                                                                    //                                         },
+                                                                    //                                         child: Text(LocaleKeys.Ok).tr()),
+                                                                    //                                     ElevatedButton(
+                                                                    //                                         onPressed: () {
+                                                                    //                                           Navigator.of(context).pop();
+                                                                    //                                         },
+                                                                    //                                         child: Text(LocaleKeys.Cancel).tr()),
+                                                                    //                                   ],
+                                                                    //                                 );
+                                                                    //                               },
+                                                                    //                             );
+                                                                    //                           },
+                                                                    //                           child: Text('Cancel')),
+                                                                    //                     )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
                                               },
                                             ))
                                 ],

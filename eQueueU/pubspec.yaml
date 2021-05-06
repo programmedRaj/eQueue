@@ -50,7 +50,7 @@ dependencies:
   flutter_local_notifications: ^5.0.0
   fluster: ^1.2.0
   flutter_rating_bar: ^4.0.0
-  geolocator: ^7.0.3
+  location:
 
 dev_dependencies:
   flutter_test:
