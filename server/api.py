@@ -3007,7 +3007,11 @@ def booking_status():
 
         if token_or_booking == "booking":
             kk = str(branch_name) + "_" + str(branch_id)
-            r = cur.execute("Select slots from " + str(kk) + "")
+            r = cur.execute(
+                "Select slots from "
+                + str(kk)
+                + " WHERE NOT(status = 'cancelled' OR status ='completed')"
+            )
         else:
             resp = jsonify({"message": "INVALID TYPE"})
             resp.status_code = 403
@@ -3331,6 +3335,47 @@ def rate_emp():
             return resp
         else:
             resp = jsonify({"message": "ERROR Occured!!"})
+            resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/queue_status")
+@check_for_user_token
+def queue_status():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    t_b_id = request.json["t_b_id"]
+    dept = request.json["dept"]
+    branchtable = request.json["branchtable"]
+    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
+    try:
+
+        r = cur.execute(
+            "Select * from "
+            + str(branchtable)
+            + " WHERE user_id = "
+            + str(user["user_id"])
+            + " AND department ='"
+            + str(dept)
+            + "' AND id = "
+            + str(t_b_id)
+            + " "
+        )
+        rr = cur.fetchone()
+
+        if rr:
+            resp = jsonify({"position": "3"})
+            resp.status_code = 200
+            conn.commit()
+            return resp
+
+        else:
+            resp = jsonify({"message": "rr"})
             resp.status_code = 403
             return resp
 
