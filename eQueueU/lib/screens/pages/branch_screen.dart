@@ -440,6 +440,8 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                               wk: branchsearch[i].workinghours,
                                                                             )
                                                                           : Booktoken(
+                                                                              wk: branchsearch[i]
+                                                                                  .workinghours,
                                                                               companyname: widget
                                                                                   .companyname,
                                                                               branchname: branchsearch[i]
@@ -482,15 +484,15 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                               .workinghours,
                                                                         )
                                                                       : Booktoken(
-                                                                          companyname: widget
-                                                                              .companyname,
-                                                                          branchname: value
+                                                                          wk: value
                                                                               .branches[
                                                                                   i]
-                                                                              .bname,
-                                                                          bid: value
-                                                                              .branches[i]
-                                                                              .id,
+                                                                              .workinghours,
+                                                                          companyname: widget
+                                                                              .companyname,
+                                                                          branchname:
+                                                                              value.branches[i].bname,
+                                                                          bid: value.branches[i].id,
                                                                           id: value.branches[i].companyid,
                                                                           type: widget.comp_type)));
                                                     }

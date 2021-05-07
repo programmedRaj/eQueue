@@ -24,7 +24,7 @@ class MapMarker with ChangeNotifier {
     );
     var k = response.body;
     var n = json.decode(k);
-    print(n);
+
     removeedu();
 
     for (int i = 0; i < n['address1'].length; i++) {
@@ -110,7 +110,6 @@ class MapMarker with ChangeNotifier {
         timezone: timezone,
         workinghours: workinghours));
     notifyListeners();
-    print(branches);
   }
 
   void removeedu() {

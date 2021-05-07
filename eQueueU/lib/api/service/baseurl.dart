@@ -18,4 +18,6 @@ class BaseUrl {
   final String addmap = "$basic/branch_map";
   final String deletetokenbooking = "$basic/cancel_token_booking";
   final String updateuserdetails = "$basic/update_myprofile";
+  final String homescreendisplay = '$basic/my_tokens_bookings_history';
+  final String ratemp = "$basic/rate_emp";
 }

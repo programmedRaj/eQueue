@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 
 class MessagingExampleApp extends StatelessWidget {
   @override
@@ -57,7 +58,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex;
   int sizz;
-
+  var location = new Location();
+  double lat = 0;
+  double long = 0;
   String _token;
 
   @override
@@ -88,6 +91,30 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ));
       }
+    });
+  }
+
+  _check() async {
+    var serviceEnabled = await location.serviceEnabled();
+    var permission = await location.hasPermission();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    if (permission == PermissionStatus.denied) {
+      permission = await location.requestPermission();
+      if (permission == PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    var currentL = await location.getLocation();
+    setState(() {
+      lat = currentL.latitude;
+      long = currentL.longitude;
     });
   }
 
