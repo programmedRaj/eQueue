@@ -17,6 +17,7 @@ import jsonpickle
 import numpy as np
 
 import user_apis as user_side
+import no_auth_apis as no_auth_apis
 import eqbiz as eqbiz
 import eqadmin as eqadmin
 import equser as equser
@@ -124,7 +125,7 @@ def sign_in():
 
 
 def allowedd_file(filename):
-    ALLOWED_EXTENSIONS = set(["pdf", "jpg", "jpeg", "png"])
+    ALLOWED_EXTENSIONS = set(["jpg", "jpeg", "png"])
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
@@ -804,7 +805,7 @@ def forgot_passw_biz():
         )
         if check:
             otp = id_generator()
-            # mail
+            k = no_auth_apis.mail(username_entered, otp)
             cur.execute(
                 "UPDATE bizusers SET code = '"
                 + str(otp)
@@ -813,9 +814,7 @@ def forgot_passw_biz():
                 + "';"
             )
             conn.commit()
-            resp = jsonify(
-                {"message": "success", "otp": otp}
-            )  # edit response after mail added.
+            resp = jsonify({"message": "success"})
             resp.status_code = 200
             return resp
         resp = jsonify({"message": "User not found."})
@@ -1523,6 +1522,33 @@ def fetch_employees():
         conn.close()
 
 
+@app.route("/my_biztransactions", methods=["POST"])
+@check_for_token
+def my_biztransactions():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    token = request.headers["Authorization"]
+    comp_id = request.json["comp_id"]
+    user = jwt.decode(token, app.config["SECRET_KEY"])
+    try:
+
+        r = cur.execute(
+            "Select * from transactions_biz WHERE user_id = " + str(comp_id) + ""
+        )
+        if r:
+            resp = jsonify({"message": cur.fetchall()})
+            resp.status_code = 200
+            return resp
+        else:
+            resp = jsonify({"message": "error"})
+            resp.status_code = 403
+            return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 # bookings masti
 
 
@@ -1582,8 +1608,8 @@ def viewuser_details():
     conn = mysql.connect()
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
-    user_id = request.json["user_id"]
-    branch_id = request.json["branch_id"]
+    user_id = request.form["user_id"]
+    branch_id = request.form["branch_id"]
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "employee":
@@ -2237,7 +2263,7 @@ def update_myprofile():
         if request.files["profile_img"]:
             company_logo = request.files["profile_img"]
             filename = secure_filename(company_logo.filename)
-            company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            company_logo.save(os.path.join(app.config["USER_UPLOAD_FOLDER"], filename))
 
         address1 = r["address1"]
         address2 = r["address2"]
@@ -2304,7 +2330,7 @@ def login_register():
         if request.files["profile_img"]:
             company_logo = request.files["profile_img"]
             filename = secure_filename(company_logo.filename)
-            company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            company_logo.save(os.path.join(app.config["USER_UPLOAD_FOLDER"], filename))
 
         check = cur.execute(
             "SELECT * FROM equeue_users WHERE number = '"
@@ -2821,6 +2847,7 @@ def booking_payment():
         user_id = user["user_id"]
         amount = float(request.form["amount"])
         bonus = float(request.form["bonus"])
+        # company_id = float(request.form["company_id"])
         token_or_booking = request.form["token_or_booking"]
 
         if token_or_booking == "booking":
@@ -2853,6 +2880,29 @@ def booking_payment():
                     + ";"
                 )
                 conn.commit()
+                # cur = conn.cursor(pymysql.cursors.DictCursor)
+                # check = cur.execute(
+                #     "SELECT money_earned from companydetails"
+                #     + " WHERE id ="
+                #     + str(company_id)
+                #     + ";"
+                # )
+                # recordes = cur.fetchone()
+                # if recordes["money_earned"] == null:
+                #     money_earned = str(amount + bonus)
+                # else:
+                #     money_earned = float(recordes["money_earned"]) + float(
+                #         amount + bonus
+                #     )
+                # check = cur.execute(
+                #     "UPDATE companydetails SET money_earned = '"
+                #     + str(money_earned)
+                #     + "' WHERE id ="
+                #     + str(company_id)
+                #     + ";"
+                # )
+                # conn.commit()
+
                 if check:
 
                     resp = jsonify({"transaction_id": str(j)})
