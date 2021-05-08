@@ -2847,7 +2847,7 @@ def booking_payment():
         user_id = user["user_id"]
         amount = float(request.form["amount"])
         bonus = float(request.form["bonus"])
-        # company_id = float(request.form["company_id"])
+        company_id = request.form["company_id"]
         token_or_booking = request.form["token_or_booking"]
 
         if token_or_booking == "booking":
@@ -2880,28 +2880,28 @@ def booking_payment():
                     + ";"
                 )
                 conn.commit()
-                # cur = conn.cursor(pymysql.cursors.DictCursor)
-                # check = cur.execute(
-                #     "SELECT money_earned from companydetails"
-                #     + " WHERE id ="
-                #     + str(company_id)
-                #     + ";"
-                # )
-                # recordes = cur.fetchone()
-                # if recordes["money_earned"] == null:
-                #     money_earned = str(amount + bonus)
-                # else:
-                #     money_earned = float(recordes["money_earned"]) + float(
-                #         amount + bonus
-                #     )
-                # check = cur.execute(
-                #     "UPDATE companydetails SET money_earned = '"
-                #     + str(money_earned)
-                #     + "' WHERE id ="
-                #     + str(company_id)
-                #     + ";"
-                # )
-                # conn.commit()
+                cur = conn.cursor(pymysql.cursors.DictCursor)
+                check = cur.execute(
+                    "SELECT money_earned from companydetails"
+                    + " WHERE id ="
+                    + str(company_id)
+                    + ";"
+                )
+                recordes = cur.fetchone()
+                if recordes["money_earned"] == null:
+                    money_earned = str(amount + bonus)
+                else:
+                    money_earned = float(recordes["money_earned"]) + float(
+                        amount + bonus
+                    )
+                check = cur.execute(
+                    "UPDATE companydetails SET money_earned = '"
+                    + str(money_earned)
+                    + "' WHERE id ="
+                    + str(company_id)
+                    + ";"
+                )
+                conn.commit()
 
                 if check:
 
@@ -3393,15 +3393,15 @@ def rate_emp():
         conn.close()
 
 
-@app.route("/queue_status")
+@app.route("/queue_status", methods=["POST"])
 @check_for_user_token
 def queue_status():
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
     token = request.headers["Authorization"]
-    t_b_id = request.json["t_b_id"]
-    dept = request.json["dept"]
-    branchtable = request.json["branchtable"]
+    t_b_id = request.json["t_b_id"]  # 2
+    dept = request.json["dept"]  # ent
+    branchtable = request.json["branchtable"]  # Bayview_3
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
 
