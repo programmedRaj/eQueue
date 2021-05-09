@@ -1528,7 +1528,7 @@ def my_biztransactions():
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
     token = request.headers["Authorization"]
-    comp_id = request.json["comp_id"]
+    comp_id = request.form["comp_id"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
     try:
 
@@ -1713,7 +1713,7 @@ def status_booking_chng():
                 op = 200
             op = 403
 
-        elif status == "ongoing":
+        elif status == "call":
             r = cur.execute(
                 "Select * from "
                 + str(branch_name + "_" + str(branch_id))
@@ -1732,7 +1732,7 @@ def status_booking_chng():
             r = cur.execute(
                 "UPDATE "
                 + str(branch_name + "_" + str(branch_id))
-                + " SET status = 'ongoing', employee_id = '"
+                + " SET status = 'call', employee_id = '"
                 + str(user["id"])
                 + "' WHERE id = '"
                 + str(booking_id)
@@ -1741,7 +1741,7 @@ def status_booking_chng():
             conn.commit()
             cur = conn.cursor(pymysql.cursors.DictCursor)
             rr = cur.execute(
-                "UPDATE bookingshistory SET status = 'ongoing', employee_id = '"
+                "UPDATE bookingshistory SET status = 'call', employee_id = '"
                 + str(user["id"])
                 + "' WHERE booking = '"
                 + str(bookingdept + "-" + str(booking_id))
@@ -1889,7 +1889,7 @@ def status_token_chng():
                 op = 200
             op = 403
 
-        elif status == "ongoing":
+        elif status == "call":
             r = cur.execute(
                 "Select * from "
                 + str(branch_name + "_" + str(branch_id))
@@ -1918,7 +1918,7 @@ def status_token_chng():
             r = cur.execute(
                 "UPDATE "
                 + str(branch_name + "_" + str(branch_id))
-                + " SET status = 'ongoing', employee_id = '"
+                + " SET status = 'call', employee_id = '"
                 + str(user["id"])
                 + "' WHERE id = '"
                 + str(booking_id)
@@ -1927,7 +1927,7 @@ def status_token_chng():
             conn.commit()
             cur = conn.cursor(pymysql.cursors.DictCursor)
             rr = cur.execute(
-                "UPDATE tokenshistory SET status = 'ongoing', employee_id = '"
+                "UPDATE tokenshistory SET status = 'call', employee_id = '"
                 + str(user["id"])
                 + "' WHERE token = '"
                 + str(bookingdept + "-" + str(booking_id))
@@ -2030,7 +2030,7 @@ def status_mtoken_chng():
                 + str(branch_name + "_" + str(branch_id))
                 + " SET status = 'completed', employee_id = '"
                 + str(user["id"])
-                + "' WHERE status = 'ongoing' LIMIT "
+                + "' WHERE status = 'call' LIMIT "
                 + str(limit)
                 + ""
             )
@@ -2039,7 +2039,7 @@ def status_mtoken_chng():
             rr = cur.execute(
                 "UPDATE tokenshistory SET status = 'completed', employee_id = '"
                 + str(user["id"])
-                + "' WHERE status = 'ongoing' AND branchtable = '"
+                + "' WHERE status = 'call' AND branchtable = '"
                 + str(branch_name + "_" + str(branch_id))
                 + "' LIMIT "
                 + str(limit)
@@ -3147,7 +3147,7 @@ def my_tokens_bookings():
                 r = cur.execute(
                     "Select * from bookingshistory WHERE user_id = "
                     + str(user["user_id"])
-                    + " AND NOT(status = 'ongoing' OR status ='onqueue')"
+                    + " AND NOT(status = 'call' OR status ='onqueue')"
                 )
                 texti = "No bookings found"
                 textin = "bookings"
@@ -3157,7 +3157,7 @@ def my_tokens_bookings():
                 r = cur.execute(
                     "Select * from tokenshistory WHERE user_id = "
                     + str(user["user_id"])
-                    + " AND NOT(status = 'ongoing' OR status ='onqueue')"
+                    + " AND NOT(status = 'call' OR status ='onqueue')"
                 )
                 texti = "No tokens found"
                 textin = "tokens"
