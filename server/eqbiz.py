@@ -607,7 +607,16 @@ def delete_employee(employee_id):
 
 
 def creatingtokens_bookings(
-    t_b, bname, branch_id, user_id, device_token, service, insurance, slots, comp_name
+    t_b,
+    bname,
+    branch_id,
+    user_id,
+    device_token,
+    service,
+    insurance,
+    slots,
+    comp_name,
+    price,
 ):
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -667,7 +676,7 @@ def creatingtokens_bookings(
 
             check = cur.execute(
                 "INSERT INTO bookingshistory"
-                + "(branchtable,user_id,booking,comp_name,slot,status) VALUES ('"
+                + "(branchtable,user_id,booking,comp_name,slot,status,price) VALUES ('"
                 + str(kk)
                 + "','"
                 + str(user_id)
@@ -678,7 +687,9 @@ def creatingtokens_bookings(
                 + "','"
                 + str(slots)
                 + "',"
-                + "'onqueue');"
+                + "'onqueue',"
+                + str(price)
+                + ");"
             )
 
         conn.commit()
