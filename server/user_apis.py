@@ -28,7 +28,9 @@ def user(naam):
         conn.close()
 
 
-def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
+def canceltb(
+    type, uid, number, tok_booking_num, addmoney, tablename, deductmoney, branch_id
+):
     try:
         conn = mysql.connect()
         cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -80,6 +82,31 @@ def canceltb(type, uid, number, tok_booking_num, addmoney, tablename):
                 + "' WHERE id ='"
                 + str(uid)
                 + "';"
+            )
+            conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            cur.execute(
+                "SELECT comp_id from branch_details"
+                + " WHERE id ="
+                + str(branch_id)
+                + ";"
+            )
+            ko = cur.fetchone()
+            cur.execute(
+                "SELECT money_earned from companydetails"
+                + " WHERE id ="
+                + str(ko["comp_id"])
+                + ";"
+            )
+            recordes = cur.fetchone()
+            money_deduct = float(recordes["money_earned"]) - float(deductmoney)
+            print(money_deduct)
+            cur.execute(
+                "UPDATE companydetails SET money_earned = '"
+                + str(money_deduct)
+                + "' WHERE id = "
+                + str(ko["comp_id"])
+                + ";"
             )
             conn.commit()
 

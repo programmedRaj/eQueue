@@ -518,17 +518,37 @@ def biz_signin():
             r = cur.fetchall()
             for i in r:
                 if check_password_hash(i["password"], password_entered):
-                    token = jwt.encode(
-                        {
-                            "email": request.json["email"],
-                            "id": i["id"],
-                            "type": i["type"],
-                            "comp_type": i["comp_type"],
-                            "exp": datetime.datetime.utcnow()
-                            + datetime.timedelta(minutes=43200),
-                        },
-                        app.config["SECRET_KEY"],
-                    )
+                    if i["type"] == "employee":  # and i["comp_type"] == 'token'
+                        cur.execute(
+                            "Select * FROM employee_details WHERE employee_id = '"
+                            + str(i["id"])
+                            + "';"
+                        )
+                        emp_details = cur.fetchone()
+                        token = jwt.encode(
+                            {
+                                "email": request.json["email"],
+                                "id": i["id"],
+                                "type": i["type"],
+                                "comp_type": i["comp_type"],
+                                "exp": datetime.datetime.utcnow()
+                                + datetime.timedelta(minutes=43200),
+                                "counter": emp_details["counter_number"],
+                            },
+                            app.config["SECRET_KEY"],
+                        )
+                    else:
+                        token = jwt.encode(
+                            {
+                                "email": request.json["email"],
+                                "id": i["id"],
+                                "type": i["type"],
+                                "comp_type": i["comp_type"],
+                                "exp": datetime.datetime.utcnow()
+                                + datetime.timedelta(minutes=43200),
+                            },
+                            app.config["SECRET_KEY"],
+                        )
                     resp = jsonify(
                         {
                             "comp_type": i["comp_type"],
@@ -1528,7 +1548,7 @@ def my_biztransactions():
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
     token = request.headers["Authorization"]
-    comp_id = request.json["comp_id"]
+    comp_id = request.form["comp_id"]
     user = jwt.decode(token, app.config["SECRET_KEY"])
     try:
 
@@ -1578,7 +1598,7 @@ def sort_bookings():
                     + str(branch_name + "_" + str(branch_id))
                     + " WHERE slots LIKE '"
                     + str(date_sort)
-                    + "%' ORDER BY id DESC"
+                    + "%' AND NOT(status = 'cancelled' OR status ='completed') ORDER BY id DESC"
                 )
                 if getbranches:
                     resp = jsonify({"bookings": cur.fetchall()})
@@ -1701,6 +1721,66 @@ def status_booking_chng():
             conn.commit()
 
             cur = conn.cursor(pymysql.cursors.DictCursor)
+            cur.execute(
+                "SELECT price FROM bookingshistory WHERE id = '"
+                + str(booking_id)
+                + "' "
+            )
+            kkk = cur.fetchone()
+            deduct = float(kkk["price"])
+
+            # refund Process begins
+            if deduct > 0:
+                cur.execute(
+                    "SELECT money FROM user_details WHERE id = '" + str(user_id) + "' "
+                )
+                kkk = cur.fetchone()
+                userrefund = float(kkk["money"] + float(deduct))
+                rr = cur.execute(
+                    "UPDATE user_details SET money = '"
+                    + str(userrefund)
+                    + "' WHERE id ='"
+                    + str(user_id)
+                    + "';"
+                )
+                conn.commit()
+
+                cur = conn.cursor(pymysql.cursors.DictCursor)
+                cur.execute(
+                    "SELECT comp_id from branch_details"
+                    + " WHERE id ="
+                    + str(branch_id)
+                    + ";"
+                )
+                ko = cur.fetchone()
+                cur.execute(
+                    "SELECT money_earned from companydetails"
+                    + " WHERE id ="
+                    + str(ko["comp_id"])
+                    + ";"
+                )
+                recordes = cur.fetchone()
+                money_deduct = float(recordes["money_earned"]) - float(deduct)
+                cur.execute(
+                    "UPDATE companydetails SET money_earned = '"
+                    + str(money_deduct)
+                    + "' WHERE id = "
+                    + str(ko["comp_id"])
+                    + ";"
+                )
+                conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            rr = cur.execute(
+                "UPDATE bookingshistory SET status = 'cancelled', employee_id = '"
+                + str(user["id"])
+                + "' WHERE booking = '"
+                + str(bookingdept + "-" + str(booking_id))
+                + "' "
+            )
+            conn.commit()
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
             rr = cur.execute(
                 "UPDATE bookingshistory SET status = 'cancelled', employee_id = '"
                 + str(user["id"])
@@ -1713,47 +1793,68 @@ def status_booking_chng():
                 op = 200
             op = 403
 
-        elif status == "ongoing":
-            r = cur.execute(
-                "Select * from "
-                + str(branch_name + "_" + str(branch_id))
-                + " WHERE status = 'onqueue' ORDER BY id DESC;"
-            )
-            # SELECT * FROM equeue.hey_8 WHERE NOT('status' = 'cancelled' OR 'status' ='completed') ORDER BY id DESC;
-            r = cur.fetchall()
-            ids = []
-            dts = []
-            for row in r:
-                ids.append(row["id"])
-                dts.append(row["device_token"])
-
-            # index = ids.index(booking_id)
-            # lenids = len(ids)
-            r = cur.execute(
+        elif status == "call":
+            cur.execute(
                 "UPDATE "
                 + str(branch_name + "_" + str(branch_id))
-                + " SET status = 'ongoing', employee_id = '"
+                + " SET status = 'call', employee_id = '"
                 + str(user["id"])
                 + "' WHERE id = '"
                 + str(booking_id)
                 + "' "
             )
             conn.commit()
+
             cur = conn.cursor(pymysql.cursors.DictCursor)
-            rr = cur.execute(
-                "UPDATE bookingshistory SET status = 'ongoing', employee_id = '"
+            cur.execute(
+                "UPDATE bookingshistory SET status = 'call', employee_id = '"
                 + str(user["id"])
                 + "' WHERE booking = '"
                 + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            cur.execute(
+                "Select * from "
+                + str(branch_name + "_" + str(branch_id))
+                + " WHERE department LIKE '"
+                + str(bookingdept)
+                + "%' AND NOT(status = 'cancelled' OR status ='completed') AND id > "
+                + str(booking_id)
+                + " LIMIT 4;"
+            )
+            r = cur.fetchall()
+            dts = []
+            for row in r:
+                dts.append(row["device_token"])
 
-            if r and rr:
-                tokens = [device_token]
-                statusfcm = fcm.sendPush("Hi", "This is my next msg", tokens)
+            countofids = len(dts) - 1
+            counter = 4
+            while counter > 0 and counter < 5 and countofids >= 0:
+                tokens = []
+                tokens.append(dts[countofids])
+                msg = countofids + 1
+                countofids = countofids - 1
+                counter = counter - 1
+                fcm.sendPush("Hi", "Your Position is: " + str(msg) + "", tokens)
+
+            cur.execute(
+                "Select number from equeue_users WHERE id = '" + str(user_id) + "';"
+            )
+            phonee = cur.fetchone()
+            tokens = []
+            tokens.append(device_token)
+            fcm.sendPush("Hi", "Please proceed to reception.", tokens)
+            res = requests.get(
+                "https://sms.bewin.one/sms/services/send.php?key=2d4f10360b952be6f4b460c03ae68b77f5279741&number=%2B"
+                + str(phonee["number"])
+                + "&message=Please proceed to reception"
+                + "&devices=3|0"
+            )
+
+            if res.status_code == 200:
                 op = 200
-
             op = 403
 
         else:
@@ -1799,7 +1900,7 @@ def all_tokens():
                 all_tokens = cur.execute(
                     "Select * from "
                     + str(branch_name + "_" + str(branch_id))
-                    + " WHERE NOT(status = 'cancelled')"
+                    + " WHERE NOT(status = 'cancelled' or status = 'completed')"
                 )
                 if all_tokens:
                     resp = jsonify({"tokens": cur.fetchall()})
@@ -1889,57 +1990,74 @@ def status_token_chng():
                 op = 200
             op = 403
 
-        elif status == "ongoing":
-            r = cur.execute(
-                "Select * from "
-                + str(branch_name + "_" + str(branch_id))
-                + " WHERE status = 'onqueue' ORDER BY id DESC;"
-            )
-            # SELECT * FROM equeue.hey_8 WHERE NOT('status' = 'cancelled' OR 'status' ='completed') ORDER BY id DESC;
-            r = cur.fetchall()
-            ids = []
-            dts = []
-            for row in r:
-                ids.append(row["id"])
-                dts.append(row["device_token"])
-
-            # index = ids.index(int(booking_id))
-            # lenids = len(ids)
-            # if index == 0:
-            #     print("send msg notification.")
-
-            # else:
-            #     m = index
-            #     for i in range(0, lenids):
-            #         if m > 0:
-            #             m = m - 1
-            #             print("send notification. to dts[m]")
-
-            r = cur.execute(
+        elif status == "call":
+            cur.execute(
                 "UPDATE "
                 + str(branch_name + "_" + str(branch_id))
-                + " SET status = 'ongoing', employee_id = '"
+                + " SET status = 'call', employee_id = '"
                 + str(user["id"])
                 + "' WHERE id = '"
                 + str(booking_id)
                 + "' "
             )
             conn.commit()
+
             cur = conn.cursor(pymysql.cursors.DictCursor)
-            rr = cur.execute(
-                "UPDATE tokenshistory SET status = 'ongoing', employee_id = '"
+            cur.execute(
+                "UPDATE tokenshistory SET status = 'call', employee_id = '"
                 + str(user["id"])
                 + "' WHERE token = '"
                 + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            cur.execute(
+                "Select * from "
+                + str(branch_name + "_" + str(branch_id))
+                + " WHERE department LIKE '"
+                + str(bookingdept)
+                + "%' AND NOT(status = 'cancelled' OR status ='completed') AND id > "
+                + str(booking_id)
+                + " LIMIT 4;"
+            )
+            r = cur.fetchall()
+            print(r)
+            dts = []
+            for row in r:
+                dts.append(row["device_token"])
 
-            if r and rr:
-                tokens = [device_token]
-                statusfcm = fcm.sendPush("Hi", "This is my next msg", tokens)
+            countofids = len(dts) - 1
+            counter = 4
+            while counter > 0 and counter < 5 and countofids >= 0:
+                tokens = []
+                tokens.append(dts[countofids])
+                msg = countofids + 1
+                countofids = countofids - 1
+                counter = counter - 1
+                fcm.sendPush("Hi", "Your Position is: " + str(msg) + "", tokens)
+
+            cur.execute(
+                "Select number from equeue_users WHERE id = '" + str(user_id) + "';"
+            )
+            phonee = cur.fetchone()
+            tokens = []
+            tokens.append(device_token)
+            fcm.sendPush(
+                "Hi",
+                "Please proceed to counter: " + str(user["counter"]) + ".",
+                tokens,
+            )
+            res = requests.get(
+                "https://sms.bewin.one/sms/services/send.php?key=2d4f10360b952be6f4b460c03ae68b77f5279741&number=%2B"
+                + str(phonee["number"])
+                + "&message=Please proceed to counter: "
+                + str(user["counter"])
+                + "&devices=3|0"
+            )
+
+            if res.status_code == 200:
                 op = 200
-
             op = 403
 
         else:
@@ -1985,7 +2103,7 @@ def allmulti_tokens():
                 all_tokens = cur.execute(
                     "Select COUNT(id) from "
                     + str(branch_name + "_" + str(branch_id))
-                    + ""
+                    + " WHERE NOT(status = 'cancelled' or status = 'completed')"
                 )
                 r = cur.fetchone()
                 if r:
@@ -2025,82 +2143,55 @@ def status_mtoken_chng():
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if status == "completed":
-            r = cur.execute(
+            cur.execute(
+                "SELECT * FROM "
+                + str(branch_name + "_" + str(branch_id))
+                + " WHERE status = 'onqueue' LIMIT "
+                + str(limit)
+                + ""
+            )
+            tokenss = []
+            jam = cur.fetchall()
+            for row in jam:
+                tokenss.append(row["device_token"])
+
+            cur.execute(
                 "UPDATE "
                 + str(branch_name + "_" + str(branch_id))
                 + " SET status = 'completed', employee_id = '"
                 + str(user["id"])
-                + "' WHERE status = 'ongoing' LIMIT "
+                + "' WHERE status = 'onqueue' LIMIT "
                 + str(limit)
                 + ""
             )
             conn.commit()
             cur = conn.cursor(pymysql.cursors.DictCursor)
-            rr = cur.execute(
+            cur.execute(
                 "UPDATE tokenshistory SET status = 'completed', employee_id = '"
                 + str(user["id"])
-                + "' WHERE status = 'ongoing' AND branchtable = '"
+                + "' WHERE status = 'onqueue' AND branchtable = '"
                 + str(branch_name + "_" + str(branch_id))
                 + "' LIMIT "
                 + str(limit)
                 + ""
             )
             conn.commit()
-            if r and rr:
+
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            cur.execute(
+                "Select * from branch_details WHERE  id = '" + str(branch_id) + "'; "
+            )
+            m = cur.fetchone()
+            cur.execute(
+                "Select * from companydetails WHERE  id = '" + str(m["comp_id"]) + "'; "
+            )
+            k = cur.fetchone()
+            j = k["oneliner"]
+            fcm.sendPush("Hi", str(j), tokenss)
+            if k["oneliner"]:
                 op = 200
             op = 403
 
-        #     ll = cur.fetchall()
-        #     dts = []
-        #     for row in ll:
-        #         dts.append(row["device_token"])
-
-        #     cur.execute(
-        #         "Select * from branch_details WHERE  id = '" + str(branch_id) + "'; "
-        #     )
-        #     m = cur.fetchone()
-
-        #     cur.execute(
-        #         "Select * from companydetails WHERE  id = '" + str(m["comp_id"]) + "'; "
-        #     )
-        #     k = cur.fetchone()
-        #     j = k["oneliner"]
-
-        #     lenids = len(dts)
-        #     if lenids > 0:
-        #         tokens = [dts]
-        #         statusfcm = fcm.sendPush("Hi", str(j), tokens)
-
-        #     if r and rr:
-        #         op = 200
-        #     op = 403
-
-        # elif status == "cancelled":
-        #     r = cur.execute(
-        #         "UPDATE "
-        #         + str(branch_name + "_" + str(branch_id))
-        #         + " SET status = 'cancelled', employee_id = '"
-        #         + str(user["id"])
-        #         + "' WHERE status = 'onqueue' LIMIT "
-        #         + str(limit)
-        #         + ""
-        #     )
-        #     conn.commit()
-
-        #     cur = conn.cursor(pymysql.cursors.DictCursor)
-        #     rr = cur.execute(
-        #         "UPDATE tokenshistory SET status = 'cancelled', employee_id = '"
-        #         + str(user["id"])
-        #         + "' WHERE status = 'onqueue' AND branchtable = '"
-        #         + str(bookingdept + "-" + str(booking_id))
-        #         + "' LIMIT "
-        #         + str(limit)
-        #         + ""
-        #     )
-        #     conn.commit()
-        #     if r and rr:
-        #         op = 200
-        #     op = 403
         else:
             resp = jsonify({"message": "invalid status."})
             resp.status_code = 405
@@ -2184,10 +2275,16 @@ def login():
             r = cur.fetchone()
             if r:
                 kk = r["id"]
+                cur.execute(
+                    "SELECT name FROM user_details WHERE id = '" + str(kk) + "';"
+                )
+                r = cur.fetchone()
+                jj = r["name"]
                 token = jwt.encode(
                     {
                         "number": request.form["number"],
                         "user_id": kk,
+                        "name": jj,
                         "exp": datetime.datetime.utcnow()
                         + datetime.timedelta(minutes=43200),
                     },
@@ -2198,7 +2295,7 @@ def login():
                     "UPDATE equeue_users SET code = '', device_token ='"
                     + str(request.form["device_token"])
                     + "' WHERE id = '"
-                    + str(r["id"])
+                    + str(kk)
                     + "';"
                 )
                 conn.commit()
@@ -2867,9 +2964,10 @@ def booking_payment():
                     + "',"
                     + "'green');"
                 )
-
                 j = cur.lastrowid
 
+                conn.commit()
+                cur = conn.cursor(pymysql.cursors.DictCursor)
                 check = cur.execute(
                     "UPDATE user_details SET bonus = '"
                     + str(wbonus - bonus)
@@ -2888,16 +2986,17 @@ def booking_payment():
                     + ";"
                 )
                 recordes = cur.fetchone()
-                if recordes["money_earned"] == null:
-                    money_earned = str(amount + bonus)
-                else:
+                if recordes["money_earned"]:
                     money_earned = float(recordes["money_earned"]) + float(
                         amount + bonus
                     )
+                else:
+                    money_earned = str(amount + bonus)
+
                 check = cur.execute(
                     "UPDATE companydetails SET money_earned = '"
                     + str(money_earned)
-                    + "' WHERE id ="
+                    + "' WHERE id = "
                     + str(company_id)
                     + ";"
                 )
@@ -2955,11 +3054,13 @@ def create_token():
                 0,
                 0,
                 comp_name,
+                0,
             )
 
         elif token_or_booking == "booking":
             service = request.form["service"]
             insurance = request.form["insurance"]
+            price = request.form["price"]
             slots = request.form["slot"]
 
             op = eqbiz.creatingtokens_bookings(
@@ -2972,6 +3073,7 @@ def create_token():
                 insurance,
                 slots,
                 comp_name,
+                price,
             )
 
         else:
@@ -3069,11 +3171,11 @@ def booking_status():
 
         if r:
             resp = jsonify({"bookings": cur.fetchall()})
-            resp.status_code = 200
+            resp.status_code = 403
             return resp
         else:
             resp = jsonify({"bookings": []})
-            resp.status_code = 403
+            resp.status_code = 200
             return resp
 
     finally:
@@ -3090,6 +3192,7 @@ def my_tokens_bookings_history():
     token = request.headers["Authorization"]
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     try:
+        tokenslist = []
         if need == "bookings":
             r = cur.execute(
                 "Select * from bookingshistory WHERE user_id = "
@@ -3099,6 +3202,7 @@ def my_tokens_bookings_history():
             texti = "No bookings found"
             textin = "bookings"
             rr = cur.fetchall()
+            tokenslist = [0]
 
         elif need == "tokens":
             r = cur.execute(
@@ -3109,6 +3213,24 @@ def my_tokens_bookings_history():
             texti = "No tokens found"
             textin = "tokens"
             rr = cur.fetchall()
+            print(rr)
+
+            for i in rr:
+                t = i["token"]
+                bt = i["branchtable"]
+                if i["status"] == "onqueue" or i["status"] == "call":
+                    cur.execute(
+                        "Select COUNT(id) FROM "
+                        + str(bt)
+                        + " WHERE department LIKE '"
+                        + str(t[:3])
+                        + "%' AND NOT(status = 'cancelled' OR status ='completed') AND id <= "
+                        + str(t[4:])
+                        + " "
+                    )
+                    j = cur.fetchone()
+                    print(j["COUNT(id)"])
+                    tokenslist.append(j["COUNT(id)"])
 
         else:
             resp = jsonify({"message": "INVALID REQUEST."})
@@ -3116,7 +3238,7 @@ def my_tokens_bookings_history():
             return resp
 
         if r:
-            resp = jsonify({textin: rr})
+            resp = jsonify({textin: rr, "waitlist": tokenslist})
             resp.status_code = 200
             conn.commit()
             return resp
@@ -3147,7 +3269,7 @@ def my_tokens_bookings():
                 r = cur.execute(
                     "Select * from bookingshistory WHERE user_id = "
                     + str(user["user_id"])
-                    + " AND NOT(status = 'ongoing' OR status ='onqueue')"
+                    + " AND NOT(status = 'call' OR status ='onqueue')  ORDER BY created_on DESC "
                 )
                 texti = "No bookings found"
                 textin = "bookings"
@@ -3157,7 +3279,7 @@ def my_tokens_bookings():
                 r = cur.execute(
                     "Select * from tokenshistory WHERE user_id = "
                     + str(user["user_id"])
-                    + " AND NOT(status = 'ongoing' OR status ='onqueue')"
+                    + " AND NOT(status = 'call' OR status ='onqueue')  ORDER BY created_on DESC "
                 )
                 texti = "No tokens found"
                 textin = "tokens"
@@ -3242,11 +3364,13 @@ def cancel_token():
                         number,
                         0,
                         tablename,
+                        0,
+                        branch_id,
                     )
 
                 elif token_booking == "booking":
                     amountpaid = request.form["amountpaid"]
-                    addmoney = walletbalance + float(amountpaid)
+                    addmoney = walletbalance + float(float(amountpaid)* 0.5)
 
                     op = user_side.canceltb(
                         "booking",
@@ -3255,6 +3379,8 @@ def cancel_token():
                         number,
                         addmoney,
                         tablename,
+                        amountpaid,
+                        branch_id,
                     )
                 else:
                     resp = jsonify({"message": "invalid request"})
@@ -3385,47 +3511,6 @@ def rate_emp():
             return resp
         else:
             resp = jsonify({"message": "ERROR Occured!!"})
-            resp.status_code = 403
-            return resp
-
-    finally:
-        cur.close()
-        conn.close()
-
-
-@app.route("/queue_status", methods=["POST"])
-@check_for_user_token
-def queue_status():
-    conn = mysql.connect()
-    cur = conn.cursor(pymysql.cursors.DictCursor)
-    token = request.headers["Authorization"]
-    t_b_id = request.json["t_b_id"]  # 2
-    dept = request.json["dept"]  # ent
-    branchtable = request.json["branchtable"]  # Bayview_3
-    user = jwt.decode(token, app.config["USER_SECRET_KEY"])
-    try:
-
-        r = cur.execute(
-            "Select * from "
-            + str(branchtable)
-            + " WHERE user_id = "
-            + str(user["user_id"])
-            + " AND department ='"
-            + str(dept)
-            + "' AND id = "
-            + str(t_b_id)
-            + " "
-        )
-        rr = cur.fetchone()
-
-        if rr:
-            resp = jsonify({"position": "3"})
-            resp.status_code = 200
-            conn.commit()
-            return resp
-
-        else:
-            resp = jsonify({"message": "rr"})
             resp.status_code = 403
             return resp
 
