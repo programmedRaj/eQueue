@@ -378,44 +378,44 @@ class _HomeState extends State<Home> {
                                                                         ],
                                                                       ),
                                                                     ),
-                                                                    //                     Container(
-                                                                    //                       child: ElevatedButton(
-                                                                    //                           style: ButtonStyle(
-                                                                    //                             backgroundColor:
-                                                                    //                                 MaterialStateProperty.all<Color>(Colors.red),
-                                                                    //                           ),
-                                                                    //                           onPressed: () {
-                                                                    //                             showDialog(
-                                                                    //                               context: context,
-                                                                    //                               builder: (context) {
-                                                                    //                                 return AlertDialog(
-                                                                    //                                   title: Text("AlertDialog"),
-                                                                    //                                   content: Text("Are you sure"),
-                                                                    //                                   actions: [
-                                                                    //                                     ElevatedButton(
-                                                                    //                                         onPressed: () {
-                                                                    //                                           if (value.bookings[index].status == "ongoing") {
-                                                                    //                                             AppToast.showErr('Booking is ongoing so cannot be cancelled');
-                                                                    //                                           } else {
-                                                                    //                                             Provider.of<DeletetokenProvider>(context, listen: false).delettoken(branchname: value.bookings[index].branchtable.split('_')[0], branchid: value.bookings[index].branchtable.split('_')[1], tokennumber: value.bookings[index].bookings, tokenstatus: value.bookings[index].status, type: 'booking');
-                                                                    //                                            // Provider.of<DisplayTokenBookHome>(context, listen: false).removebookinone(token: value.bookings[index].bookings);
-                                                                    //                                             Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => Check()));
-                                                                    //                                             AppToast.showSucc(LocaleKeys.Deleted.tr());
-                                                                    //                                           }
-                                                                    //                                         },
-                                                                    //                                         child: Text(LocaleKeys.Ok).tr()),
-                                                                    //                                     ElevatedButton(
-                                                                    //                                         onPressed: () {
-                                                                    //                                           Navigator.of(context).pop();
-                                                                    //                                         },
-                                                                    //                                         child: Text(LocaleKeys.Cancel).tr()),
-                                                                    //                                   ],
-                                                                    //                                 );
-                                                                    //                               },
-                                                                    //                             );
-                                                                    //                           },
-                                                                    //                           child: Text('Cancel')),
-                                                                    //                     )
+                                                                    Container(
+                                                                      child: ElevatedButton(
+                                                                          style: ButtonStyle(
+                                                                            backgroundColor:
+                                                                                MaterialStateProperty.all<Color>(Colors.red),
+                                                                          ),
+                                                                          onPressed: () {
+                                                                            showDialog(
+                                                                              context: context,
+                                                                              builder: (context) {
+                                                                                return AlertDialog(
+                                                                                  title: Text("AlertDialog"),
+                                                                                  content: Text("Are you sure"),
+                                                                                  actions: [
+                                                                                    ElevatedButton(
+                                                                                        onPressed: () {
+                                                                                          if (value.bookings[index].status == "ongoing") {
+                                                                                            AppToast.showErr('Booking is ongoing so cannot be cancelled');
+                                                                                          } else {
+                                                                                            Provider.of<DeletetokenProvider>(context, listen: false).delettoken(branchname: value.bookings[index].branchtable, branchid: '', tokennumber: value.bookings[index].bookings, tokenstatus: value.bookings[index].status, type: 'booking');
+                                                                                            Provider.of<DisplayTokenBookHome>(context, listen: false).removebookinone(token: value.bookings[index].bookings);
+                                                                                            Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => Check()));
+                                                                                            AppToast.showSucc(LocaleKeys.Deleted.tr());
+                                                                                          }
+                                                                                        },
+                                                                                        child: Text(LocaleKeys.Ok).tr()),
+                                                                                    ElevatedButton(
+                                                                                        onPressed: () {
+                                                                                          Navigator.of(context).pop();
+                                                                                        },
+                                                                                        child: Text(LocaleKeys.Cancel).tr()),
+                                                                                  ],
+                                                                                );
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                          child: Text('Cancel')),
+                                                                    )
                                                                   ],
                                                                 ),
                                                               ),
@@ -554,15 +554,12 @@ class _HomeState extends State<Home> {
                                                               // Removes that item the list on swipwe
                                                               setState(() {
                                                                 Provider.of<DeletetokenProvider>(context, listen: false).delettoken(
-                                                                    branchname:
-                                                                        value.tokens[index].branchtable.split('_')[
-                                                                            0],
-                                                                    branchid: value
-                                                                            .tokens[
-                                                                                index]
-                                                                            .branchtable
-                                                                            .split('_')[
-                                                                        1],
+                                                                    branchname: value
+                                                                        .tokens[
+                                                                            index]
+                                                                        .branchtable,
+                                                                    branchid:
+                                                                        '',
                                                                     tokennumber: value
                                                                         .tokens[
                                                                             index]
@@ -571,7 +568,8 @@ class _HomeState extends State<Home> {
                                                                         .tokens[
                                                                             index]
                                                                         .status,
-                                                                    type: 'token');
+                                                                    type:
+                                                                        'token');
                                                                 Provider.of<DisplayTokenBookHome>(
                                                                         context,
                                                                         listen:

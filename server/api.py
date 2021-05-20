@@ -893,7 +893,7 @@ def create_branch():
     try:
         if user["type"] == "company":
             comp_id = user["id"]
-            bname = request.form["bname"]
+            bname = request.form["bname"].replace(" ", "_")
             pnum = request.form["pnum"]
             addr1 = request.form["addr1"]
             addr2 = request.form["addr2"]
@@ -3370,7 +3370,7 @@ def cancel_token():
 
                 elif token_booking == "booking":
                     amountpaid = request.form["amountpaid"]
-                    addmoney = walletbalance + float(float(amountpaid)* 0.5)
+                    addmoney = walletbalance + float(float(amountpaid) * 0.5)
 
                     op = user_side.canceltb(
                         "booking",
