@@ -16,6 +16,7 @@ import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:equeuebiz/widgets/resize_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
@@ -256,15 +257,14 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                   children: [
                                                     Flexible(
                                                       child: authProv.authinfo
-                                                                      .companyType ==
-                                                                  CompanyEnum
-                                                                      .Booking ||
-                                                              authProv.authinfo
-                                                                      .companyType ==
-                                                                  CompanyEnum
-                                                                      .MultiToken
+                                                                  .companyType ==
+                                                              CompanyEnum
+                                                                  .Booking
                                                           ? SizedBox()
                                                           : Container(
+                                                              height:
+                                                                  size.height *
+                                                                      0.08,
                                                               width:
                                                                   size.width *
                                                                       0.5,
@@ -307,13 +307,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                         child: InkWell(
                                                       onTap: () async {
                                                         if (authProv.authinfo
-                                                                    .companyType ==
-                                                                CompanyEnum
-                                                                    .Token ||
-                                                            authProv.authinfo
-                                                                    .companyType ==
-                                                                CompanyEnum
-                                                                    .MultiToken) {
+                                                                .companyType ==
+                                                            CompanyEnum.Token) {
                                                           if (num.parse(_counterC
                                                                       .text) >
                                                                   couterCount ||

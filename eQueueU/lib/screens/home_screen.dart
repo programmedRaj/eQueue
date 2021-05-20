@@ -6,6 +6,7 @@ import 'package:eQueue/main.dart';
 import 'package:eQueue/screens/pages/home.dart';
 import 'package:eQueue/screens/pages/mapss.dart';
 import 'package:eQueue/screens/pages/notification_screen.dart';
+import 'package:eQueue/screens/pages/settings/history.dart';
 import 'package:eQueue/screens/pages/settings/settings.dart';
 import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
@@ -188,14 +189,14 @@ class _MyHomePageState extends State<MyHomePage> {
             BubbleBottomBarItem(
                 backgroundColor: myColor[250],
                 icon: Icon(
-                  Icons.notifications,
+                  Icons.history,
                   color: Colors.black,
                 ),
                 activeIcon: Icon(
-                  Icons.notifications,
+                  Icons.history,
                   color: myColor[50],
                 ),
-                title: Text(LocaleKeys.message).tr()),
+                title: Text(LocaleKeys.History).tr()),
             BubbleBottomBarItem(
                 backgroundColor: myColor[250],
                 icon: Icon(
@@ -214,7 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
             : currentIndex == 1
                 ? Wallet()
                 : currentIndex == 2
-                    ? NotificationScreen()
+                    ? History()
                     : currentIndex == 3
                         ? Settings()
                         : null,

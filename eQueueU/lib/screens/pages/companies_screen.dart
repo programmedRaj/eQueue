@@ -1,5 +1,6 @@
 import 'package:eQueue/api/models/companymodel.dart';
 import 'package:eQueue/components/color.dart';
+import 'package:eQueue/constants/appcolor.dart';
 import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/screens/pages/branch_screen.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
@@ -219,215 +220,276 @@ class _CompanyState extends State<Company> {
                   ],
                 ),
                 Flexible(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    height: height * 0.9,
-                    width: width,
-                    child: ListView.builder(
-                        itemCount:
-                            companysearch.length > 0 || companysearch.isNotEmpty
-                                ? companysearch.length
-                                : comp.length,
-                        itemBuilder: (context, i) {
-                          return Container(
-                            height: height * 0.3,
-                            margin: EdgeInsets.all(5),
-                            width: width,
-                            decoration: BoxDecoration(
-                                color: myColor[100],
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [BoxShadow(color: Colors.grey)]),
-                            child: Column(
-                              children: [
-                                Flexible(
-                                  child: Container(
-                                      height: height * 0.2,
-                                      width: width,
-                                      alignment: Alignment.topRight,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                'lib/assets/imagecomp.jpg',
-                                              ),
-                                              fit: BoxFit.fill)),
-                                      child: Container(
-                                        margin: EdgeInsets.all(10),
-                                        child: CircleAvatar(
-                                          radius: 10,
-                                          backgroundColor: myColor[100],
-                                          child: companysearch.length > 0 ||
-                                                  companysearch.isNotEmpty
-                                              ? Text(
-                                                  '${companysearch[i].type[0].toUpperCase()}')
-                                              : Text(
-                                                  '${comp[i].type[0].toUpperCase()}'),
-                                        ),
-                                      )),
+                  child: RefreshIndicator(
+                    onRefresh: () {
+                      return Future.delayed(Duration(seconds: 4), () {
+                        Provider.of<CompanyProvider>(context, listen: false)
+                            .getCompanies(sort: false);
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      height: height * 0.9,
+                      width: width,
+                      child: value.companies.length == 0
+                          ? RefreshIndicator(
+                              onRefresh: () {
+                                return Future.delayed(Duration(seconds: 4), () {
+                                  Provider.of<CompanyProvider>(context,
+                                          listen: false)
+                                      .getCompanies(sort: false);
+                                });
+                              },
+                              child: Container(
+                                child: Center(
+                                  child: Text(
+                                    'No Companies',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: AppColor.mainBlue),
+                                  ),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: 10, left: 10, right: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                              ))
+                          : ListView.builder(
+                              itemCount: companysearch.length > 0 ||
+                                      companysearch.isNotEmpty
+                                  ? companysearch.length
+                                  : comp.length,
+                              itemBuilder: (context, i) {
+                                return Container(
+                                  height: height * 0.3,
+                                  margin: EdgeInsets.all(5),
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                      color: myColor[100],
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(color: Colors.grey)
+                                      ]),
+                                  child: Column(
                                     children: [
                                       Flexible(
-                                          child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: width * 0.4,
-                                            child: companysearch.length > 0 ||
-                                                    companysearch.isNotEmpty
-                                                ? Text(
-                                                    companysearch[i].name,
-                                                    style: TextStyle(
-                                                        color: myColor[50],
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  )
-                                                : Text(
-                                                    comp[i].name,
-                                                    style: TextStyle(
-                                                        color: myColor[50],
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              showDialog(
-                                                barrierDismissible: false,
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    content:
-                                                        SingleChildScrollView(
-                                                      child: Column(
-                                                        children: [
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .topRight,
-                                                            child: IconButton(
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                              icon: Icon(
-                                                                Icons.close,
-                                                                color:
-                                                                    myColor[50],
-                                                              ),
+                                        child: Container(
+                                            height: height * 0.2,
+                                            width: width,
+                                            alignment: Alignment.topRight,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                    image: companysearch
+                                                                    .length >
+                                                                0 ||
+                                                            companysearch
+                                                                .isNotEmpty
+                                                        ? NetworkImage(
+                                                            'https://www.nobatdeh.com/uploads/${companysearch[i].profileurl}')
+                                                        : NetworkImage(
+                                                            'https://www.nobatdeh.com/uploads/${comp[i].profileurl}'),
+                                                    //  AssetImage(
+                                                    //   'lib/assets/imagecomp.jpg',
+                                                    // ),
+                                                    fit: BoxFit.contain)),
+                                            child: Container(
+                                              margin: EdgeInsets.all(10),
+                                              child: CircleAvatar(
+                                                radius: 10,
+                                                backgroundColor: myColor[100],
+                                                child: companysearch.length >
+                                                            0 ||
+                                                        companysearch.isNotEmpty
+                                                    ? Text(
+                                                        '${companysearch[i].type[0].toUpperCase()}')
+                                                    : Text(
+                                                        '${comp[i].type[0].toUpperCase()}'),
+                                              ),
+                                            )),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            top: 10, left: 10, right: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Flexible(
+                                                child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: width * 0.4,
+                                                  child: companysearch.length >
+                                                              0 ||
+                                                          companysearch
+                                                              .isNotEmpty
+                                                      ? Text(
+                                                          companysearch[i].name,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  myColor[50],
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        )
+                                                      : Text(
+                                                          comp[i].name,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  myColor[50],
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    showDialog(
+                                                      barrierDismissible: false,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          content:
+                                                              SingleChildScrollView(
+                                                            child: Column(
+                                                              children: [
+                                                                Container(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .topRight,
+                                                                  child:
+                                                                      IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      color:
+                                                                          myColor[
+                                                                              50],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  height:
+                                                                      height *
+                                                                          0.6,
+                                                                  width: width,
+                                                                  child: companysearch.length >
+                                                                              0 ||
+                                                                          companysearch
+                                                                              .isNotEmpty
+                                                                      ? Text(
+                                                                          '${LocaleKeys.CompanyDescription.tr()} : ${companysearch[i].descr}')
+                                                                      : Text(
+                                                                          '${LocaleKeys.CompanyDescription.tr()} : ${comp[i].descr}'),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
-                                                          Container(
-                                                            height:
-                                                                height * 0.6,
-                                                            width: width,
-                                                            child: companysearch
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 10),
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      LocaleKeys.ViewDetails,
+                                                      style: TextStyle(
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline,
+                                                      ),
+                                                    ).tr(),
+                                                  ),
+                                                )
+                                              ],
+                                            )),
+                                            Container(
+                                              height: height * 0.05,
+                                              width: width * 0.4,
+                                              decoration: BoxDecoration(
+                                                  color: myColor[50],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (ctx) => companysearch
                                                                             .length >
                                                                         0 ||
                                                                     companysearch
                                                                         .isNotEmpty
-                                                                ? Text(
-                                                                    '${LocaleKeys.CompanyDescription.tr()} : ${companysearch[i].descr}')
-                                                                : Text(
-                                                                    '${LocaleKeys.CompanyDescription.tr()} : ${comp[i].descr}'),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.only(top: 10),
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                LocaleKeys.ViewDetails,
-                                                style: TextStyle(
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                ),
-                                              ).tr(),
-                                            ),
-                                          )
-                                        ],
-                                      )),
-                                      Container(
-                                        height: height * 0.05,
-                                        width: width * 0.4,
-                                        decoration: BoxDecoration(
-                                            color: myColor[50],
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: FlatButton(
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (ctx) =>
-                                                          companysearch.length >
-                                                                      0 ||
-                                                                  companysearch
-                                                                      .isNotEmpty
-                                                              ? BranchScreen(
-                                                                  comp_ins:
-                                                                      companysearch[
-                                                                              i]
-                                                                          .insurance,
-                                                                  id: companysearch[
-                                                                          i]
-                                                                      .id,
-                                                                  comp_type:
-                                                                      companysearch[
-                                                                              i]
-                                                                          .type,
-                                                                  companyname:
-                                                                      companysearch[
-                                                                              i]
-                                                                          .name,
-                                                                )
-                                                              : BranchScreen(
-                                                                  comp_ins: comp[
-                                                                          i]
-                                                                      .insurance,
-                                                                  id: comp[i]
-                                                                      .id,
-                                                                  comp_type:
-                                                                      comp[i]
-                                                                          .type,
-                                                                  companyname:
-                                                                      comp[i]
-                                                                          .name,
-                                                                )));
-                                            },
-                                            child: Text(
-                                              LocaleKeys.ViewDetails,
-                                              style: TextStyle(
-                                                  color: myColor[100]),
-                                            ).tr()),
+                                                                ? BranchScreen(
+                                                                    compid: companysearch[
+                                                                            i]
+                                                                        .id
+                                                                        .toString(),
+                                                                    comp_ins:
+                                                                        companysearch[i]
+                                                                            .insurance,
+                                                                    id: companysearch[
+                                                                            i]
+                                                                        .id,
+                                                                    comp_type:
+                                                                        companysearch[i]
+                                                                            .type,
+                                                                    companyname:
+                                                                        companysearch[i]
+                                                                            .name,
+                                                                  )
+                                                                : BranchScreen(
+                                                                    compid: comp[
+                                                                            i]
+                                                                        .id
+                                                                        .toString(),
+                                                                    comp_ins: comp[
+                                                                            i]
+                                                                        .insurance,
+                                                                    id: comp[i]
+                                                                        .id,
+                                                                    comp_type:
+                                                                        comp[i]
+                                                                            .type,
+                                                                    companyname:
+                                                                        comp[i]
+                                                                            .name,
+                                                                  )));
+                                                  },
+                                                  child: Text(
+                                                    LocaleKeys.ViewDetails,
+                                                    style: TextStyle(
+                                                        color: myColor[100]),
+                                                  ).tr()),
+                                            )
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          );
-                        }),
+                                );
+                              }),
+                    ),
                   ),
                 ),
               ],

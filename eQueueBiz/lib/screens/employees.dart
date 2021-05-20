@@ -137,6 +137,9 @@ class _EmployeesState extends State<Employees> {
                                                               i],
                                                           double.parse(
                                                               edp.employeeratings[
+                                                                  i]),
+                                                          double.parse(
+                                                              edp.emoplyeratingcount[
                                                                   i]));
                                                     },
                                                   ),
@@ -247,7 +250,8 @@ class _EmployeesState extends State<Employees> {
     );
   }
 
-  Widget _employeeCard(EmployeeModel empdets, String images, double ratings) {
+  Widget _employeeCard(EmployeeModel empdets, String images, double ratings,
+      double ratingcounts) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -268,8 +272,7 @@ class _EmployeesState extends State<Employees> {
             ),
             empdets.services != null
                 ? Text('${LocaleKeys.Service_Name.tr()} ' + empdets.services)
-                : Text(
-                    '${LocaleKeys.Add_departments.tr()}' + empdets.departments),
+                : Text(empdets.departments),
             Divider(),
             Text(
               "${LocaleKeys.PhoneNo.tr()} : ${empdets.phoneNo}",
@@ -280,7 +283,7 @@ class _EmployeesState extends State<Employees> {
             ),
             Row(
               children: [
-                _ratingStar(ratings),
+                _ratingStar(ratings / ratingcounts),
                 Spacer(),
                 InkWell(
                     onTap: () {

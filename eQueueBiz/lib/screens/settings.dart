@@ -160,16 +160,23 @@ class _SettingsState extends State<Settings> {
   }
 
   Widget _logOut() {
-    return InkWell(
-      onTap: () {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginPage(),
-            ),
-            (route) => false);
-      },
-      child: Text(LocaleKeys.LogOut.tr()),
+    return Container(
+      height: 40,
+      color: Colors.red,
+      child: FlatButton(
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+              (route) => false);
+        },
+        child: Text(
+          LocaleKeys.LogOut.tr(),
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 }

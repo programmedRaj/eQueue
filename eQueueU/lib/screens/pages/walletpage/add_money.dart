@@ -114,7 +114,7 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
                     amount = selected;
                     print(selected);
                   }),
-                  labels: <String>["1", "5", "10", "20"],
+                  labels: <String>["10", "20", "50", "100"],
                   picked: amount,
                   itemBuilder: (Radio rb, Text txt, int i) {
                     return Column(

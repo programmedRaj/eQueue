@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'providers/all_multitoken.dart';
 import 'providers/booking_prov.dart';
 import 'providers/booking_userdets.dart';
+import 'providers/mybiztrans.dart';
 import 'providers/status_token.dart';
 import 'translations/codegen_loader.g.dart';
 
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: SortCheck()),
         ChangeNotifierProvider.value(value: BookingDetUserDets()),
         ChangeNotifierProvider.value(value: TokenStatus()),
+        ChangeNotifierProvider.value(value: Biztrans()),
         ChangeNotifierProvider<AuthProv>(
           create: (context) => AuthProv(),
         ),

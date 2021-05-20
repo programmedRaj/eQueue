@@ -1,10 +1,7 @@
 import 'package:eQueue/api/models/servicesmodel.dart';
-import 'package:eQueue/api/models/working_per_day.dart';
+import 'package:eQueue/check.dart';
 import 'package:eQueue/components/color.dart';
-import 'package:eQueue/components/tokenpage.dart';
-import 'package:eQueue/provider/check_slot.dart';
 import 'package:eQueue/provider/department_booking_provider.dart';
-import 'package:eQueue/provider/department_token_provider.dart';
 import 'package:eQueue/screens/pages/book_appointment.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +17,12 @@ class SelectService extends StatefulWidget {
   final String wk;
   final String book;
   final String perday;
-  final String i;
+  final String ins;
+  final String compid;
   SelectService(
       {this.id,
-      this.i,
+      this.compid,
+      this.ins,
       this.bid,
       this.type,
       this.wk,
@@ -55,12 +54,21 @@ class _SelectServiceState extends State<SelectService> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    print('ins here ${widget.ins}');
 
     return Consumer<DepBookProvider>(
       builder: (context, value, child) {
         return Scaffold(
             appBar: AppBar(
-              title: Text(LocaleKeys.TimeSlot).tr(),
+              title: Text(LocaleKeys.createbookings).tr(),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (ctx) => Check()));
+                    },
+                    icon: Icon(Icons.home))
+              ],
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -110,6 +118,17 @@ class _SelectServiceState extends State<SelectService> {
                             ),
                           ),
                         ),
+                        serrate != null
+                            ? Container(
+                                margin: EdgeInsets.only(top: height * 0.01),
+                                child: Text(
+                                  '${LocaleKeys.ServiceRate.tr()} : $serrate',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -135,8 +154,7 @@ class _SelectServiceState extends State<SelectService> {
                                         servicedescription:
                                             val.servicedescription,
                                         servicerates: val.servicerates),
-                                    child: new Text(
-                                        '${val.service} - ${val.servicerates}'),
+                                    child: new Text('${val.service}'),
                                   );
                                 }).toList(),
                                 hint: dropval == null
@@ -160,8 +178,7 @@ class _SelectServiceState extends State<SelectService> {
                                             fontWeight: FontWeight.w800),
                                       ),
                                 onChanged: (Service newVal) {
-                                  dropval =
-                                      '${newVal.service} - ${newVal.servicerates}';
+                                  dropval = '${newVal.service} ';
                                   this.setState(() {
                                     service = newVal.service;
                                     serrate = newVal.servicerates;
@@ -188,7 +205,7 @@ class _SelectServiceState extends State<SelectService> {
                             child: ListView(
                               children: [
                                 serdes != null
-                                    ? Text('${serdes}')
+                                    ? Text(serdes)
                                     : Text(LocaleKeys.NoDescription).tr(),
                               ],
                             ))
@@ -208,6 +225,7 @@ class _SelectServiceState extends State<SelectService> {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (ctx) => Calen(
+                              compid: widget.compid,
                               branchid: widget.bid,
                               branchname: widget.branchname,
                               companyname: widget.companyname,
@@ -217,7 +235,7 @@ class _SelectServiceState extends State<SelectService> {
                               book: widget.book,
                               perday: widget.perday,
                               wk: widget.wk,
-                              i: widget.i,
+                              ins: widget.ins,
                               type: widget.type,
                             )));
                   },

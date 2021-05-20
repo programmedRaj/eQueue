@@ -19,6 +19,7 @@ class DeletetokenProvider with ChangeNotifier {
     String tokenstatus,
     String amount,
     String branchname,
+    String price,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
@@ -29,7 +30,7 @@ class DeletetokenProvider with ChangeNotifier {
     map['branch_id'] = branchid;
     map['branch_name'] = branchname;
     map['tokenstatus'] = tokenstatus;
-    map['amountpaid'] = '10';
+    map['amountpaid'] = price == null ? '0' : price;
 
     var response = await retry(
       () => http

@@ -23,52 +23,78 @@ class _BookingsState extends State<Bookings> {
   DateTime _selectedDate = DateTime.now();
   AuthProv authProv;
   String _chosen;
+  String choose;
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<BookingDet>(context, listen: false).getbookdets(
-          widget.branchid.toString(),
-          widget.branchname,
-          DateTime.now().toString().substring(0, 10),
-          widget.token.toString());
+    Provider.of<BookingDet>(context, listen: false).getbookdets(
+        widget.branchid.toString(),
+        widget.branchname,
+        DateTime.now().toString().substring(0, 10),
+        widget.token.toString());
+    setState(() {
+      choose = DateTime.now().toString().substring(0, 10);
     });
+    callapi();
+  }
+
+  callapi() {
+    Provider.of<BookingDet>(context, listen: false).getbookdets(
+        widget.branchid.toString(),
+        widget.branchname,
+        choose,
+        widget.token.toString());
+  }
+
+  Stream productsStream() async* {
+    while (true) {
+      await Future.delayed(Duration(seconds: 10));
+      callapi();
+
+      yield null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BookingDet>(
-      builder: (context, value, child) {
-        return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              title: Text(
-                LocaleKeys.Bookings,
-                style: TextStyle(color: Colors.black),
-              ).tr(),
-              actions: [_dateFilter()],
-            ),
-            body: value.bms.length < 0 || value.bms.isEmpty
-                ? Container(
-                    child: Center(
-                      child: Text(LocaleKeys.No_Booking_found_today).tr(),
+    print(widget.token);
+    return StreamBuilder(
+      stream: productsStream(),
+      builder: (context, snapshot) {
+        return Consumer<BookingDet>(
+          builder: (context, value, child) {
+            return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.white,
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
                     ),
-                  )
-                : ListView.builder(
-                    itemCount: value.bms.length,
-                    itemBuilder: (context, index) {
-                      return _tokenCard(value.bms[index]);
+                    onPressed: () {
+                      Navigator.pop(context);
                     },
-                  ));
+                  ),
+                  title: Text(
+                    LocaleKeys.Bookings,
+                    style: TextStyle(color: Colors.black),
+                  ).tr(),
+                  actions: [_dateFilter()],
+                ),
+                body: value.bms.length < 0 || value.bms.isEmpty
+                    ? Container(
+                        child: Center(
+                          child: Text(LocaleKeys.No_Booking_found_today).tr(),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: value.bms.length,
+                        itemBuilder: (context, index) {
+                          return _tokenCard(value.bms[index]);
+                        },
+                      ));
+          },
+        );
       },
     );
   }
@@ -85,6 +111,7 @@ class _BookingsState extends State<Bookings> {
           if (value != null) {
             setState(() {
               _selectedDate = value;
+              choose = value.toString().substring(0, 10);
             });
             var d = _selectedDate.toString().substring(0, 10);
             Provider.of<BookingDet>(context, listen: false).getbookdets(
@@ -186,13 +213,13 @@ class _BookingsState extends State<Bookings> {
                   Container(
                     child: DropdownButton<String>(
                       focusColor: Colors.white,
-                      value: _chosen == null ? bd.status : _chosen,
+                      value: bd.status != null ? bd.status : _chosen,
                       //elevation: 5,
                       style: TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.black,
                       items: <String>[
                         'onqueue',
-                        'ongoing',
+                        'call',
                         'completed',
                         'cancelled',
                       ].map<DropdownMenuItem<String>>((String value) {
@@ -234,6 +261,7 @@ class _BookingsState extends State<Bookings> {
                           builder: (ctx) => UserDets(
                                 bid: bd.branchid,
                                 userid: bd.userid,
+                                token: widget.token,
                               )));
                     },
                     child: Container(

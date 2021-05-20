@@ -10,7 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PayProvider with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
-  getPayment(double amount, double bonus, String tokenbooking) async {
+  getPayment(
+      double amount, double bonus, String tokenbooking, String compid) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
@@ -18,6 +19,7 @@ class PayProvider with ChangeNotifier {
     map['amount'] = amount.toString();
     map['bonus'] = bonus.toString();
     map['token_or_booking'] = tokenbooking;
+    map['company_id'] = compid;
 
     var response = await retry(
       () => http

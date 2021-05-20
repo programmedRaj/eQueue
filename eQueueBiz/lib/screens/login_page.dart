@@ -227,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
           size: 25.5,
         ),
         contentPadding: EdgeInsets.only(left: 0, top: 15, bottom: 0),
-        labelText: LocaleKeys.Enter_username.tr(),
+        labelText: LocaleKeys.Enter_password.tr(),
         labelStyle: TextStyle(fontSize: 16, color: Colors.white),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

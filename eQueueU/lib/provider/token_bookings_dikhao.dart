@@ -37,14 +37,17 @@ class DisplayTokenBook with ChangeNotifier {
         removetoken();
         for (int i = 0; i < n["tokens"].length; i++) {
           addtoken(
-              branchtable: n["tokens"][i]["branchtable"],
-              createdon: n["tokens"][i]["created_on"],
-              status: n["tokens"][i]["status"],
-              token: n["tokens"][i]["token"],
-              userid: n["tokens"][i]["user_id"].toString(),
-              employeeid: n["tokens"][i]["employee_id"].toString(),
-              slots: n["tokens"][i]["slot"],
-              comp: n["tokens"][i]["comp_name"]);
+            branchtable: n["tokens"][i]["branchtable"],
+            createdon: n["tokens"][i]["created_on"],
+            status: n["tokens"][i]["status"],
+            token: n["tokens"][i]["token"],
+            userid: n["tokens"][i]["user_id"].toString(),
+            employeeid: n["tokens"][i]["employee_id"].toString(),
+            slots: n["tokens"][i]["slot"],
+            comp: n["tokens"][i]["comp_name"],
+            empr: n["tokens"][i]["emp_review"].toString(),
+            countnum: n["tokens"][i]["counter_number"].toString(),
+          );
         }
       }
     } else if (type == "bookings") {
@@ -52,14 +55,17 @@ class DisplayTokenBook with ChangeNotifier {
         removebooking();
         for (int i = 0; i < n["bookings"].length; i++) {
           addbooking(
-              branchtable: n["bookings"][i]["branchtable"],
-              createdon: n["bookings"][i]["created_on"],
-              status: n["bookings"][i]["status"],
-              booking: n["bookings"][i]["booking"],
-              userid: n["bookings"][i]["user_id"].toString(),
-              employeeid: n["bookings"][i]["employee_id"].toString(),
-              slots: n["bookings"][i]["slot"],
-              comp: n["bookings"][i]["comp_name"]);
+            branchtable: n["bookings"][i]["branchtable"],
+            createdon: n["bookings"][i]["created_on"],
+            status: n["bookings"][i]["status"],
+            booking: n["bookings"][i]["booking"],
+            userid: n["bookings"][i]["user_id"].toString(),
+            employeeid: n["bookings"][i]["employee_id"].toString(),
+            slots: n["bookings"][i]["slot"],
+            comp: n["bookings"][i]["comp_name"],
+            empr: n["bookings"][i]["emp_review"].toString(),
+            countnum: n["bookings"][i]["counter_number"].toString(),
+          );
         }
       }
     }
@@ -79,20 +85,26 @@ class DisplayTokenBook with ChangeNotifier {
     String slots,
     String employeeid,
     String comp,
+    String empr,
+    String countnum,
   }) {
     tokens.add(DisplayToken(
-        branchtable: branchtable,
-        createdon: createdon,
-        status: status,
-        token: token,
-        userid: userid,
-        employeeid: employeeid,
-        slots: slots,
-        comp: comp));
+      branchtable: branchtable,
+      createdon: createdon,
+      status: status,
+      token: token,
+      userid: userid,
+      employeeid: employeeid,
+      slots: slots,
+      comp: comp,
+      empr: empr,
+      countnum: countnum,
+    ));
     notifyListeners();
   }
 
   void addbooking({
+    String empr,
     String slots,
     String employeeid,
     String booking,
@@ -101,16 +113,20 @@ class DisplayTokenBook with ChangeNotifier {
     String status,
     String userid,
     String comp,
+    String countnum,
   }) {
     bookings.add(DisplayBookings(
-        comp: comp,
-        branchtable: branchtable,
-        createdon: createdon,
-        status: status,
-        bookings: booking,
-        userid: userid,
-        employeeid: employeeid,
-        slots: slots));
+      comp: comp,
+      branchtable: branchtable,
+      createdon: createdon,
+      status: status,
+      bookings: booking,
+      userid: userid,
+      employeeid: employeeid,
+      slots: slots,
+      empr: empr,
+      countnum: countnum,
+    ));
     notifyListeners();
   }
 

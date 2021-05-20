@@ -7,6 +7,7 @@ class AuthenticationApi {
 
 class CompAPi {
   static const getbizdets = "http://91.99.96.87:8080/biz_details";
+  static const biztrans = "http://91.99.96.87:8080/my_biztransactions";
 }
 
 class BranchApi {

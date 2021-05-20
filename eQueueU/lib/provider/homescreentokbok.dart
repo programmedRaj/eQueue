@@ -31,13 +31,13 @@ class DisplayTokenBookHome with ChangeNotifier {
     var k = response.body;
     var n = json.decode(k);
     print(n);
-    // if (n['message'] == 'No bookings found') {
-    //   removebooking();
-    // }
+    if (n['message'] == 'No bookings found') {
+      removebooking();
+    }
 
-    // if (n['message'] == 'No tokens found') {
-    //   removetoken();
-    // }
+    if (n['message'] == 'No tokens found') {
+      removetoken();
+    }
 
     if (type == "tokens") {
       if (n["tokens"] != null) {
@@ -51,7 +51,9 @@ class DisplayTokenBookHome with ChangeNotifier {
               userid: n["tokens"][i]["user_id"].toString(),
               employeeid: n["tokens"][i]["employee_id"].toString(),
               slots: n["tokens"][i]["slot"],
-              comp: n["tokens"][i]["comp_name"]);
+              comp: n["tokens"][i]["comp_name"],
+              countno: n["tokens"][i]["counter_number"],
+              wait: n["waitlist"][i].toString());
         }
       }
     } else if (type == "bookings") {
@@ -59,14 +61,19 @@ class DisplayTokenBookHome with ChangeNotifier {
         removebooking();
         for (int i = 0; i < n["bookings"].length; i++) {
           addbooking(
-              branchtable: n["bookings"][i]["branchtable"],
-              createdon: n["bookings"][i]["created_on"],
-              status: n["bookings"][i]["status"],
-              booking: n["bookings"][i]["booking"],
-              userid: n["bookings"][i]["user_id"].toString(),
-              employeeid: n["bookings"][i]["employee_id"].toString(),
-              slots: n["bookings"][i]["slot"],
-              comp: n["bookings"][i]["comp_name"]);
+            branchtable: n["bookings"][i]["branchtable"],
+            createdon: n["bookings"][i]["created_on"],
+            status: n["bookings"][i]["status"],
+            booking: n["bookings"][i]["booking"],
+            userid: n["bookings"][i]["user_id"].toString(),
+            employeeid: n["bookings"][i]["employee_id"].toString(),
+            slots: n["bookings"][i]["slot"],
+            comp: n["bookings"][i]["comp_name"],
+            price: n["bookings"][i]["price"],
+            // wait: n["waitlist"].length > 0 || n["waitlist"] != null
+            //     ? n["waitlist"][i].toString()
+            //     : '0'
+          );
         }
       }
     }
@@ -86,8 +93,11 @@ class DisplayTokenBookHome with ChangeNotifier {
     String slots,
     String employeeid,
     String comp,
+    String wait,
+    String countno,
   }) {
     tokens.add(DisplayToken(
+        countnum: countno,
         branchtable: branchtable,
         createdon: createdon,
         status: status,
@@ -95,6 +105,7 @@ class DisplayTokenBookHome with ChangeNotifier {
         userid: userid,
         employeeid: employeeid,
         slots: slots,
+        waitlist: wait,
         comp: comp));
     notifyListeners();
   }
@@ -108,16 +119,21 @@ class DisplayTokenBookHome with ChangeNotifier {
     String status,
     String userid,
     String comp,
+    String wait,
+    String price,
   }) {
     bookings.add(DisplayBookings(
-        comp: comp,
-        branchtable: branchtable,
-        createdon: createdon,
-        status: status,
-        bookings: booking,
-        userid: userid,
-        employeeid: employeeid,
-        slots: slots));
+      price: price,
+      comp: comp,
+      branchtable: branchtable,
+      createdon: createdon,
+      status: status,
+      bookings: booking,
+      userid: userid,
+      employeeid: employeeid,
+      slots: slots,
+      // waitlist: wait,
+    ));
 
     notifyListeners();
   }

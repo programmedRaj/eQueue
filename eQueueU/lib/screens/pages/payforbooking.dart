@@ -1,9 +1,11 @@
+import 'package:eQueue/check.dart';
 import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/provider/payment_provider.dart';
 import 'package:eQueue/provider/send_booking.dart';
 import 'package:eQueue/provider/send_token.dart';
 import 'package:eQueue/provider/user_details_provider.dart';
 import 'package:eQueue/screens/home_screen.dart';
+import 'package:eQueue/screens/pages/home.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
@@ -20,10 +22,12 @@ class PayFor extends StatefulWidget {
   final String servicerate;
   final String servicedess;
   final String time;
-  final String i;
+  final String ins;
   final String date;
+  final String compid;
   PayFor({
-    this.i,
+    this.compid,
+    this.ins,
     this.companyname,
     this.branchname,
     this.branchid,
@@ -48,17 +52,26 @@ class _PayForState extends State<PayFor> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    print(widget.ins);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(LocaleKeys.PaymentDetails.tr()),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctx) => Check()));
+              },
+              icon: Icon(Icons.home))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widget.i == '1'
+              widget.ins == '1'
                   ? CheckboxGroup(
                       labels: <String>[LocaleKeys.Insurance.tr()],
                       onSelected: (val) {
@@ -195,13 +208,33 @@ class _PayForState extends State<PayFor> {
         width: width,
         decoration: BoxDecoration(color: myColor[50]),
         child: onepress
-            ? FlatButton(onPressed: () {}, child: Text(LocaleKeys.BookNow))
+            ? FlatButton(
+                onPressed: () {},
+                child: isinsu
+                    ? Text(
+                        LocaleKeys.BookNow,
+                        style: TextStyle(
+                          color: myColor[100],
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18,
+                        ),
+                      ).tr()
+                    : Text(
+                        '${LocaleKeys.PayNow.tr()} - \$${widget.servicerate}',
+                        style: TextStyle(
+                          color: myColor[100],
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18,
+                        ),
+                      ),
+              )
             : FlatButton(
                 onPressed: () async {
                   var moneybonus =
                       await Provider.of<UserDetails>(context, listen: false)
                           .getUserDet();
                   print('---${moneybonus[1]}');
+                  print(isinsu);
 
                   if (isinsu) {
                     await Provider.of<SendBooking>(context, listen: false)
@@ -213,13 +246,20 @@ class _PayForState extends State<PayFor> {
                       insurance: insno,
                       service: widget.servicename,
                       slot: '${widget.date} - ${widget.time}',
-                    );
+                      isno: isinsu,
+                      price: widget.servicerate,
+                    )
+                        .then((value) {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (ctx) => Check()));
+                    });
                     setState(() {
                       onepress = true;
                     });
                   }
                   if (!isinsu)
-                    monbon(moneybonus[0], moneybonus[1]).then((value) async {
+                    monbon(moneybonus[0], moneybonus[1], widget.compid)
+                        .then((value) async {
                       if (!isinsu) {
                         await Provider.of<SendBooking>(context, listen: false)
                             .generatetoken(
@@ -230,14 +270,16 @@ class _PayForState extends State<PayFor> {
                           insurance: value,
                           service: widget.servicename,
                           slot: '${widget.date} - ${widget.time}',
+                          isno: isinsu,
+                          price: widget.servicerate,
                         );
                       }
                       setState(() {
                         onepress = true;
                       });
                     }).then((value) {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (ctx) => MyHomePage()));
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (ctx) => Check()));
                     });
                 },
                 child: isinsu
@@ -262,7 +304,7 @@ class _PayForState extends State<PayFor> {
     );
   }
 
-  Future monbon(String money, String bonus) {
+  Future monbon(String money, String bonus, String compid) {
     var totalbonus = (int.parse(widget.servicerate) * 10) / 100;
     var totalbonustoint = double.parse(totalbonus.toStringAsFixed(2));
 
@@ -272,7 +314,8 @@ class _PayForState extends State<PayFor> {
       if (double.parse(money) >= totalservicecharge) {
         print('1. $totalservicecharge');
         var transid = Provider.of<PayProvider>(context, listen: false)
-            .getPayment(totalservicecharge, double.parse(bonus), 'booking');
+            .getPayment(
+                totalservicecharge, double.parse(bonus), 'booking', compid);
         return transid;
       } else {
         AppToast.showErr(LocaleKeys.InsufficientBalance.tr());
@@ -283,7 +326,8 @@ class _PayForState extends State<PayFor> {
       if (double.parse(money) >= totalservicecharge) {
         print('2. $totalservicecharge');
         var transid = Provider.of<PayProvider>(context, listen: false)
-            .getPayment(totalservicecharge, double.parse(bonus), 'booking');
+            .getPayment(
+                totalservicecharge, double.parse(bonus), 'booking', compid);
 
         return transid;
       } else {
@@ -293,7 +337,7 @@ class _PayForState extends State<PayFor> {
       if (double.parse(money) >= double.parse(widget.servicerate)) {
         var transid = Provider.of<PayProvider>(context, listen: false)
             .getPayment(double.parse(widget.servicerate), double.parse(bonus),
-                'booking');
+                'booking', compid);
         return transid;
       } else {
         AppToast.showErr(LocaleKeys.InsufficientBalance.tr());

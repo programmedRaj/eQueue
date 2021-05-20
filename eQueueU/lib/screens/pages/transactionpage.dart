@@ -37,7 +37,7 @@ class _TransactionDetsState extends State<TransactionDets> {
                   itemCount: value.trans.length,
                   itemBuilder: (context, i) {
                     return Container(
-                      height: height * 0.15,
+                      height: height * 0.12,
                       width: width,
                       margin: EdgeInsets.all(8),
                       decoration: BoxDecoration(

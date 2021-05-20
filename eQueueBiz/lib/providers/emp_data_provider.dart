@@ -14,6 +14,7 @@ class EmpDataProv extends ChangeNotifier {
   List<EmployeeModel> employeesWithDetail = [];
   List employeesWithImage = [];
   List employeeratings = [];
+  List emoplyeratingcount = [];
 
   getEmployeesWithDetailAcctoBranch(String jwtToken, int branchId) async {
     var header = {
@@ -36,6 +37,8 @@ class EmpDataProv extends ChangeNotifier {
         employeesWithImage
             .add(decodedResp['employee_details'][i]['profile_url']);
         employeeratings.add(decodedResp['employee_details'][i]['ratings']);
+        emoplyeratingcount
+            .add(decodedResp['employee_details'][i]['rating_count']);
       }
       int i = 0;
       for (var item in decodedResp['employee_details']) {
