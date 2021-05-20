@@ -110,6 +110,8 @@ class _RegisterState extends State<Register> {
 
     var response = await http.Response.fromStream(res);
     if (res.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('name', name);
       Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => Login()));
     } else if (res.statusCode == 403) {
       error = LocaleKeys.YouAlreadyHaveanAccount.tr();

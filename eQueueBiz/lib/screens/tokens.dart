@@ -33,59 +33,77 @@ class _TokensState extends State<Tokens> {
 
   @override
   void initState() {
+    super.initState();
+    callapi();
+  }
+
+  callapi() {
     Provider.of<DeptDataProv>(context, listen: false)
         .getDepts(widget.token, widget.bid);
     Provider.of<AllToken>(context, listen: false)
         .getTokendets(widget.bid.toString(), widget.bname, widget.token);
-    super.initState();
+  }
+
+  Stream tokenStream() async* {
+    while (true) {
+      await Future.delayed(Duration(seconds: 10));
+      callapi();
+
+      yield null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DeptDataProv>(
-      builder: (context, value, child) {
-        return Consumer<AllToken>(
-          builder: (context, value1, child) {
-            if (selectedDept != null) {
-              tok = value1.tok
-                  .where((element) => element.department == selectedDept)
-                  .toList();
-            }
-            return Scaffold(
-                appBar: AppBar(
-                  backgroundColor: Colors.white,
-                  leading: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  title: Text(
-                    LocaleKeys.Tokens,
-                    style: TextStyle(color: Colors.black),
-                  ).tr(),
-                  actions: [_departmentFilter(value.deptsList)],
-                ),
-                body: value1.toks.length < 0 || value1.toks.isEmpty
-                    ? Container(
-                        child: Center(
-                          child: Text(
-                              '${LocaleKeys.NO.tr()} ${LocaleKeys.Tokens.tr()}'),
+    return StreamBuilder(
+      stream: tokenStream(),
+      builder: (context, snapshot) {
+        return Consumer<DeptDataProv>(
+          builder: (context, value, child) {
+            return Consumer<AllToken>(
+              builder: (context, value1, child) {
+                if (selectedDept != null) {
+                  tok = value1.tok
+                      .where((element) => element.department == selectedDept)
+                      .toList();
+                }
+                return Scaffold(
+                    appBar: AppBar(
+                      backgroundColor: Colors.white,
+                      leading: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.black,
                         ),
-                      )
-                    : ListView.builder(
-                        itemCount: selectedDept == null
-                            ? value1.toks.length
-                            : tok.length,
-                        itemBuilder: (context, index) {
-                          return selectedDept == null
-                              ? _tokenCard(value1.toks[index])
-                              : _tokenCard(tok[index]);
+                        onPressed: () {
+                          Navigator.pop(context);
                         },
-                      ));
+                      ),
+                      title: Text(
+                        LocaleKeys.Tokens,
+                        style: TextStyle(color: Colors.black),
+                      ).tr(),
+                      actions: [_departmentFilter(value.deptsList)],
+                    ),
+                    body: value1.toks.length < 0 || value1.toks.isEmpty
+                        ? Container(
+                            child: Center(
+                              child: Text(
+                                  '${LocaleKeys.NO.tr()} ${LocaleKeys.Tokens.tr()}'),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: selectedDept == null
+                                ? value1.toks.length
+                                : tok.length,
+                            itemBuilder: (context, index) {
+                              return selectedDept == null
+                                  ? _tokenCard(value1.toks[index])
+                                  : _tokenCard(tok[index]);
+                            },
+                          ));
+              },
+            );
           },
         );
       },
@@ -148,6 +166,12 @@ class _TokensState extends State<Tokens> {
                 style: blackBoldFS16,
               ),
             ),
+            Center(
+              child: Text(
+                "${LocaleKeys.Status.tr()} : ${tokenL.status}",
+                style: blackBoldFS16,
+              ),
+            ),
             SizedBox(
               height: 10,
             ),
@@ -157,13 +181,13 @@ class _TokensState extends State<Tokens> {
             Container(
               child: DropdownButton<String>(
                 focusColor: Colors.white,
-                value: _chosen == null ? tokenL.status : _chosen,
+                value: tokenL.status != null ? tokenL.status : _chosen,
                 //elevation: 5,
                 style: TextStyle(color: Colors.white),
                 iconEnabledColor: Colors.black,
                 items: <String>[
                   'onqueue',
-                  'ongoing',
+                  'call',
                   'completed',
                   'cancelled',
                 ].map<DropdownMenuItem<String>>((String value) {
@@ -195,7 +219,13 @@ class _TokensState extends State<Tokens> {
                     userid: tokenL.userid,
                     dep: tokenL.department.substring(0, 3),
                     dt: tokenL.devicetoken,
-                  );
+                  )
+                      .then((v) {
+                    Provider.of<DeptDataProv>(context, listen: false)
+                        .getDepts(widget.token, widget.bid);
+                    Provider.of<AllToken>(context, listen: false).getTokendets(
+                        widget.bid.toString(), widget.bname, widget.token);
+                  });
                 },
               ),
             ),

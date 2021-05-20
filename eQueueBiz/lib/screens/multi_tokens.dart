@@ -23,6 +23,11 @@ class _MultiTokensState extends State<MultiTokens> {
 
   @override
   void initState() {
+    super.initState();
+    callapi();
+  }
+
+  callapi() {
     Provider.of<AllMToken>(context, listen: false)
         .getTokeMndets(widget.bid.toString(), widget.bname, widget.token)
         .then((value) {
@@ -31,68 +36,84 @@ class _MultiTokensState extends State<MultiTokens> {
         tokenMax = value;
       });
     });
-    super.initState();
+  }
+
+  Stream tokenStream() async* {
+    while (true) {
+      await Future.delayed(Duration(seconds: 10));
+      callapi();
+
+      yield null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          LocaleKeys.Multitoken.tr(),
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: Container(
-          alignment: Alignment.center,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 1200),
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.38,
-                  ),
-                  Center(
-                    child: tokenMax == 0
-                        ? Container(
-                            child: Center(
-                              child: Text(
-                                  '${LocaleKeys.NO.tr()} ${LocaleKeys.Tokens.tr()}'),
-                            ),
-                          )
-                        : Slider(
-                            value: _currentSliderValue,
-                            min: 0,
-                            max: double.parse(tokenMax.toString()), //idr var,.
-                            divisions: 10,
-                            label: _currentSliderValue.round().toString(),
-                            activeColor: Colors.green,
-                            onChanged: (double value) {
-                              setState(() {
-                                _currentSliderValue = value;
-                              });
-                            },
-                          ),
-                  ),
-                  Spacer(),
-                  Align(alignment: Alignment.bottomCenter, child: _callButton())
-                ],
+    return StreamBuilder(
+      stream: tokenStream(),
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
               ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-          )),
+            title: Text(
+              LocaleKeys.Multitoken.tr(),
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          body: Container(
+              alignment: Alignment.center,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 1200),
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.38,
+                      ),
+                      Center(
+                        child: tokenMax == 0
+                            ? Container(
+                                child: Center(
+                                  child: Text(
+                                      '${LocaleKeys.NO.tr()} ${LocaleKeys.Tokens.tr()}'),
+                                ),
+                              )
+                            : Slider(
+                                value: _currentSliderValue,
+                                min: 0,
+                                max: double.parse(
+                                    tokenMax.toString()), //idr var,.
+                                divisions: 10,
+                                label: _currentSliderValue.round().toString(),
+                                activeColor: Colors.green,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    _currentSliderValue = value;
+                                  });
+                                },
+                              ),
+                      ),
+                      Spacer(),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: _callButton())
+                    ],
+                  ),
+                ),
+              )),
+        );
+      },
     );
   }
 

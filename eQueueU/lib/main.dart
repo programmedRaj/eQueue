@@ -5,11 +5,13 @@ import 'package:eQueue/provider/check_slot.dart';
 import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/provider/delete_token_branch.dart';
 import 'package:eQueue/provider/homescreentokbok.dart';
+import 'package:eQueue/provider/locationpro.dart';
 import 'package:eQueue/provider/map_marker.dart';
 import 'package:eQueue/provider/payment_provider.dart';
 import 'package:eQueue/provider/paymentdone.dart';
 import 'package:eQueue/provider/send_booking.dart';
 import 'package:eQueue/provider/send_token.dart';
+import 'package:eQueue/provider/showmypose.dart';
 import 'package:eQueue/provider/token_bookings_dikhao.dart';
 import 'package:eQueue/provider/token_check_provider.dart';
 import 'package:eQueue/provider/transaction_provider.dart';
@@ -150,6 +152,7 @@ class _MyAppState extends State<MyApp> {
     ]);
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: LocationProvider()),
         ChangeNotifierProvider.value(value: DeletetokenProvider()),
         ChangeNotifierProvider.value(value: CompanyProvider()),
         ChangeNotifierProvider.value(value: MapMarker()),
@@ -168,6 +171,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: DisplayTokenBookHome()),
         ChangeNotifierProvider.value(value: TransactionProvider()),
         ChangeNotifierProvider.value(value: UpUserDetails()),
+        ChangeNotifierProvider.value(value: ShowmyPose()),
       ],
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,

@@ -63,7 +63,7 @@ class CreateEditBanchProv extends ChangeNotifier {
     request.fields["booking_perday"] = jsonEncode(branch.bookingPerday);
     request.fields["booking_perhrs"] = jsonEncode(branch.bookingPerDayhrs);
     request.fields["req"] = branch.reqType;
-    request.fields["threshold"] = branch.threshold;
+    request.fields["threshold"] = 'empty'; // empty
     request.fields["department"] = jsonEncode(branch.department);
     request.fields["branchid"] = branch.branchId;
     request.fields["counter_count"] = branch.counterCount;

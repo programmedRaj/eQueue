@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:eQueue/constants/apptoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,9 +20,12 @@ class SendBooking with ChangeNotifier {
     String insurance,
     String slot,
     String company,
+    bool isno,
+    String price,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
+
     var devicetoken = prefs.getString('devicetoken');
     print(devicetoken);
     print(
@@ -32,9 +36,10 @@ class SendBooking with ChangeNotifier {
     map['token_or_booking'] = tokenorbooking;
     map['device_token'] = devicetoken;
     map['service'] = service;
-    map['insurance'] = 'paid';
+    map['insurance'] = isno ? insurance : 'paid';
     map['slot'] = slot;
     map['comp_name'] = company;
+    map['price'] = isno ? '0' : price;
 
     var response = await retry(
       () => http
@@ -46,5 +51,10 @@ class SendBooking with ChangeNotifier {
     var k = response.body;
     var n = json.decode(k);
     print(n);
+    if (response.statusCode == 200) {
+      AppToast.showSucc('Booked Successfully');
+    } else {
+      AppToast.showErr('Unable to Book');
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:eQueue/api/models/branchmodel.dart';
 import 'package:eQueue/api/models/branchmodelcompany.dart';
 import 'package:eQueue/constants/apptoast.dart';
+import 'package:eQueue/provider/locationpro.dart';
 import 'package:eQueue/provider/map_marker.dart';
 import 'package:eQueue/screens/pages/book_appoint_service.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
@@ -20,63 +21,11 @@ class MapSample extends StatefulWidget {
 class MapSampleState extends State<MapSample> {
   Set<Marker> _marker = {};
 
-  LocationData _currentPosition;
-  String _address, _dateTime;
-  // GoogleMapController mapController;
-  // Marker marker;
-  Location location = Location();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getLoc();
-  }
-
-  getLoc() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    _currentPosition = await location.getLocation();
-    // _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
-    location.onLocationChanged.listen((LocationData currentLocation) {
-      print(" abc ${currentLocation.longitude} : ${currentLocation.longitude}");
-      setState(() {
-        _currentPosition = currentLocation;
-        // _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
-
-        DateTime now = DateTime.now();
-        _dateTime = DateFormat('EEE d MMM kk:mm:ss ').format(now);
-        print('${_currentPosition.longitude}');
-        // _getAddress(_currentPosition.latitude, _currentPosition.longitude)
-        //     .then((value) {
-        //   setState(() {
-        //     _address = "${value.first.addressLine}";
-        //   });
-        // });
-      });
-    });
-  }
-
   void didChangeDependencies() {
     super.didChangeDependencies();
     Provider.of<MapMarker>(context, listen: false).mapad();
+
+    Provider.of<LocationProvider>(context, listen: false).initalization();
   }
 
   Completer<GoogleMapController> _controller = Completer();
@@ -129,23 +78,27 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MapMarker>(
-      builder: (context, value, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(LocaleKeys.Map).tr(),
-          ),
-          body: GoogleMap(
-            mapType: MapType.normal,
-            markers: _marker,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(37.42796133580664, -122.085749655962),
-              zoom: 14.4746,
-            ),
-            onMapCreated: (v) {
-              onMap(v, value.branches);
-            },
-          ),
+    return Consumer<LocationProvider>(
+      builder: (context, loc, child) {
+        return Consumer<MapMarker>(
+          builder: (context, value, child) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(LocaleKeys.Map).tr(),
+              ),
+              body: GoogleMap(
+                mapType: MapType.normal,
+                markers: _marker,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(37.42796133580664, -122.085749655962),
+                  zoom: 14.4746,
+                ),
+                onMapCreated: (v) {
+                  onMap(v, value.branches);
+                },
+              ),
+            );
+          },
         );
       },
     );
@@ -266,24 +219,24 @@ class MapSampleState extends State<MapSample> {
 //   }
 
 //   getLoc() async {
-//     bool _serviceEnabled;
-//     PermissionStatus _permissionGranted;
+// bool _serviceEnabled;
+// PermissionStatus _permissionGranted;
 
-//     _serviceEnabled = await location.serviceEnabled();
-//     if (!_serviceEnabled) {
-//       _serviceEnabled = await location.requestService();
-//       if (!_serviceEnabled) {
-//         return;
-//       }
-//     }
+// _serviceEnabled = await location.serviceEnabled();
+// if (!_serviceEnabled) {
+//   _serviceEnabled = await location.requestService();
+//   if (!_serviceEnabled) {
+//     return;
+//   }
+// }
 
-//     _permissionGranted = await location.hasPermission();
-//     if (_permissionGranted == PermissionStatus.denied) {
-//       _permissionGranted = await location.requestPermission();
-//       if (_permissionGranted != PermissionStatus.granted) {
-//         return;
-//       }
-//     }
+// _permissionGranted = await location.hasPermission();
+// if (_permissionGranted == PermissionStatus.denied) {
+//   _permissionGranted = await location.requestPermission();
+//   if (_permissionGranted != PermissionStatus.granted) {
+//     return;
+//   }
+// }
 
 //     _currentPosition = await location.getLocation();
 //     _initialcameraposition =

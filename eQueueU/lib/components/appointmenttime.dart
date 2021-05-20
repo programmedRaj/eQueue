@@ -20,7 +20,9 @@ class AppTime extends StatefulWidget {
   final String servicedess;
   final String type;
   final String i;
+  final String compid;
   const AppTime({
+    this.compid,
     this.i,
     this.type,
     this.day,
@@ -71,6 +73,7 @@ class _AppTimeState extends State<AppTime> {
 
   @override
   Widget build(BuildContext context) {
+    print('isur ${widget.i}');
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
@@ -175,6 +178,8 @@ class _AppTimeState extends State<AppTime> {
                                     servicedess: widget.servicedess,
                                     servicename: widget.servicename,
                                     servicerate: widget.servicerate,
+                                    ins: widget.i,
+                                    compid: widget.compid,
                                   )));
                         },
                         child: Container(

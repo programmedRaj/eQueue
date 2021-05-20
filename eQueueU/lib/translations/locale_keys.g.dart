@@ -11,7 +11,10 @@ abstract class  LocaleKeys {
   static const MyHistory = 'MyHistory';
   static const Language = 'Language';
   static const Payments = 'Payments';
+  static const feereturn = 'feereturn';
   static const TermsConditions = 'TermsConditions';
+  static const Are_you_sure = 'Are_you_sure';
+  static const cureentpose = 'cureentpose';
   static const LogOut = 'LogOut';
   static const Profile = 'Profile';
   static const EditPhoto = 'EditPhoto';

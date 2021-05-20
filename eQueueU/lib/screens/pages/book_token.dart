@@ -53,7 +53,7 @@ class _BooktokenState extends State<Booktoken> {
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(LocaleKeys.TimeSlot).tr(),
+            title: Text(LocaleKeys.createtoken).tr(),
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -211,6 +211,9 @@ class _BooktokenState extends State<Booktoken> {
                       borderRadius: BorderRadius.circular(10)),
                   child: FlatButton(
                       onPressed: () async {
+                        setState(() {
+                          onpress = true;
+                        });
                         String dateFormat =
                             DateFormat('EEEE').format(DateTime.now());
                         String dayy = dateFormat.toLowerCase();
@@ -226,8 +229,10 @@ class _BooktokenState extends State<Booktoken> {
                         var t = workday.replaceAll('{', '').replaceAll('}', '');
                         var ti = t.split(',');
 
-                        var starttime = ti[0].split(' ')[1] + '0';
-                        var endtime = ti[1].split(' ')[2] + '0';
+                        var starttime = ti[0].split(' ')[1];
+                        var endtime = ti[1].split(' ')[2];
+
+                        print(ti[0].split(' ')[1] == "null");
 
                         final currentTime = DateTime.now();
                         // print(currentTime);
@@ -238,28 +243,34 @@ class _BooktokenState extends State<Booktoken> {
                         var month = datetoday.substring(5, 7);
                         var day = datetoday.substring(8);
 
-                        print(starttime);
+                        print('st $starttime');
                         print(endtime);
 
-                        var stH = starttime.substring(0, 2);
-                        var stM = starttime.substring(3, 5);
+                        if (starttime == "null" ||
+                            endtime == "null" ||
+                            starttime == null ||
+                            endtime == null) {
+                          AppToast.showErr(LocaleKeys.Branchisclosed.tr());
+                        } else if (starttime != "null" && endtime != "null" ||
+                            starttime != null && endtime != null) {
+                          var stH = starttime.substring(0, 2);
+                          var stM = starttime.substring(3, 5);
 
-                        var endH = endtime.substring(0, 2);
-                        var endM = endtime.substring(3, 5);
+                          var endH = endtime.substring(0, 2);
+                          var endM = endtime.substring(3, 5);
 
-                        DateTime start = DateTime(
-                            int.parse(year),
-                            int.parse(month),
-                            int.parse(day),
-                            int.parse(stH),
-                            int.parse(stM));
-                        DateTime end = DateTime(
-                            int.parse(year),
-                            int.parse(month),
-                            int.parse(day),
-                            int.parse(endH),
-                            int.parse(endM));
-                        if (starttime != null && endtime != null) {
+                          DateTime start = DateTime(
+                              int.parse(year),
+                              int.parse(month),
+                              int.parse(day),
+                              int.parse(stH),
+                              int.parse(stM));
+                          DateTime end = DateTime(
+                              int.parse(year),
+                              int.parse(month),
+                              int.parse(day),
+                              int.parse(endH),
+                              int.parse(endM));
                           if (currentTime.isAfter(start) &&
                               currentTime.isBefore(end)) {
                             if (dropval != null) {
@@ -272,18 +283,21 @@ class _BooktokenState extends State<Booktoken> {
                                       tokenorbooking: widget.type,
                                       comp: widget.companyname)
                                   .then((value) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => MyHomePage()));
-                              });
-                              setState(() {
-                                onpress = true;
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (ctx) => MyHomePage()))
+                                    .catchError((e) {
+                                  setState(() {
+                                    onpress = false;
+                                  });
+                                });
                               });
                             } else {
                               AppToast.showErr(
                                   LocaleKeys.Pleaseselectdepartment.tr());
                             }
                           } else {
-                            AppToast.showErr('Branch Is Closed');
+                            AppToast.showErr(LocaleKeys.Branchisclosed.tr());
                           }
                         }
 

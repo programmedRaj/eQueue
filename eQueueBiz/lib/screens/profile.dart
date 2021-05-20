@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equeuebiz/enum/company_enum.dart';
 import 'package:equeuebiz/enum/user_type.dart';
 import 'package:equeuebiz/providers/auth_prov.dart';
+import 'package:equeuebiz/screens/transaction.dart';
 import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:equeuebiz/widgets/custom_widgets.dart';
@@ -92,6 +93,31 @@ class _ProfileState extends State<Profile> {
                         ? _photo('https://www.nobatdeh.com/uploads/$profileurl')
                         : _photo(
                             'https://www.nobatdeh.com/uploads/biz-logos/$profileurl'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(20),
+                          child: Center(
+                            child: earned == null
+                                ? Text('\$ 0.00')
+                                : Text('\$ $earned'),
+                          ),
+                        ),
+                        Container(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => TransactionDets(
+                                        id: id,
+                                      )));
+                            },
+                            child: Text('Transactions'),
+                          ),
+                        )
+                      ],
+                    ),
                     IgnorePointer(
                         child: _textField(LocaleKeys.Name.tr(), name)),
                     type == 'booking'
@@ -107,6 +133,7 @@ class _ProfileState extends State<Profile> {
                     type == 'booking'
                         ? _textField(LocaleKeys.Ifsc.tr(), ifsc)
                         : SizedBox(),
+
                     IgnorePointer(
                         child: _textField(LocaleKeys.Type.tr(), type)),
                     //   addCancel()

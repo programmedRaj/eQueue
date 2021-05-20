@@ -25,6 +25,7 @@ class AllToken with ChangeNotifier {
     var k = response.body;
     var n = json.decode(k);
     print(n);
+    removetoken();
 
     if (response.statusCode == 200) {
       removetoken();
@@ -44,8 +45,6 @@ class AllToken with ChangeNotifier {
             userid: n['tokens'][i]['user_id'].toString(),
           );
         }
-      } else {
-        AppToast.showErr('No Token');
       }
     } else {
       AppToast.showErr('No Token');

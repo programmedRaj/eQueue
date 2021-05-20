@@ -117,6 +117,7 @@ class _OtpState extends State<Otp> {
                         }
                       },
                       obscureText: true,
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.security,

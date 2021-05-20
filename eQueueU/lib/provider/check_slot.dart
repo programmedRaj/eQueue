@@ -30,6 +30,7 @@ class SlotProvider extends ChangeNotifier {
     var k = response.body;
     var n = json.decode(k);
     print(n);
+    print(response.statusCode);
 
     removeedu();
     if (n['bookings'] != null)

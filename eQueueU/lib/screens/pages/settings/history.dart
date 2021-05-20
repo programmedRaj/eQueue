@@ -19,55 +19,76 @@ class _HistoryState extends State<History> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    callapi();
+  }
+
+  callapi() {
     Provider.of<DisplayTokenBook>(context, listen: false)
         .displayboth('tokens', 'history');
     Provider.of<DisplayTokenBook>(context, listen: false)
         .displayboth('bookings', 'history');
   }
 
+  Stream productsStream() async* {
+    while (true) {
+      await Future.delayed(Duration(seconds: 10));
+      callapi();
+
+      yield null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<DisplayTokenBook>(
-      builder: (context, value, child) {
-        return DefaultTabController(
-          length: 2,
-          child: Scaffold(
-              appBar: AppBar(
-                title: Text(LocaleKeys.History).tr(),
-                bottom: TabBar(
-                  // onTap: (index) {
-                  //  // Tab index when user select it, it start from zero
-                  // },
-                  tabs: [
-                    Tab(
-                      icon: Icon(Icons.attach_money),
-                      child: Text(LocaleKeys.Token).tr(),
+    return StreamBuilder(
+      stream: productsStream(),
+      builder: (context, snapshot) {
+        return Consumer<DisplayTokenBook>(
+          builder: (context, value, child) {
+            return DefaultTabController(
+              length: 2,
+              child: Scaffold(
+                  appBar: AppBar(
+                    leading: Container(),
+                    title: Text(LocaleKeys.History).tr(),
+                    bottom: TabBar(
+                      // onTap: (index) {
+                      //  // Tab index when user select it, it start from zero
+                      // },
+                      tabs: [
+                        Tab(
+                          icon: Icon(Icons.attach_money),
+                          child: Text(LocaleKeys.Token).tr(),
+                        ),
+                        Tab(
+                          icon: Icon(Icons.book_online),
+                          child: Text(LocaleKeys.Booking).tr(),
+                        ),
+                      ],
                     ),
-                    Tab(
-                      icon: Icon(Icons.book_online),
-                      child: Text(LocaleKeys.Booking).tr(),
-                    ),
-                  ],
-                ),
-              ),
-              body: TabBarView(
-                children: [
-                  Container(
-                    child: value.tokens == null
-                        ? Container(
-                            child: Text(LocaleKeys.NoTokens).tr(),
-                          )
-                        : gettoken(context, value.tokens),
                   ),
-                  Container(
-                    child: value.bookings == null
-                        ? Container(
-                            child: Text(LocaleKeys.NoBookings).tr(),
-                          )
-                        : getbook(context, value.bookings),
-                  ),
-                ],
-              )),
+                  body: TabBarView(
+                    children: [
+                      Container(
+                        child: value.tokens.length == 0
+                            ? Container(
+                                alignment: Alignment.center,
+                                child: Text(LocaleKeys.NoTokens).tr(),
+                              )
+                            : gettoken(context, value.tokens),
+                      ),
+                      Container(
+                        child: value.bookings.length == 0
+                            ? Container(
+                                alignment: Alignment.center,
+                                child: Text(LocaleKeys.NoBookings).tr(),
+                              )
+                            : getbook(context, value.bookings),
+                      ),
+                    ],
+                  )),
+            );
+          },
         );
       },
     );
@@ -80,7 +101,7 @@ class _HistoryState extends State<History> {
         itemCount: tob.length,
         itemBuilder: (context, i) {
           return Container(
-            height: height * 0.15,
+            height: height * 0.2,
             width: width,
             margin: EdgeInsets.all(8),
             decoration: BoxDecoration(
@@ -105,61 +126,63 @@ class _HistoryState extends State<History> {
                 children: [
                   Text('${LocaleKeys.Createdon.tr()} : ${tob[i].createdon}'),
                   Text('${LocaleKeys.Booking.tr()} : ${tob[i].bookings}'),
-                  ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text("Rate Us"),
-                              content: Container(
-                                child: RatingBar.builder(
-                                  initialRating: 1,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: false,
-                                  itemCount: 5,
-                                  itemPadding:
-                                      EdgeInsets.symmetric(horizontal: 4.0),
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    setState(() {
-                                      rating = rating;
-                                    });
+                  Text('${tob[i].status}'),
+                  tob[i].employeeid == null || tob[i].status == 'cancelled'
+                      ? Container()
+                      : int.parse(tob[i].empr) == 1
+                          ? Container()
+                          : ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("Rate Us"),
+                                      content: Container(
+                                        child: RatingBar.builder(
+                                          initialRating: 1,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: false,
+                                          itemCount: 5,
+                                          itemPadding: EdgeInsets.symmetric(
+                                              horizontal: 4.0),
+                                          itemBuilder: (context, _) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            Provider.of<Rateemp>(context,
+                                                    listen: false)
+                                                .displayratempboth(
+                                                    empid: tob[i].employeeid ==
+                                                            null
+                                                        ? ''
+                                                        : tob[i].employeeid,
+                                                    ratingstar:
+                                                        rating.toString(),
+                                                    tokboknum: tob[i].bookings,
+                                                    tokenbooking: 'booking')
+                                                .then((value) =>
+                                                    Navigator.of(context)
+                                                        .pop());
+                                          },
+                                        ),
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child:
+                                                Text(LocaleKeys.Cancel).tr()),
+                                      ],
+                                    );
                                   },
-                                ),
-                              ),
-                              actions: [
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Provider.of<Rateemp>(context,
-                                              listen: false)
-                                          .displayratempboth(
-                                              empid: tob[i].employeeid == null
-                                                  ? ''
-                                                  : tob[i].employeeid,
-                                              ratingstar: rating.toString(),
-                                              tokboknum: tob[i].bookings,
-                                              tokenbooking: 'booking')
-                                          .then((value) =>
-                                              Navigator.of(context).pop());
-                                    },
-                                    child: Text(LocaleKeys.Ok).tr()),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(LocaleKeys.Cancel).tr()),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: Text('Rate Us')),
+                                );
+                              },
+                              child: Text('Rate Us')),
                 ],
               ),
             ),
@@ -174,7 +197,7 @@ class _HistoryState extends State<History> {
         itemCount: tob.length,
         itemBuilder: (context, i) {
           return Container(
-            height: height * 0.15,
+            height: height * 0.2,
             width: width,
             margin: EdgeInsets.all(8),
             decoration: BoxDecoration(
@@ -198,62 +221,64 @@ class _HistoryState extends State<History> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('${LocaleKeys.Createdon.tr()} : ${tob[i].createdon}'),
-                  Text('${LocaleKeys.Booking.tr()} : ${tob[i].token}'),
-                  ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text("Rate Us"),
-                              content: Container(
-                                child: RatingBar.builder(
-                                  initialRating: 1,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: false,
-                                  itemCount: 5,
-                                  itemPadding:
-                                      EdgeInsets.symmetric(horizontal: 4.0),
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    setState(() {
-                                      rating = rating;
-                                    });
+                  Text('${LocaleKeys.Token.tr()} : ${tob[i].token}'),
+                  Text('${tob[i].status}'),
+                  tob[i].employeeid == null || tob[i].status == 'cancelled'
+                      ? Container()
+                      : int.parse(tob[i].empr) == 1
+                          ? Container()
+                          : ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("Rate Us"),
+                                      content: Container(
+                                        child: RatingBar.builder(
+                                          initialRating: 1,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: false,
+                                          itemCount: 5,
+                                          itemPadding: EdgeInsets.symmetric(
+                                              horizontal: 4.0),
+                                          itemBuilder: (context, _) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            Provider.of<Rateemp>(context,
+                                                    listen: false)
+                                                .displayratempboth(
+                                                    empid: tob[i].employeeid ==
+                                                            null
+                                                        ? ''
+                                                        : tob[i].employeeid,
+                                                    ratingstar:
+                                                        rating.toString(),
+                                                    tokboknum: tob[i].token,
+                                                    tokenbooking: 'token')
+                                                .then((value) =>
+                                                    Navigator.of(context)
+                                                        .pop());
+                                          },
+                                        ),
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child:
+                                                Text(LocaleKeys.Cancel).tr()),
+                                      ],
+                                    );
                                   },
-                                ),
-                              ),
-                              actions: [
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Provider.of<Rateemp>(context,
-                                              listen: false)
-                                          .displayratempboth(
-                                              empid: tob[i].employeeid == null
-                                                  ? ''
-                                                  : tob[i].employeeid,
-                                              ratingstar: rating.toString(),
-                                              tokboknum: tob[i].token,
-                                              tokenbooking: 'token')
-                                          .then((value) =>
-                                              Navigator.of(context).pop());
-                                    },
-                                    child: Text(LocaleKeys.Ok).tr()),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(LocaleKeys.Cancel).tr()),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: Text('Rate Us')),
+                                );
+                              },
+                              child: Text('Rate Us')),
                 ],
               ),
             ),

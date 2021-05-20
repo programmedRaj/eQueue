@@ -20,4 +20,5 @@ class BaseUrl {
   final String updateuserdetails = "$basic/update_myprofile";
   final String homescreendisplay = '$basic/my_tokens_bookings_history';
   final String ratemp = "$basic/rate_emp";
+  final String qstatus = "$basic/queue_status";
 }

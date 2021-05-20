@@ -190,7 +190,10 @@ class _ProfileState extends State<Profile> {
                               margin: EdgeInsets.only(top: 20),
                               child: TextFormField(
                                 keyboardType: TextInputType.text,
-                                initialValue: value.users[0].address1,
+                                initialValue:
+                                    value.users[0].address1 == 'optional'
+                                        ? null
+                                        : value.users[0].address1,
                                 decoration: InputDecoration(
                                   hintText: LocaleKeys.Address1.tr(),
                                   prefixIcon: Icon(
@@ -227,7 +230,10 @@ class _ProfileState extends State<Profile> {
                               margin: EdgeInsets.only(top: 20),
                               child: TextFormField(
                                 keyboardType: TextInputType.text,
-                                initialValue: value.users[0].address2,
+                                initialValue:
+                                    value.users[0].address2 == 'optional'
+                                        ? null
+                                        : value.users[0].address2,
                                 decoration: InputDecoration(
                                   hintText: LocaleKeys.Address2.tr(),
                                   prefixIcon: Icon(
@@ -264,11 +270,14 @@ class _ProfileState extends State<Profile> {
                               margin: EdgeInsets.only(top: 20),
                               child: TextFormField(
                                 keyboardType: TextInputType.text,
-                                initialValue: value.users[0].province,
+                                initialValue:
+                                    value.users[0].province == 'optional'
+                                        ? null
+                                        : value.users[0].province,
                                 decoration: InputDecoration(
                                   hintText: LocaleKeys.Province.tr(),
                                   prefixIcon: Icon(
-                                    Icons.phone,
+                                    Icons.post_add,
                                     color: myColor[250],
                                   ),
                                   errorStyle:
@@ -301,11 +310,13 @@ class _ProfileState extends State<Profile> {
                               margin: EdgeInsets.only(top: 20),
                               child: TextFormField(
                                 keyboardType: TextInputType.text,
-                                initialValue: value.users[0].city,
+                                initialValue: value.users[0].city == 'optional'
+                                    ? null
+                                    : value.users[0].city,
                                 decoration: InputDecoration(
                                   hintText: LocaleKeys.City.tr(),
                                   prefixIcon: Icon(
-                                    Icons.phone,
+                                    Icons.mobile_friendly,
                                     color: myColor[250],
                                   ),
                                   errorStyle:
@@ -338,11 +349,14 @@ class _ProfileState extends State<Profile> {
                               margin: EdgeInsets.only(top: 20),
                               child: TextFormField(
                                 keyboardType: TextInputType.text,
-                                initialValue: value.users[0].postalcode,
+                                initialValue:
+                                    value.users[0].postalcode == 'optional'
+                                        ? null
+                                        : value.users[0].postalcode,
                                 decoration: InputDecoration(
                                   hintText: LocaleKeys.PostalCode.tr(),
                                   prefixIcon: Icon(
-                                    Icons.phone,
+                                    Icons.mail,
                                     color: myColor[250],
                                   ),
                                   errorStyle:

@@ -346,12 +346,12 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                             ? SizedBox()
                             : _textField(LocaleKeys.No_of_counters.tr(),
                                 _counterController, false),
-                        authProv.authinfo.companyType == CompanyEnum.Booking ||
-                                authProv.authinfo.companyType ==
-                                    CompanyEnum.MultiToken
-                            ? SizedBox()
-                            : _textField(LocaleKeys.Threshold_in_minutes.tr(),
-                                _thresholdController, true),
+                        // authProv.authinfo.companyType == CompanyEnum.Booking ||
+                        //         authProv.authinfo.companyType ==
+                        //             CompanyEnum.MultiToken
+                        //     ? SizedBox()
+                        //     : _textField(LocaleKeys.Threshold_in_minutes.tr(),
+                        //         _thresholdController, true),
                         _textField(LocaleKeys.Geo_Location.tr(),
                             _geoLocationController, true),
                         GestureDetector(
@@ -567,6 +567,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
 
   Widget _workingDay(
       String weekDay, TimeOfDay startTime, TimeOfDay endTime, int index) {
+    print('gg $startTime');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
       child: Column(
@@ -596,6 +597,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                         .then((value) {
                       setState(() {
                         startTimeList[index] = value;
+                        print(startTimeList);
                       });
                     });
                   },
@@ -608,9 +610,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                         borderRadius: BorderRadius.circular(10)),
                     child: startTime == null
                         ? Text("--:--")
-                        : Text(startTime.hour.toString() +
-                            " : " +
-                            startTime.minute.toString()),
+                        : Text(startTime
+                            .toString()
+                            .replaceAll('TimeOfDay', '')
+                            .replaceAll('(', '')
+                            .replaceAll(')', '')),
                   ),
                 ),
                 SizedBox(
@@ -635,9 +639,13 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                     alignment: Alignment.center,
                     child: endTime == null
                         ? Text("--:--")
-                        : Text(endTime.hour.toString() +
-                            " : " +
-                            endTime.minute.toString()),
+                        : Text(
+                            endTime
+                                .toString()
+                                .replaceAll('TimeOfDay', '')
+                                .replaceAll('(', '')
+                                .replaceAll(')', ''),
+                          ),
                   ),
                 ),
                 SizedBox(
@@ -887,14 +895,18 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
         return {
           "startTime": startTimeList[i] == null
               ? null
-              : startTimeList[i]?.hour.toString() +
-                  ":" +
-                  startTimeList[i]?.minute.toString(),
+              : startTimeList[i]
+                  .toString()
+                  .replaceAll('TimeOfDay', '')
+                  .replaceAll('(', '')
+                  .replaceAll(')', ''),
           "endTime": endTimeList[i] == null
               ? null
-              : endTimeList[i]?.hour.toString() +
-                  ":" +
-                  endTimeList[i]?.minute.toString()
+              : endTimeList[i]
+                  .toString()
+                  .replaceAll('TimeOfDay', '')
+                  .replaceAll('(', '')
+                  .replaceAll(')', ''),
         };
       });
     }

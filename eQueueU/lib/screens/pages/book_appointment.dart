@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:eQueue/check.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,9 +23,11 @@ class Calen extends StatefulWidget {
   final String servicerate;
   final String servicedess;
   final String type;
-  final String i;
+  final String ins;
+  final String compid;
   const Calen({
-    this.i,
+    this.compid,
+    this.ins,
     this.type,
     this.wk,
     this.book,
@@ -59,6 +62,14 @@ class _CalenState extends State<Calen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(LocaleKeys.TimeSlot).tr(),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctx) => Check()));
+              },
+              icon: Icon(Icons.home))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -137,8 +148,8 @@ class _CalenState extends State<Calen> {
 
                     var t = workday.replaceAll('{', '').replaceAll('}', '');
                     var ti = t.split(',');
-                    var end = ti[0].split(' ')[1];
-                    var start = ti[1].split(' ')[2];
+                    var start = ti[0].split(' ')[1];
+                    var end = ti[1].split(' ')[2];
 
                     print('$start --- $end');
                     if (DateTime.now().isAfter(day)) {
@@ -147,8 +158,8 @@ class _CalenState extends State<Calen> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (ctx) => AppTime(
                                 day: day,
-                                starttime: end,
-                                endtime: start,
+                                starttime: start,
+                                endtime: end,
                                 slots: slots,
                                 branchid: widget.branchid,
                                 branchname: widget.branchname,
@@ -157,7 +168,8 @@ class _CalenState extends State<Calen> {
                                 servicename: widget.servicename,
                                 servicerate: widget.servicerate,
                                 type: widget.type,
-                                i: widget.i,
+                                i: widget.ins,
+                                compid: widget.compid,
                               )));
                     }
                   } else {
