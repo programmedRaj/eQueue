@@ -3344,10 +3344,13 @@ def cancel_token():
 
     token_booking = request.form["token_booking"]
     number = str(request.form["number"])
-    branch_id = request.form["branch_id"]
-    branch_name = str(request.form["branch_name"])
+    # branch_id = request.form["branch_id"]
+    # branch_name = str(request.form["branch_name"])
     tokenstatus = str(request.form["tokenstatus"])
-    tablename = branch_name + "_" + branch_id
+    res = str(request.form["branch_table"]).rsplit("_", 1)
+    branch_id = str(res[-1])
+    # branch_name = str(res[0])
+    tablename = request.form["branch_table"]
 
     try:
 
