@@ -420,7 +420,7 @@ class _HomeState extends State<Home> {
                                                                                                   AppToast.showErr('Booking is ongoing so cannot be cancelled');
                                                                                                 } else {
                                                                                                   Provider.of<DeletetokenProvider>(context, listen: false).delettoken(
-                                                                                                    branchname: value.bookings[index].branchtable.split('_')[0],
+                                                                                                    branchname: value.bookings[index].branchtable,
                                                                                                     branchid: value.bookings[index].branchtable.split('_')[1],
                                                                                                     tokennumber: value.bookings[index].bookings,
                                                                                                     tokenstatus: value.bookings[index].status,
@@ -581,9 +581,7 @@ class _HomeState extends State<Home> {
                                                                 branchname: value
                                                                     .tokens[
                                                                         index]
-                                                                    .branchtable
-                                                                    .split(
-                                                                        '_')[0],
+                                                                    .branchtable,
                                                                 branchid: value
                                                                     .tokens[
                                                                         index]
@@ -594,8 +592,10 @@ class _HomeState extends State<Home> {
                                                                     .tokens[
                                                                         index]
                                                                     .token,
-                                                                tokenstatus:
-                                                                    value.tokens[index].status,
+                                                                tokenstatus: value
+                                                                    .tokens[
+                                                                        index]
+                                                                    .status,
                                                                 type: 'token');
                                                             Provider.of<DisplayTokenBookHome>(
                                                                     context,

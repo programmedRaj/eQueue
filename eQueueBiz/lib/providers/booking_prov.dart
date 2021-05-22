@@ -45,7 +45,7 @@ class BookingDet with ChangeNotifier {
         );
       }
     } else {
-      AppToast.showErr('No Bookings found');
+      // AppToast.showErr('No Bookings found');
     }
   }
 

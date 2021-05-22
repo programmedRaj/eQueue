@@ -47,7 +47,7 @@ class AllToken with ChangeNotifier {
         }
       }
     } else {
-      AppToast.showErr('No Token');
+      // AppToast.showErr('No Token');
     }
   }
 
