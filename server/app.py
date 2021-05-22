@@ -10,14 +10,14 @@ from flask import Flask
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = os.getcwd() + "/uploads"
-# UPLOAD_FOLDER = "./admin/domains/equeue.com/public_html/uploads"
+# UPLOAD_FOLDER = os.getcwd() + "/uploads"
+UPLOAD_FOLDER = "./admin/domains/equeu.com/public_html/uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-BIZ_UPLOAD_FOLDER = os.getcwd() + "/uploads/biz-logos"
-# BIZ_UPLOAD_FOLDER = "./admin/domains/equeue.com/public_html/uploads/biz-logos"
+# BIZ_UPLOAD_FOLDER = os.getcwd() + "/uploads/biz-logos"
+BIZ_UPLOAD_FOLDER = "./admin/domains/equeu.com/public_html/uploads/biz-logos"
 app.config["BIZ_UPLOAD_FOLDER"] = BIZ_UPLOAD_FOLDER
-USER_UPLOAD_FOLDER = os.getcwd() + "/uploads/usersprofile/"
-# USER_UPLOAD_FOLDER = "./admin/domains/equeue.com/public_html/uploads/usersprofile/"
+# USER_UPLOAD_FOLDER = os.getcwd() + "/uploads/usersprofile/"
+USER_UPLOAD_FOLDER = "./admin/domains/equeu.com/public_html/uploads/usersprofile/"
 app.config["USER_UPLOAD_FOLDER"] = USER_UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 app.config["SECRET_KEY"] = "eQueue2021keyFREEloc"

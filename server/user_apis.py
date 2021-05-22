@@ -52,7 +52,7 @@ def canceltb(
                 + str(tablename)
                 + "' AND user_id = '"
                 + str(uid)
-                + "' AND token = '"
+                + "' AND consider = 0 AND token = '"
                 + str(tok_booking_num)
                 + "';"
             )
@@ -69,7 +69,7 @@ def canceltb(
                 + str(tablename)
                 + "' AND user_id = '"
                 + str(uid)
-                + "' AND booking = '"
+                + "' AND consider = 0 AND booking = '"
                 + str(tok_booking_num)
                 + "';"
             )

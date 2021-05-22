@@ -27,7 +27,6 @@ class DeletetokenProvider with ChangeNotifier {
 
     map['token_booking'] = type;
     map['number'] = tokennumber;
-    map['branch_id'] = branchid;
     map['branch_table'] = branchname;
     map['tokenstatus'] = tokenstatus;
     map['amountpaid'] = price == null ? '0' : price;
