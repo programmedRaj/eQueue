@@ -1,5 +1,5 @@
 class BaseUrl {
-  static const basic = "http://91.99.96.87:8080";
+  static const basic = "http://91.99.96.87:5000";
   final String register = "$basic/register";
   final String login = "$basic/login";
   final String login_otp = "$basic/login_otp";

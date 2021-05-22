@@ -1774,21 +1774,12 @@ def status_booking_chng():
             rr = cur.execute(
                 "UPDATE bookingshistory SET status = 'cancelled', employee_id = '"
                 + str(user["id"])
-                + "' WHERE booking = '"
+                + "' WHERE consider = 0 AND booking = '"
                 + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
             conn.commit()
 
-            cur = conn.cursor(pymysql.cursors.DictCursor)
-            rr = cur.execute(
-                "UPDATE bookingshistory SET status = 'cancelled', employee_id = '"
-                + str(user["id"])
-                + "' WHERE booking = '"
-                + str(bookingdept + "-" + str(booking_id))
-                + "' "
-            )
-            conn.commit()
             if r and rr:
                 op = 200
             op = 403
@@ -1809,7 +1800,7 @@ def status_booking_chng():
             cur.execute(
                 "UPDATE bookingshistory SET status = 'call', employee_id = '"
                 + str(user["id"])
-                + "' WHERE booking = '"
+                + "' WHERE consider = 0 AND booking = '"
                 + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
@@ -1956,7 +1947,7 @@ def status_token_chng():
             rr = cur.execute(
                 "UPDATE tokenshistory SET status = 'completed', employee_id = '"
                 + str(user["id"])
-                + "' WHERE token = '"
+                + "' WHERE consider = 0 AND token = '"
                 + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
@@ -1981,7 +1972,7 @@ def status_token_chng():
             rr = cur.execute(
                 "UPDATE tokenshistory SET status = 'cancelled', employee_id = '"
                 + str(user["id"])
-                + "' WHERE token = '"
+                + "' WHERE consider = 0 AND token = '"
                 + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
@@ -2006,7 +1997,9 @@ def status_token_chng():
             cur.execute(
                 "UPDATE tokenshistory SET status = 'call', employee_id = '"
                 + str(user["id"])
-                + "' WHERE token = '"
+                + "', counter_number = '"
+                + str(user["counter"])
+                + "' WHERE consider = 0 AND token = '"
                 + str(bookingdept + "-" + str(booking_id))
                 + "' "
             )
@@ -2169,7 +2162,7 @@ def status_mtoken_chng():
             cur.execute(
                 "UPDATE tokenshistory SET status = 'completed', employee_id = '"
                 + str(user["id"])
-                + "' WHERE status = 'onqueue' AND branchtable = '"
+                + "' WHERE status = 'onqueue' AND consider = 0 AND branchtable = '"
                 + str(branch_name + "_" + str(branch_id))
                 + "' LIMIT "
                 + str(limit)
@@ -3197,7 +3190,7 @@ def my_tokens_bookings_history():
             r = cur.execute(
                 "Select * from bookingshistory WHERE user_id = "
                 + str(user["user_id"])
-                + " AND NOT(status = 'cancelled' OR status ='completed')"
+                + " AND NOT(status = 'cancelled' OR status ='completed') AND consider = 0"
             )
             texti = "No bookings found"
             textin = "bookings"
@@ -3208,7 +3201,7 @@ def my_tokens_bookings_history():
             r = cur.execute(
                 "Select * from tokenshistory WHERE user_id = "
                 + str(user["user_id"])
-                + " AND NOT(status = 'cancelled' OR status ='completed')"
+                + " AND NOT(status = 'cancelled' OR status ='completed') AND consider = 0"
             )
             texti = "No tokens found"
             textin = "tokens"
@@ -3536,6 +3529,4 @@ def not_found(error=None):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
-# if __name__ == "__main__":
-#     app.run(host="91.99.96.87", port=8080, debug=True)
+    app.run(host="91.99.96.87", port=5000, debug=True)
