@@ -806,7 +806,12 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
           SizedBox(
             width: 25,
           ),
-          Expanded(child: CustomWidgets().hollowButton(LocaleKeys.CANCEL.tr()))
+          Expanded(
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: CustomWidgets().hollowButton(LocaleKeys.CANCEL.tr())))
         ],
       ),
     );

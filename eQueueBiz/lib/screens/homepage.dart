@@ -30,9 +30,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // @override
+  // Future<void> didChangeDependencies() async {
+  //   super.didChangeDependencies();
+
+  // }
+
   @override
-  Future<void> didChangeDependencies() async {
+  void didChangeDependencies() {
     super.didChangeDependencies();
+    callapi();
+  }
+
+  callapi() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var email = prefs.get('email');
     var password = prefs.get('pass');
@@ -44,133 +54,72 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Stream productsStream() async* {
+    while (true) {
+      await Future.delayed(Duration(seconds: 10));
+      callapi();
+
+      yield null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onWillPopp,
-      child: Consumer<BizUserDets>(
-        builder: (context, bizdets, child) {
-          return Consumer<AuthProv>(
-            builder: (context, authProv, child) {
-              // print(authProv.authinfo.companyType);
-              Provider.of<BookingBranDet>(context, listen: false)
-                  .getbookdets(authProv.authinfo?.jwtToken);
-              return authProv.authinfo?.userType == null
-                  ? Container(
-                      color: Colors.white,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(AppColor.mainBlue),
-                        ),
-                      ),
-                    )
-                  : Scaffold(
-                      /* appBar: AppBar(
-            title: Text("Home"),
-            actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
-          ), */
-                      body: Consumer<BookingBranDet>(
-                        builder: (context, valueb, child) {
-                          print(authProv.authinfo.userType);
-                          print(authProv.authinfo.companyType);
-                          return SafeArea(
-                            child: Container(
-                                alignment: Alignment.center,
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(maxWidth: 1200),
-                                  child: Column(
-                                    children: [
-                                      _profileWidget(
-                                          authProv, bizdets.ss, bizdets.cname),
-                                      authProv.authinfo.userType ==
-                                              UserEnum.Company
-                                          ? bizdets.counterbranches == null
-                                              ? _branchEmployee(0, 0)
-                                              : _branchEmployee(
-                                                  bizdets.counterbranches,
-                                                  bizdets.counteremps)
-                                          : SizedBox(),
-                                      Expanded(
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            children: [
-                                              authProv.authinfo.userType ==
-                                                      UserEnum.Company
-                                                  ? InkWell(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      Branches(),
-                                                            ));
-                                                      },
-                                                      child: _cards(
-                                                          LocaleKeys.Branches
-                                                              .tr(),
-                                                          LocaleKeys
-                                                                  .Edit_Manage_branches_details
-                                                              .tr()))
-                                                  : SizedBox(),
-                                              authProv.authinfo.userType ==
-                                                      UserEnum.Employee
-                                                  ? authProv.authinfo
-                                                              .companyType ==
-                                                          CompanyEnum.MultiToken
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            MultiTokens(
-                                                                              bid: int.parse(valueb.bid),
-                                                                              token: authProv.authinfo.jwtToken,
-                                                                              bname: valueb.bname,
-                                                                            )));
-                                                          },
-                                                          child: _cards(
-                                                              LocaleKeys
-                                                                      .Multitoken
-                                                                  .tr(),
-                                                              LocaleKeys
-                                                                      .EditManageMultitoken_details
-                                                                  .tr()))
-                                                      : SizedBox()
-                                                  : SizedBox(),
-                                              authProv.authinfo.userType ==
-                                                      UserEnum.Employee
-                                                  ? authProv.authinfo
-                                                              .companyType ==
-                                                          CompanyEnum.Token
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            Tokens(
-                                                                              bid: int.parse(valueb.bid),
-                                                                              token: authProv.authinfo.jwtToken,
-                                                                              bname: valueb.bname,
-                                                                            )));
-                                                          },
-                                                          child: _cards(
-                                                              LocaleKeys.Tokens
-                                                                  .tr(),
-                                                              LocaleKeys
-                                                                      .EditManageMultitoken_details
-                                                                  .tr()))
-                                                      : SizedBox()
-                                                  : SizedBox(),
-                                              authProv.authinfo.userType ==
-                                                      UserEnum.Employee
-                                                  ? authProv.authinfo
-                                                              .companyType ==
-                                                          CompanyEnum.Booking
+    return StreamBuilder(
+      stream: productsStream(),
+      builder: (context, snapshot) {
+        return WillPopScope(
+          onWillPop: onWillPopp,
+          child: Consumer<BizUserDets>(
+            builder: (context, bizdets, child) {
+              return Consumer<AuthProv>(
+                builder: (context, authProv, child) {
+                  // print(authProv.authinfo.companyType);
+                  Provider.of<BookingBranDet>(context, listen: false)
+                      .getbookdets(authProv.authinfo?.jwtToken);
+                  return authProv.authinfo?.userType == null
+                      ? Container(
+                          color: Colors.white,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation(AppColor.mainBlue),
+                            ),
+                          ),
+                        )
+                      : Scaffold(
+                          /* appBar: AppBar(
+              title: Text("Home"),
+              actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
+            ), */
+                          body: Consumer<BookingBranDet>(
+                            builder: (context, valueb, child) {
+                              print(authProv.authinfo.userType);
+                              print(authProv.authinfo.companyType);
+                              return SafeArea(
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    child: ConstrainedBox(
+                                      constraints:
+                                          BoxConstraints(maxWidth: 1200),
+                                      child: Column(
+                                        children: [
+                                          _profileWidget(authProv, bizdets.ss,
+                                              bizdets.cname),
+                                          authProv.authinfo.userType ==
+                                                  UserEnum.Company
+                                              ? bizdets.counterbranches == null
+                                                  ? _branchEmployee(0, 0)
+                                                  : _branchEmployee(
+                                                      bizdets.counterbranches,
+                                                      bizdets.counteremps)
+                                              : SizedBox(),
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  authProv.authinfo.userType ==
+                                                          UserEnum.Company
                                                       ? InkWell(
                                                           onTap: () {
                                                             Navigator.push(
@@ -178,88 +127,168 @@ class _HomePageState extends State<HomePage> {
                                                                 MaterialPageRoute(
                                                                   builder:
                                                                       (context) =>
-                                                                          Bookings(
-                                                                    branchid:
-                                                                        valueb
-                                                                            .bid,
-                                                                    branchname:
-                                                                        valueb
-                                                                            .bname,
-                                                                    token: authProv
-                                                                        .authinfo
-                                                                        .jwtToken,
-                                                                  ),
+                                                                          Branches(),
                                                                 ));
                                                           },
                                                           child: _cards(
                                                               LocaleKeys
-                                                                      .Bookings
+                                                                      .Branches
                                                                   .tr(),
                                                               LocaleKeys
-                                                                      .Edit_Manage_Booking_details
+                                                                      .Edit_Manage_branches_details
                                                                   .tr()))
-                                                      : SizedBox()
-                                                  : SizedBox(),
-                                              authProv.authinfo.userType ==
-                                                      UserEnum.Company
-                                                  ? InkWell(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      Employees(),
-                                                            ));
-                                                      },
-                                                      child: _cards(
-                                                          LocaleKeys.Employee
-                                                              .tr(),
-                                                          LocaleKeys
-                                                                  .Edit_Manage_employee_details
-                                                              .tr()))
-                                                  : SizedBox(),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (ctx) =>
-                                                              Policy()));
-                                                },
-                                                child: _cards(
-                                                    LocaleKeys.Privacy_Policy
-                                                        .tr(),
-                                                    LocaleKeys.Click_to_view
-                                                        .tr()),
+                                                      : SizedBox(),
+                                                  authProv.authinfo.userType ==
+                                                          UserEnum.Employee
+                                                      ? authProv.authinfo
+                                                                  .companyType ==
+                                                              CompanyEnum
+                                                                  .MultiToken
+                                                          ? InkWell(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) =>
+                                                                            MultiTokens(
+                                                                              bid: int.parse(valueb.bid),
+                                                                              token: authProv.authinfo.jwtToken,
+                                                                              bname: valueb.bname,
+                                                                            )));
+                                                              },
+                                                              child: _cards(
+                                                                  LocaleKeys
+                                                                          .Multitoken
+                                                                      .tr(),
+                                                                  LocaleKeys
+                                                                          .EditManageMultitoken_details
+                                                                      .tr()))
+                                                          : SizedBox()
+                                                      : SizedBox(),
+                                                  authProv.authinfo.userType ==
+                                                          UserEnum.Employee
+                                                      ? authProv.authinfo
+                                                                  .companyType ==
+                                                              CompanyEnum.Token
+                                                          ? InkWell(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) =>
+                                                                            Tokens(
+                                                                              bid: int.parse(valueb.bid),
+                                                                              token: authProv.authinfo.jwtToken,
+                                                                              bname: valueb.bname,
+                                                                            )));
+                                                              },
+                                                              child: _cards(
+                                                                  LocaleKeys
+                                                                          .Tokens
+                                                                      .tr(),
+                                                                  LocaleKeys
+                                                                          .EditManageMultitoken_details
+                                                                      .tr()))
+                                                          : SizedBox()
+                                                      : SizedBox(),
+                                                  authProv.authinfo.userType ==
+                                                          UserEnum.Employee
+                                                      ? authProv.authinfo
+                                                                  .companyType ==
+                                                              CompanyEnum
+                                                                  .Booking
+                                                          ? InkWell(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              Bookings(
+                                                                        branchid:
+                                                                            valueb.bid,
+                                                                        branchname:
+                                                                            valueb.bname,
+                                                                        token: authProv
+                                                                            .authinfo
+                                                                            .jwtToken,
+                                                                      ),
+                                                                    ));
+                                                              },
+                                                              child: _cards(
+                                                                  LocaleKeys
+                                                                          .Bookings
+                                                                      .tr(),
+                                                                  LocaleKeys
+                                                                          .Edit_Manage_Booking_details
+                                                                      .tr()))
+                                                          : SizedBox()
+                                                      : SizedBox(),
+                                                  authProv.authinfo.userType ==
+                                                          UserEnum.Company
+                                                      ? InkWell(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          Employees(),
+                                                                ));
+                                                          },
+                                                          child: _cards(
+                                                              LocaleKeys
+                                                                      .Employee
+                                                                  .tr(),
+                                                              LocaleKeys
+                                                                      .Edit_Manage_employee_details
+                                                                  .tr()))
+                                                      : SizedBox(),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder: (ctx) =>
+                                                                  Policy()));
+                                                    },
+                                                    child: _cards(
+                                                        LocaleKeys
+                                                                .Privacy_Policy
+                                                            .tr(),
+                                                        LocaleKeys.Click_to_view
+                                                            .tr()),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder: (ctx) =>
+                                                                  TermsCondition()));
+                                                    },
+                                                    child: _cards(
+                                                        LocaleKeys
+                                                                .Terms_Conditions
+                                                            .tr(),
+                                                        LocaleKeys.Click_to_view
+                                                            .tr()),
+                                                  ),
+                                                ],
                                               ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (ctx) =>
-                                                              TermsCondition()));
-                                                },
-                                                child: _cards(
-                                                    LocaleKeys.Terms_Conditions
-                                                        .tr(),
-                                                    LocaleKeys.Click_to_view
-                                                        .tr()),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )),
-                          );
-                        },
-                      ),
-                    );
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                              );
+                            },
+                          ),
+                        );
+                },
+              );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
