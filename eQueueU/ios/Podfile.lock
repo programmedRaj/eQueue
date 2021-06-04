@@ -138,6 +138,7 @@ PODS:
 
 DEPENDENCIES:
   - Firebase/Analytics
+  - Firebase/Messaging
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
@@ -223,6 +224,6 @@ SPEC CHECKSUMS:
   stripe_payment: 1cbe9c339c21b5ecf01035e80eea351067c67c56
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
-PODFILE CHECKSUM: b80c8de147eeddc3a9789138212c450f005ff903
+PODFILE CHECKSUM: 435e45792c50d014ff8897f927446b909f1e76ea
 
 COCOAPODS: 1.10.1

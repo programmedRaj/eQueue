@@ -5,12 +5,20 @@ import Firebase
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
-  override func application(
+    func registerForPushNotifications(){
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            print(granted)
+        }
+    }
+    
+    
+    override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     FirebaseApp.configure()
-    GMSServices.provideAPIKey("AIzaSyADhaiJj9t1y6YctqsK5uJr3sS3jNTl55w")
+    registerForPushNotifications()
+    GMSServices.provideAPIKey("AIzaSyAaspBh6Hbn9yCB6oy5v9iqWPjUqd8r0e0")
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
 
