@@ -36,7 +36,7 @@ class _DesktopHomeState extends State<DesktopHome> {
       size = 0;
     }
     return DefaultTabController(
-      length: 4,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text('eQueue-Admin'),
@@ -125,18 +125,6 @@ class _DesktopHomeState extends State<DesktopHome> {
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold)),
                               ),
-                              Tab(
-                                child: Text('Branches',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              Tab(
-                                child: Text('Employee',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold)),
-                              ),
                             ]),
                       ),
                       Container(
@@ -146,10 +134,6 @@ class _DesktopHomeState extends State<DesktopHome> {
                           child: TabBarView(children: [
                             Container(child: Company()),
                             Container(child: Users()),
-                            Container(child: Branch()),
-                            Container(
-                              child: Employee(),
-                            )
                           ]),
                         ),
                       )

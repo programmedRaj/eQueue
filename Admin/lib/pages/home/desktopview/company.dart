@@ -1,6 +1,7 @@
 import 'package:equeue_admin/models/company_full_details.dart';
 import 'package:equeue_admin/pages/add_company_page.dart';
 import 'package:equeue_admin/pages/comp_more_opts.dart';
+import 'package:equeue_admin/pages/home/desktopview/branch.dart';
 import 'package:equeue_admin/pages/login_page.dart';
 import 'package:equeue_admin/providers/comp_more_opts_prov.dart';
 import 'package:equeue_admin/providers/company_full_dets_prov.dart';
@@ -252,10 +253,21 @@ class Dts extends DataTableSource {
           });
         }, */
         cells: [
-          DataCell(Container(width: width * 0.1, child: Text("$index"))),
-          DataCell(Container(
-              width: width * 0.1,
-              child: Text(companyFullDetails.companyDetsList[index].name))),
+          DataCell(Container(width: width * 0.1, child: Text("${index + 1}"))),
+          DataCell(InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Branches(
+                      compId: companyFullDetails.companyDetsList[index].id,
+                    ),
+                  ));
+            },
+            child: Container(
+                width: width * 0.1,
+                child: Text(companyFullDetails.companyDetsList[index].name)),
+          )),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.2,
               child:

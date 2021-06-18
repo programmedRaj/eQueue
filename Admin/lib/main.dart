@@ -1,7 +1,10 @@
 import 'package:equeue_admin/pages/login_page.dart';
 import 'package:equeue_admin/providers/add_company_prov.dart';
+import 'package:equeue_admin/providers/branch_prov.dart';
 import 'package:equeue_admin/providers/comp_more_opts_prov.dart';
 import 'package:equeue_admin/providers/company_full_dets_prov.dart';
+import 'package:equeue_admin/providers/emp_prov.dart';
+import 'package:equeue_admin/providers/user_prov.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:equeue_admin/providers/login_prov.dart';
@@ -25,7 +28,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<CompFullDetsProv>(
             create: (context) => CompFullDetsProv()),
         ChangeNotifierProvider<CompMoreOptsProv>(
-            create: (context) => CompMoreOptsProv())
+            create: (context) => CompMoreOptsProv()),
+        ChangeNotifierProvider<BranchDetsProv>(
+            create: (context) => BranchDetsProv()),
+        ChangeNotifierProvider<EmpProv>(create: (context) => EmpProv()),
+        ChangeNotifierProvider<UserProv>(create: (context) => UserProv())
       ],
       child: MaterialApp(
         theme: ThemeData(

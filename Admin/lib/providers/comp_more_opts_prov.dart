@@ -4,6 +4,7 @@ import 'package:equeue_admin/models/company_full_details.dart';
 import 'package:equeue_admin/services/http_services.dart';
 import 'package:equeue_admin/widgets/toast.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompMoreOptsProv extends ChangeNotifier {
   bool isDisableLoading = false;
@@ -52,10 +53,9 @@ class CompMoreOptsProv extends ChangeNotifier {
 
   Future<bool> deleteCompany(
       CompanyDets companyDets, CompEmailStatus compEmailStatus) async {
-    var header = {
-      'Content-Type': 'application/json',
-      'Authorization': Token.statToken
-    };
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var header = {'Content-Type': 'application/json', 'Authorization': token};
     var body = {
       "company_id": companyDets.id,
     };
