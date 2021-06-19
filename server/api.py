@@ -312,6 +312,127 @@ def active_companies():
         conn.close()
 
 
+@app.route("/showbranches", methods=["POST"])
+@check_for_admin_token
+def active_showbranches():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    comp_id = request.json["comp_id"]
+    try:
+        cur.execute(
+            "Select * FROM branch_details WHERE comp_id = " + str(comp_id) + ";"
+        )
+        records = cur.fetchall()
+        if records:
+            resp = jsonify({"branches": records})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "no Branches found."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/showempsforcomps", methods=["POST"])
+@check_for_admin_token
+def showempsforcomps():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    branch_id = request.json["branch_id"]
+    emp = []
+    emp_list = []
+
+    try:
+        cur.execute(
+            "Select employee_id FROM employee_details WHERE branch_id = "
+            + str(branch_id)
+            + ";"
+        )
+        records = cur.fetchall()
+        print(records)
+        if records:
+            for i in range(0, len(records)):
+                emp.append(records[i]["employee_id"])
+            # employee individaul details add.
+            for i in range(0, len(emp)):
+                cur.execute("Select * FROM bizusers WHERE id = " + str(emp[i]) + ";")
+                records = cur.fetchone()
+                emp_list.insert(0, records)
+            resp = jsonify({"employees_details": emp_list})
+            resp.status_code = 200
+            return resp
+
+        resp = jsonify({"message": "no Employee."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/showusers")
+@check_for_admin_token
+def active_showusers():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        cur.execute("Select * FROM equeue_users;")
+        records = cur.fetchall()
+        if records:
+            userdetails_list = []
+            for i in range(0, len(records)):
+                cur.execute(
+                    "Select * FROM user_details WHERE id = "
+                    + str(records[i]["id"])
+                    + ";"
+                )
+                recordz = cur.fetchone()
+                userdetails_list.insert(0, recordz)
+            resp = jsonify({"allusers": records, "userdetails": userdetails_list})
+            resp.status_code = 200
+            return resp
+        resp = jsonify({"message": "No Users found."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/delete_user", methods=["POST"])
+@check_for_admin_token
+def delete_user():
+    conn = mysql.connect()
+    user_id = request.json["user_id"]
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        check = cur.execute(
+            "SELECT * from equeue_users WHERE id =" + str(user_id) + " ;"
+        )
+        if check:
+            k = cur.execute("DELETE FROM equeue_users WHERE id =" + str(user_id) + " ;")
+            conn.commit()
+            if k:
+                resp = jsonify({"message": "Deleted successfully."})
+                resp.status_code = 200
+                return resp
+            resp = jsonify({"message": "ERROR."})
+            resp.status_code = 405
+            return resp
+        resp = jsonify({"message": "No USER."})
+        resp.status_code = 403
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/disable_company", methods=["POST"])
 @check_for_admin_token
 def disable_company():
