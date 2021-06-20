@@ -2,10 +2,15 @@ import 'package:equeue_admin/pages/home/desktopview/branch.dart';
 import 'package:equeue_admin/pages/home/desktopview/company.dart';
 import 'package:equeue_admin/pages/home/desktopview/employee.dart';
 import 'package:equeue_admin/pages/home/desktopview/users.dart';
+import 'package:equeue_admin/pages/login_page.dart';
+import 'package:equeue_admin/providers/counts_prov.dart';
+import 'package:equeue_admin/providers/login_prov.dart';
 import 'package:equeue_admin/widgets/footer.dart';
 import 'package:equeue_admin/widgets/valuedcontainer.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DesktopHome extends StatefulWidget {
   @override
@@ -24,6 +29,12 @@ class _DesktopHomeState extends State<DesktopHome> {
   String notifimessage;
 
   @override
+  void initState() {
+    Provider.of<CountsProv>(context, listen: false).getCounts();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     print("desktop home");
     var width = MediaQuery.of(context).size.width;
@@ -39,7 +50,22 @@ class _DesktopHomeState extends State<DesktopHome> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('eQueue-Admin'),
+          title: Text('Nobatdeh-Admin'),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.clear().then((value) {
+                  Provider.of<LoginProv>(context, listen: false).logOut();
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      (Route<dynamic> route) => false);
+                });
+              },
+              icon: Icon(Icons.logout),
+              color: Colors.white,
+            )
+          ],
         ),
         body: Container(
           margin: EdgeInsets.all(10),
@@ -49,54 +75,57 @@ class _DesktopHomeState extends State<DesktopHome> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ValueContainer(
-                          height,
-                          width,
-                          size,
-                          'Company',
-                          3,
-                          Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                          )),
-                      ValueContainer(
-                          height,
-                          width,
-                          size,
-                          'Users',
-                          3,
-                          Icon(
-                            Icons.person_add,
-                            color: Colors.white,
-                          )),
-                      ValueContainer(
-                          height,
-                          width,
-                          size,
-                          'Branch',
-                          3,
-                          Icon(
-                            Icons.shopping_basket,
-                            color: Colors.white,
-                          )),
-                      ValueContainer(
-                          height,
-                          width,
-                          size,
-                          'Employee',
-                          3,
-                          Icon(
-                            Icons.shopping_basket,
-                            color: Colors.white,
-                          )),
-                    ],
-                  ),
-                ),
+                    margin: EdgeInsets.all(10),
+                    child: Consumer<CountsProv>(
+                      builder: (context, value, child) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ValueContainer(
+                                height,
+                                width,
+                                size,
+                                'Company',
+                                value?.conutData?.compCount ?? 0,
+                                Icon(
+                                  Icons.business,
+                                  color: Colors.white,
+                                )),
+                            ValueContainer(
+                                height,
+                                width,
+                                size,
+                                'Users',
+                                value?.conutData?.userCount ?? 0,
+                                Icon(
+                                  Icons.person_add,
+                                  color: Colors.white,
+                                )),
+                            ValueContainer(
+                                height,
+                                width,
+                                size,
+                                'Branch',
+                                value?.conutData?.branchCount ?? 0,
+                                Icon(
+                                  Icons.account_tree,
+                                  color: Colors.white,
+                                )),
+                            ValueContainer(
+                                height,
+                                width,
+                                size,
+                                'Employee',
+                                value?.conutData?.empCount ?? 0,
+                                Icon(
+                                  Icons.badge,
+                                  color: Colors.white,
+                                )),
+                          ],
+                        );
+                      },
+                    )),
                 Container(
                   margin: EdgeInsets.all(20),
                   child: Column(

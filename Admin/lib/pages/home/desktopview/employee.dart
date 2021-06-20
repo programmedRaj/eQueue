@@ -60,7 +60,9 @@ class _EmployeesState extends State<Employees> {
                         child: Column(
                           children: [
                             Text(
-                              "Something went wrong",
+                              value.isEmpty
+                                  ? "No Employee"
+                                  : "Something went wrong",
                               style: TextStyle(color: Colors.black),
                             ),
                           ],

@@ -3,6 +3,7 @@ import 'package:equeue_admin/providers/add_company_prov.dart';
 import 'package:equeue_admin/providers/branch_prov.dart';
 import 'package:equeue_admin/providers/comp_more_opts_prov.dart';
 import 'package:equeue_admin/providers/company_full_dets_prov.dart';
+import 'package:equeue_admin/providers/counts_prov.dart';
 import 'package:equeue_admin/providers/emp_prov.dart';
 import 'package:equeue_admin/providers/user_prov.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<BranchDetsProv>(
             create: (context) => BranchDetsProv()),
         ChangeNotifierProvider<EmpProv>(create: (context) => EmpProv()),
-        ChangeNotifierProvider<UserProv>(create: (context) => UserProv())
+        ChangeNotifierProvider<UserProv>(create: (context) => UserProv()),
+        ChangeNotifierProvider<CountsProv>(create: (context) => CountsProv()),
       ],
       child: MaterialApp(
         theme: ThemeData(

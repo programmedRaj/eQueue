@@ -55,7 +55,7 @@ class _UsersState extends State<Users> {
                       child: Column(
                         children: [
                           Text(
-                            "Something went wrong",
+                            value.isEmpty ? "No users" : "Something went wrong",
                             style: TextStyle(color: Colors.black),
                           ),
                         ],

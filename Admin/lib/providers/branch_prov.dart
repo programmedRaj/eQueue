@@ -12,6 +12,7 @@ class BranchDetsProv extends ChangeNotifier {
   List<BranchFullDetails> branchFullDetails;
   bool isLoading = true;
   bool isError = false;
+  bool isEmpty = false;
 
   getBranches(int compId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -27,6 +28,11 @@ class BranchDetsProv extends ChangeNotifier {
           branchFullDetails.add(BranchFullDetails.fromJson(item));
         }
         isLoading = false;
+        notifyListeners();
+      } else if (resp.statusCode == 403) {
+        isLoading = false;
+        isError = true;
+        isEmpty = true;
         notifyListeners();
       } else {
         isLoading = false;

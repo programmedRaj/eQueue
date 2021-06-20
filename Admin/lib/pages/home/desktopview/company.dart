@@ -53,7 +53,9 @@ class _CompanyState extends State<Company> {
                       child: Column(
                         children: [
                           Text(
-                            "Something went wrong",
+                            value.isEmpty
+                                ? "No Companies"
+                                : "Something went wrong",
                             style: TextStyle(color: Colors.black),
                           ),
                           Container(

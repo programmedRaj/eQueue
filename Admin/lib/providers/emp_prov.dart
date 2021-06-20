@@ -13,6 +13,7 @@ class EmpProv extends ChangeNotifier {
   List<EmpDets> employeeDetsList;
   bool isLoading = true;
   bool isError = false;
+  bool isEmpty = false;
 
   getEmployees(int branchId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -28,6 +29,11 @@ class EmpProv extends ChangeNotifier {
           employeeDetsList.add(EmpDets.fromJson(item));
         }
         isLoading = false;
+        notifyListeners();
+      } else if (resp.statusCode == 403) {
+        isLoading = false;
+        isError = true;
+        isEmpty = true;
         notifyListeners();
       } else {
         isLoading = false;

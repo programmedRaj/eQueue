@@ -22,3 +22,7 @@ class UsersApi {
   static const getUsers = "http://91.99.96.87:5000/showusers";
   static const deleteUser = "http://91.99.96.87:5000/delete_user";
 }
+
+class OtherApi {
+  static const getCounts = "http://91.99.96.87:5000/counts";
+}

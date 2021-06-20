@@ -60,7 +60,9 @@ class _BranchesState extends State<Branches> {
                         child: Column(
                           children: [
                             Text(
-                              "Something went wrong",
+                              value.isEmpty
+                                  ? "No branches"
+                                  : "Something went wrong",
                               style: TextStyle(color: Colors.black),
                             ),
                           ],

@@ -16,6 +16,7 @@ class UserProv extends ChangeNotifier {
   List<UserDets> userDetsList;
   bool isLoading = true;
   bool isError = false;
+  bool isEmpty = false;
 
   getUsers() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -33,6 +34,11 @@ class UserProv extends ChangeNotifier {
           userDetsList.add(temp);
         }
         isLoading = false;
+        notifyListeners();
+      } else if (resp.statusCode == 403) {
+        isLoading = false;
+        isError = true;
+        isEmpty = true;
         notifyListeners();
       } else {
         isLoading = false;
