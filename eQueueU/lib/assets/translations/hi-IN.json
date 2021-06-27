@@ -130,5 +130,6 @@
   "NoTokens": "कोई टोकन नहीं !!",
   "CounterNumber": "काउंटर नंबर",
   "EstimatedTime": "अनुमानित समय",
-  "Youareinline": "आप 4 वीं पंक्ति में हैं"
+  "Youareinline": "आप 4 वीं पंक्ति में हैं",
+  "BranchDescription":"शाखा विवरण"
 }

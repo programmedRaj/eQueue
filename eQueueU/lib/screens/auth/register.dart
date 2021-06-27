@@ -88,7 +88,9 @@ class _RegisterState extends State<Register> {
       request.files
           .add(await http.MultipartFile.fromPath('profile_img', images.path));
     }
-
+    if (phonenumber.startsWith("0")) {
+      phonenumber = phonenumber.substring(1);
+    }
     request.fields['name'] = name;
     request.fields['number'] = countrycode.substring(1) + phonenumber;
     request.fields['phonenumber'] = phonenumber;

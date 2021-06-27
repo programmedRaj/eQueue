@@ -133,5 +133,6 @@ abstract class  LocaleKeys {
   static const CounterNumber = 'CounterNumber';
   static const EstimatedTime = 'EstimatedTime';
   static const Youareinline = 'Youareinline';
+  static const BranchDescription = 'BranchDescription';
 
 }

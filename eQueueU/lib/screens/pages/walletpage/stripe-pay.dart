@@ -13,7 +13,7 @@ class StripeService {
   static String apiBase = 'https://api.stripe.com/v1';
   static String paymentApiUrl = '${StripeService.apiBase}/payment_intents';
   static String secret =
-      'sk_test_51IalfJLh67A53syIoKqFT31KST7X79mFzHIODE3SHjbVfAymEaYWz7UdnLX0c8c9fJBBV8xWJ6NxPdF0vWs8Lzrh00c3JZi1HE';
+      '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';
   static Map<String, String> headers = {
     'Authorization': 'Bearer ${StripeService.secret}',
     'Content-Type': 'application/x-www-form-urlencoded'
@@ -21,9 +21,9 @@ class StripeService {
   static init() {
     StripePayment.setOptions(StripeOptions(
         publishableKey:
-            "pk_test_51IalfJLh67A53syID6vy0eYCs750lq8LUHtI8XLQiOdxJMCXhIopaIU7MriD5cCRKhF3XZ4eGOJpRO3LE335sZ3O00ifYLD2uR",
-        merchantId: "Test",
-        androidPayMode: 'test'));
+            "pk_live_51IalfJLh67A53syIJadw8tzTgWhyGBnH6mI6JHyLJQN4iRFHJoXeFJ0wVABMvViQWFoe1QDzkxrry9Bq4ISUPzts00YBRrpl4R",
+        merchantId: "hossein@bido.one",
+        androidPayMode: 'live'));
   }
 
   static Future<StripeTransactionResponse> payViaExistingCard(

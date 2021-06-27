@@ -354,6 +354,17 @@ class _BranchScreenState extends State<BranchScreen> {
                                                                               branchsearch
                                                                                   .isNotEmpty
                                                                           ? Text(
+                                                                              ' ${LocaleKeys.BranchDescription.tr()} : ${branchsearch[i].bdesc}')
+                                                                          : Text(
+                                                                              '${LocaleKeys.BranchDescription.tr()} : ${value.branches[i].bdesc}'),
+                                                                    ),
+                                                                    Container(
+                                                                      width:
+                                                                          width,
+                                                                      child: branchsearch.length > 0 ||
+                                                                              branchsearch
+                                                                                  .isNotEmpty
+                                                                          ? Text(
                                                                               ' ${LocaleKeys.Address1.tr()} : ${branchsearch[i].address1}')
                                                                           : Text(
                                                                               '${LocaleKeys.Address1.tr()} : ${value.branches[i].address1}'),

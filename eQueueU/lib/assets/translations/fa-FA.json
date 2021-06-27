@@ -130,5 +130,6 @@
   "NoTokens": "بدون شماره",
   "CounterNumber": "شماره باجه",
   "EstimatedTime": "زمان  تقریبی",
-  "Youareinline": "شما نفر 4 در صف هستید"
+  "Youareinline": "شما نفر 4 در صف هستید",
+  "BranchDescription":"شرح شعبه"
 }

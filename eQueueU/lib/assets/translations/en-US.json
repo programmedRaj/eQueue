@@ -130,5 +130,6 @@
   "NoTokens": "No Tokens!!",
   "CounterNumber": "Counter Number",
   "EstimatedTime": "Estimated Time",
-  "Youareinline": "You are 4th in line"
+  "Youareinline": "You are 4th in line",
+  "BranchDescription":"Branch Description"
 }

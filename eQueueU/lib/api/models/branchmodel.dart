@@ -6,6 +6,7 @@ class BranchModel {
   String address1;
   String address2;
   String bname;
+  String bdesc;
   String bookingperday;
   String city;
   String countercount;
@@ -22,29 +23,29 @@ class BranchModel {
   String threshold;
   String timezone;
   String workinghours;
-  BranchModel({
-    this.id,
-    this.companyid,
-    this.address1,
-    this.address2,
-    this.bname,
-    this.bookingperday,
-    this.city,
-    this.countercount,
-    this.department,
-    this.geolocation,
-    this.moneyearned,
-    this.notifytime,
-    this.perdayhours,
-    this.phonenumber,
-    this.postalcode,
-    this.profilephotourl,
-    this.province,
-    this.services,
-    this.threshold,
-    this.timezone,
-    this.workinghours,
-  });
+  BranchModel(
+      {this.id,
+      this.companyid,
+      this.address1,
+      this.address2,
+      this.bname,
+      this.bookingperday,
+      this.city,
+      this.countercount,
+      this.department,
+      this.geolocation,
+      this.moneyearned,
+      this.notifytime,
+      this.perdayhours,
+      this.phonenumber,
+      this.postalcode,
+      this.profilephotourl,
+      this.province,
+      this.services,
+      this.threshold,
+      this.timezone,
+      this.workinghours,
+      this.bdesc});
 
   BranchModel copyWith({
     int id,
@@ -127,6 +128,7 @@ class BranchModel {
       'address1': address1,
       'address2': address2,
       'bname': bname,
+      'bdescription': bdesc,
       'bookingperday': bookingperday,
       'city': city,
       'countercount': countercount,
@@ -155,6 +157,7 @@ class BranchModel {
       address1: map['address1'],
       address2: map['address2'],
       bname: map['bname'],
+      bdesc: map['bdescription'],
       bookingperday: map['bookingperday'],
       city: map['city'],
       countercount: map['countercount'],

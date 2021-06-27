@@ -130,5 +130,6 @@
   "NoTokens": "¡¡Sin fichas !!",
   "CounterNumber": "Número de contador",
   "EstimatedTime": "Hora prevista",
-  "Youareinline": "Eres cuarto en la fila"
+  "Youareinline": "Eres cuarto en la fila",
+  "BranchDescription":"Descripción de la rama"
 }

@@ -130,5 +130,6 @@
   "NoTokens": "Pas de jetons !!",
   "CounterNumber": "Numéro de compteur",
   "EstimatedTime": "Temps estimé",
-  "Youareinline": "Vous êtes 4e en ligne"
+  "Youareinline": "Vous êtes 4e en ligne",
+  "BranchDescription":"Description de la succursale"
 }

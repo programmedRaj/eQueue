@@ -130,5 +130,6 @@
   "NoTokens": "لا رموز !!",
   "CounterNumber": "رقم العداد",
   "EstimatedTime": "الوقت المقدر",
-  "Youareinline": "أنت الرابع في الخط"
+  "Youareinline": "أنت الرابع في الخط",
+  "BranchDescription": "وصف الفرع"
 }

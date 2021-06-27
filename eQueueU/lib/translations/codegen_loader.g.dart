@@ -146,7 +146,8 @@ class CodegenLoader extends AssetLoader{
   "NoTokens": "لا رموز !!",
   "CounterNumber": "رقم العداد",
   "EstimatedTime": "الوقت المقدر",
-  "Youareinline": "أنت الرابع في الخط"
+  "Youareinline": "أنت الرابع في الخط",
+  "BranchDescription": "وصف الفرع"
 };
 static const Map<String,dynamic> en_US = {
   "History": "History",
@@ -280,7 +281,8 @@ static const Map<String,dynamic> en_US = {
   "NoTokens": "No Tokens!!",
   "CounterNumber": "Counter Number",
   "EstimatedTime": "Estimated Time",
-  "Youareinline": "You are 4th in line"
+  "Youareinline": "You are 4th in line",
+  "BranchDescription": "Branch Description"
 };
 static const Map<String,dynamic> es_ES = {
   "History": "Historia",
@@ -414,7 +416,8 @@ static const Map<String,dynamic> es_ES = {
   "NoTokens": "¡¡Sin fichas !!",
   "CounterNumber": "Número de contador",
   "EstimatedTime": "Hora prevista",
-  "Youareinline": "Eres cuarto en la fila"
+  "Youareinline": "Eres cuarto en la fila",
+  "BranchDescription": "Descripción de la rama"
 };
 static const Map<String,dynamic> fa_FA = {
   "History": "تاریخچه",
@@ -548,7 +551,8 @@ static const Map<String,dynamic> fa_FA = {
   "NoTokens": "بدون شماره",
   "CounterNumber": "شماره باجه",
   "EstimatedTime": "زمان  تقریبی",
-  "Youareinline": "شما نفر 4 در صف هستید"
+  "Youareinline": "شما نفر 4 در صف هستید",
+  "BranchDescription": "شرح شعبه"
 };
 static const Map<String,dynamic> fr_FR = {
   "Tokens": "Jetons",
@@ -682,7 +686,8 @@ static const Map<String,dynamic> fr_FR = {
   "NoTokens": "Pas de jetons !!",
   "CounterNumber": "Numéro de compteur",
   "EstimatedTime": "Temps estimé",
-  "Youareinline": "Vous êtes 4e en ligne"
+  "Youareinline": "Vous êtes 4e en ligne",
+  "BranchDescription": "Description de la succursale"
 };
 static const Map<String,dynamic> hi_IN = {
   "Tokens": "टोकन",
@@ -816,7 +821,8 @@ static const Map<String,dynamic> hi_IN = {
   "NoTokens": "कोई टोकन नहीं !!",
   "CounterNumber": "काउंटर नंबर",
   "EstimatedTime": "अनुमानित समय",
-  "Youareinline": "आप 4 वीं पंक्ति में हैं"
+  "Youareinline": "आप 4 वीं पंक्ति में हैं",
+  "BranchDescription": "शाखा विवरण"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar_AR": ar_AR, "en_US": en_US, "es_ES": es_ES, "fa_FA": fa_FA, "fr_FR": fr_FR, "hi_IN": hi_IN};
 }
