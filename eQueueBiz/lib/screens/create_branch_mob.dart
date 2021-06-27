@@ -610,11 +610,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                         borderRadius: BorderRadius.circular(10)),
                     child: startTime == null
                         ? Text("--:--")
-                        : Text(startTime
-                            .toString()
-                            .replaceAll('TimeOfDay', '')
-                            .replaceAll('(', '')
-                            .replaceAll(')', '')),
+                        : Text(startTimeList[index] == null
+                            ? "--:--"
+                            : startTimeList[index].hour.toString() +
+                                " : " +
+                                startTimeList[index].minute.toString()),
                   ),
                 ),
                 SizedBox(
@@ -639,13 +639,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                     alignment: Alignment.center,
                     child: endTime == null
                         ? Text("--:--")
-                        : Text(
-                            endTime
-                                .toString()
-                                .replaceAll('TimeOfDay', '')
-                                .replaceAll('(', '')
-                                .replaceAll(')', ''),
-                          ),
+                        : Text(endTimeList[index] == null
+                            ? "--:--"
+                            : endTimeList[index].hour.toString() +
+                                " : " +
+                                endTimeList[index].minute.toString()),
                   ),
                 ),
                 SizedBox(
