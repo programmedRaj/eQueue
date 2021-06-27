@@ -123,5 +123,6 @@
   "Multitoken": "چند شماره ای",
   "EditManagetokendetails": "ویرایش جزیات شماره",
   "EditManageMultitoken_details": "ویرایش جزیات چند شماره ای",
-  "Pleaseselectvaluegreaterthan": "شماره از 0 باید بزرگتر باشد"
+  "Pleaseselectvaluegreaterthan": "شماره از 0 باید بزرگتر باشد",
+  "BranchDescription":"شرح شعبه"
 }

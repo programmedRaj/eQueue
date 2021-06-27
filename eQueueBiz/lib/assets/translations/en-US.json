@@ -123,5 +123,6 @@
   "Multitoken": "Multi token",
   "EditManagetokendetails": "Edit/Manage token details",
   "EditManageMultitoken_details": "Edit/Manage Multi token details",
-  "Pleaseselectvaluegreaterthan": "Please select value greater than 0"
+  "Pleaseselectvaluegreaterthan": "Please select value greater than 0",
+  "BranchDescription":"Branch Description"
 }

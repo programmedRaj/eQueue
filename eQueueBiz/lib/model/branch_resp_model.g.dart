@@ -18,6 +18,7 @@ BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
         ?.toList(),
     branchId: json['id'] as int,
     branchName: json['bname'] as String,
+    branchDesc: json['bdesc'] as String,
     city: json['city'] as String,
     department: getDepts(json),
     geoLoaction: json['geolocation'] as String,

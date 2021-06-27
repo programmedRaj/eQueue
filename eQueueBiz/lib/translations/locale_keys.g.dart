@@ -126,5 +126,6 @@ abstract class  LocaleKeys {
   static const EditManagetokendetails = 'EditManagetokendetails';
   static const EditManageMultitoken_details = 'EditManageMultitoken_details';
   static const Pleaseselectvaluegreaterthan = 'Pleaseselectvaluegreaterthan';
+  static const BranchDescription = 'BranchDescription';
 
 }

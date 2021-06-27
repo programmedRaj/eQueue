@@ -29,6 +29,7 @@ BranchModel _$BranchModelFromJson(Map<String, dynamic> json) {
     timeZone: json['timeZone'] as String,
     workingHrs: json['workingHrs'] as Map<String, dynamic>,
     counter: json['counter'] as String,
+    branchDesc: json['bdesc'] as String,
   );
 }
 
@@ -53,4 +54,5 @@ Map<String, dynamic> _$BranchModelToJson(BranchModel instance) =>
       'department': instance.department,
       'branchId': instance.branchId,
       'counter': instance.counter,
+      'bdesc': instance.branchDesc
     };

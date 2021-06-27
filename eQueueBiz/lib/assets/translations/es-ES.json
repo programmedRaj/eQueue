@@ -123,5 +123,7 @@
   "Multitoken": "Token múltiple",
   "EditManagetokendetails": "Editar / administrar los detalles del token",
   "EditManageMultitoken_details": "Editar / administrar detalles de token múltiple",
-  "Pleaseselectvaluegreaterthan": "Seleccione un valor mayor que 0"
+  "Pleaseselectvaluegreaterthan": "Seleccione un valor mayor que 0",
+  "BranchDescription":"Descripción de la rama"
+
 }

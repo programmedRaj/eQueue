@@ -24,6 +24,7 @@ class BranchModel {
   String counterCount;
   String branchId;
   String counter;
+  String branchDesc;
 
   BranchModel(
       {this.addr1,
@@ -45,7 +46,8 @@ class BranchModel {
       this.threshold,
       this.timeZone,
       this.workingHrs,
-      this.counter});
+      this.counter,
+      this.branchDesc});
 
   factory BranchModel.fromJson(Map<String, dynamic> json) =>
       _$BranchModelFromJson(json);
