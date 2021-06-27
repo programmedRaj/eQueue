@@ -50,7 +50,7 @@ class _DesktopHomeState extends State<DesktopHome> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Nobatdeh-Admin'),
+          title: Text('eQueue-Admin'),
           actions: [
             IconButton(
               onPressed: () async {

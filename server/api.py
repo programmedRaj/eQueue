@@ -618,6 +618,41 @@ def delete_company():
         conn.close()
 
 
+@app.route("/counts")
+@check_for_admin_token
+def active_counts():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        cur.execute("SELECT COUNT(number) FROM equeue_users;")
+        records = cur.fetchone()
+        users_count = records["COUNT(number)"]
+        cur.execute("SELECT COUNT(name) FROM companydetails;")
+        records = cur.fetchone()
+        comp_count = records["COUNT(name)"]
+        cur.execute("SELECT COUNT(name) FROM employee_details;")
+        records = cur.fetchone()
+        emp_count = records["COUNT(name)"]
+        cur.execute("SELECT COUNT(bname) FROM branch_details;")
+        records = cur.fetchone()
+        branch_count = records["COUNT(bname)"]
+
+        resp = jsonify(
+            {
+                "branch_count": branch_count,
+                "emp_count": emp_count,
+                "comp_count": comp_count,
+                "users_count": users_count,
+            }
+        )
+        resp.status_code = 200
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 def id_generator(size=6, chars=string.digits):
     return "".join(random.choice(chars) for _ in range(size))
 
