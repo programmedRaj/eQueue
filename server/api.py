@@ -1051,6 +1051,7 @@ def create_branch():
             comp_id = user["id"]
             bname = request.form["bname"].replace(" ", "_")
             pnum = request.form["pnum"]
+            bdesc = request.form["bdesc"]
             addr1 = request.form["addr1"]
             addr2 = request.form["addr2"]
             city = request.form["city"]
@@ -1082,6 +1083,7 @@ def create_branch():
                         op = eqbiz.create_branch(
                             user["comp_type"],
                             bname,
+                            bdesc,
                             pnum,
                             addr1,
                             addr2,
@@ -1108,6 +1110,7 @@ def create_branch():
                         op = eqbiz.create_branch(
                             user["comp_type"],
                             bname,
+                            bdesc,
                             pnum,
                             addr1,
                             addr2,
@@ -1135,6 +1138,7 @@ def create_branch():
                         op = eqbiz.create_branch(
                             user["comp_type"],
                             bname,
+                            bdesc,
                             pnum,
                             addr1,
                             addr2,
@@ -1198,6 +1202,7 @@ def create_branch():
                                 user["comp_type"],
                                 branchid,
                                 bname,
+                                bdesc,
                                 pnum,
                                 addr1,
                                 addr2,
@@ -1224,6 +1229,7 @@ def create_branch():
                                 user["comp_type"],
                                 branchid,
                                 bname,
+                                bdesc,
                                 pnum,
                                 addr1,
                                 addr2,
@@ -1252,6 +1258,7 @@ def create_branch():
                                 user["comp_type"],
                                 branchid,
                                 bname,
+                                bdesc,
                                 pnum,
                                 addr1,
                                 addr2,

@@ -32,6 +32,7 @@ def allowedd_file(filename):
 def create_branch(
     acctype,
     bname,
+    bdesc,
     pnum,
     addr1,
     addr2,
@@ -57,8 +58,10 @@ def create_branch(
     try:
         if acctype == "booking":
             q = (
-                "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,services,timezone,notify_time,booking_per_day,per_day_hours,profile_photo_url,money_earned) VALUES ('"
+                "INSERT INTO branch_details(bname,bdescription,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,services,timezone,notify_time,booking_per_day,per_day_hours,profile_photo_url,money_earned) VALUES ('"
                 + str(bname)
+                + "','"
+                + str(bdesc)
                 + "','"
                 + str(pnum)
                 + "','"
@@ -93,8 +96,10 @@ def create_branch(
             )
         elif acctype == "token":
             q = (
-                "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,counter_count,money_earned) VALUES ('"
+                "INSERT INTO branch_details(bname,bdescription,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,counter_count,money_earned) VALUES ('"
                 + str(bname)
+                + "','"
+                + str(bdesc)
                 + "','"
                 + str(pnum)
                 + "','"
@@ -126,8 +131,10 @@ def create_branch(
 
         elif acctype == "multitoken":
             q = (
-                "INSERT INTO branch_details(bname,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,counter_count,money_earned) VALUES ('"
+                "INSERT INTO branch_details(bname,bdescription,phone_number,address1,address2,city,postalcode,geolocation,province,comp_id,working_hours,department,threshold,profile_photo_url,counter_count,money_earned) VALUES ('"
                 + str(bname)
+                + "','"
+                + str(bdesc)
                 + "','"
                 + str(pnum)
                 + "','"
@@ -193,6 +200,7 @@ def edit_branch(
     acctype,
     branchid,
     bname,
+    bdesc,
     pnum,
     addr1,
     addr2,
@@ -221,6 +229,8 @@ def edit_branch(
             q = (
                 "UPDATE branch_details SET bname = '"
                 + str(bname)
+                + "',bdescription = '"
+                + str(bdesc)
                 + "',profile_photo_url = '"
                 + str(filename)
                 + "',phone_number = '"
@@ -259,6 +269,8 @@ def edit_branch(
             q = (
                 "UPDATE branch_details SET bname = '"
                 + str(bname)
+                + "',bdescription = '"
+                + str(bdesc)
                 + "',profile_photo_url = '"
                 + str(filename)
                 + "',phone_number = '"
@@ -293,6 +305,8 @@ def edit_branch(
             q = (
                 "UPDATE branch_details SET bname = '"
                 + str(bname)
+                + "',bdescription = '"
+                + str(bdesc)
                 + "',profile_photo_url = '"
                 + str(filename)
                 + "',phone_number = '"
