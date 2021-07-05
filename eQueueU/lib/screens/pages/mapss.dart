@@ -20,6 +20,16 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   Set<Marker> _marker = {};
+  LocationData initLoc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Location().getLocation().then((value) {
+      initLoc = value;
+    });
+  }
 
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -29,11 +39,6 @@ class MapSampleState extends State<MapSample> {
   }
 
   Completer<GoogleMapController> _controller = Completer();
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
 
   void onMap(
       GoogleMapController controller, List<BranchModelwithcompany> branch) {
@@ -86,17 +91,22 @@ class MapSampleState extends State<MapSample> {
               appBar: AppBar(
                 title: Text(LocaleKeys.Map).tr(),
               ),
-              body: GoogleMap(
-                mapType: MapType.normal,
-                markers: _marker,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(37.42796133580664, -122.085749655962),
-                  zoom: 14.4746,
-                ),
-                onMapCreated: (v) {
-                  onMap(v, value.branches);
-                },
-              ),
+              body: initLoc == null
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : GoogleMap(
+                      mapType: MapType.normal,
+                      markers: _marker,
+                      myLocationEnabled: true,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(initLoc.latitude, initLoc.longitude),
+                        zoom: 14.4746,
+                      ),
+                      onMapCreated: (v) {
+                        onMap(v, value.branches);
+                      },
+                    ),
             );
           },
         );

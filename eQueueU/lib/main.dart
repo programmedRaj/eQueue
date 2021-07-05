@@ -42,6 +42,7 @@ Future<void> main() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
+
   /// Update the iOS foreground notification presentation options to allow
   /// heads up notifications.
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(

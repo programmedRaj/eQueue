@@ -87,6 +87,105 @@ def check_for_user_token(param):
     return wrapped
 
 
+@app.route("/testlaravel")
+def testl():
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    try:
+        branch_id = []
+        phone_number = []
+        department = []
+        profile_photo_url = []
+        working_hours = []
+        threshold = []
+        booking_per_day = []
+        per_day_hours = []
+        services = []
+        money_earned = []
+        bname = []
+        address1 = []
+        address2 = []
+        city = []
+        postalcode = []
+        geolocation = []
+        province = []
+        timezone = []
+        notify_time = []
+        counter_count = []
+        comp_id = []
+        comp_name = []
+        comp_type = []
+
+        rr = cur.execute("Select DISTINCT id,name,type from companydetails")
+        rr = cur.fetchall()
+        for i in range(0, len(rr)):
+            r = cur.execute(
+                "Select * from branch_details where comp_id = " + str(rr[i]["id"]) + ""
+            )
+            r = cur.fetchall()
+
+            if r:
+                for m in range(0, len(r)):
+
+                    branch_id.append(r[m]["id"])
+                    phone_number.append(r[m]["phone_number"])
+                    department.append(r[m]["department"])
+                    profile_photo_url.append(r[m]["profile_photo_url"])
+                    working_hours.append(r[m]["working_hours"])
+                    threshold.append(r[m]["threshold"])
+                    booking_per_day.append(r[m]["booking_per_day"])
+                    per_day_hours.append(r[m]["per_day_hours"])
+                    services.append(r[m]["services"])
+                    money_earned.append(r[m]["money_earned"])
+                    bname.append(r[m]["bname"])
+                    address1.append(r[m]["address1"])
+                    address2.append(r[m]["address2"])
+                    city.append(r[m]["city"])
+                    postalcode.append(r[m]["postalcode"])
+                    geolocation.append(r[m]["geolocation"])
+                    province.append(r[m]["province"])
+                    timezone.append(r[m]["timezone"])
+                    notify_time.append(r[m]["notify_time"])
+                    counter_count.append(r[m]["counter_count"])
+                    comp_id.append(r[m]["comp_id"])
+                    comp_name.append(rr[i]["name"])
+                    comp_type.append(rr[i]["type"])
+
+        resp = jsonify(
+            {
+                "branch_id": branch_id,
+                "phone_number": phone_number,
+                "department": department,
+                "profile_photo_url": profile_photo_url,
+                "working_hours": working_hours,
+                "threshold": threshold,
+                "booking_per_day": booking_per_day,
+                "per_day_hours": per_day_hours,
+                "services": services,
+                "money_earned": money_earned,
+                "bname": bname,
+                "address1": address1,
+                "address2": address2,
+                "city": city,
+                "postalcode": postalcode,
+                "geolocation": geolocation,
+                "province": province,
+                "timezone": timezone,
+                "notify_time": notify_time,
+                "counter_count": counter_count,
+                "comp_id": comp_id,
+                "comp_name": comp_name,
+                "comp_type": comp_type,
+            }
+        )
+        resp.status_code = 200
+        return resp
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 @app.route("/adminsign_in", methods=["POST"])
 def sign_in():
     conn = mysql.connect()
@@ -668,7 +767,9 @@ def biz_signin():
         username_entered = request.json["email"]
         password_entered = request.json["password"]
         check = cur.execute(
-            "Select * FROM bizusers WHERE email ='" + str(username_entered) + "';"
+            "Select * FROM bizusers WHERE email ='"
+            + str(username_entered)
+            + "' AND status = 1;"
         )
         if check:
             r = cur.fetchall()
@@ -2732,7 +2833,7 @@ def comapnies_list():
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         comp_details = {}
-        r = cur.execute("Select * from bizusers WHERE type = 'company'")
+        r = cur.execute("Select * from bizusers WHERE type = 'company' AND status = 1 ")
         if r:
             record = cur.fetchall()
             i = 0
@@ -2906,102 +3007,95 @@ def branch_map():
     user = jwt.decode(token, app.config["USER_SECRET_KEY"])
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
+        branch_id = []
+        phone_number = []
+        department = []
+        profile_photo_url = []
+        working_hours = []
+        threshold = []
+        booking_per_day = []
+        per_day_hours = []
+        services = []
+        money_earned = []
+        bname = []
+        address1 = []
+        address2 = []
+        city = []
+        postalcode = []
+        geolocation = []
+        province = []
+        timezone = []
+        notify_time = []
+        counter_count = []
+        comp_id = []
+        comp_name = []
+        comp_type = []
 
-        r = cur.execute("Select * from branch_details")
-        r = cur.fetchall()
-        rr = cur.execute("Select id,name,type from companydetails")
+        rr = cur.execute("Select DISTINCT id,name,type from companydetails")
         rr = cur.fetchall()
-        myDict = {}
-        for m in rr:
-            l = []
-            l.append(m["name"])
-            l.append(m["type"])
-            myDict[m["id"]] = l
-
-        if r:
-            branch_id = []
-            phone_number = []
-            department = []
-            profile_photo_url = []
-            working_hours = []
-            threshold = []
-            booking_per_day = []
-            per_day_hours = []
-            services = []
-            money_earned = []
-            bname = []
-            address1 = []
-            address2 = []
-            city = []
-            postalcode = []
-            geolocation = []
-            province = []
-            timezone = []
-            notify_time = []
-            counter_count = []
-            comp_id = []
-            comp_name = []
-            comp_type = []
-
-            for m in r:
-                branch_id.append(m["id"])
-                phone_number.append(m["phone_number"])
-                department.append(m["department"])
-                profile_photo_url.append(m["profile_photo_url"])
-                working_hours.append(m["working_hours"])
-                threshold.append(m["threshold"])
-                booking_per_day.append(m["booking_per_day"])
-                per_day_hours.append(m["per_day_hours"])
-                services.append(m["services"])
-                money_earned.append(m["money_earned"])
-                bname.append(m["bname"])
-                address1.append(m["address1"])
-                address2.append(m["address2"])
-                city.append(m["city"])
-                postalcode.append(m["postalcode"])
-                geolocation.append(m["geolocation"])
-                province.append(m["province"])
-                timezone.append(m["timezone"])
-                notify_time.append(m["notify_time"])
-                counter_count.append(m["counter_count"])
-                comp_id.append(m["comp_id"])
-                comp_name.append(myDict[m["comp_id"]][0])
-                comp_type.append(myDict[m["comp_id"]][1])
-
-            resp = jsonify(
-                {
-                    "branch_id": branch_id,
-                    "phone_number": phone_number,
-                    "department": department,
-                    "profile_photo_url": profile_photo_url,
-                    "working_hours": working_hours,
-                    "threshold": threshold,
-                    "booking_per_day": booking_per_day,
-                    "per_day_hours": per_day_hours,
-                    "services": services,
-                    "money_earned": money_earned,
-                    "bname": bname,
-                    "address1": address1,
-                    "address2": address2,
-                    "city": city,
-                    "postalcode": postalcode,
-                    "geolocation": geolocation,
-                    "province": province,
-                    "timezone": timezone,
-                    "notify_time": notify_time,
-                    "counter_count": counter_count,
-                    "comp_id": comp_id,
-                    "comp_name": comp_name,
-                    "comp_type": comp_type,
-                }
+        for i in range(0, len(rr)):
+            r = cur.execute(
+                "Select * from branch_details where comp_id = " + str(rr[i]["id"]) + ""
             )
-            resp.status_code = 200
-            return resp
+            r = cur.fetchall()
 
-        else:
-            resp = jsonify({"message": "No branches found."})
-            resp.status_code = 403
-            return resp
+            if r:
+                for m in range(0, len(r)):
+
+                    branch_id.append(r[m]["id"])
+                    phone_number.append(r[m]["phone_number"])
+                    department.append(r[m]["department"])
+                    profile_photo_url.append(r[m]["profile_photo_url"])
+                    working_hours.append(r[m]["working_hours"])
+                    threshold.append(r[m]["threshold"])
+                    booking_per_day.append(r[m]["booking_per_day"])
+                    per_day_hours.append(r[m]["per_day_hours"])
+                    services.append(r[m]["services"])
+                    money_earned.append(r[m]["money_earned"])
+                    bname.append(r[m]["bname"])
+                    address1.append(r[m]["address1"])
+                    address2.append(r[m]["address2"])
+                    city.append(r[m]["city"])
+                    postalcode.append(r[m]["postalcode"])
+                    geolocation.append(r[m]["geolocation"])
+                    province.append(r[m]["province"])
+                    timezone.append(r[m]["timezone"])
+                    notify_time.append(r[m]["notify_time"])
+                    counter_count.append(r[m]["counter_count"])
+                    comp_id.append(r[m]["comp_id"])
+                    comp_name.append(rr[i]["name"])
+                    comp_type.append(rr[i]["type"])
+
+        resp = jsonify(
+            {
+                "branch_id": branch_id,
+                "phone_number": phone_number,
+                "department": department,
+                "profile_photo_url": profile_photo_url,
+                "working_hours": working_hours,
+                "threshold": threshold,
+                "booking_per_day": booking_per_day,
+                "per_day_hours": per_day_hours,
+                "services": services,
+                "money_earned": money_earned,
+                "bname": bname,
+                "address1": address1,
+                "address2": address2,
+                "city": city,
+                "postalcode": postalcode,
+                "geolocation": geolocation,
+                "province": province,
+                "timezone": timezone,
+                "notify_time": notify_time,
+                "counter_count": counter_count,
+                "comp_id": comp_id,
+                "comp_name": comp_name,
+                "comp_type": comp_type,
+            }
+        )
+        resp.status_code = 200
+        return resp
+
     finally:
         cur.close()
         conn.close()
