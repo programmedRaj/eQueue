@@ -91,7 +91,7 @@ class MapSampleState extends State<MapSample> {
               appBar: AppBar(
                 title: Text(LocaleKeys.Map).tr(),
               ),
-              body: initLoc == null
+              body: loc.locp == null
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
@@ -100,7 +100,7 @@ class MapSampleState extends State<MapSample> {
                       markers: _marker,
                       myLocationEnabled: true,
                       initialCameraPosition: CameraPosition(
-                        target: LatLng(initLoc.latitude, initLoc.longitude),
+                        target: LatLng(loc.locp.latitude, loc.locp.longitude),
                         zoom: 14.4746,
                       ),
                       onMapCreated: (v) {
