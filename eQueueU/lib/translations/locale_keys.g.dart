@@ -134,5 +134,8 @@ abstract class  LocaleKeys {
   static const EstimatedTime = 'EstimatedTime';
   static const Youareinline = 'Youareinline';
   static const BranchDescription = 'BranchDescription';
+  static const Do_you_want_to_exit_an_App = 'Do_you_want_to_exit_an_App';
+  static const NO = 'NO';
+  static const YES = 'YES';
 
 }

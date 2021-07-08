@@ -14,8 +14,8 @@
   "Profile": "प्रोफ़ाइल",
   "EditPhoto": "फ़ोटो संपादित करें",
   "Name": "नाम",
-  "feereturn":"रद्दीकरण शुल्क: 50%",
-  "cureentpose":"आपकी वर्तमान स्थिति है",
+  "feereturn": "रद्दीकरण शुल्क: 50%",
+  "cureentpose": "आपकी वर्तमान स्थिति है",
   "Are_you_sure": "क्या आपको यकीन है?",
   "Address1": "पता 1",
   "Address2": "पता द्वितीय",
@@ -131,5 +131,8 @@
   "CounterNumber": "काउंटर नंबर",
   "EstimatedTime": "अनुमानित समय",
   "Youareinline": "आप 4 वीं पंक्ति में हैं",
-  "BranchDescription":"शाखा विवरण"
+  "BranchDescription": "शाखा विवरण",
+  "Do_you_want_to_exit_an_App": "क्या आप किसी ऐप से बाहर निकलना चाहते हैं",
+  "NO": "नहीं न",
+  "YES": "हाँ"
 }

@@ -147,7 +147,10 @@ class CodegenLoader extends AssetLoader{
   "CounterNumber": "رقم العداد",
   "EstimatedTime": "الوقت المقدر",
   "Youareinline": "أنت الرابع في الخط",
-  "BranchDescription": "وصف الفرع"
+  "BranchDescription": "وصف الفرع",
+  "Do_you_want_to_exit_an_App": "هل تريد الخروج من التطبيق",
+  "NO": "لا",
+  "YES": "نعم"
 };
 static const Map<String,dynamic> en_US = {
   "History": "History",
@@ -282,7 +285,10 @@ static const Map<String,dynamic> en_US = {
   "CounterNumber": "Counter Number",
   "EstimatedTime": "Estimated Time",
   "Youareinline": "You are 4th in line",
-  "BranchDescription": "Branch Description"
+  "BranchDescription": "Branch Description",
+  "Do_you_want_to_exit_an_App": "Do you want to exit an App",
+  "NO": "NO",
+  "YES": "YES"
 };
 static const Map<String,dynamic> es_ES = {
   "History": "Historia",
@@ -417,7 +423,10 @@ static const Map<String,dynamic> es_ES = {
   "CounterNumber": "Número de contador",
   "EstimatedTime": "Hora prevista",
   "Youareinline": "Eres cuarto en la fila",
-  "BranchDescription": "Descripción de la rama"
+  "BranchDescription": "Descripción de la rama",
+  "Do_you_want_to_exit_an_App": "¿Quieres salir de una aplicación?",
+  "NO": "NO",
+  "YES": "SÍ"
 };
 static const Map<String,dynamic> fa_FA = {
   "History": "تاریخچه",
@@ -552,7 +561,10 @@ static const Map<String,dynamic> fa_FA = {
   "CounterNumber": "شماره باجه",
   "EstimatedTime": "زمان  تقریبی",
   "Youareinline": "شما نفر 4 در صف هستید",
-  "BranchDescription": "شرح شعبه"
+  "BranchDescription": "شرح شعبه",
+  "Do_you_want_to_exit_an_App": "میخواهید از برنامه خارج شوید",
+  "NO": "خیر",
+  "YES": "بله"
 };
 static const Map<String,dynamic> fr_FR = {
   "Tokens": "Jetons",
@@ -687,7 +699,10 @@ static const Map<String,dynamic> fr_FR = {
   "CounterNumber": "Numéro de compteur",
   "EstimatedTime": "Temps estimé",
   "Youareinline": "Vous êtes 4e en ligne",
-  "BranchDescription": "Description de la succursale"
+  "BranchDescription": "Description de la succursale",
+  "Do_you_want_to_exit_an_App": "Voulez-vous quitter une application",
+  "NO": "NON",
+  "YES": "OUI"
 };
 static const Map<String,dynamic> hi_IN = {
   "Tokens": "टोकन",
@@ -822,7 +837,10 @@ static const Map<String,dynamic> hi_IN = {
   "CounterNumber": "काउंटर नंबर",
   "EstimatedTime": "अनुमानित समय",
   "Youareinline": "आप 4 वीं पंक्ति में हैं",
-  "BranchDescription": "शाखा विवरण"
+  "BranchDescription": "शाखा विवरण",
+  "Do_you_want_to_exit_an_App": "क्या आप किसी ऐप से बाहर निकलना चाहते हैं",
+  "NO": "नहीं न",
+  "YES": "हाँ"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar_AR": ar_AR, "en_US": en_US, "es_ES": es_ES, "fa_FA": fa_FA, "fr_FR": fr_FR, "hi_IN": hi_IN};
 }

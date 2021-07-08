@@ -11,8 +11,8 @@
   "Payments": "پرداخت",
   "TermsConditions": "قوانین و مفررات",
   "Are_you_sure": "آیا مطمین هستید؟",
-  "feereturn":"هزینه انصراف: 50٪",
-  "cureentpose":"موقعیت فعلی شما",
+  "feereturn": "هزینه انصراف: 50٪",
+  "cureentpose": "موقعیت فعلی شما",
   "LogOut": "خروج",
   "Profile": "مشخصات",
   "EditPhoto": "ویرایش عکس",
@@ -131,5 +131,8 @@
   "CounterNumber": "شماره باجه",
   "EstimatedTime": "زمان  تقریبی",
   "Youareinline": "شما نفر 4 در صف هستید",
-  "BranchDescription":"شرح شعبه"
+  "BranchDescription": "شرح شعبه",
+  "Do_you_want_to_exit_an_App": "میخواهید از برنامه خارج شوید",
+  "NO": "خیر",
+  "YES": "بله"
 }
