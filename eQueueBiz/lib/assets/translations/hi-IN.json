@@ -123,5 +123,6 @@
   "Multitoken": "मल्टी टोकन",
   "EditManagetokendetails": "संपादित करें / टोकन विवरण प्रबंधित करें",
   "EditManageMultitoken_details": "मल्टी टोकन विवरण संपादित / प्रबंधित करें",
-  "Pleaseselectvaluegreaterthan": "कृपया 0 से अधिक मूल्य का चयन करें"
+  "Pleaseselectvaluegreaterthan": "कृपया 0 से अधिक मूल्य का चयन करें",
+  "BranchDescription":"शाखा विवरण"
 }

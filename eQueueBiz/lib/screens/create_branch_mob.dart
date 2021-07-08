@@ -98,6 +98,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
       print(imagee);
     });
     _branchNameController.text = widget.branchDets.branchName;
+    _descriptionController.text = widget.branchDets.branchDesc;
     _addr1Controller.text = widget.branchDets.addr1;
     _addr2Controller.text = widget.branchDets.addr2;
     _cityController.text = widget.branchDets.city;
@@ -302,6 +303,8 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                         ),
                         _textField(LocaleKeys.Branch_Name.tr(),
                             _branchNameController, false),
+                        _textField(LocaleKeys.BranchDescription.tr(),
+                            _descriptionController, false),
                         _textField(LocaleKeys.Address_Line_1.tr(),
                             _addr1Controller, false),
                         _textField(LocaleKeys.Address_Line_2.tr(),
@@ -610,11 +613,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                         borderRadius: BorderRadius.circular(10)),
                     child: startTime == null
                         ? Text("--:--")
-                        : Text(startTime
-                            .toString()
-                            .replaceAll('TimeOfDay', '')
-                            .replaceAll('(', '')
-                            .replaceAll(')', '')),
+                        : Text(startTimeList[index] == null
+                            ? "--:--"
+                            : startTimeList[index].hour.toString() +
+                                " : " +
+                                startTimeList[index].minute.toString()),
                   ),
                 ),
                 SizedBox(
@@ -639,13 +642,11 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                     alignment: Alignment.center,
                     child: endTime == null
                         ? Text("--:--")
-                        : Text(
-                            endTime
-                                .toString()
-                                .replaceAll('TimeOfDay', '')
-                                .replaceAll('(', '')
-                                .replaceAll(')', ''),
-                          ),
+                        : Text(endTimeList[index] == null
+                            ? "--:--"
+                            : endTimeList[index].hour.toString() +
+                                " : " +
+                                endTimeList[index].minute.toString()),
                   ),
                 ),
                 SizedBox(
@@ -824,6 +825,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
     }
     return BranchModel(
         branchName: _branchNameController.text,
+        branchDesc: _descriptionController.text,
         notify: _notifytimeDescController.text,
         timeZone: _timezoneController.text,
         phoneNo: _phoneNoController.text,

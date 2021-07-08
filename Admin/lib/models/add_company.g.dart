@@ -18,6 +18,7 @@ AddCompany _$AddCompanyFromJson(Map<String, dynamic> json) {
     onleLiner: json['oneliner'] as String,
     email: json['email'] as String,
     password: json['password'] as String,
+    companyId: json['companyId'] as int,
   );
 }
 
@@ -33,6 +34,7 @@ Map<String, dynamic> _$AddCompanyToJson(AddCompany instance) =>
       'accountname': instance.accountName,
       'oneliner': instance.onleLiner,
       'acc_type': _$CompanyEnumEnumMap[instance.accType],
+      'companyId': instance.companyId,
     };
 
 T _$enumDecode<T>(

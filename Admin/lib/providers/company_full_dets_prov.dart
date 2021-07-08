@@ -11,6 +11,7 @@ class CompFullDetsProv extends ChangeNotifier {
   CompanyFullDetails companyFullDetails;
   bool isLoading = true;
   bool isError = false;
+  bool isEmpty = false;
 
   getCompanyDets() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -22,6 +23,11 @@ class CompFullDetsProv extends ChangeNotifier {
         var decodedResp = jsonDecode(resp.body);
         companyFullDetails = CompanyFullDetails.fromJson(decodedResp);
         isLoading = false;
+        notifyListeners();
+      } else if (resp.statusCode == 403) {
+        isLoading = false;
+        isError = true;
+        isEmpty = true;
         notifyListeners();
       } else {
         isLoading = false;

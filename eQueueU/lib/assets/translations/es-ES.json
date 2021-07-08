@@ -130,5 +130,9 @@
   "NoTokens": "¡¡Sin fichas !!",
   "CounterNumber": "Número de contador",
   "EstimatedTime": "Hora prevista",
-  "Youareinline": "Eres cuarto en la fila"
+  "Youareinline": "Eres cuarto en la fila",
+  "BranchDescription":"Descripción de la rama",
+  "Do_you_want_to_exit_an_App": "¿Quieres salir de una aplicación?",
+  "NO": "NO",
+  "YES": "SÍ"
 }

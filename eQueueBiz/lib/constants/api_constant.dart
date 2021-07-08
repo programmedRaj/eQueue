@@ -15,6 +15,8 @@ class BranchApi {
   static const getBranch = "http://91.99.96.87:5000/branch_list";
 }
 
+//thanks for helping. I added this 2 lines to server and its now working perfectly header('Access-Control-Allow-Origin: *'); header('Access-Control-Allow-Credentials: true'); Thanks again 
+
 class DepartmentApi {
   static const getDept = "http://91.99.96.87:5000/dept_services";
 }

@@ -49,6 +49,7 @@ class CreateEditBanchProv extends ChangeNotifier {
     print('pd -- ${json.encode(branch.bookingPerDayhrs)}');
 
     request.fields["bname"] = branch.branchName;
+    request.fields["bdesc"] = branch.branchDesc;
     request.fields["pnum"] = branch.phoneNo;
     request.fields["addr1"] = branch.addr1;
     request.fields["addr2"] = branch.addr2;

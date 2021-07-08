@@ -46,7 +46,7 @@ CompanyDets _$CompanyDetsFromJson(Map<String, dynamic> json) {
     accType: _$enumDecodeNullable(_$CompanyEnumEnumMap, json['type']),
     accountName: json['account_name'] as String,
     accountNo: json['account_number'] as String,
-    bankName: json['bankname'] as String,
+    bankName: json['bank_name'] as String,
     desc: json['descr'] as String,
     earnedTillDate: json['earned_till_date'] as String,
     id: json['id'] as int,
@@ -62,7 +62,7 @@ Map<String, dynamic> _$CompanyDetsToJson(CompanyDets instance) =>
     <String, dynamic>{
       'name': instance.name,
       'descr': instance.desc,
-      'bankname': instance.bankName,
+      'bank_name': instance.bankName,
       'ifsc': instance.ifscCode,
       'account_number': instance.accountNo,
       'account_name': instance.accountName,

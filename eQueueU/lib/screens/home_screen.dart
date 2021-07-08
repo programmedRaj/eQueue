@@ -227,12 +227,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return showDialog(
           context: context,
           builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit an App'),
+            title: new Text(LocaleKeys.Are_you_sure).tr(),
+            content: new Text(LocaleKeys.Do_you_want_to_exit_an_App).tr(),
             actions: <Widget>[
               new GestureDetector(
                 onTap: () => Navigator.of(context).pop(false),
-                child: Text("NO"),
+                child: Text(LocaleKeys.NO).tr(),
               ),
               SizedBox(height: 16),
               new GestureDetector(
@@ -240,7 +240,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   SystemNavigator.pop();
                   return Future.value(false);
                 },
-                child: Text("YES"),
+                child: Text(LocaleKeys.YES).tr(),
               ),
             ],
           ),

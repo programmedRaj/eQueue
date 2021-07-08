@@ -51,5 +51,8 @@ class LoginProv extends ChangeNotifier {
     }
   }
 
-  notifyListeners();
+  logOut() {
+    jwtToken = null;
+    success = false;
+  }
 }

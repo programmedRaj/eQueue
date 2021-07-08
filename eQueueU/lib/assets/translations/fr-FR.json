@@ -15,8 +15,8 @@
   "EditPhoto": "Modifier photo",
   "Are_you_sure": "Êtes-vous sûr?",
   "Name": "Nom",
-  "feereturn":"frais d'annulation: 50%",
-  "cureentpose":"Votre position actuelle est",
+  "feereturn": "frais d'annulation: 50%",
+  "cureentpose": "Votre position actuelle est",
   "Address1": "Adresse 1",
   "Address2": "Adresse 2",
   "Province": "Province",
@@ -130,5 +130,9 @@
   "NoTokens": "Pas de jetons !!",
   "CounterNumber": "Numéro de compteur",
   "EstimatedTime": "Temps estimé",
-  "Youareinline": "Vous êtes 4e en ligne"
+  "Youareinline": "Vous êtes 4e en ligne",
+  "BranchDescription": "Description de la succursale",
+  "Do_you_want_to_exit_an_App": "Voulez-vous quitter une application",
+  "NO": "NON",
+  "YES": "OUI"
 }

@@ -14,8 +14,8 @@
   "Profile": "Profile",
   "EditPhoto": "Edit Photo",
   "Are_you_sure": "Are you sure?",
-  "cureentpose":"Your current position is",
-  "feereturn":"cancellation fee: 50%",
+  "cureentpose": "Your current position is",
+  "feereturn": "cancellation fee: 50%",
   "Name": "Name",
   "Address1": "Address 1",
   "Address2": "Address 2",
@@ -130,5 +130,9 @@
   "NoTokens": "No Tokens!!",
   "CounterNumber": "Counter Number",
   "EstimatedTime": "Estimated Time",
-  "Youareinline": "You are 4th in line"
+  "Youareinline": "You are 4th in line",
+  "BranchDescription": "Branch Description",
+  "Do_you_want_to_exit_an_App": "Do you want to exit an App",
+  "NO": "NO",
+  "YES": "YES"
 }

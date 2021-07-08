@@ -139,7 +139,8 @@ class CodegenLoader extends AssetLoader{
   "Multitoken": "متعدد الرموز",
   "EditManagetokendetails": "تحرير / إدارة تفاصيل الرمز المميز",
   "EditManageMultitoken_details": "تحرير / إدارة تفاصيل الرموز المتعددة",
-  "Pleaseselectvaluegreaterthan": "الرجاء تحديد قيمة أكبر من 0"
+  "Pleaseselectvaluegreaterthan": "الرجاء تحديد قيمة أكبر من 0",
+  "BranchDescription": "وصف الفرع"
 };
 static const Map<String,dynamic> en_US = {
   "hello": "Hello",
@@ -266,7 +267,8 @@ static const Map<String,dynamic> en_US = {
   "Multitoken": "Multi token",
   "EditManagetokendetails": "Edit/Manage token details",
   "EditManageMultitoken_details": "Edit/Manage Multi token details",
-  "Pleaseselectvaluegreaterthan": "Please select value greater than 0"
+  "Pleaseselectvaluegreaterthan": "Please select value greater than 0",
+  "BranchDescription": "Branch Description"
 };
 static const Map<String,dynamic> es_ES = {
   "hello": "Hola",
@@ -393,7 +395,8 @@ static const Map<String,dynamic> es_ES = {
   "Multitoken": "Token múltiple",
   "EditManagetokendetails": "Editar / administrar los detalles del token",
   "EditManageMultitoken_details": "Editar / administrar detalles de token múltiple",
-  "Pleaseselectvaluegreaterthan": "Seleccione un valor mayor que 0"
+  "Pleaseselectvaluegreaterthan": "Seleccione un valor mayor que 0",
+  "BranchDescription": "Descripción de la rama"
 };
 static const Map<String,dynamic> fa_FA = {
   "hello": "سلام",
@@ -520,7 +523,8 @@ static const Map<String,dynamic> fa_FA = {
   "Multitoken": "چند شماره ای",
   "EditManagetokendetails": "ویرایش جزیات شماره",
   "EditManageMultitoken_details": "ویرایش جزیات چند شماره ای",
-  "Pleaseselectvaluegreaterthan": "شماره از 0 باید بزرگتر باشد"
+  "Pleaseselectvaluegreaterthan": "شماره از 0 باید بزرگتر باشد",
+  "BranchDescription": "شرح شعبه"
 };
 static const Map<String,dynamic> fr_FR = {
   "hello": "Bonjour",
@@ -647,7 +651,8 @@ static const Map<String,dynamic> fr_FR = {
   "Multitoken": "Jeton multiple",
   "EditManagetokendetails": "Modifier / gérer les détails des jetons",
   "EditManageMultitoken_details": "Modifier / gérer les détails de plusieurs jetons",
-  "Pleaseselectvaluegreaterthan": "Veuillez sélectionner une valeur supérieure à 0"
+  "Pleaseselectvaluegreaterthan": "Veuillez sélectionner une valeur supérieure à 0",
+  "BranchDescription": "Description de la succursale"
 };
 static const Map<String,dynamic> hi_IN = {
   "hello": "नमस्ते",
@@ -774,7 +779,8 @@ static const Map<String,dynamic> hi_IN = {
   "Multitoken": "मल्टी टोकन",
   "EditManagetokendetails": "संपादित करें / टोकन विवरण प्रबंधित करें",
   "EditManageMultitoken_details": "मल्टी टोकन विवरण संपादित / प्रबंधित करें",
-  "Pleaseselectvaluegreaterthan": "कृपया 0 से अधिक मूल्य का चयन करें"
+  "Pleaseselectvaluegreaterthan": "कृपया 0 से अधिक मूल्य का चयन करें",
+  "BranchDescription": "शाखा विवरण"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar_AR": ar_AR, "en_US": en_US, "es_ES": es_ES, "fa_FA": fa_FA, "fr_FR": fr_FR, "hi_IN": hi_IN};
 }

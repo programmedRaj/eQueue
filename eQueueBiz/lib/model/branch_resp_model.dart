@@ -7,6 +7,8 @@ part 'branch_resp_model.g.dart';
 class BranchRespModel {
   @JsonKey(name: "bname")
   String branchName;
+  @JsonKey(name: "bdesc")
+  String branchDesc;
   @JsonKey(name: "phone_number")
   String phoneNo;
   @JsonKey(name: "address1")
@@ -64,7 +66,8 @@ class BranchRespModel {
       this.threshold,
       this.timeZone,
       this.workingHrs,
-      this.counter});
+      this.counter,
+      this.branchDesc});
 
   factory BranchRespModel.fromJson(Map<String, dynamic> json) =>
       _$BranchRespModelFromJson(json);

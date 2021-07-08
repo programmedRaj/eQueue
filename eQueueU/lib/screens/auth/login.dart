@@ -67,6 +67,9 @@ class _LoginState extends State<Login> {
 
     print(code + phone);
 
+    if (phone.startsWith("0")) {
+      phone = phone.substring(1);
+    }
     request.fields['number'] = code + phone;
 
     var res = await request.send();

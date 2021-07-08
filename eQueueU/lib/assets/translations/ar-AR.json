@@ -9,10 +9,10 @@
   "MyHistory": "تاريخي",
   "Language": "لغة",
   "Payments": "المدفوعات",
-  "feereturn":"رسوم الإلغاء: 50٪",
+  "feereturn": "رسوم الإلغاء: 50٪",
   "TermsConditions": "البنود و الظروف",
   "Are_you_sure": "هل أنت واثق؟",
-  "cureentpose":"موقعك الحالي هو",
+  "cureentpose": "موقعك الحالي هو",
   "LogOut": "تسجيل خروج",
   "Profile": "الملف الشخصي",
   "EditPhoto": "تعديل الصورة",
@@ -130,5 +130,9 @@
   "NoTokens": "لا رموز !!",
   "CounterNumber": "رقم العداد",
   "EstimatedTime": "الوقت المقدر",
-  "Youareinline": "أنت الرابع في الخط"
+  "Youareinline": "أنت الرابع في الخط",
+  "BranchDescription": "وصف الفرع",
+  "Do_you_want_to_exit_an_App": "هل تريد الخروج من التطبيق",
+  "NO": "لا",
+  "YES": "نعم"
 }
