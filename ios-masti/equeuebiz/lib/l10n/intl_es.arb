@@ -1,0 +1,417 @@
+{
+  "@@last_modified": "2020-12-01T00:52:46.258645",
+  "heyWorld": "Hey Spanish",
+  "@heyWorld": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "email": "correo electrónico",
+  "@email": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "branches": "Ramas",
+  "@branches": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "contraseña",
+  "@password": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "forgetpassword": "contraseña olvidada",
+  "@forgetpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createaccount": "crear una cuenta",
+  "@createaccount": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterEmail": "Por favor ingrese su correo electrónico",
+  "@pleaseEnterEmail": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterpassword": "introducir la contraseña",
+  "@enterpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "rememberpassword": "recordar contraseña",
+  "@rememberpassword": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "send": "enviar",
+  "@send": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "register": "Registrarse",
+  "@register": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nickname": "apodo",
+  "@nickname": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "nombre",
+  "@name": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobilenumber": "número de teléfono móvil",
+  "@mobilenumber": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "alreadyacc": "Ya tienes una cuenta",
+  "@alreadyacc": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enternickname": "Por favor ingrese el apodo",
+  "@enternickname": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "entername": "por favor ingrese el nombre",
+  "@entername": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "entermob": "el número de móvil debe tener 10 dígitos",
+  "@entermob": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidemail": "email inválido",
+  "@invalidemail": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createtoken": "crear Token",
+  "@createtoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taptocreatenewtoken": "toque para crear un nuevo token",
+  "@taptocreatenewtoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onwait": "en espera",
+  "@onwait": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onqueue": "en cola",
+  "@onqueue": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "completed": "terminado",
+  "@completed": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "recall": "recordar",
+  "@recall": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notification": "Notification",
+  "@notification": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taptomarkasread": "toque para marcar como leído",
+  "@taptomarkasread": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "search": "buscar",
+  "@search": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "generatetoken": "generar token",
+  "@generatetoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "historysearch": "búsqueda de historia",
+  "@historysearch": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profile": "perfil",
+  "@profile": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "language": "idioma",
+  "@language": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "termsconditions": "Términos y condiciones",
+  "@termsconditions": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "privacypolicy": "política de privacidad",
+  "@privacypolicy": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phone": "teléfono",
+  "@phone": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signout": "desconectar",
+  "@signout": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "update": "actualizar",
+  "@update": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "cargando",
+  "@loading": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noresults": "No se han encontrado resultados",
+  "@noresults": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleasewait": "por favor espera",
+  "@pleasewait": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "toenterqueue": "para ingresar a la cola, haga clic aquí !!",
+  "@toenterqueue": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nocompany": "no se encontró empresa",
+  "@nocompany": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nobranch": "no se encontró rama",
+  "@nobranch": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notokens": "no se generan tokens",
+  "@notokens": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nohistory": "no hay historial disponible",
+  "@nohistory": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pincode": "Código PIN",
+  "@pincode": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "postalcode": "Código postal",
+  "@postalcode": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sunday": "domingo",
+  "@sunday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monday": "lunes",
+  "@monday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tuesday": "martes",
+  "@tuesday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "wednesday": "miércoles",
+  "@wednesday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "thrusday": "jueves",
+  "@thrusday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "friday": "viernes",
+  "@friday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "saturday": "sábado",
+  "@saturday": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "location": "Ubicación",
+  "@location": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+   "alreadytoken": "Ya tienes el token de esta rama",
+  "@alreadytoken": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "si",
+  "@yes": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "no": "No",
+  "@no": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectdep": "Seleccionar departamento",
+  "@selectdep": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gotodash": "Ir al panel de control",
+  "@gotodash": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "choosedep": "Por favor elija un departamento",
+  "@choosedep": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "cancelar",
+  "@cancel": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "expectedtime": "Tiempo esperado",
+  "@expectedtime": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "queuenotstarted": "Tu cola no se ha iniciado",
+  "@queuenotstarted": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "queueupdated": "Se está actualizando la cola",
+  "@queueupdated": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "wearetry": "Nosotras estamos tratando de conectar ...",
+  "@wearetry": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "day": "Día",
+  "@day": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "time": "Hora",
+  "@time": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Simpel word for greeting ",
+    "type": "text",
+    "placeholders": {}
+  }
+}
