@@ -1,4 +1,4 @@
-# equeuebiz
+# eqbiz
 
 A new Flutter project.
 
