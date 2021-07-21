@@ -273,7 +273,9 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                                           .Counter
                                                                       .tr(),
                                                                   _counterC,
-                                                                  false)),
+                                                                  false,
+                                                                  isNumber:
+                                                                      true)),
                                                     ),
                                                     SizedBox(
                                                       width: 20,
@@ -512,7 +514,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   }
 
   Widget _textField(
-      String hintText, TextEditingController controller, bool email) {
+      String hintText, TextEditingController controller, bool email,
+      {bool isNumber = false}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(

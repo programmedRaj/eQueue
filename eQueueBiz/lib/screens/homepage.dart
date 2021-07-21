@@ -326,7 +326,7 @@ class _HomePageState extends State<HomePage> {
                     name == null
                         ? Container()
                         : Text(
-                            '${LocaleKeys.hello.tr()}' + name,
+                            '${LocaleKeys.hello.tr()} ' + name,
                             style: TextStyle(fontWeight: FontWeight.w700),
                           ),
                     Text(

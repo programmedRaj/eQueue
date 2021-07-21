@@ -348,7 +348,7 @@ class _CreateBranchMobState extends State<CreateBranchMob> {
                                     CompanyEnum.MultiToken
                             ? SizedBox()
                             : _textField(LocaleKeys.No_of_counters.tr(),
-                                _counterController, false),
+                                _counterController, true),
                         // authProv.authinfo.companyType == CompanyEnum.Booking ||
                         //         authProv.authinfo.companyType ==
                         //             CompanyEnum.MultiToken
