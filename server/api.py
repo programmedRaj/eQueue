@@ -1161,18 +1161,21 @@ def create_branch():
             province = request.form["province"]
             w_hrs = request.form["w_hrs"]
 
-            filename = "default.png"
-
-            if request.files["profile_photo_url"]:
-                company_logo = request.files["profile_photo_url"]
-                filename = secure_filename(company_logo.filename)
-                company_logo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-
             cur.execute("Select * from bizusers WHERE id = '" + str(comp_id) + "'")
             check = cur.fetchall()
             if check:
 
                 if request.form["req"] == "create":
+
+                    filename = "default.png"
+
+                    if request.files["profile_photo_url"]:
+                        company_logo = request.files["profile_photo_url"]
+                        filename = secure_filename(company_logo.filename)
+                        company_logo.save(
+                            os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                        )
+
                     if user["comp_type"] == "booking":
 
                         services = request.form["services"]
@@ -1283,14 +1286,16 @@ def create_branch():
 
                     check = cur.fetchone()
                     if check:
-                        if request.files["profile_photo_url"]:
+                        k = request.files["profile_photo_url"]
+                        print(k.filename)
+                        if k.filename == "":
+                            filename = check["profile_photo_url"]
+                        else:
                             company_logo = request.files["profile_photo_url"]
                             filename = secure_filename(company_logo.filename)
                             company_logo.save(
                                 os.path.join(app.config["UPLOAD_FOLDER"], filename)
                             )
-                        else:
-                            filename = check["profile_photo_url"]
                         branchid = check["id"]
 
                         if user["comp_type"] == "booking":
@@ -1546,17 +1551,19 @@ def create_employee():
     branch_id = request.form["branch_id"]
     phone_number = request.form["number"]
 
-    filename = "default.png"
-    if request.files["profile_url"]:
-        company_logo = request.files["profile_url"]
-        filename = secure_filename(company_logo.filename)
-        company_logo.save(os.path.join(app.config["BIZ_UPLOAD_FOLDER"], filename))
-
     cur = conn.cursor(pymysql.cursors.DictCursor)
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
         if user["type"] == "company":
             if request.form["req"] == "create":
+                filename = "default.png"
+                if request.files["profile_url"]:
+                    company_logo = request.files["profile_url"]
+                    filename = secure_filename(company_logo.filename)
+                    company_logo.save(
+                        os.path.join(app.config["BIZ_UPLOAD_FOLDER"], filename)
+                    )
+
                 cur.execute("Select * from bizusers WHERE email = '" + str(email) + "'")
                 r = cur.fetchone()
                 if r:
@@ -1631,11 +1638,22 @@ def create_employee():
             elif request.form["req"] == "update":
                 employee_id = request.form["employee_id"]
                 estatus = request.form["emp_status"]
+
                 cur.execute(
                     "Select * from bizusers WHERE id = '" + str(employee_id) + "'"
                 )
                 r = cur.fetchone()
                 if r:
+                    k = request.files["profile_url"]
+                    print(k.filename)
+                    if k.filename == "":
+                        filename = r["profile_url"]
+                    else:
+                        company_logo = request.files["profile_url"]
+                        filename = secure_filename(company_logo.filename)
+                        company_logo.save(
+                            os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                        )
                     if user["comp_type"] == "booking":
                         services = request.form["services"]
                         op = eqbiz.edit_employee(

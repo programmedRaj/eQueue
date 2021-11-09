@@ -215,7 +215,8 @@ class _BooktokenState extends State<Booktoken> {
                           onpress = true;
                         });
                         String dateFormat =
-                            DateFormat('EEEE').format(DateTime.now());
+                            DateFormat('EEEE', 'en').format(DateTime.now());
+                        print(dateFormat.toLocale());
                         String dayy = dateFormat.toLowerCase();
                         var wh = json.decode(widget.wk);
                         print(wh);
@@ -237,6 +238,8 @@ class _BooktokenState extends State<Booktoken> {
                         final currentTime = DateTime.now();
                         // print(currentTime);
                         var date = DateFormat('yyyy-MM-dd', 'en_US');
+                        print(date);
+
                         var datetoday = date.format(currentTime);
                         print(datetoday);
                         var year = datetoday.substring(0, 4);
