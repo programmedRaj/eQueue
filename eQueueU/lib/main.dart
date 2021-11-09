@@ -55,6 +55,7 @@ Future<void> main() async {
   runApp(
     EasyLocalization(
       fallbackLocale: Locale('en', 'US'),
+      startLocale:  Locale('en', 'US'),
       assetLoader: CodegenLoader(),
       child: MyApp(),
       supportedLocales: [

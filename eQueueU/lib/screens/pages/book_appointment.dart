@@ -82,7 +82,7 @@ class _CalenState extends State<Calen> {
                 initialSelectedDay: DateTime.now(),
 
                 onDaySelected: (day, events, holidays) {
-                  String dateFormat = DateFormat('EEEE').format(day);
+                  String dateFormat = DateFormat('EEEE','en').format(day);
                   String dayy = dateFormat.toLowerCase();
 
                   if (dayy == 'monday') {
