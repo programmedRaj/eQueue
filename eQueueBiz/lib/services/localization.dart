@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 class DemoLocalization {
   final Locale locale;
   DemoLocalization(this.locale);
-  static DemoLocalization of(BuildContext context) {
+  static DemoLocalization? of(BuildContext context) {
     return Localizations.of<DemoLocalization>(context, DemoLocalization);
   }
 
-  Map<String, String> _localizedValues;
+  late Map<String, String> _localizedValues;
 
   Future load() async {
     String jsonStringValues =
@@ -20,7 +20,7 @@ class DemoLocalization {
         mappedJson.map((key, value) => MapEntry(key, value.toString()));
   }
 
-  String getTranslatedValue(String key) {
+  String? getTranslatedValue(String key) {
     return _localizedValues[key];
   }
 

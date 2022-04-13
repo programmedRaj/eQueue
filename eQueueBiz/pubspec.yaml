@@ -18,33 +18,35 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.1.1+3
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cupertino_icons: ^1.0.0
-  fluttertoast: ^7.1.8
-  http: ^0.13.1
-  image_picker: ^0.7.4
+  cupertino_icons: ^1.0.4
+  fluttertoast: ^8.0.9
+  http: ^0.13.4
+  image_picker: ^0.8.5
   intl: ^0.17.0
-  json_annotation: ^3.1.1
-  provider: ^5.0.0
-  shared_preferences:
-  smooth_star_rating: ^1.1.1
-  url_launcher: ^6.0.3
+  json_annotation: ^4.4.0
+  provider: ^6.0.2
+  shared_preferences: ^2.0.13
+  # smooth_star_rating: ^1.1.1
+  smooth_star_rating_nsafe: ^1.0.0+1
+  url_launcher: ^6.0.20
   email_validator: ^2.0.1
   easy_localization: ^3.0.0
-  grouped_buttons: ^1.0.4
-  retry:
+  grouped_buttons_ns: ^1.0.0
+  retry: ^3.1.0
+  collection: ^1.15.0-nullsafety.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: null
-  json_serializable: ^3.5.1
+  build_runner: ^2.1.8
+  json_serializable: ^6.1.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

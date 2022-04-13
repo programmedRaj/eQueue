@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class MultiTokens extends StatefulWidget {
-  final int bid;
-  final String token;
-  final String bname;
+  final int? bid;
+  final String? token;
+  final String? bname;
   MultiTokens({this.bid, this.token, this.bname});
   @override
   _MultiTokensState createState() => _MultiTokensState();
@@ -19,7 +19,7 @@ class MultiTokens extends StatefulWidget {
 
 class _MultiTokensState extends State<MultiTokens> {
   double _currentSliderValue = 0.0;
-  int tokenMax;
+  int? tokenMax;
 
   @override
   void initState() {
@@ -124,7 +124,7 @@ class _MultiTokensState extends State<MultiTokens> {
           ? Container()
           : GestureDetector(
               onTap: () {
-                if (tokenMax <= 0) {
+                if (tokenMax! <= 0) {
                   AppToast.showErr('Please select value greater than 0');
                 } else {
                   Provider.of<CallMToken>(context, listen: false)

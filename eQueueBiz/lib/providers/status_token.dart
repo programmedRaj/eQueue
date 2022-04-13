@@ -10,13 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenStatus with ChangeNotifier {
   getTokenstatusdets({
-    String bid,
-    String bname,
-    String status,
-    String userid,
-    String bookingid,
-    String dep,
-    String dt,
+    String? bid,
+    String? bname,
+    String? status,
+    String? userid,
+    String? bookingid,
+    String? dep,
+    String? dt,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('tokens');
@@ -34,7 +34,7 @@ class TokenStatus with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(TokenApi.tokenchange),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );

@@ -16,7 +16,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
   TextEditingController emailControler = TextEditingController();
   TextEditingController passwordControler = TextEditingController();
   TextEditingController otpControler = TextEditingController();
-  String lang;
+  String? lang;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
-              appBar: whiteAppBar(context, LocaleKeys.Forget_Password.tr()),
+              appBar: whiteAppBar(context, LocaleKeys.Forget_Password.tr()) as PreferredSizeWidget?,
               body: Container(
                 alignment: Alignment.center,
                 color: Colors.white,

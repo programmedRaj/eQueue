@@ -22,27 +22,27 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 class CreateEmployee extends StatefulWidget {
-  final EmployeeModel empDets;
-  final String images;
-  final bool uporadd;
+  final EmployeeModel? empDets;
+  final String? images;
+  final bool? uporadd;
   CreateEmployee({this.empDets, this.images, this.uporadd});
   @override
   _CreateEmployeeState createState() => _CreateEmployeeState();
 }
 
 class _CreateEmployeeState extends State<CreateEmployee> {
-  Map<int, String> branchesList = {};
-  List<String> departmentsList = [];
+  Map<int?, String?> branchesList = {};
+  List<String?> departmentsList = [];
   TextEditingController _departmentController = TextEditingController();
-  String _chosenDept;
-  String _chosenBranch;
+  String? _chosenDept;
+  String? _chosenBranch;
   bool employeeStatus = true;
-  File uploadedImageMob;
-  AuthProv authProv;
-  File filename;
+  File? uploadedImageMob;
+  late AuthProv authProv;
+  File? filename;
   bool error = false;
-  String imagee;
-  String images;
+  String? imagee;
+  String? images;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _nameC = TextEditingController();
@@ -51,7 +51,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   TextEditingController _phoneC = TextEditingController();
   TextEditingController _counterC = TextEditingController();
   int couterCount = 1;
-  int chosenBranchId;
+  int? chosenBranchId;
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
 
     Provider.of<BranchDataProv>(context, listen: false)
         .getbranchesWithDetail(
-            Provider.of<AuthProv>(context, listen: false).authinfo.jwtToken)
+            Provider.of<AuthProv>(context, listen: false).authinfo!.jwtToken!)
         .then((value) {
       setState(() {
         error = value;
@@ -68,13 +68,13 @@ class _CreateEmployeeState extends State<CreateEmployee> {
 
     Provider.of<BranchDataProv>(context, listen: false)
         .getBranches(context,
-            Provider.of<AuthProv>(context, listen: false).authinfo.jwtToken)
+            Provider.of<AuthProv>(context, listen: false).authinfo!.jwtToken!)
         .then((value) {
       Provider.of<DeptDataProv>(context, listen: false)
-          .getDepts(authProv.authinfo.jwtToken, widget.empDets.branchId)
+          .getDepts(authProv.authinfo!.jwtToken!, widget.empDets!.branchId)
           .then((depList) {
         departmentsList = depList;
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
           setState(() {
             if (value && widget.empDets != null) {
               prefill();
@@ -92,25 +92,25 @@ class _CreateEmployeeState extends State<CreateEmployee> {
       imagee = 'https://www.nobatdeh.com/uploads/biz-logos/${widget.images}';
       print('$imagee');
     });
-    _nameC.text = widget.empDets.name;
-    _emailC.text = widget.empDets.email;
-    _passwordC.text = widget.empDets.password;
-    _phoneC.text = widget.empDets.phoneNo;
-    _counterC.text = widget.empDets.counterNumber?.toString();
-    employeeStatus = widget.empDets.empStatus == 0 ? false : true;
+    _nameC.text = widget.empDets!.name!;
+    _emailC.text = widget.empDets!.email!;
+    _passwordC.text = widget.empDets!.password!;
+    _phoneC.text = widget.empDets!.phoneNo!;
+    _counterC.text = widget.empDets!.counterNumber!.toString();
+    employeeStatus = widget.empDets!.empStatus == 0 ? false : true;
     branchesList.forEach((key, value) {
-      if (key == widget.empDets.branchId) {
+      if (key == widget.empDets!.branchId) {
         _chosenBranch = value;
-        chosenBranchId = widget.empDets.branchId;
+        chosenBranchId = widget.empDets!.branchId;
       }
     });
-    if (departmentsList.contains(widget.empDets.services) ||
-        departmentsList.contains(widget.empDets.departments)) {
-      _chosenDept = widget.empDets.departments == null
-          ? widget.empDets.services
-          : widget.empDets.departments;
+    if (departmentsList.contains(widget.empDets!.services) ||
+        departmentsList.contains(widget.empDets!.departments)) {
+      _chosenDept = widget.empDets!.departments == null
+          ? widget.empDets!.services
+          : widget.empDets!.departments;
     }
-    print(widget.empDets.services);
+    print(widget.empDets!.services);
   }
 
   @override
@@ -122,12 +122,12 @@ class _CreateEmployeeState extends State<CreateEmployee> {
       builder: (context, bdp, child) {
         branchesList = bdp.branches;
         if ((true)) {
-          bdp.branchesWithDetail?.forEach((element) {
-            if (authProv.authinfo.companyType == CompanyEnum.Token ||
-                authProv.authinfo.companyType == CompanyEnum.MultiToken) {
+          bdp.branchesWithDetail.forEach((element) {
+            if (authProv.authinfo!.companyType == CompanyEnum.Token ||
+                authProv.authinfo!.companyType == CompanyEnum.MultiToken) {
               if (element.branchId == widget.empDets?.branchId ||
                   element.branchId == chosenBranchId) {
-                couterCount = num.parse(element.counter);
+                couterCount = num.parse(element.counter!) as int;
               }
             }
           });
@@ -135,9 +135,11 @@ class _CreateEmployeeState extends State<CreateEmployee> {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-            appBar: widget.uporadd
+            appBar: widget.uporadd!
                 ? whiteAppBar(context, LocaleKeys.Update_Employee.tr())
-                : whiteAppBar(context, LocaleKeys.Create_Employee.tr()),
+                    as PreferredSizeWidget?
+                : whiteAppBar(context, LocaleKeys.Create_Employee.tr())
+                    as PreferredSizeWidget?,
             body: bdp.isLoading
                 ? Center(
                     child: CircularProgressIndicator(),
@@ -192,7 +194,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                       radius: 60,
                                                       backgroundImage:
                                                           FileImage(
-                                                        uploadedImageMob,
+                                                        uploadedImageMob!,
                                                       ),
                                                     )
                                                   : imagee != null
@@ -200,7 +202,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                           radius: 60,
                                                           backgroundImage:
                                                               NetworkImage(
-                                                                  imagee),
+                                                                  imagee!),
                                                         )
                                                       : SizedBox(),
                                               SizedBox(
@@ -235,13 +237,13 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                               ),
                                               _textField(LocaleKeys.Name.tr(),
                                                   _nameC, false),
-                                              widget.uporadd
+                                              widget.uporadd!
                                                   ? Container()
                                                   : _textField(
                                                       LocaleKeys.Email_ID.tr(),
                                                       _emailC,
                                                       true),
-                                              widget.uporadd
+                                              widget.uporadd!
                                                   ? Container()
                                                   : _textField(
                                                       LocaleKeys.Password.tr(),
@@ -256,7 +258,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                 child: Row(
                                                   children: [
                                                     Flexible(
-                                                      child: authProv.authinfo
+                                                      child: authProv.authinfo!
                                                                   .companyType ==
                                                               CompanyEnum
                                                                   .Booking
@@ -308,7 +310,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                     Expanded(
                                                         child: InkWell(
                                                       onTap: () async {
-                                                        if (authProv.authinfo
+                                                        if (authProv.authinfo!
                                                                 .companyType ==
                                                             CompanyEnum.Token) {
                                                           if (num.parse(_counterC
@@ -325,7 +327,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                           }
                                                         }
                                                         if (_formKey
-                                                            .currentState
+                                                            .currentState!
                                                             .validate()) {
                                                           if (_chosenBranch ==
                                                                   null ||
@@ -339,8 +341,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
                                                           bool success = await EmployeeOperationProv()
                                                               .createEmployee(
                                                                   authProv
-                                                                      .authinfo
-                                                                      .jwtToken,
+                                                                      .authinfo!
+                                                                      .jwtToken!,
                                                                   uploadedImageMob,
                                                                   getDetails(),
                                                                   filename
@@ -440,11 +442,11 @@ class _CreateEmployeeState extends State<CreateEmployee> {
         style: TextStyle(color: Colors.white),
         iconEnabledColor: Colors.black,
         items:
-            branchesList.values.map<DropdownMenuItem<String>>((String value) {
+            branchesList.values.map<DropdownMenuItem<String>>((String? value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
-              value,
+              value!,
               style: TextStyle(color: Colors.black),
             ),
           );
@@ -454,8 +456,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
         ),
-        onChanged: (String val) {
-          int _branchId;
+        onChanged: (String? val) {
+          int? _branchId;
 
           branchesList.forEach((key, value) {
             if (value == val) {
@@ -464,7 +466,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
             }
           });
           Provider.of<DeptDataProv>(context, listen: false).getDepts(
-              Provider.of<AuthProv>(context, listen: false).authinfo.jwtToken,
+              Provider.of<AuthProv>(context, listen: false).authinfo!.jwtToken!,
               _branchId);
           setState(() {
             _chosenBranch = val;
@@ -490,11 +492,11 @@ class _CreateEmployeeState extends State<CreateEmployee> {
         //elevation: 5,
         style: TextStyle(color: Colors.white),
         iconEnabledColor: Colors.black,
-        items: departmentsList.map<DropdownMenuItem<String>>((String value) {
+        items: departmentsList.map<DropdownMenuItem<String>>((String? value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
-              value,
+              value!,
               style: TextStyle(color: Colors.black),
             ),
           );
@@ -504,7 +506,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
         ),
-        onChanged: (String value) {
+        onChanged: (String? value) {
           setState(() {
             _chosenDept = value;
           });
@@ -523,7 +525,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: TextFormField(
         controller: controller,
-        validator: (value) => value.isEmpty ? "Please enter a $hintText" : null,
+        validator: (value) =>
+            value!.isEmpty ? "Please enter a $hintText" : null,
         decoration: InputDecoration(
           hintText: hintText,
           focusedBorder: InputBorder.none,
@@ -544,7 +547,8 @@ class _CreateEmployeeState extends State<CreateEmployee> {
       child: TextFormField(
         keyboardType: TextInputType.phone,
         controller: controller,
-        validator: (value) => value.isEmpty ? "Please enter a $hintText" : null,
+        validator: (value) =>
+            value!.isEmpty ? "Please enter a $hintText" : null,
         decoration: InputDecoration(
           hintText: hintText,
           focusedBorder: InputBorder.none,
@@ -556,7 +560,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
   }
 
   EmployeeModel getDetails() {
-    int _branchId;
+    int? _branchId;
 
     branchesList.forEach((key, value) {
       if (value == _chosenBranch) {
@@ -571,7 +575,7 @@ class _CreateEmployeeState extends State<CreateEmployee> {
             password: _passwordC.text,
             counterNumber: _counterC.text.length == 0 ? null : _counterC.text,
             branchId: _branchId,
-            employeeId: widget.empDets.employeeId,
+            employeeId: widget.empDets!.employeeId,
             empStatus: employeeStatus ? 1 : 0,
             req: 'update',
             services: _chosenDept,

@@ -7,9 +7,9 @@ import 'package:flutter/cupertino.dart';
 class DeptDataProv extends ChangeNotifier {
   bool isLoading = false;
   bool error = false;
-  List<String> deptsList = [];
+  List<String?> deptsList = [];
 
-  Future<List<String>> getDepts(String jwtToken, int branchId) async {
+  Future<List<String?>> getDepts(String jwtToken, int? branchId) async {
     print(jwtToken);
     var header = {
       'Content-Type': 'application/json',

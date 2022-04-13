@@ -1,22 +1,22 @@
 class BranchModel {
-  String branchName;
-  String phoneNo;
-  String addr1;
-  String addr2;
-  String city;
-  String postalCode;
-  String geoLoaction;
-  String province;
-  String workingHrs;
-  String services;
-  String timeZone;
-  String notify;
-  String bookingPerday;
-  String bookingPerhrs;
-  String reqType;
-  String threshold;
-  Map<String, dynamic> department;
-  String branchId;
+  String? branchName;
+  String? phoneNo;
+  String? addr1;
+  String? addr2;
+  String? city;
+  String? postalCode;
+  String? geoLoaction;
+  String? province;
+  String? workingHrs;
+  String? services;
+  String? timeZone;
+  String? notify;
+  String? bookingPerday;
+  String? bookingPerhrs;
+  String? reqType;
+  String? threshold;
+  Map<String, dynamic>? department;
+  String? branchId;
 
   BranchModel(
       {this.addr1,

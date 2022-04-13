@@ -6,46 +6,46 @@ part 'branch_resp_model.g.dart';
 @JsonSerializable()
 class BranchRespModel {
   @JsonKey(name: "bname")
-  String branchName;
+  String? branchName;
   @JsonKey(name: "bdesc")
-  String branchDesc;
+  String? branchDesc;
   @JsonKey(name: "phone_number")
-  String phoneNo;
+  String? phoneNo;
   @JsonKey(name: "address1")
-  String addr1;
+  String? addr1;
   @JsonKey(name: "address2")
-  String addr2;
+  String? addr2;
   @JsonKey(name: "city")
-  String city;
+  String? city;
   @JsonKey(name: "postalcode")
-  String postalCode;
+  String? postalCode;
   @JsonKey(name: "geolocation")
-  String geoLoaction;
+  String? geoLoaction;
   @JsonKey(name: "province")
-  String province;
+  String? province;
   @JsonKey(name: "profile_photo_url")
-  String profile_photo_url;
+  String? profile_photo_url;
   @JsonKey(name: "working_hours")
-  WorkingHrs workingHrs;
+  WorkingHrs? workingHrs;
   @JsonKey(name: "services")
-  Services services;
+  Services? services;
   @JsonKey(name: "timezone")
-  String timeZone;
+  String? timeZone;
   @JsonKey(name: "notify_time")
-  String notify;
+  String? notify;
   @JsonKey(name: "booking_per_day")
-  List<String>
+  List<String>?
       bookingPerday; // model me image daala hi nhi haiii bhaii kaise hoga
   @JsonKey(name: "per_day_hours")
-  List<String> bookingPerDayhrs;
+  List<String>? bookingPerDayhrs;
   @JsonKey(name: "threshold")
-  String threshold;
+  String? threshold;
   @JsonKey(name: "department")
-  List<String> department;
+  List<String>? department;
   @JsonKey(name: "id")
-  int branchId;
+  int? branchId;
   @JsonKey(name: "counter_count")
-  String counter;
+  String? counter;
 
   BranchRespModel(
       {this.addr1,
@@ -77,11 +77,11 @@ class BranchRespModel {
 
 @JsonSerializable()
 class Services {
-  List<String> rates;
+  List<String>? rates;
   @JsonKey(name: "services")
-  List<String> serviceNames;
+  List<String>? serviceNames;
   @JsonKey(name: "services_desc")
-  List<String> servicesDesc;
+  List<String>? servicesDesc;
 
   Services({this.rates, this.serviceNames, this.servicesDesc});
 
@@ -94,19 +94,19 @@ class Services {
 @JsonSerializable()
 class WorkingHrs {
   @JsonKey(name: "monday")
-  WhrsTiming monday;
+  WhrsTiming? monday;
   @JsonKey(name: "tuesday")
-  WhrsTiming tuesday;
+  WhrsTiming? tuesday;
   @JsonKey(name: "wednesday")
-  WhrsTiming wednesday;
+  WhrsTiming? wednesday;
   @JsonKey(name: "thursday")
-  WhrsTiming thursday;
+  WhrsTiming? thursday;
   @JsonKey(name: "friday")
-  WhrsTiming friday;
+  WhrsTiming? friday;
   @JsonKey(name: "saturday")
-  WhrsTiming saturday;
+  WhrsTiming? saturday;
   @JsonKey(name: "sunday")
-  WhrsTiming sunday;
+  WhrsTiming? sunday;
 
   WorkingHrs(
       {this.friday,
@@ -125,8 +125,8 @@ class WorkingHrs {
 
 @JsonSerializable()
 class WhrsTiming {
-  String startTime;
-  String endTime;
+  String? startTime;
+  String? endTime;
 
   WhrsTiming({this.endTime, this.startTime});
 

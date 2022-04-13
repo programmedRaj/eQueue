@@ -58,7 +58,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     onTap: () async {
                       AppToast.showSucc(LocaleKeys.Changing_password.tr());
                       bool success = await ChangePassProv().execChangePass(
-                          authProv.authinfo.jwtToken,
+                          authProv.authinfo!.jwtToken!,
                           _currentPassController.text,
                           _newPassController.text);
                       if (success) {

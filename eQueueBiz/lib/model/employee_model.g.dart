@@ -9,17 +9,17 @@ part of 'employee_model.dart';
 EmployeeModel _$EmployeeModelFromJson(Map<String, dynamic> json) {
   return EmployeeModel(
     branchId: EmployeeModel._fromJson(json['branch_id']),
-    departments: json['departments'] as String,
-    email: json['email'] as String,
-    employeeId: json['employee_id'] as int,
-    name: json['name'] as String,
-    password: json['password'] as String,
-    phoneNo: json['number'] as String,
-    profileUrl: json['profile_url'] as String,
-    req: json['req'] as String,
-    counterNumber: json['counter_number'] as String,
-    services: json['services'] as String,
-    empStatus: json['emp_status'] as int,
+    departments: json['departments'] as String?,
+    email: json['email'] as String?,
+    employeeId: json['employee_id'] as int?,
+    name: json['name'] as String?,
+    password: json['password'] as String?,
+    phoneNo: json['number'] as String?,
+    profileUrl: json['profile_url'] as String?,
+    req: json['req'] as String?,
+    counterNumber: json['counter_number'] as String?,
+    services: json['services'] as String?,
+    empStatus: json['emp_status'] as int?,
   );
 }
 

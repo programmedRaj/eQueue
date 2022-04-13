@@ -16,7 +16,7 @@ class EmpDataProv extends ChangeNotifier {
   List employeeratings = [];
   List emoplyeratingcount = [];
 
-  getEmployeesWithDetailAcctoBranch(String jwtToken, int branchId) async {
+  getEmployeesWithDetailAcctoBranch(String jwtToken, int? branchId) async {
     var header = {
       'Content-Type': 'application/json',
       'Authorization': jwtToken

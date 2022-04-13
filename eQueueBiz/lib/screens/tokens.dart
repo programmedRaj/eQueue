@@ -11,9 +11,9 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Tokens extends StatefulWidget {
-  final int bid;
-  final String token;
-  final String bname;
+  final int? bid;
+  final String? token;
+  final String? bname;
   Tokens({this.bid, this.token, this.bname});
   @override
   _TokensState createState() => _TokensState();
@@ -26,9 +26,9 @@ class _TokensState extends State<Tokens> {
     'completed',
     'cancelled',
   ];
-  String _chosen;
-  AuthProv authProv;
-  String selectedDept;
+  String? _chosen;
+  AuthProv? authProv;
+  String? selectedDept;
   List<TokenAll> tok = [];
 
   @override
@@ -39,7 +39,7 @@ class _TokensState extends State<Tokens> {
 
   callapi() {
     Provider.of<DeptDataProv>(context, listen: false)
-        .getDepts(widget.token, widget.bid);
+        .getDepts(widget.token!, widget.bid);
     Provider.of<AllToken>(context, listen: false)
         .getTokendets(widget.bid.toString(), widget.bname, widget.token);
   }
@@ -139,7 +139,7 @@ class _TokensState extends State<Tokens> {
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
         ),
-        onChanged: (String value) {
+        onChanged: (String? value) {
           setState(() {
             selectedDept = value;
           });
@@ -206,7 +206,7 @@ class _TokensState extends State<Tokens> {
                       fontSize: 14,
                       fontWeight: FontWeight.w500),
                 ),
-                onChanged: (String value) {
+                onChanged: (String? value) {
                   setState(() {
                     _chosen = value;
                   });
@@ -217,12 +217,12 @@ class _TokensState extends State<Tokens> {
                     status: value,
                     bookingid: tokenL.id,
                     userid: tokenL.userid,
-                    dep: tokenL.department.substring(0, 3),
+                    dep: tokenL.department!.substring(0, 3),
                     dt: tokenL.devicetoken,
                   )
                       .then((v) {
                     Provider.of<DeptDataProv>(context, listen: false)
-                        .getDepts(widget.token, widget.bid);
+                        .getDepts(widget.token!, widget.bid);
                     Provider.of<AllToken>(context, listen: false).getTokendets(
                         widget.bid.toString(), widget.bname, widget.token);
                   });

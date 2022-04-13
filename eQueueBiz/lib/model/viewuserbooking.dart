@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 class ViewUserBooking {
-  final String add1;
-  final String add2;
-  final String city;
-  final String province;
-  final String name;
-  final String phone;
-  final String postal;
-  final String profileimg;
-  final String id;
+  final String? add1;
+  final String? add2;
+  final String? city;
+  final String? province;
+  final String? name;
+  final String? phone;
+  final String? postal;
+  final String? profileimg;
+  final String? id;
   ViewUserBooking({
     this.add1,
     this.add2,
@@ -23,15 +23,15 @@ class ViewUserBooking {
   });
 
   ViewUserBooking copyWith({
-    String add1,
-    String add2,
-    String city,
-    String province,
-    String name,
-    String phone,
-    String postal,
-    String profileimg,
-    String id,
+    String? add1,
+    String? add2,
+    String? city,
+    String? province,
+    String? name,
+    String? phone,
+    String? postal,
+    String? profileimg,
+    String? id,
   }) {
     return ViewUserBooking(
       add1: add1 ?? this.add1,
@@ -74,8 +74,8 @@ class ViewUserBooking {
     };
   }
 
-  factory ViewUserBooking.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory ViewUserBooking.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return ViewUserBooking();
 
     return ViewUserBooking(
       add1: map['add1'],

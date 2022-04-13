@@ -8,12 +8,12 @@ import 'package:equeuebiz/constants/api_constant.dart';
 import 'package:equeuebiz/model/branch_model.dart';
 
 class CreateEditBanchProv extends ChangeNotifier {
-  List<int> comlogoint;
+  List<int>? comlogoint;
   Future<bool> execCreateComppany(BranchModel branch, String token,
-      {Uint8List companyLogo,
-      File companyLogoMob,
-      String filename,
-      String imagesdef}) async {
+      {Uint8List? companyLogo,
+      File? companyLogoMob,
+      String? filename,
+      String? imagesdef}) async {
     var postUri = Uri.parse(BranchApi.createEditBranch);
     var header = {
       'Content-Type': 'multipart/form-data',
@@ -48,28 +48,28 @@ class CreateEditBanchProv extends ChangeNotifier {
     print('bkp -- ${json.encode(branch.bookingPerday)}');
     print('pd -- ${json.encode(branch.bookingPerDayhrs)}');
 
-    request.fields["bname"] = branch.branchName;
-    request.fields["bdesc"] = branch.branchDesc;
-    request.fields["pnum"] = branch.phoneNo;
-    request.fields["addr1"] = branch.addr1;
-    request.fields["addr2"] = branch.addr2;
-    request.fields["city"] = branch.city;
-    request.fields["postalcode"] = branch.postalCode;
-    request.fields["geolocation"] = branch.geoLoaction;
-    request.fields["province"] = branch.province;
+    request.fields["bname"] = branch.branchName!;
+    request.fields["bdesc"] = branch.branchDesc!;
+    request.fields["pnum"] = branch.phoneNo!;
+    request.fields["addr1"] = branch.addr1!;
+    request.fields["addr2"] = branch.addr2!;
+    request.fields["city"] = branch.city!;
+    request.fields["postalcode"] = branch.postalCode!;
+    request.fields["geolocation"] = branch.geoLoaction!;
+    request.fields["province"] = branch.province!;
     request.fields["w_hrs"] = jsonEncode(branch.workingHrs);
     request.fields["services"] = jsonEncode(branch.services);
-    request.fields["timezone"] = branch.timeZone;
-    request.fields["notify"] = branch.notify;
+    request.fields["timezone"] = branch.timeZone!;
+    request.fields["notify"] = branch.notify!;
     request.fields["booking_perday"] = jsonEncode(branch.bookingPerday);
     request.fields["booking_perhrs"] = jsonEncode(branch.bookingPerDayhrs);
-    request.fields["req"] = branch.reqType;
+    request.fields["req"] = branch.reqType!;
     request.fields["threshold"] = 'empty'; // empty
     request.fields["department"] = jsonEncode(branch.department);
-    request.fields["branchid"] = branch.branchId;
-    request.fields["counter_count"] = branch.counterCount;
+    request.fields["branchid"] = branch.branchId!;
+    request.fields["counter_count"] = branch.counterCount!;
 
-    request.fields["counter"] = branch.counter;
+    request.fields["counter"] = branch.counter!;
 
     var resp = await request.send();
 

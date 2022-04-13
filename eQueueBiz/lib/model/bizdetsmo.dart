@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 class BizDets {
-  String acn;
-  String acnum;
-  String bname;
-  String descr;
-  String earned;
-  String id;
-  String ifsc;
-  String moneyearned;
-  String name;
-  String profileurl;
-  String type;
+  String? acn;
+  String? acnum;
+  String? bname;
+  String? descr;
+  String? earned;
+  String? id;
+  String? ifsc;
+  String? moneyearned;
+  String? name;
+  String? profileurl;
+  String? type;
   BizDets({
     this.acn,
     this.acnum,
@@ -27,17 +27,17 @@ class BizDets {
   });
 
   BizDets copyWith({
-    String acn,
-    String acnum,
-    String bname,
-    String descr,
-    String earned,
-    String id,
-    String ifsc,
-    String moneyearned,
-    String name,
-    String profileurl,
-    String type,
+    String? acn,
+    String? acnum,
+    String? bname,
+    String? descr,
+    String? earned,
+    String? id,
+    String? ifsc,
+    String? moneyearned,
+    String? name,
+    String? profileurl,
+    String? type,
   }) {
     return BizDets(
       acn: acn ?? this.acn,
@@ -86,8 +86,8 @@ class BizDets {
     };
   }
 
-  factory BizDets.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory BizDets.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return BizDets();
 
     return BizDets(
       acn: map['acn'],

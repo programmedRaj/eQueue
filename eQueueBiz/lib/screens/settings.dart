@@ -4,7 +4,8 @@ import 'package:equeuebiz/screens/login_page.dart';
 import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:equeuebiz/widgets/appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:grouped_buttons_ns/grouped_buttons_ns.dart';
+// import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -16,8 +17,8 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String lang;
-  String _picked;
+  String? lang;
+  String? _picked;
 
   langs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -38,7 +39,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     langs();
     return Scaffold(
-      appBar: whiteAppBar(context, "Settings"),
+      appBar: whiteAppBar(context, "Settings") as PreferredSizeWidget?,
       body: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 1200),
         child: Column(

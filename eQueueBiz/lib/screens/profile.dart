@@ -10,17 +10,17 @@ import 'package:equeuebiz/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  String acn;
-  String acnum;
-  String bname;
-  String descr;
-  String earned;
-  String id;
-  String ifsc;
-  String moneyearned;
-  String name;
-  String profileurl;
-  String type;
+  String? acn;
+  String? acnum;
+  String? bname;
+  String? descr;
+  String? earned;
+  String? id;
+  String? ifsc;
+  String? moneyearned;
+  String? name;
+  String? profileurl;
+  String? type;
   var usertype;
   Profile(
       {this.acn,
@@ -40,19 +40,19 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String acn;
-  String acnum;
-  String bname;
-  String descr;
-  String earned;
-  String id;
-  String ifsc;
-  String moneyearned;
-  String name;
-  String profileurl;
-  String type;
+  String? acn;
+  String? acnum;
+  String? bname;
+  String? descr;
+  String? earned;
+  String? id;
+  String? ifsc;
+  String? moneyearned;
+  String? name;
+  String? profileurl;
+  String? type;
 
-  AuthProv a;
+  AuthProv? a;
 
   @override
   void initState() {
@@ -77,7 +77,7 @@ class _ProfileState extends State<Profile> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: whiteAppBar(context, LocaleKeys.Profile.tr()),
+        appBar: whiteAppBar(context, LocaleKeys.Profile.tr()) as PreferredSizeWidget?,
         body: Container(
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
@@ -152,7 +152,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _textField(String hintText, String val) {
+  Widget _textField(String hintText, String? val) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(

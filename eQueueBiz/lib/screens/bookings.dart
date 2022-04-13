@@ -11,9 +11,9 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Bookings extends StatefulWidget {
-  final String branchid;
-  final String branchname;
-  final String token;
+  final String? branchid;
+  final String? branchname;
+  final String? token;
   Bookings({this.branchid, this.branchname, this.token});
   @override
   _BookingsState createState() => _BookingsState();
@@ -21,9 +21,9 @@ class Bookings extends StatefulWidget {
 
 class _BookingsState extends State<Bookings> {
   DateTime _selectedDate = DateTime.now();
-  AuthProv authProv;
-  String _chosen;
-  String choose;
+  AuthProv? authProv;
+  String? _chosen;
+  String? choose;
   @override
   void initState() {
     super.initState();
@@ -178,7 +178,7 @@ class _BookingsState extends State<Bookings> {
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: AppColor.mainBlue)),
                   child: Text(
-                    bd.slots,
+                    bd.slots!,
                     style: TextStyle(
                         color: AppColor.mainBlue, fontWeight: FontWeight.bold),
                   ),
@@ -193,7 +193,7 @@ class _BookingsState extends State<Bookings> {
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: AppColor.mainBlue)),
                   child: Text(
-                    bd.department,
+                    bd.department!,
                     style: TextStyle(
                         color: AppColor.mainBlue, fontWeight: FontWeight.bold),
                   ),
@@ -238,7 +238,7 @@ class _BookingsState extends State<Bookings> {
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
                       ).tr(),
-                      onChanged: (String value) {
+                      onChanged: (String? value) {
                         setState(() {
                           _chosen = value;
                         });
@@ -249,7 +249,7 @@ class _BookingsState extends State<Bookings> {
                           status: value,
                           bookingid: bd.id,
                           userid: bd.userid,
-                          dep: bd.department.substring(0, 3),
+                          dep: bd.department!.substring(0, 3),
                           dt: bd.devicetoken,
                         );
                       },

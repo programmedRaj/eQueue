@@ -8,41 +8,41 @@ part of 'branch_resp_model.dart';
 
 BranchRespModel _$BranchRespModelFromJson(Map<String, dynamic> json) {
   return BranchRespModel(
-    addr1: json['address1'] as String,
-    addr2: json['address2'] as String,
-    bookingPerday: (jsonDecode(json['booking_per_day'] ?? '[]') as List)
+    addr1: json['address1'] as String?,
+    addr2: json['address2'] as String?,
+    bookingPerday: (jsonDecode(json['booking_per_day'] ?? '[]') as List?)
         ?.map((e) => e as String)
-        ?.toList(),
-    bookingPerDayhrs: (jsonDecode(json['per_day_hours'] ?? '[]') as List)
+        .toList(),
+    bookingPerDayhrs: (jsonDecode(json['per_day_hours'] ?? '[]') as List?)
         ?.map((e) => e as String)
-        ?.toList(),
-    branchId: json['id'] as int,
-    branchName: json['bname'] as String,
-    branchDesc: json['bdescription'] as String,
-    city: json['city'] as String,
+        .toList(),
+    branchId: json['id'] as int?,
+    branchName: json['bname'] as String?,
+    branchDesc: json['bdescription'] as String?,
+    city: json['city'] as String?,
     department: getDepts(json),
-    geoLoaction: json['geolocation'] as String,
-    notify: json['notify_time'] as String,
-    phoneNo: json['phone_number'] as String,
-    postalCode: json['postalcode'] as String,
-    province: json['province'] as String,
+    geoLoaction: json['geolocation'] as String?,
+    notify: json['notify_time'] as String?,
+    phoneNo: json['phone_number'] as String?,
+    postalCode: json['postalcode'] as String?,
+    province: json['province'] as String?,
     services: json['services'] == null
         ? null
         : Services.fromJson(
             jsonDecode(json['services']) as Map<String, dynamic>),
-    threshold: json['threshold'] as String,
-    timeZone: json['timezone'] as String,
+    threshold: json['threshold'] as String?,
+    timeZone: json['timezone'] as String?,
     workingHrs: json['working_hours'] == null
         ? null
         : WorkingHrs.fromJson(
             jsonDecode(json['working_hours']) as Map<String, dynamic>),
-    counter: json['counter_count'] as String,
+    counter: json['counter_count'] as String?,
   );
 }
 
 List<String> getDepts(Map json) {
   var temp;
-  List tempList = [];
+  List? tempList = [];
   List<String> tempLString = [];
   temp = (jsonDecode(json['department'] ?? "{}"));
   tempList = temp['department'];
@@ -77,10 +77,10 @@ Map<String, dynamic> _$BranchRespModelToJson(BranchRespModel instance) =>
 
 Services _$ServicesFromJson(Map<String, dynamic> json) {
   return Services(
-    rates: (json['rates'] as List)?.map((e) => e as String)?.toList(),
-    serviceNames: (json['services'] as List)?.map((e) => e as String)?.toList(),
+    rates: (json['rates'] as List?)?.map((e) => e as String).toList(),
+    serviceNames: (json['services'] as List?)?.map((e) => e as String).toList(),
     servicesDesc:
-        (json['services_desc'] as List)?.map((e) => e as String)?.toList(),
+        (json['services_desc'] as List?)?.map((e) => e as String).toList(),
   );
 }
 
@@ -129,8 +129,8 @@ Map<String, dynamic> _$WorkingHrsToJson(WorkingHrs instance) =>
 
 WhrsTiming _$WhrsTimingFromJson(Map<String, dynamic> json) {
   return WhrsTiming(
-    endTime: json['endTime'] as String,
-    startTime: json['startTime'] as String,
+    endTime: json['endTime'] as String?,
+    startTime: json['startTime'] as String?,
   );
 }
 

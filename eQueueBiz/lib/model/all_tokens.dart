@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 class TokenAll {
-  String branchid;
-  String counterno;
-  String createtime;
-  String department;
-  String devicetoken;
-  String employeeid;
-  String id;
-  String insurance;
-  String slots;
-  String status;
-  String userid;
+  String? branchid;
+  String? counterno;
+  String? createtime;
+  String? department;
+  String? devicetoken;
+  String? employeeid;
+  String? id;
+  String? insurance;
+  String? slots;
+  String? status;
+  String? userid;
   TokenAll({
     this.branchid,
     this.counterno,
@@ -27,17 +27,17 @@ class TokenAll {
   });
 
   TokenAll copyWith({
-    String branchid,
-    String counterno,
-    String createtime,
-    String department,
-    String devicetoken,
-    String employeeid,
-    String id,
-    String insurance,
-    String slots,
-    String status,
-    String userid,
+    String? branchid,
+    String? counterno,
+    String? createtime,
+    String? department,
+    String? devicetoken,
+    String? employeeid,
+    String? id,
+    String? insurance,
+    String? slots,
+    String? status,
+    String? userid,
   }) {
     return TokenAll(
       branchid: branchid ?? this.branchid,
@@ -86,9 +86,9 @@ class TokenAll {
     };
   }
 
-  factory TokenAll.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-  
+  factory TokenAll.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return TokenAll();
+
     return TokenAll(
       branchid: map['branchid'],
       counterno: map['counterno'],
@@ -106,7 +106,8 @@ class TokenAll {
 
   String toJson() => json.encode(toMap());
 
-  factory TokenAll.fromJson(String source) => TokenAll.fromMap(json.decode(source));
+  factory TokenAll.fromJson(String source) =>
+      TokenAll.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -116,33 +117,33 @@ class TokenAll {
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
-  
+
     return o is TokenAll &&
-      o.branchid == branchid &&
-      o.counterno == counterno &&
-      o.createtime == createtime &&
-      o.department == department &&
-      o.devicetoken == devicetoken &&
-      o.employeeid == employeeid &&
-      o.id == id &&
-      o.insurance == insurance &&
-      o.slots == slots &&
-      o.status == status &&
-      o.userid == userid;
+        o.branchid == branchid &&
+        o.counterno == counterno &&
+        o.createtime == createtime &&
+        o.department == department &&
+        o.devicetoken == devicetoken &&
+        o.employeeid == employeeid &&
+        o.id == id &&
+        o.insurance == insurance &&
+        o.slots == slots &&
+        o.status == status &&
+        o.userid == userid;
   }
 
   @override
   int get hashCode {
     return branchid.hashCode ^
-      counterno.hashCode ^
-      createtime.hashCode ^
-      department.hashCode ^
-      devicetoken.hashCode ^
-      employeeid.hashCode ^
-      id.hashCode ^
-      insurance.hashCode ^
-      slots.hashCode ^
-      status.hashCode ^
-      userid.hashCode;
+        counterno.hashCode ^
+        createtime.hashCode ^
+        department.hashCode ^
+        devicetoken.hashCode ^
+        employeeid.hashCode ^
+        id.hashCode ^
+        insurance.hashCode ^
+        slots.hashCode ^
+        status.hashCode ^
+        userid.hashCode;
   }
 }

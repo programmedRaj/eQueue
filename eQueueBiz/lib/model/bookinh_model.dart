@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 class BookingModel {
-  String branchid;
-  String counter;
-  String createtime;
-  String department;
-  String devicetoken;
-  String id;
-  String insurance;
-  String slots;
-  String status;
-  String userid;
-  String employeeid;
+  String? branchid;
+  String? counter;
+  String? createtime;
+  String? department;
+  String? devicetoken;
+  String? id;
+  String? insurance;
+  String? slots;
+  String? status;
+  String? userid;
+  String? employeeid;
   BookingModel({
     this.branchid,
     this.counter,
@@ -27,17 +27,17 @@ class BookingModel {
   });
 
   BookingModel copyWith({
-    String branchid,
-    String counter,
-    String createtime,
-    String department,
-    String devicetoken,
-    String id,
-    String insurance,
-    String slots,
-    String status,
-    String userid,
-    String employeeid,
+    String? branchid,
+    String? counter,
+    String? createtime,
+    String? department,
+    String? devicetoken,
+    String? id,
+    String? insurance,
+    String? slots,
+    String? status,
+    String? userid,
+    String? employeeid,
   }) {
     return BookingModel(
       branchid: branchid ?? this.branchid,
@@ -86,8 +86,8 @@ class BookingModel {
     };
   }
 
-  factory BookingModel.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory BookingModel.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return BookingModel();
 
     return BookingModel(
       branchid: map['branchid'],

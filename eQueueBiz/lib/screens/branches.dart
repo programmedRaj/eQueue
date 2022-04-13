@@ -17,14 +17,14 @@ class Branches extends StatefulWidget {
 }
 
 class _BranchesState extends State<Branches> {
-  AuthProv authProv;
+  late AuthProv authProv;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Provider.of<BranchDataProv>(context, listen: false)
-          .getbranchesWithDetail(authProv.authinfo.jwtToken);
+          .getbranchesWithDetail(authProv.authinfo!.jwtToken!);
     });
   }
 
@@ -83,7 +83,7 @@ class _BranchesState extends State<Branches> {
                             : Container(
                                 height: size.height,
                                 child: ListView.builder(
-                                    itemCount: value.branchesWithDetail?.length,
+                                    itemCount: value.branchesWithDetail.length,
                                     itemBuilder: (context, index) =>
                                         _branchCard(
                                             branchName: value
@@ -93,7 +93,7 @@ class _BranchesState extends State<Branches> {
                                                 .branchesWithDetail[index]
                                                 .branchId,
                                             jwtToken:
-                                                authProv.authinfo.jwtToken,
+                                                authProv.authinfo!.jwtToken,
                                             branchDets:
                                                 value.branchesWithDetail[index],
                                             profile_url:
@@ -164,17 +164,17 @@ class _BranchesState extends State<Branches> {
   }
 
   Widget _branchCard(
-      {String branchName,
-      int branchId,
-      String jwtToken,
-      BranchRespModel branchDets,
-      String profile_url,
-      String address1,
-      String address2,
-      String province,
-      String city,
-      String countrycode,
-      String phone}) {
+      {String? branchName,
+      int? branchId,
+      String? jwtToken,
+      BranchRespModel? branchDets,
+      String? profile_url,
+      String? address1,
+      String? address2,
+      String? province,
+      String? city,
+      String? countrycode,
+      String? phone}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
       child: Container(
@@ -230,7 +230,7 @@ class _BranchesState extends State<Branches> {
                       bool success = await Provider.of<BranchDataProv>(context,
                               listen: false)
                           .execDeleteBranch(
-                              jwtToken, branchId, branchName, branchDets);
+                              jwtToken!, branchId, branchName!, branchDets);
                       if (success) {
                         Provider.of<BranchDataProv>(context, listen: false)
                             .getbranchesWithDetail(jwtToken);

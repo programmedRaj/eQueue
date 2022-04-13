@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';
 
 class AllToken with ChangeNotifier {
-  getTokendets(String bid, String bname, String token) async {
+  getTokendets(String bid, String? bname, String? token) async {
     var map = new Map<String, dynamic>();
     map['branch_id'] = bid.toString();
     map['branch_name'] = bname.toString();
@@ -18,7 +18,7 @@ class AllToken with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(TokenApi.tokendetails),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
@@ -55,17 +55,17 @@ class AllToken with ChangeNotifier {
 
   List<TokenAll> get toks => tok;
   addtoken({
-    String branchid,
-    String counterno,
-    String createtime,
-    String department,
-    String devicetoken,
-    String employeeid,
-    String id,
-    String insurance,
-    String slots,
-    String status,
-    String userid,
+    String? branchid,
+    String? counterno,
+    String? createtime,
+    String? department,
+    String? devicetoken,
+    String? employeeid,
+    String? id,
+    String? insurance,
+    String? slots,
+    String? status,
+    String? userid,
   }) {
     toks.add(TokenAll(
       branchid: branchid,

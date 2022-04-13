@@ -9,30 +9,29 @@ part of 'auth_model.dart';
 AuthModel _$AuthModelFromJson(Map<String, dynamic> json) {
   return AuthModel(
     companyType: _$enumDecodeNullable(_$CompanyEnumEnumMap, json['comp_type']),
-    jwtToken: json['token'] as String,
+    jwtToken: json['token'] as String?,
     userType: _$enumDecodeNullable(_$UserEnumEnumMap, json['type']),
   );
 }
 
 Map<String, dynamic> _$AuthModelToJson(AuthModel instance) => <String, dynamic>{
       'token': instance.jwtToken,
-      'comp_type': _$CompanyEnumEnumMap[instance.companyType],
-      'type': _$UserEnumEnumMap[instance.userType],
+      'comp_type': _$CompanyEnumEnumMap[instance.companyType!],
+      'type': _$UserEnumEnumMap[instance.userType!],
     };
 
-T _$enumDecode<T>(
+T? _$enumDecode<T>(
   Map<T, dynamic> enumValues,
   dynamic source, {
-  T unknownValue,
+  T? unknownValue,
 }) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
+  final value =
+      enumValues.entries.singleWhereOrNull((e) => e.value == source)?.key;
 
   if (value == null && unknownValue == null) {
     throw ArgumentError('`$source` is not one of the supported values: '
@@ -41,10 +40,10 @@ T _$enumDecode<T>(
   return value ?? unknownValue;
 }
 
-T _$enumDecodeNullable<T>(
+T? _$enumDecodeNullable<T>(
   Map<T, dynamic> enumValues,
   dynamic source, {
-  T unknownValue,
+  T? unknownValue,
 }) {
   if (source == null) {
     return null;

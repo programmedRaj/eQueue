@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equeuebiz/constants/appcolor.dart';
 import 'package:equeuebiz/constants/textstyle.dart';
 import 'package:equeuebiz/enum/company_enum.dart';
@@ -48,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     var password = prefs.get('pass');
 
     Provider.of<AuthProv>(context, listen: false)
-        .execLogin(email, password)
+        .execLogin(email as String?, password as String?)
         .then((value) {
       Provider.of<BizUserDets>(context, listen: false).getBizUserdets();
     });
@@ -94,8 +96,8 @@ class _HomePageState extends State<HomePage> {
             ), */
                           body: Consumer<BookingBranDet>(
                             builder: (context, valueb, child) {
-                              print(authProv.authinfo.userType);
-                              print(authProv.authinfo.companyType);
+                              print(authProv.authinfo!.userType);
+                              print(authProv.authinfo!.companyType);
                               return SafeArea(
                                 child: Container(
                                     alignment: Alignment.center,
@@ -106,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           _profileWidget(authProv, bizdets.ss,
                                               bizdets.cname),
-                                          authProv.authinfo.userType ==
+                                          authProv.authinfo!.userType ==
                                                   UserEnum.Company
                                               ? bizdets.counterbranches == null
                                                   ? _branchEmployee(0, 0)
@@ -118,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                                             child: SingleChildScrollView(
                                               child: Column(
                                                 children: [
-                                                  authProv.authinfo.userType ==
+                                                  authProv.authinfo!.userType ==
                                                           UserEnum.Company
                                                       ? InkWell(
                                                           onTap: () {
@@ -138,9 +140,9 @@ class _HomePageState extends State<HomePage> {
                                                                       .Edit_Manage_branches_details
                                                                   .tr()))
                                                       : SizedBox(),
-                                                  authProv.authinfo.userType ==
+                                                  authProv.authinfo!.userType ==
                                                           UserEnum.Employee
-                                                      ? authProv.authinfo
+                                                      ? authProv.authinfo!
                                                                   .companyType ==
                                                               CompanyEnum
                                                                   .MultiToken
@@ -151,8 +153,8 @@ class _HomePageState extends State<HomePage> {
                                                                     MaterialPageRoute(
                                                                         builder: (context) =>
                                                                             MultiTokens(
-                                                                              bid: int.parse(valueb.bid),
-                                                                              token: authProv.authinfo.jwtToken,
+                                                                              bid: int.parse(valueb.bid!),
+                                                                              token: authProv.authinfo!.jwtToken,
                                                                               bname: valueb.bname,
                                                                             )));
                                                               },
@@ -165,9 +167,9 @@ class _HomePageState extends State<HomePage> {
                                                                       .tr()))
                                                           : SizedBox()
                                                       : SizedBox(),
-                                                  authProv.authinfo.userType ==
+                                                  authProv.authinfo!.userType ==
                                                           UserEnum.Employee
-                                                      ? authProv.authinfo
+                                                      ? authProv.authinfo!
                                                                   .companyType ==
                                                               CompanyEnum.Token
                                                           ? InkWell(
@@ -177,8 +179,8 @@ class _HomePageState extends State<HomePage> {
                                                                     MaterialPageRoute(
                                                                         builder: (context) =>
                                                                             Tokens(
-                                                                              bid: int.parse(valueb.bid),
-                                                                              token: authProv.authinfo.jwtToken,
+                                                                              bid: int.parse(valueb.bid!),
+                                                                              token: authProv.authinfo!.jwtToken,
                                                                               bname: valueb.bname,
                                                                             )));
                                                               },
@@ -191,9 +193,9 @@ class _HomePageState extends State<HomePage> {
                                                                       .tr()))
                                                           : SizedBox()
                                                       : SizedBox(),
-                                                  authProv.authinfo.userType ==
+                                                  authProv.authinfo!.userType ==
                                                           UserEnum.Employee
-                                                      ? authProv.authinfo
+                                                      ? authProv.authinfo!
                                                                   .companyType ==
                                                               CompanyEnum
                                                                   .Booking
@@ -210,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                                                                         branchname:
                                                                             valueb.bname,
                                                                         token: authProv
-                                                                            .authinfo
+                                                                            .authinfo!
                                                                             .jwtToken,
                                                                       ),
                                                                     ));
@@ -224,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                                                                       .tr()))
                                                           : SizedBox()
                                                       : SizedBox(),
-                                                  authProv.authinfo.userType ==
+                                                  authProv.authinfo!.userType ==
                                                           UserEnum.Company
                                                       ? InkWell(
                                                           onTap: () {
@@ -292,7 +294,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _profileWidget(AuthProv authProv, List<BizDets> b, String name) {
+  Widget _profileWidget(AuthProv authProv, List<BizDets> b, String? name) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
       child: Row(
@@ -302,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Profile(
-                    usertype: authProv.authinfo.userType,
+                    usertype: authProv.authinfo!.userType,
                     acn: b[0].acn,
                     acnum: b[0].acnum,
                     bname: b[0].bname,
@@ -369,17 +371,16 @@ class _HomePageState extends State<HomePage> {
               new GestureDetector(
                 onTap: () {
                   SystemNavigator.pop();
-                  return Future.value(false);
                 },
                 child: Text("YES"),
               ),
             ],
           ),
-        ) ??
+        ) as FutureOr<bool>? ??
         false;
   }
 
-  Widget _branchEmployee(int cb, int ce) {
+  Widget _branchEmployee(int? cb, int? ce) {
     return Container(
       decoration: BoxDecoration(
           color: AppColor.mainBlue,

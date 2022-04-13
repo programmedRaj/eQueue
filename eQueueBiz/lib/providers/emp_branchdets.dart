@@ -8,15 +8,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';
 
 class BookingBranDet with ChangeNotifier {
-  String bid;
-  String get bids => bid;
-  String bname;
-  String get bnames => bname;
-  getbookdets(String token) async {
+  String? bid;
+  String? get bids => bid;
+  String? bname;
+  String? get bnames => bname;
+  getbookdets(String? token) async {
     var response = await retry(
       () => http.get(
         Uri.parse(Employee.empdet),
-        headers: {"Authorization": token},
+        headers: {"Authorization": token!},
       ).timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );

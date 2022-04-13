@@ -20,13 +20,13 @@ class CreateBranchWeb extends StatefulWidget {
 }
 
 class _CreateBranchWebState extends State<CreateBranchWeb> {
-  Uint8List uploadedImage;
+  Uint8List? uploadedImage;
   bool _isErr = false;
   List<String> departments = [];
   TextEditingController _departmentController = TextEditingController();
-  List<TimeOfDay> startTimeList = [null, null, null, null, null, null, null];
-  List<TimeOfDay> endTimeList = [null, null, null, null, null, null, null];
-  List<String> noOfBookings = [null, null, null, null, null, null, null];
+  List<TimeOfDay?> startTimeList = [null, null, null, null, null, null, null];
+  List<TimeOfDay?> endTimeList = [null, null, null, null, null, null, null];
+  List<String?> noOfBookings = [null, null, null, null, null, null, null];
   List<String> servicesName = [];
   List<String> serviceRates = [];
   List<String> servicesDesc = [];
@@ -55,7 +55,7 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
   TextEditingController _serviceRateController = TextEditingController();
   TextEditingController _serviceDescController = TextEditingController();
 
-  AuthProv authProv;
+  late AuthProv authProv;
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
-          appBar: whiteAppBar(context, "Create Branch"),
+          appBar: whiteAppBar(context, "Create Branch") as PreferredSizeWidget?,
           body: Container(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
@@ -86,7 +86,7 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
                     children: [
                       uploadedImage != null
                           ? Image.memory(
-                              uploadedImage,
+                              uploadedImage!,
                               height: size.height * 0.3,
                               width: size.width * 0.2,
                               fit: BoxFit.fill,
@@ -118,10 +118,10 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
                       _textField("State/Province", _provinceController),
                       _textField("Contact", _phoneNoController),
                       _textField("Postal Code", _postalCodeController),
-                      authProv.authinfo.companyType == CompanyEnum.Booking
+                      authProv.authinfo!.companyType == CompanyEnum.Booking
                           ? SizedBox()
                           : _textField("No. of counters", _counterController),
-                      authProv.authinfo.companyType != CompanyEnum.Booking
+                      authProv.authinfo!.companyType != CompanyEnum.Booking
                           ? _textField(
                               "Threshold in minutes", _thresholdController)
                           : SizedBox(),
@@ -130,7 +130,7 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
                       SizedBox(
                         height: 8,
                       ),
-                      authProv.authinfo.companyType == CompanyEnum.Booking
+                      authProv.authinfo!.companyType == CompanyEnum.Booking
                           ? _addServicesWidget()
                           : Column(
                               children: [
@@ -313,7 +313,7 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
   }
 
   Widget _workingDay(
-      String weekDay, TimeOfDay startTime, TimeOfDay endTime, int index) {
+      String weekDay, TimeOfDay? startTime, TimeOfDay? endTime, int index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 50),
       child: Column(
@@ -326,7 +326,7 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
             constraints: BoxConstraints(maxWidth: 1200),
             child: Row(
               mainAxisAlignment:
-                  authProv.authinfo.companyType == CompanyEnum.Booking
+                  authProv.authinfo!.companyType == CompanyEnum.Booking
                       ? MainAxisAlignment.spaceAround
                       : MainAxisAlignment.spaceBetween,
               children: [
@@ -379,11 +379,11 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
                   ),
                 ),
                 SizedBox(
-                  width: authProv.authinfo.companyType == CompanyEnum.Booking
+                  width: authProv.authinfo!.companyType == CompanyEnum.Booking
                       ? MediaQuery.of(context).size.width * 0.05
                       : 0,
                 ),
-                authProv.authinfo.companyType == CompanyEnum.Booking
+                authProv.authinfo!.companyType == CompanyEnum.Booking
                     ? Container(
                         width: MediaQuery.of(context).size.width * 0.2,
                         margin: const EdgeInsets.symmetric(
@@ -450,7 +450,7 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
                     AppToast.showErr("Atleast 1 service is required");
                     return;
                   }
-                  value.execCreateComppany(temp, authProv.authinfo.jwtToken,
+                  value.execCreateComppany(temp, authProv.authinfo!.jwtToken!,
                       companyLogo: uploadedImage);
                 },
                 child: Container(
@@ -477,7 +477,7 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
     );
   }
 
-  BranchModel getDetails() {
+  BranchModel? getDetails() {
     var temp = getbookingPerDayHrs();
     if (temp == null) {
       return null;
@@ -503,12 +503,12 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
         });
   }
 
-  List<String> getbookingPerDayHrs() {
+  List<String>? getbookingPerDayHrs() {
     List<String> perDayHrs = [];
     for (var i = 0; i < startTimeList.length; i++) {
       if ((startTimeList[i] != null && endTimeList[i] != null)) {
         perDayHrs.insert(i,
-            "${endTimeList[i].hour - startTimeList[i]?.hour}:${endTimeList[i].hour - startTimeList[i]?.hour}");
+            "${endTimeList[i]!.hour - startTimeList[i]!.hour}:${endTimeList[i]!.hour - startTimeList[i]!.hour}");
       } else if (startTimeList[i] == null && endTimeList[i] != null) {
         AppToast.showErr("Check your timing field");
 
@@ -535,14 +535,14 @@ class _CreateBranchWebState extends State<CreateBranchWeb> {
         return {
           "startTime": startTimeList[i] == null
               ? null
-              : startTimeList[i]?.hour.toString() +
+              : startTimeList[i]!.hour.toString() +
                   ":" +
-                  startTimeList[i]?.minute.toString(),
+                  startTimeList[i]!.minute.toString(),
           "endTime": endTimeList[i] == null
               ? null
-              : endTimeList[i]?.hour.toString() +
+              : endTimeList[i]!.hour.toString() +
                   ":" +
-                  endTimeList[i]?.minute.toString()
+                  endTimeList[i]!.minute.toString()
         };
       });
     }

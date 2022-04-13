@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailControler = TextEditingController();
   TextEditingController passwordControler = TextEditingController();
-  String lang;
+  String? lang;
 
   @override
   void initState() {

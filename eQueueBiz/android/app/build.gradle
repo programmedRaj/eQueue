@@ -32,7 +32,7 @@ def keystoreProperties = new Properties()
    }
 
    android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -46,7 +46,7 @@ def keystoreProperties = new Properties()
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "bido.eqbiz.com"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true

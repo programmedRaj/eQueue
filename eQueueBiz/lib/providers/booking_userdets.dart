@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:retry/retry.dart';
 
 class BookingDetUserDets with ChangeNotifier {
-  getbookdets(String bid, String userid, String token) async {
+  getbookdets(String? bid, String? userid, String? token) async {
     print(userid);
     var map = new Map<String, dynamic>();
     map['branch_id'] = bid;
@@ -18,7 +18,7 @@ class BookingDetUserDets with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(BookingApi.viewbookinguserdetails),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
@@ -45,15 +45,15 @@ class BookingDetUserDets with ChangeNotifier {
   List<ViewUserBooking> get views => view;
 
   void adddet({
-    String add1,
-    String add2,
-    String city,
-    String province,
-    String postal,
-    String namee,
-    String phone,
-    String profileurl,
-    String id,
+    String? add1,
+    String? add2,
+    String? city,
+    String? province,
+    String? postal,
+    String? namee,
+    String? phone,
+    String? profileurl,
+    String? id,
   }) {
     views.add(ViewUserBooking(
       add1: add1,

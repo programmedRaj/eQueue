@@ -8,28 +8,28 @@ part of 'branch_model.dart';
 
 BranchModel _$BranchModelFromJson(Map<String, dynamic> json) {
   return BranchModel(
-    addr1: json['addr1'] as String,
-    addr2: json['addr2'] as String,
+    addr1: json['addr1'] as String?,
+    addr2: json['addr2'] as String?,
     bookingPerday:
-        (json['bookingPerday'] as List)?.map((e) => e as String)?.toList(),
+        (json['bookingPerday'] as List?)?.map((e) => e as String).toList(),
     bookingPerDayhrs:
-        (json['bookingPerDayhrs'] as List)?.map((e) => e as String)?.toList(),
-    branchId: json['branchId'] as String,
-    branchName: json['branchName'] as String,
-    city: json['city'] as String,
-    department: json['department'] as Map<String, dynamic>,
-    geoLoaction: json['geoLoaction'] as String,
-    notify: json['notify'] as String,
-    phoneNo: json['phoneNo'] as String,
-    postalCode: json['postalCode'] as String,
-    province: json['province'] as String,
-    reqType: json['reqType'] as String,
-    services: json['services'] as Map<String, dynamic>,
-    threshold: json['threshold'] as String,
-    timeZone: json['timeZone'] as String,
-    workingHrs: json['workingHrs'] as Map<String, dynamic>,
-    counter: json['counter'] as String,
-    branchDesc: json['bdesc'] as String,
+        (json['bookingPerDayhrs'] as List?)?.map((e) => e as String).toList(),
+    branchId: json['branchId'] as String?,
+    branchName: json['branchName'] as String?,
+    city: json['city'] as String?,
+    department: json['department'] as Map<String, dynamic>?,
+    geoLoaction: json['geoLoaction'] as String?,
+    notify: json['notify'] as String?,
+    phoneNo: json['phoneNo'] as String?,
+    postalCode: json['postalCode'] as String?,
+    province: json['province'] as String?,
+    reqType: json['reqType'] as String?,
+    services: json['services'] as Map<String, dynamic>?,
+    threshold: json['threshold'] as String?,
+    timeZone: json['timeZone'] as String?,
+    workingHrs: json['workingHrs'] as Map<String, dynamic>?,
+    counter: json['counter'] as String?,
+    branchDesc: json['bdesc'] as String?,
   );
 }
 

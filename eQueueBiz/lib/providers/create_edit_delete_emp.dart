@@ -6,8 +6,8 @@ import 'package:equeuebiz/services/app_toast.dart';
 import 'package:http/http.dart' as http;
 
 class EmployeeOperationProv {
-  Future<bool> createEmployee(String token, File profilepic,
-      EmployeeModel employeedets, String filename, String imagedesc) async {
+  Future<bool> createEmployee(String token, File? profilepic,
+      EmployeeModel employeedets, String filename, String? imagedesc) async {
     print('here');
     var postUri = Uri.parse(Employee.createEditDeleteEmp);
     var header = {
@@ -27,7 +27,7 @@ class EmployeeOperationProv {
     } else {
       if (imagedesc != null) {
         request.files.add(http.MultipartFile.fromBytes(
-            'profile_url', profilepic ?? [],
+            'profile_url', profilepic as List<int>? ?? [],
             filename: "$imagedesc"));
       }
       request.files
@@ -35,17 +35,17 @@ class EmployeeOperationProv {
     }
     print('------${employeedets.employeeId.toString()}');
 
-    request.fields["email"] = employeedets.email;
-    request.fields["name"] = employeedets.name;
-    request.fields["password"] = employeedets.password;
+    request.fields["email"] = employeedets.email!;
+    request.fields["name"] = employeedets.name!;
+    request.fields["password"] = employeedets.password!;
     request.fields["branch_id"] = employeedets.branchId.toString();
-    request.fields['number'] = employeedets.phoneNo;
+    request.fields['number'] = employeedets.phoneNo!;
 
     request.fields["counter_number"] = employeedets.counterNumber.toString();
-    request.fields["departments"] = employeedets.departments;
-    request.fields["req"] = employeedets.req;
+    request.fields["departments"] = employeedets.departments!;
+    request.fields["req"] = employeedets.req!;
     request.fields["employee_id"] = employeedets.employeeId.toString();
-    request.fields['services'] = employeedets.services;
+    request.fields['services'] = employeedets.services!;
     request.fields['emp_status'] = employeedets.empStatus.toString();
 
     var resp = await request.send();
@@ -70,8 +70,8 @@ class EmployeeOperationProv {
 
   Future<bool> execDeleteEmployee(
     String jwtToken,
-    int employeeId,
-    String filename,
+    int? employeeId,
+    String? filename,
   ) async {
     AppToast.showSucc("Deleting Employee ");
     var header = {

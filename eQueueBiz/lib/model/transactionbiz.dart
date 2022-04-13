@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 class Transbiz {
-  final String status;
-  final String amount;
-  final String txnid;
-  final String userid;
+  final String? status;
+  final String? amount;
+  final String? txnid;
+  final String? userid;
   Transbiz({
     this.status,
     this.amount,
@@ -13,10 +13,10 @@ class Transbiz {
   });
 
   Transbiz copyWith({
-    String status,
-    String amount,
-    String txnid,
-    String userid,
+    String? status,
+    String? amount,
+    String? txnid,
+    String? userid,
   }) {
     return Transbiz(
       status: status ?? this.status,
@@ -44,8 +44,8 @@ class Transbiz {
     };
   }
 
-  factory Transbiz.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory Transbiz.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return Transbiz();
 
     return Transbiz(
       status: map['status'],

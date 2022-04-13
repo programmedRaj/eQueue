@@ -12,7 +12,7 @@ import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Biztrans with ChangeNotifier {
-  biztrans(String compid) async {
+  biztrans(String? compid) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.get('tokens');
     var map = new Map<String, dynamic>();
@@ -21,7 +21,7 @@ class Biztrans with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(CompAPi.biztrans),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token as String}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
@@ -48,10 +48,10 @@ class Biztrans with ChangeNotifier {
   List<Transbiz> get trans => tb;
 
   void addtb({
-    String status,
-    String amount,
-    String txnid,
-    String userid,
+    String? status,
+    String? amount,
+    String? txnid,
+    String? userid,
   }) {
     trans.add(Transbiz(
       amount: amount,

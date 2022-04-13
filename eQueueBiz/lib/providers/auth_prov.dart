@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProv extends ChangeNotifier {
-  AuthModel authinfo;
+  AuthModel? authinfo;
   bool isLoading = false;
-  Future<bool> execLogin(String email, String password) async {
+  Future<bool> execLogin(String? email, String? password) async {
     print('here');
     print(email);
     print(password);
@@ -37,9 +37,9 @@ class AuthProv extends ChangeNotifier {
         print('hee ee ee $decodedResp');
         authinfo = AuthModel.fromJson(decodedResp);
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('tokens', authinfo.jwtToken);
+        prefs.setString('tokens', authinfo!.jwtToken!);
 
-        print("token : " + authinfo.jwtToken);
+        print("token : " + authinfo!.jwtToken!);
         isLoading = false;
         notifyListeners();
         return true;

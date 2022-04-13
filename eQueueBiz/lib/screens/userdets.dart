@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class UserDets extends StatefulWidget {
-  final String bid;
-  final String userid;
-  final String token;
+  final String? bid;
+  final String? userid;
+  final String? token;
   UserDets({this.bid, this.userid, this.token});
   @override
   _UserDetsState createState() => _UserDetsState();
@@ -29,7 +29,7 @@ class _UserDetsState extends State<UserDets> {
       builder: (context, value, child) {
         print(value.view.length.toString());
         return Scaffold(
-          appBar: whiteAppBar(context, 'User Details'),
+          appBar: whiteAppBar(context, 'User Details') as PreferredSizeWidget?,
           body: SingleChildScrollView(
               child: value.view.length <= 0
                   ? Container(
@@ -46,7 +46,7 @@ class _UserDetsState extends State<UserDets> {
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey[300],
+                            color: Colors.grey[300]!,
                             blurRadius: 4,
                           )
                         ],

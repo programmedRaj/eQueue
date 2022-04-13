@@ -9,8 +9,9 @@ import 'package:equeuebiz/screens/create_employee.dart';
 import 'package:equeuebiz/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
+// import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 import 'homepage.dart';
 
 class Employees extends StatefulWidget {
@@ -19,16 +20,16 @@ class Employees extends StatefulWidget {
 }
 
 class _EmployeesState extends State<Employees> {
-  String _chosenBranch;
-  Map<int, String> branchesList = {};
-  AuthProv authProv;
+  String? _chosenBranch;
+  Map<int?, String?> branchesList = {};
+  late AuthProv authProv;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Provider.of<BranchDataProv>(context, listen: false)
-          .getBranches(context, authProv.authinfo.jwtToken);
+          .getBranches(context, authProv.authinfo!.jwtToken!);
     });
   }
 
@@ -218,11 +219,11 @@ class _EmployeesState extends State<Employees> {
         style: TextStyle(color: Colors.white),
         iconEnabledColor: Colors.black,
         items:
-            branchesList.values.map<DropdownMenuItem<String>>((String value) {
+            branchesList.values.map<DropdownMenuItem<String>>((String? value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
-              value,
+              value!,
               style: TextStyle(color: Colors.black),
             ),
           );
@@ -232,8 +233,8 @@ class _EmployeesState extends State<Employees> {
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
         ).tr(),
-        onChanged: (String val) {
-          int _branchId;
+        onChanged: (String? val) {
+          int? _branchId;
           branchesList.forEach((key, value) {
             if (val == value) {
               _branchId = key;
@@ -241,7 +242,7 @@ class _EmployeesState extends State<Employees> {
           });
           Provider.of<EmpDataProv>(context, listen: false)
               .getEmployeesWithDetailAcctoBranch(
-                  authProv.authinfo.jwtToken, _branchId);
+                  authProv.authinfo!.jwtToken!, _branchId);
           setState(() {
             _chosenBranch = val;
           });
@@ -250,7 +251,7 @@ class _EmployeesState extends State<Employees> {
     );
   }
 
-  Widget _employeeCard(EmployeeModel empdets, String images, double ratings,
+  Widget _employeeCard(EmployeeModel empdets, String? images, double ratings,
       double ratingcounts) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
@@ -271,8 +272,8 @@ class _EmployeesState extends State<Employees> {
               height: 10,
             ),
             empdets.services != null
-                ? Text('${LocaleKeys.Service_Name.tr()} ' + empdets.services)
-                : Text(empdets.departments),
+                ? Text('${LocaleKeys.Service_Name.tr()} ' + empdets.services!)
+                : Text(empdets.departments!),
             Divider(),
             Text(
               "${LocaleKeys.PhoneNo.tr()} : ${empdets.phoneNo}",
@@ -303,13 +304,13 @@ class _EmployeesState extends State<Employees> {
                   icon: Icon(Icons.delete),
                   onPressed: () async {
                     bool success = await EmployeeOperationProv()
-                        .execDeleteEmployee(authProv.authinfo.jwtToken,
+                        .execDeleteEmployee(authProv.authinfo!.jwtToken!,
                             empdets.employeeId, images);
 
                     if (success) {
                       Provider.of<EmpDataProv>(context, listen: false)
                           .getEmployeesWithDetailAcctoBranch(
-                              authProv.authinfo.jwtToken, empdets.branchId);
+                              authProv.authinfo!.jwtToken!, empdets.branchId);
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -330,11 +331,9 @@ class _EmployeesState extends State<Employees> {
     print(ratings);
     return SmoothStarRating(
         allowHalfRating: false,
-        onRated: (v) {},
         starCount: 5,
         rating: ratings,
         size: 30.0,
-        isReadOnly: true,
         filledIconData: Icons.star,
         halfFilledIconData: Icons.star_half,
         color: Colors.yellow,

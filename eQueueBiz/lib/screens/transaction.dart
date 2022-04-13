@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:equeuebiz/providers/mybiztrans.dart';
 
 class TransactionDets extends StatefulWidget {
-  final String id;
+  final String? id;
   const TransactionDets({
-    Key key,
+    Key? key,
     this.id,
   }) : super(key: key);
 
@@ -32,7 +32,7 @@ class _TransactionDetsState extends State<TransactionDets> {
     return Consumer<Biztrans>(
       builder: (context, value, child) {
         return Scaffold(
-          appBar: whiteAppBar(context, 'Transaction'),
+          appBar: whiteAppBar(context, 'Transaction') as PreferredSizeWidget?,
           body: value.trans == null || value.trans.length == 0
               ? Container(
                   child: Center(

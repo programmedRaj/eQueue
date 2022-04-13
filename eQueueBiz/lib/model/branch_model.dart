@@ -4,27 +4,27 @@ part 'branch_model.g.dart';
 
 @JsonSerializable()
 class BranchModel {
-  String branchName;
-  String phoneNo;
-  String addr1;
-  String addr2;
-  String city;
-  String postalCode;
-  String geoLoaction;
-  String province;
-  Map<dynamic, dynamic> workingHrs;
-  Map<dynamic, dynamic> services;
-  String timeZone;
-  String notify;
-  List<String> bookingPerday;
-  List<String> bookingPerDayhrs;
-  String reqType;
-  String threshold;
-  Map<String, dynamic> department;
-  String counterCount;
-  String branchId;
-  String counter;
-  String branchDesc;
+  String? branchName;
+  String? phoneNo;
+  String? addr1;
+  String? addr2;
+  String? city;
+  String? postalCode;
+  String? geoLoaction;
+  String? province;
+  Map<dynamic, dynamic>? workingHrs;
+  Map<dynamic, dynamic>? services;
+  String? timeZone;
+  String? notify;
+  List<String?>? bookingPerday;
+  List<String>? bookingPerDayhrs;
+  String? reqType;
+  String? threshold;
+  Map<String, dynamic>? department;
+  String? counterCount;
+  String? branchId;
+  String? counter;
+  String? branchDesc;
 
   BranchModel(
       {this.addr1,

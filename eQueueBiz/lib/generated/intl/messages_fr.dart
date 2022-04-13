@@ -19,7 +19,7 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fr';
 
-  final messages = _notInlinedMessages(_notInlinedMessages);
+  final Map<String, dynamic> messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "alreadyacc" : MessageLookupByLibrary.simpleMessage("Vous avez déjà un compte"),
     "alreadytoken" : MessageLookupByLibrary.simpleMessage("Vous avez déjà un jeton de cette succursale"),

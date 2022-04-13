@@ -9,7 +9,7 @@ enum CompanyEnum {
   MultiToken
 }
 
-String companyEnumToString(CompanyEnum companyEnum) {
+String? companyEnumToString(CompanyEnum companyEnum) {
   Map<CompanyEnum, String> helper = {
     CompanyEnum.Booking: "booking",
     CompanyEnum.MultiToken: "multitoken",

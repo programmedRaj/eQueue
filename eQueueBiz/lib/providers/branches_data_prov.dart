@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class BranchDataProv extends ChangeNotifier {
   bool isLoading = true;
   bool error = false;
-  Map<int, String> branches = {};
+  Map<int?, String?> branches = {};
   bool noBranches = false;
   List<BranchRespModel> branchesWithDetail = [];
   List branchWithImages = [];
@@ -102,8 +102,8 @@ class BranchDataProv extends ChangeNotifier {
     } */
   }
 
-  Future<bool> execDeleteBranch(String jwtToken, int branchId,
-      String branchName, BranchRespModel branchDets) async {
+  Future<bool> execDeleteBranch(String jwtToken, int? branchId,
+      String branchName, BranchRespModel? branchDets) async {
     AppToast.showSucc("Deleting branch $branchName");
     var header = {
       'Content-Type': 'application/json',

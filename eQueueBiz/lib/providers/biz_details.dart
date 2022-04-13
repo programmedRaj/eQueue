@@ -10,12 +10,12 @@ import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BizUserDets with ChangeNotifier {
-  int counterbranches;
-  int get counterbranchess => counterbranches;
-  int counteremps;
-  int get counterempss => counteremps;
-  String cname;
-  String get cn => cname;
+  int? counterbranches;
+  int? get counterbranchess => counterbranches;
+  int? counteremps;
+  int? get counterempss => counteremps;
+  String? cname;
+  String? get cn => cname;
 
   getBizUserdets() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -25,7 +25,7 @@ class BizUserDets with ChangeNotifier {
     var response = await retry(
       () => http.get(
         Uri.parse(CompAPi.getbizdets),
-        headers: {"Authorization": token},
+        headers: {"Authorization": token as String},
       ).timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
@@ -55,17 +55,17 @@ class BizUserDets with ChangeNotifier {
   List<BizDets> get ss => s;
 
   void addets({
-    String acn,
-    String acnum,
-    String bname,
-    String descr,
-    String earned,
-    String id,
-    String ifsc,
-    String moneyearned,
-    String name,
-    String profileurl,
-    String type,
+    String? acn,
+    String? acnum,
+    String? bname,
+    String? descr,
+    String? earned,
+    String? id,
+    String? ifsc,
+    String? moneyearned,
+    String? name,
+    String? profileurl,
+    String? type,
   }) {
     ss.add(BizDets(
         acn: acn,
