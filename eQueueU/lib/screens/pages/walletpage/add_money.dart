@@ -1,143 +1,189 @@
+import 'dart:convert';
+
 import 'package:eQueue/components/color.dart';
-import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/provider/paymentdone.dart';
-import 'package:eQueue/screens/pages/walletpage/stripe-pay.dart';
-import 'package:eQueue/screens/pages/walletpage/wallet_page.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
-import 'package:provider/provider.dart';
-import 'package:stripe_payment/stripe_payment.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:grouped_buttons_ns/grouped_buttons_ns.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:provider/provider.dart';
 
 class ExistingCardsPage extends StatefulWidget {
-  ExistingCardsPage({Key key}) : super(key: key);
+  const ExistingCardsPage({Key? key}) : super(key: key);
+
   @override
-  ExistingCardsPageState createState() => ExistingCardsPageState();
+  _ExistingCardsPageState createState() => _ExistingCardsPageState();
 }
 
-class ExistingCardsPageState extends State<ExistingCardsPage> {
-  String amount = "1";
+class _ExistingCardsPageState extends State<ExistingCardsPage> {
+  static String secret =
+      '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';
+  String? amount = '10';
 
-  Future payViaNewCard(BuildContext context, String amount) async {
-    var amt = int.parse(amount) * 100;
-    var response = await StripeService.payWithNewCard(
-        amount: amt.toString(), currency: 'USD');
-
-    print(response.success);
-    if (response.success) {
-      await Provider.of<PaymentDoneProvider>(context, listen: false)
-          .paymentdone(amount: amount, status: response.success)
-          .then((value) {
-        if (value == 200) {
-          AppToast.showSucc(LocaleKeys.PaymentDone.tr());
-          Navigator.of(context).pop();
-          // .push(MaterialPageRoute(builder: (ctx) => Wallet()));
-        } else {
-          AppToast.showErr(LocaleKeys.Somethingwentwrong.tr());
-        }
-      });
-    } else {
-      AppToast.showErr(LocaleKeys.PaymentFailed.tr());
-    }
-
-    // Scaffold.of(context).showSnackBar(SnackBar(
-    //     content: Text(response.message),
-    //     duration: new Duration(
-    //         milliseconds: response.success == true ? 1200 : 3000)));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    StripeService.init();
-  }
-
-  payViaExistingCard(BuildContext context, card) async {
-    var expiryArr = card['expiryDate'].split('/');
-    CreditCard stripeCard = CreditCard(
-      number: card['cardNumber'],
-      expMonth: int.parse(expiryArr[0]),
-      expYear: int.parse(expiryArr[1]),
-    );
-    var response = await StripeService.payViaExistingCard(
-        amount: '2500', currency: 'INR', card: stripeCard);
-
-    Scaffold.of(context)
-        .showSnackBar(SnackBar(
-          content: Text(response.message),
-          duration: new Duration(milliseconds: 1200),
-        ))
-        .closed
-        .then((_) {
-      // Navigator.pop(context);
-    });
-  }
-
+  Map<String, dynamic>? paymentIntentData;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(LocaleKeys.Payment).tr(),
-          // actions: [
-          //   IconButton(
-          //       onPressed: () {
-          //         payViaNewCard(context);
-          //       },
-          //       icon: Icon(Icons.add))
-          // ],
-        ),
-        body: Container(
-          margin: EdgeInsets.all(40),
-          decoration: BoxDecoration(
-              color: myColor[100],
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey[600],
-                  blurRadius: 0.6,
-                )
-              ]),
-          height: MediaQuery.of(context).size.height * 0.4,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.only(left: 40, bottom: 20),
-                child: RadioButtonGroup(
-                  orientation: GroupedButtonsOrientation.HORIZONTAL,
-                  margin: const EdgeInsets.only(left: 12.0),
-                  onSelected: (String selected) => setState(() {
-                    amount = selected;
-                    print(selected);
-                  }),
-                  labels: <String>["10", "20", "50", "100"],
-                  picked: amount,
-                  itemBuilder: (Radio rb, Text txt, int i) {
-                    return Column(
-                      children: <Widget>[
-                        Icon(Icons.public),
-                        rb,
-                        txt,
-                      ],
-                    );
-                  },
+      appBar: AppBar(
+        title: Text('Pay Now'),
+      ),
+      body: Column(
+        children: [
+          Center(
+            child: RadioButtonGroup(
+              orientation: GroupedButtonsOrientation.HORIZONTAL,
+              margin: const EdgeInsets.only(left: 12.0),
+              onSelected: (String selected) => setState(() {
+                amount = selected;
+                print(selected);
+              }),
+              labels: <String>["10", "20", "50", "100"],
+              picked: amount,
+              itemBuilder: (Radio rb, Text txt, int i) {
+                return Column(
+                  children: <Widget>[
+                    rb,
+                    txt,
+                  ],
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          InkWell(
+            onTap: () async {
+              await makePayment();
+            },
+            child: Container(
+              height: 50,
+              width: 200,
+              color: myColor[150],
+              child: Center(
+                child: Text(
+                  'Add',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (amount != null || amount != '0') {
-                      payViaNewCard(context, amount);
-                    } else {
-                      AppToast.showErr(LocaleKeys.EnterAmount.tr());
-                    }
-                  },
-                  child: Text(LocaleKeys.addmoney).tr())
-            ],
+            ),
           ),
-        ));
+        ],
+      ),
+    );
+  }
+
+  Future<void> makePayment() async {
+    try {
+      paymentIntentData = await createPaymentIntent(
+          amount!, 'USD'); //json.decode(response.body);
+      // print('Response body==>${response.body.toString()}');
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret:
+                      paymentIntentData!['client_secret'],
+                  applePay: true,
+                  googlePay: true,
+                  testEnv: true,
+                  style: ThemeMode.dark,
+                  merchantCountryCode: 'US',
+                  merchantDisplayName: 'ANNIE'))
+          .then((value) {});
+
+      ///now finally display payment sheeet
+
+      displayPaymentSheet();
+    } catch (e, s) {
+      print('exception:$e$s');
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance
+          .presentPaymentSheet(
+              parameters: PresentPaymentSheetParameters(
+        clientSecret: paymentIntentData!['client_secret'],
+        confirmPayment: true,
+      ))
+          .then((newValue) {
+        print('payment intent' + paymentIntentData!['id'].toString());
+        print(
+            'payment intent' + paymentIntentData!['client_secret'].toString());
+        print('payment intent' + paymentIntentData!['amount'].toString());
+        print('payment intent' + paymentIntentData.toString());
+        //orderPlaceApi(paymentIntentData!['id'].toString());
+        Provider.of<PaymentDoneProvider>(context, listen: false).paymentdone(
+          amount: amount,
+          status: true,
+        );
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(LocaleKeys.PaymentDone.tr())));
+
+        paymentIntentData = null;
+      }).onError((error, stackTrace) {
+        Provider.of<PaymentDoneProvider>(context, listen: false).paymentdone(
+          amount: amount,
+          status: false,
+        );
+
+        print('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(LocaleKeys.PaymentFailed.tr())));
+      });
+    } on StripeException catch (e) {
+      Provider.of<PaymentDoneProvider>(context, listen: false).paymentdone(
+        amount: amount,
+        status: false,
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(LocaleKeys.PaymentFailed.tr())));
+      print('Exception/DISPLAYPAYMENTSHEET==> $e');
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                content: Text("Cancelled "),
+              ));
+    } catch (e) {
+      print('$e');
+      Provider.of<PaymentDoneProvider>(context, listen: false).paymentdone(
+        amount: amount,
+        status: false,
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(LocaleKeys.PaymentFailed.tr())));
+    }
+  }
+
+  //  Future<Map<String, dynamic>>
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': calculateAmount(amount),
+        'currency': currency,
+        'payment_method_types[]': 'card'
+      };
+      print(body);
+      var response = await http.post(
+          Uri.parse('https://api.stripe.com/v1/payment_intents'),
+          body: body,
+          headers: {
+            'Authorization': 'Bearer $secret',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          });
+      print('Create Intent reponse ===> ${response.body.toString()}');
+      return jsonDecode(response.body);
+    } catch (err) {
+      print('err charging user: ${err.toString()}');
+    }
+  }
+
+  calculateAmount(String amount) {
+    final a = (int.parse(amount)) * 100;
+    return a.toString();
   }
 }

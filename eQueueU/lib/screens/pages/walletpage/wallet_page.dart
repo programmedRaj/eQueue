@@ -29,7 +29,6 @@ class _WalletState extends State<Wallet> {
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
-            leading: Container(),
             title: Text(LocaleKeys.yourwallet).tr(),
           ),
           body: RefreshIndicator(

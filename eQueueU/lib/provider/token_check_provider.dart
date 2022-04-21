@@ -13,7 +13,7 @@ class TokenChecker with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
 
   Future checkToken(
-      {String branchname, int branchid, String tokenorbooking}) async {
+      {String? branchname, int? branchid, String? tokenorbooking}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     print(tokenorbooking);
@@ -27,7 +27,7 @@ class TokenChecker with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.tb_check),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );

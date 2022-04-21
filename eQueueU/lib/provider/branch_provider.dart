@@ -15,7 +15,7 @@ class BranchProvider extends ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
 
   Future getBranches(
-      {int id, bool sort, String sortby, String ascdsc, String type}) async {
+      {int? id, required bool sort, String? sortby, String? ascdsc, String? type}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     var map = new Map<String, dynamic>();
@@ -36,11 +36,11 @@ class BranchProvider extends ChangeNotifier {
               headers: sort
                   ? {
                       // "Content-Type": "application/json",
-                      "Authorization": token
+                      "Authorization": token!
                     }
                   : {
                       "Content-Type": "application/json",
-                      "Authorization": token
+                      "Authorization": token!
                     },
               body: sort ? map : bodymsg)
           .timeout(Duration(seconds: 5)),
@@ -142,28 +142,28 @@ class BranchProvider extends ChangeNotifier {
   // }
 
   void branchesadd({
-    int id,
-    int companyid,
-    String address1,
-    String address2,
-    String bname,
-    String bdesc,
-    String bookingperday,
-    String city,
-    String countercount,
-    String department,
-    String geolocation,
-    String moneyearned,
-    String notifytime,
-    String perdayhours,
-    String phonenumber,
-    String postalcode,
-    String profilephotourl,
-    String province,
-    String services,
-    String threshold,
-    String timezone,
-    String workinghours,
+    int? id,
+    int? companyid,
+    String? address1,
+    String? address2,
+    String? bname,
+    String? bdesc,
+    String? bookingperday,
+    String? city,
+    String? countercount,
+    String? department,
+    String? geolocation,
+    String? moneyearned,
+    String? notifytime,
+    String? perdayhours,
+    String? phonenumber,
+    String? postalcode,
+    String? profilephotourl,
+    String? province,
+    String? services,
+    String? threshold,
+    String? timezone,
+    String? workinghours,
   }) {
     branches.add(BranchModel(
         address1: address1,

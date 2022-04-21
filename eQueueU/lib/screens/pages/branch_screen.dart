@@ -9,16 +9,16 @@ import 'package:eQueue/screens/pages/book_appointment.dart';
 import 'package:eQueue/screens/pages/book_token.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
+import 'package:grouped_buttons_ns/grouped_buttons_ns.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class BranchScreen extends StatefulWidget {
-  final int id;
-  final String comp_type;
-  final String companyname;
-  final String comp_ins;
-  final String compid;
+  final int? id;
+  final String? comp_type;
+  final String? companyname;
+  final String? comp_ins;
+  final String? compid;
 
   BranchScreen({
     this.id,
@@ -32,10 +32,10 @@ class BranchScreen extends StatefulWidget {
 }
 
 class _BranchScreenState extends State<BranchScreen> {
-  int sizz;
+  int? sizz;
   String searchval = "";
   List<BranchModel> branchsearch = [];
-  String noprod;
+  String? noprod;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -63,24 +63,24 @@ class _BranchScreenState extends State<BranchScreen> {
       if (v != null) {
         branchsearch.clear();
         for (int i = 0; i < branch.length; i++) {
-          if (branch[i].bname.toLowerCase().contains(v) ||
-              branch[i].bname.toUpperCase().contains(v) ||
-              branch[i].bname.contains(v) ||
-              branch[i].city.toLowerCase().contains(v) ||
-              branch[i].city.toUpperCase().contains(v) ||
-              branch[i].city.contains(v) ||
-              branch[i].address1.toLowerCase().contains(v) ||
-              branch[i].address1.toUpperCase().contains(v) ||
-              branch[i].address1.contains(v) ||
-              branch[i].address2.toLowerCase().contains(v) ||
-              branch[i].address2.toUpperCase().contains(v) ||
-              branch[i].address2.contains(v) ||
-              branch[i].postalcode.toLowerCase().contains(v) ||
-              branch[i].postalcode.toUpperCase().contains(v) ||
-              branch[i].postalcode.contains(v) ||
-              branch[i].phonenumber.toLowerCase().contains(v) ||
-              branch[i].phonenumber.toUpperCase().contains(v) ||
-              branch[i].phonenumber.contains(v)) {
+          if (branch[i].bname!.toLowerCase().contains(v) ||
+              branch[i].bname!.toUpperCase().contains(v) ||
+              branch[i].bname!.contains(v) ||
+              branch[i].city!.toLowerCase().contains(v) ||
+              branch[i].city!.toUpperCase().contains(v) ||
+              branch[i].city!.contains(v) ||
+              branch[i].address1!.toLowerCase().contains(v) ||
+              branch[i].address1!.toUpperCase().contains(v) ||
+              branch[i].address1!.contains(v) ||
+              branch[i].address2!.toLowerCase().contains(v) ||
+              branch[i].address2!.toUpperCase().contains(v) ||
+              branch[i].address2!.contains(v) ||
+              branch[i].postalcode!.toLowerCase().contains(v) ||
+              branch[i].postalcode!.toUpperCase().contains(v) ||
+              branch[i].postalcode!.contains(v) ||
+              branch[i].phonenumber!.toLowerCase().contains(v) ||
+              branch[i].phonenumber!.toUpperCase().contains(v) ||
+              branch[i].phonenumber!.contains(v)) {
             branchsearch.add(BranchModel(
               address1: branch[i].address1,
               address2: branch[i].address2,
@@ -259,7 +259,7 @@ class _BranchScreenState extends State<BranchScreen> {
                                                             width: width * 0.4,
                                                             child: Text(
                                                               branchsearch[i]
-                                                                  .bname,
+                                                                  .bname!,
                                                               maxLines: 1,
                                                               style: TextStyle(
                                                                   color:
@@ -277,7 +277,7 @@ class _BranchScreenState extends State<BranchScreen> {
                                                             width: width * 0.4,
                                                             child: Text(
                                                               value.branches[i]
-                                                                  .bname,
+                                                                  .bname!,
                                                               maxLines: 1,
                                                               style: TextStyle(
                                                                   color:
@@ -308,10 +308,10 @@ class _BranchScreenState extends State<BranchScreen> {
                                                               ? Text(
                                                                   branchsearch[
                                                                           i]
-                                                                      .city)
+                                                                      .city!)
                                                               : Text(value
                                                                   .branches[i]
-                                                                  .city)
+                                                                  .city!)
                                                         ],
                                                       ),
                                                     ),
@@ -578,7 +578,7 @@ class _BranchScreenState extends State<BranchScreen> {
 }
 
 class MyD extends StatefulWidget {
-  int id;
+  int? id;
   MyD(this.id);
   @override
   _MyDState createState() => _MyDState();

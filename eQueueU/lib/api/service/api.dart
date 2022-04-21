@@ -6,19 +6,17 @@ import 'package:eQueue/api/service/baseurl.dart';
 import 'package:retry/retry.dart';
 import 'package:http/http.dart' as http;
 // import 'package:sih/api/models/login.dart';
-import 'baseapi.dart';
 
-class Api extends BaseApi {
+class Api {
   BaseUrl baseUrl = BaseUrl();
-  String status;
+  String? status;
 
-  @override
-  Future<Register> register(
-      {String email,
-      String fname,
-      String lname,
-      String passw,
-      String contact}) async {
+  register(
+      {String? email,
+      String? fname,
+      String? lname,
+      String? passw,
+      String? contact}) async {
     print(contact);
     var bodymsg = json.encode({
       "fname": fname,
@@ -27,6 +25,8 @@ class Api extends BaseApi {
       "passw": passw,
       "contact": contact
     });
+
+    return bodymsg;
 
     // var response = await retry(
     //   () => http

@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 class Working {
-  String day;
-  String value;
+  String? day;
+  String? value;
   Working({
     this.day,
     this.value,
   });
 
   Working copyWith({
-    String day,
-    String value,
+    String? day,
+    String? value,
   }) {
     return Working(
       day: day ?? this.day,
@@ -32,8 +32,8 @@ class Working {
     };
   }
 
-  factory Working.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory Working.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return Working();
 
     return Working(
       day: map['day'],

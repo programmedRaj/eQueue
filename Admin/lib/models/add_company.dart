@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equeue_admin/enums/company_enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -5,23 +6,23 @@ part 'add_company.g.dart';
 
 @JsonSerializable()
 class AddCompany {
-  String name;
-  String desc;
-  String email;
-  String password;
+  String? name;
+  String? desc;
+  String? email;
+  String? password;
   @JsonKey(name: "bankname")
-  String bankName;
+  String? bankName;
   @JsonKey(name: "ifsc_code")
-  String ifscCode;
+  String? ifscCode;
   @JsonKey(name: "accountnumber")
-  String accountNo;
+  String? accountNo;
   @JsonKey(name: "accountname")
-  String accountName;
+  String? accountName;
   @JsonKey(name: "oneliner")
-  String onleLiner;
+  String? onleLiner;
   @JsonKey(name: "acc_type")
-  CompanyEnum accType;
-  int companyId;
+  CompanyEnum? accType;
+  int? companyId;
 
   AddCompany(
       {this.accType,

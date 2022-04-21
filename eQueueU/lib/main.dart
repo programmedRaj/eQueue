@@ -25,7 +25,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +37,10 @@ import 'provider/rateemp.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Stripe.publishableKey =
+      'pk_live_51IalfJLh67A53syIJadw8tzTgWhyGBnH6mI6JHyLJQN4iRFHJoXeFJ0wVABMvViQWFoe1QDzkxrry9Bq4ISUPzts00YBRrpl4R';
+
+  await Stripe.instance.applySettings();
   await EasyLocalization.ensureInitialized();
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
@@ -81,18 +85,15 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       message.data['title'],
       message.data['body'],
       NotificationDetails(
-        android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          channel.description,
-        ),
+        android: AndroidNotificationDetails(channel.id, channel.name,
+            channelDescription: 'Des'),
       ));
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
-  'This channel is used for important notifications.', // description
+  description: 'channel des', // description
   importance: Importance.high,
 );
 
@@ -222,7 +223,7 @@ class _MyAppState extends State<MyApp> {
           nextScreen: Check(),
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.leftToRight,
-          backgroundColor: myColor[150],
+          backgroundColor: myColor[150]!,
         ),
       ),
     );

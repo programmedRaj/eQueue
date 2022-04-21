@@ -17,9 +17,9 @@ class Users extends StatefulWidget {
 }
 
 class _UsersState extends State<Users> {
-  int _rowperpage = PaginatedDataTable.defaultRowsPerPage;
+  int? _rowperpage = PaginatedDataTable.defaultRowsPerPage;
   List searchlist = [];
-  LoginProv loginProv;
+  LoginProv? loginProv;
 
   @override
   void initState() {
@@ -106,7 +106,7 @@ class _UsersState extends State<Users> {
                                   _rowperpage = val;
                                 });
                               },
-                              rowsPerPage: _rowperpage,
+                              rowsPerPage: _rowperpage!,
                             ),
                           ),
                         ],
@@ -121,15 +121,15 @@ class _UsersState extends State<Users> {
 class Dts extends DataTableSource {
   double width;
   double height;
-  int size;
-  List srno;
+  int? size;
+  List? srno;
   BuildContext context;
-  List<UserDets> userDets;
-  LoginProv loginProv;
+  List<UserDets>? userDets;
+  LoginProv? loginProv;
   Dts(this.width, this.height, this.context, this.userDets, this.loginProv);
-  String password;
-  String password2;
-  String error;
+  String? password;
+  String? password2;
+  String? error;
   final passwordkey = GlobalKey<FormState>();
   // final keys = Keyy();
 
@@ -216,17 +216,17 @@ class Dts extends DataTableSource {
           DataCell(InkWell(
             onTap: () {},
             child: Container(
-                width: width * 0.1, child: Text(userDets[index].name)),
+                width: width * 0.1, child: Text(userDets![index].name!)),
           )),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.2,
-              child: Text(userDets[index].money))),
+              child: Text(userDets![index].money!))),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.1,
-              child: Text(userDets[index].contact.toString()))),
+              child: Text(userDets![index].contact.toString()))),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.1,
-              child: actionsRow(userDets[index]))),
+              child: actionsRow(userDets![index]))),
         ]);
   }
 
@@ -234,7 +234,7 @@ class Dts extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => userDets.length;
+  int get rowCount => userDets!.length;
 
   @override
   int get selectedRowCount => 0;

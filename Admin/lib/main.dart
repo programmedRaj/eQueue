@@ -58,8 +58,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  String email;
-  String pass;
+  String? email;
+  String? pass;
 
   @override
   void initState() {

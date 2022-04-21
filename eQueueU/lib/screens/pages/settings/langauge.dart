@@ -1,7 +1,7 @@
 import 'package:eQueue/check.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:grouped_buttons_ns/grouped_buttons_ns.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,8 +14,8 @@ class Language extends StatefulWidget {
 }
 
 class _LanguageState extends State<Language> {
-  String lang;
-  String _picked;
+  String? lang;
+  String? _picked;
   // @override
   // void initState() async {
   //   // getlang();

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class CompMoreOpts extends StatefulWidget {
   final CompanyDets companyDets;
   final CompEmailStatus compEmailStatus;
-  CompMoreOpts({@required this.companyDets, @required this.compEmailStatus});
+  CompMoreOpts({required this.companyDets, required this.compEmailStatus});
   @override
   _CompMoreOptsState createState() => _CompMoreOptsState();
 }
@@ -21,7 +21,7 @@ class _CompMoreOptsState extends State<CompMoreOpts> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.companyDets.name),
+        title: Text(widget.companyDets.name!),
       ),
       body: Container(
         alignment: Alignment.center,

@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 class DisplayBookings {
-  final String price;
-  final String bookings;
-  final String branchtable;
-  final String createdon;
-  final String status;
-  final String userid;
-  final String employeeid;
-  final String slots;
-  final String comp;
-  final String empr;
-  final String countnum;
-  final String waitlist;
+  final String? price;
+  final String? bookings;
+  final String? branchtable;
+  final String? createdon;
+  final String? status;
+  final String? userid;
+  final String? employeeid;
+  final String? slots;
+  final String? comp;
+  final String? empr;
+  final String? countnum;
+  final String? waitlist;
   DisplayBookings({
     this.price,
     this.bookings,
@@ -29,18 +29,18 @@ class DisplayBookings {
   });
 
   DisplayBookings copyWith({
-    String price,
-    String bookings,
-    String branchtable,
-    String createdon,
-    String status,
-    String userid,
-    String employeeid,
-    String slots,
-    String comp,
-    String empr,
-    String countnum,
-    String waitlist,
+    String? price,
+    String? bookings,
+    String? branchtable,
+    String? createdon,
+    String? status,
+    String? userid,
+    String? employeeid,
+    String? slots,
+    String? comp,
+    String? empr,
+    String? countnum,
+    String? waitlist,
   }) {
     return DisplayBookings(
       price: price ?? this.price,
@@ -92,8 +92,8 @@ class DisplayBookings {
     };
   }
 
-  factory DisplayBookings.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory DisplayBookings.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return DisplayBookings();
 
     return DisplayBookings(
       price: map['price'],

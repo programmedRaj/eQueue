@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
@@ -57,12 +58,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int currentIndex;
-  int sizz;
+  int? currentIndex;
+  int? sizz;
   var location = new Location();
-  double lat = 0;
-  double long = 0;
-  String _token;
+  double? lat = 0;
+  double? long = 0;
+  String? _token;
 
   @override
   void initState() {
@@ -76,8 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
@@ -87,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-                channel.description,
+                channelDescription: 'des',
                 icon: 'launch_background',
               ),
             ));
@@ -119,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void changePage(int index) {
+  void changePage(int? index) {
     setState(() {
       currentIndex = index;
     });
@@ -238,13 +239,12 @@ class _MyHomePageState extends State<MyHomePage> {
               new GestureDetector(
                 onTap: () {
                   SystemNavigator.pop();
-                  return Future.value(false);
                 },
                 child: Text(LocaleKeys.YES).tr(),
               ),
             ],
           ),
-        ) ??
+        ) as FutureOr<bool>? ??
         false;
   }
 }

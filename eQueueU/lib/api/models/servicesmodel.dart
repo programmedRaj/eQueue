@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class Service {
-  String service;
-  String servicedescription;
-  String servicerates;
+  String? service;
+  String? servicedescription;
+  String? servicerates;
   Service({
     this.service,
     this.servicedescription,
@@ -11,9 +11,9 @@ class Service {
   });
 
   Service copyWith({
-    String service,
-    String servicedescription,
-    String servicerates,
+    String? service,
+    String? servicedescription,
+    String? servicerates,
   }) {
     return Service(
       service: service ?? this.service,
@@ -38,8 +38,8 @@ class Service {
     };
   }
 
-  factory Service.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory Service.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return Service();
 
     return Service(
       service: map['service'],

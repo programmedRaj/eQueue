@@ -13,12 +13,12 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Booktoken extends StatefulWidget {
-  final int id;
-  final int bid;
-  final String type;
-  final String branchname;
-  final String companyname;
-  final String wk;
+  final int? id;
+  final int? bid;
+  final String? type;
+  final String? branchname;
+  final String? companyname;
+  final String? wk;
   Booktoken(
       {this.id,
       this.bid,
@@ -31,9 +31,9 @@ class Booktoken extends StatefulWidget {
 }
 
 class _BooktokenState extends State<Booktoken> {
-  String dropval;
+  String? dropval;
   bool onpress = false;
-  int whichday;
+  int? whichday;
 
   @override
   void didChangeDependencies() {
@@ -68,7 +68,7 @@ class _BooktokenState extends State<Booktoken> {
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey[300],
+                          color: Colors.grey[300]!,
                           blurRadius: 4,
                         )
                       ],
@@ -126,7 +126,7 @@ class _BooktokenState extends State<Booktoken> {
                               items: value.departs.map((val) {
                                 return new DropdownMenuItem<String>(
                                   value: val,
-                                  child: new Text(val),
+                                  child: new Text(val!),
                                 );
                               }).toList(),
                               hint: dropval == null
@@ -142,14 +142,14 @@ class _BooktokenState extends State<Booktoken> {
                                       ).tr(),
                                     )
                                   : Text(
-                                      dropval,
+                                      dropval!,
                                       style: TextStyle(
                                           color:
                                               Theme.of(context).highlightColor,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w800),
                                     ),
-                              onChanged: (newVal) {
+                              onChanged: (dynamic newVal) {
                                 dropval = newVal;
                                 this.setState(() {});
                               }),
@@ -218,7 +218,7 @@ class _BooktokenState extends State<Booktoken> {
                             DateFormat('EEEE', 'en').format(DateTime.now());
                         print(dateFormat.toLocale());
                         String dayy = dateFormat.toLowerCase();
-                        var wh = json.decode(widget.wk);
+                        var wh = json.decode(widget.wk!);
                         print(wh);
 
                         String workday = wh[dayy]

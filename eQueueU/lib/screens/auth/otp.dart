@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Otp extends StatefulWidget {
-  String number;
+  String? number;
   Otp({this.number});
   @override
   _OtpState createState() => _OtpState();
@@ -23,27 +23,27 @@ class Otp extends StatefulWidget {
 class _OtpState extends State<Otp> {
   var w = 0.8;
   int type = 0;
-  String phone;
-  String password;
-  String error;
+  String? phone;
+  String? password;
+  String? error;
   final otpkey = GlobalKey<FormState>();
   BaseUrl baseUrl = BaseUrl();
-  String lang;
+  String? lang;
   int sizz = 0;
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  _getdevicetoken({String code}) async {
+  _getdevicetoken({String? code}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _firebaseMessaging.getToken().then((token) {
-      prefs.setString('devicetoken', token);
+      prefs.setString('devicetoken', token!);
       print("Device Token: $token");
-      login(code: code, devicetoken: token);
+      login(code: code!, devicetoken: token);
       prefs.setString('usertoken', token);
     });
   }
 
-  Future login({String code, String devicetoken}) async {
+  Future login({required String code, required String devicetoken}) async {
     Uri registeruri = Uri.parse(baseUrl.login);
     var header = {
       'Content-Type': 'multipart/form-data',
@@ -51,7 +51,7 @@ class _OtpState extends State<Otp> {
     var request = new http.MultipartRequest("POST", registeruri)
       ..headers.addAll(header);
 
-    request.fields['number'] = widget.number;
+    request.fields['number'] = widget.number!;
     request.fields['code'] = code;
     request.fields['device_token'] = devicetoken;
 
@@ -110,7 +110,7 @@ class _OtpState extends State<Otp> {
                         });
                       },
                       validator: (name) {
-                        if (name.isEmpty) {
+                        if (name!.isEmpty) {
                           return LocaleKeys.PleaseenterOTP.tr();
                         } else {
                           return null;
@@ -147,7 +147,7 @@ class _OtpState extends State<Otp> {
                   error == null
                       ? Container()
                       : Container(
-                          child: Text(error),
+                          child: Text(error!),
                         ),
                   AnimatedContainer(
                     duration: Duration(milliseconds: 1000),
@@ -165,7 +165,7 @@ class _OtpState extends State<Otp> {
                           borderRadius: new BorderRadius.circular(30.0)),
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        if (otpkey.currentState.validate()) {
+                        if (otpkey.currentState!.validate()) {
                           _getdevicetoken(code: password);
                         }
 

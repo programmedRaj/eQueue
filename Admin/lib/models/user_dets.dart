@@ -7,12 +7,12 @@ part 'user_dets.g.dart';
 
 @JsonSerializable()
 class UserDets {
-  String money;
-  final String name;
+  String? money;
+  final String? name;
   @JsonKey(name: 'phone_number')
-  final String contact;
+  final String? contact;
   @JsonKey(name: 'id')
-  final int userId;
+  final int? userId;
 
   UserDets({this.contact, this.money, this.name, this.userId});
 

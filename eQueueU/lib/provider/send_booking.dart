@@ -13,15 +13,15 @@ import 'package:eQueue/api/service/baseurl.dart';
 class SendBooking with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
   Future generatetoken({
-    String branchname,
-    int branchid,
-    String tokenorbooking,
-    String service,
-    String insurance,
-    String slot,
-    String company,
-    bool isno,
-    String price,
+    String? branchname,
+    int? branchid,
+    String? tokenorbooking,
+    String? service,
+    String? insurance,
+    String? slot,
+    String? company,
+    required bool isno,
+    String? price,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
@@ -44,7 +44,7 @@ class SendBooking with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.createtoken),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );

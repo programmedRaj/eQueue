@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SlotProvider extends ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
 
-  Future getslot({String name, int bid, String type}) async {
+  Future getslot({String? name, int? bid, String? type}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
@@ -23,7 +23,7 @@ class SlotProvider extends ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.checkslot),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
@@ -50,8 +50,8 @@ class SlotProvider extends ChangeNotifier {
   List<BookingSlot> get bookings => booking;
 
   void slotsadd({
-    String date,
-    String time,
+    String? date,
+    String? time,
   }) {
     bookings.add(BookingSlot(date: date, time: time));
     notifyListeners();

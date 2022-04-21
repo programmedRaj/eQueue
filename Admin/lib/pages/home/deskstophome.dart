@@ -20,13 +20,13 @@ class DesktopHome extends StatefulWidget {
 class _DesktopHomeState extends State<DesktopHome> {
   int size = 0;
   bool statuss = false;
-  String password;
-  String password2;
-  String error;
+  String? password;
+  String? password2;
+  String? error;
   final passwordkey = GlobalKey<FormState>();
   final notifikey = GlobalKey<FormState>();
-  String notifititle;
-  String notifimessage;
+  String? notifititle;
+  String? notifimessage;
 
   @override
   void initState() {
@@ -87,7 +87,7 @@ class _DesktopHomeState extends State<DesktopHome> {
                                 width,
                                 size,
                                 'Company',
-                                value?.conutData?.compCount ?? 0,
+                                value.conutData?.compCount ?? 0,
                                 Icon(
                                   Icons.business,
                                   color: Colors.white,
@@ -97,7 +97,7 @@ class _DesktopHomeState extends State<DesktopHome> {
                                 width,
                                 size,
                                 'Users',
-                                value?.conutData?.userCount ?? 0,
+                                value.conutData?.userCount ?? 0,
                                 Icon(
                                   Icons.person_add,
                                   color: Colors.white,
@@ -107,7 +107,7 @@ class _DesktopHomeState extends State<DesktopHome> {
                                 width,
                                 size,
                                 'Branch',
-                                value?.conutData?.branchCount ?? 0,
+                                value.conutData?.branchCount ?? 0,
                                 Icon(
                                   Icons.account_tree,
                                   color: Colors.white,
@@ -117,7 +117,7 @@ class _DesktopHomeState extends State<DesktopHome> {
                                 width,
                                 size,
                                 'Employee',
-                                value?.conutData?.empCount ?? 0,
+                                value.conutData?.empCount ?? 0,
                                 Icon(
                                   Icons.badge,
                                   color: Colors.white,

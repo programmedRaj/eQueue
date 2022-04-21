@@ -15,9 +15,9 @@ class Company extends StatefulWidget {
 }
 
 class _CompanyState extends State<Company> {
-  int _rowperpage = PaginatedDataTable.defaultRowsPerPage;
+  int? _rowperpage = PaginatedDataTable.defaultRowsPerPage;
   List searchlist = [];
-  LoginProv loginProv;
+  LoginProv? loginProv;
 
   @override
   void initState() {
@@ -146,7 +146,7 @@ class _CompanyState extends State<Company> {
                                   _rowperpage = val;
                                 });
                               },
-                              rowsPerPage: _rowperpage,
+                              rowsPerPage: _rowperpage!,
                             ),
                           ),
                         ],
@@ -161,16 +161,16 @@ class _CompanyState extends State<Company> {
 class Dts extends DataTableSource {
   double width;
   double height;
-  int size;
-  List srno;
+  int? size;
+  List? srno;
   BuildContext context;
-  CompanyFullDetails companyFullDetails;
-  LoginProv loginProv;
+  CompanyFullDetails? companyFullDetails;
+  LoginProv? loginProv;
   Dts(this.width, this.height, this.context, this.companyFullDetails,
       this.loginProv);
-  String password;
-  String password2;
-  String error;
+  String? password;
+  String? password2;
+  String? error;
   final passwordkey = GlobalKey<FormState>();
   // final keys = Keyy();
 
@@ -203,7 +203,7 @@ class Dts extends DataTableSource {
             bool success =
                 await Provider.of<CompMoreOptsProv>(context, listen: false)
                     .disableCompany(
-                        companyDets, compEmailStatus, loginProv.jwtToken);
+                        companyDets, compEmailStatus, loginProv!.jwtToken);
             if (success) {
               Provider.of<CompFullDetsProv>(context, listen: false)
                   .getCompanyDets();
@@ -262,26 +262,28 @@ class Dts extends DataTableSource {
                   context,
                   MaterialPageRoute(
                     builder: (context) => Branches(
-                      compId: companyFullDetails.companyDetsList[index].id,
+                      compId: companyFullDetails!.companyDetsList![index]!.id,
                     ),
                   ));
             },
             child: Container(
                 width: width * 0.1,
-                child: Text(companyFullDetails.companyDetsList[index].name)),
+                child:
+                    Text(companyFullDetails!.companyDetsList![index]!.name!)),
           )),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.2,
-              child:
-                  Text(companyFullDetails.compEmailStatusList[index].email))),
+              child: Text(
+                  companyFullDetails!.compEmailStatusList![index]!.email!))),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.1,
-              child: Text(companyFullDetails.compEmailStatusList[index].status
+              child: Text(companyFullDetails!
+                  .compEmailStatusList![index]!.status
                   .toString()))),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.1,
-              child: actionsRow(companyFullDetails.companyDetsList[index],
-                  companyFullDetails.compEmailStatusList[index]))),
+              child: actionsRow(companyFullDetails!.companyDetsList![index]!,
+                  companyFullDetails!.compEmailStatusList![index]!))),
         ]);
   }
 
@@ -289,7 +291,7 @@ class Dts extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => companyFullDetails.compEmailStatusList.length;
+  int get rowCount => companyFullDetails!.compEmailStatusList!.length;
 
   @override
   int get selectedRowCount => 0;

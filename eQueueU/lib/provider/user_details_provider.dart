@@ -19,20 +19,20 @@ class UserDetails with ChangeNotifier {
     var response = await retry(
       () => http.get(
         Uri.parse(baseUrl.userdetails),
-        headers: {"Authorization": token},
+        headers: {"Authorization": token!},
       ).timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
     var k = response.body;
     var n = json.decode(k);
 
-    String money = n['userdetails']['money'];
-    String bonus = n['userdetails']['bonus'];
-    String address1 = n['userdetails']['address1'];
-    String address2 = n['userdetails']['address2'];
-    String city = n['userdetails']['city'];
-    String postalcode = n['userdetails']['postalcode'];
-    String province = n['userdetails']['province'];
+    String? money = n['userdetails']['money'];
+    String? bonus = n['userdetails']['bonus'];
+    String? address1 = n['userdetails']['address1'];
+    String? address2 = n['userdetails']['address2'];
+    String? city = n['userdetails']['city'];
+    String? postalcode = n['userdetails']['postalcode'];
+    String? province = n['userdetails']['province'];
 
     getdet(
       name: n['userdetails']['name'],
@@ -53,16 +53,16 @@ class UserDetails with ChangeNotifier {
   List<UserDets> get users => userd;
 
   getdet({
-    String name,
-    String profileurl,
-    String address1,
-    String address2,
-    String province,
-    String city,
-    String postalcode,
-    String money,
-    String bonus,
-    String phone,
+    String? name,
+    String? profileurl,
+    String? address1,
+    String? address2,
+    String? province,
+    String? city,
+    String? postalcode,
+    String? money,
+    String? bonus,
+    String? phone,
   }) {
     users.add(UserDets(
       name: name,

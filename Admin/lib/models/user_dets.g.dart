@@ -8,10 +8,10 @@ part of 'user_dets.dart';
 
 UserDets _$UserDetsFromJson(Map<String, dynamic> json) {
   return UserDets(
-    contact: json['phone_number'] as String,
-    money: json['money'] as String,
-    name: json['name'] as String,
-    userId: json['id'] as int,
+    contact: json['phone_number'] as String?,
+    money: json['money'] as String?,
+    name: json['name'] as String?,
+    userId: json['id'] as int?,
   );
 }
 

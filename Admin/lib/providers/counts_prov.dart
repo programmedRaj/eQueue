@@ -11,14 +11,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CountsProv extends ChangeNotifier {
-  CountsModel conutData;
+  CountsModel? conutData;
   bool isLoading = true;
   bool isError = false;
   bool isEmpty = false;
 
   getCounts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     var header = {"Authorization": token, 'Content-Type': 'application/json'};
     try {
       var resp = await httpGetRequest(OtherApi.getCounts, header);

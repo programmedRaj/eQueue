@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equeue_admin/enums/company_enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -6,9 +7,9 @@ part 'company_full_details.g.dart';
 @JsonSerializable()
 class CompanyFullDetails {
   @JsonKey(name: "comp_emails_status")
-  List<CompEmailStatus> compEmailStatusList;
+  List<CompEmailStatus?>? compEmailStatusList;
   @JsonKey(name: "companies")
-  List<CompanyDets> companyDetsList;
+  List<CompanyDets?>? companyDetsList;
 
   CompanyFullDetails({this.compEmailStatusList, this.companyDetsList});
 
@@ -21,9 +22,9 @@ class CompanyFullDetails {
 @JsonSerializable()
 class CompEmailStatus {
   @JsonKey(name: "created_on")
-  final String createdOn;
-  final String email;
-  final int status;
+  final String? createdOn;
+  final String? email;
+  final int? status;
 
   CompEmailStatus({this.createdOn, this.email, this.status});
 
@@ -35,30 +36,30 @@ class CompEmailStatus {
 
 @JsonSerializable()
 class CompanyDets {
-  String name;
+  String? name;
   @JsonKey(name: "descr")
-  String desc;
+  String? desc;
 
   @JsonKey(name: "bank_name")
-  String bankName;
+  String? bankName;
   @JsonKey(name: "ifsc")
-  String ifscCode;
+  String? ifscCode;
   @JsonKey(name: "account_number")
-  String accountNo;
+  String? accountNo;
   @JsonKey(name: "account_name")
-  String accountName;
+  String? accountName;
   @JsonKey(name: "oneliner")
-  String onleLiner;
+  String? onleLiner;
   @JsonKey(name: "type")
-  CompanyEnum accType;
+  CompanyEnum? accType;
   @JsonKey(name: "profile_url")
-  String profileUrl;
+  String? profileUrl;
   @JsonKey(name: "money_earned")
-  String moneyEarned;
+  String? moneyEarned;
   @JsonKey(name: "earned_till_date")
-  String earnedTillDate;
+  String? earnedTillDate;
   @JsonKey(name: "id")
-  int id;
+  int? id;
 
   CompanyDets(
       {this.accType,

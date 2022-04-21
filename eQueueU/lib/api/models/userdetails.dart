@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 class UserDets {
-  String name;
-  String profileurl;
-  String address1;
-  String address2;
-  String province;
-  String city;
-  String postalcode;
-  String money;
-  String bonus;
-  String phone;
+  String? name;
+  String? profileurl;
+  String? address1;
+  String? address2;
+  String? province;
+  String? city;
+  String? postalcode;
+  String? money;
+  String? bonus;
+  String? phone;
   UserDets({
     this.name,
     this.profileurl,
@@ -25,16 +25,16 @@ class UserDets {
   });
 
   UserDets copyWith({
-    String name,
-    String profileurl,
-    String address1,
-    String address2,
-    String province,
-    String city,
-    String postalcode,
-    String money,
-    String bonus,
-    String phone,
+    String? name,
+    String? profileurl,
+    String? address1,
+    String? address2,
+    String? province,
+    String? city,
+    String? postalcode,
+    String? money,
+    String? bonus,
+    String? phone,
   }) {
     return UserDets(
       name: name ?? this.name,
@@ -80,8 +80,8 @@ class UserDets {
     };
   }
 
-  factory UserDets.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory UserDets.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return UserDets();
 
     return UserDets(
       name: map['name'],

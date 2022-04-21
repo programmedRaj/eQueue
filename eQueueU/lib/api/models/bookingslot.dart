@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 class BookingSlot {
-  String date;
-  String time;
+  String? date;
+  String? time;
   BookingSlot({
     this.date,
     this.time,
   });
 
   BookingSlot copyWith({
-    String date,
-    String time,
+    String? date,
+    String? time,
   }) {
     return BookingSlot(
       date: date ?? this.date,
@@ -32,8 +32,8 @@ class BookingSlot {
     };
   }
 
-  factory BookingSlot.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory BookingSlot.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return BookingSlot();
 
     return BookingSlot(
       date: map['date'],

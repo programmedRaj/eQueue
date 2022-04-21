@@ -27,21 +27,21 @@ class _RegisterState extends State<Register> {
   final rkey = GlobalKey<FormState>();
   var w = 0.8;
   int type = 0;
-  String name;
-  String profile_url;
-  String address1;
-  String address2;
-  String postalcode;
-  String city;
-  String province;
-  String number;
-  String error;
-  String lang;
+  late String name;
+  String? profile_url;
+  String? address1;
+  String? address2;
+  String? postalcode;
+  String? city;
+  String? province;
+  String? number;
+  String? error;
+  String? lang;
   int sizz = 0;
-  Country _selectedCountry;
-  String phone;
-  String referralcode;
-  File _image;
+  Country? _selectedCountry;
+  late String phone;
+  String? referralcode;
+  File? _image;
   final picker = ImagePicker();
   BaseUrl baseUrl = BaseUrl();
 
@@ -62,16 +62,16 @@ class _RegisterState extends State<Register> {
   }
 
   Future register({
-    String name,
-    File images,
-    String phonenumber,
-    String address1,
-    String address2,
-    String city,
-    String postalcode,
-    String province,
-    String countrycode,
-    String referralcode,
+    required String name,
+    File? images,
+    required String phonenumber,
+    String? address1,
+    String? address2,
+    String? city,
+    String? postalcode,
+    String? province,
+    required String countrycode,
+    String? referralcode,
   }) async {
     print(images);
     Uri registeruri = Uri.parse(baseUrl.register);
@@ -117,7 +117,7 @@ class _RegisterState extends State<Register> {
       Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => Login()));
     } else if (res.statusCode == 403) {
       error = LocaleKeys.YouAlreadyHaveanAccount.tr();
-      AppToast.showErr(error);
+      AppToast.showErr(error!);
     } else {
       setState(() {
         error = LocaleKeys.Somethingwentwrong.tr();
@@ -208,7 +208,7 @@ class _RegisterState extends State<Register> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(60),
                                     image: DecorationImage(
-                                        image: FileImage(_image),
+                                        image: FileImage(_image!),
                                         fit: BoxFit.fill)),
                               ),
                             )
@@ -222,7 +222,7 @@ class _RegisterState extends State<Register> {
                       style: TextStyle(color: Colors.white),
                       keyboardType: TextInputType.emailAddress,
                       validator: (name) {
-                        if (name.isEmpty)
+                        if (name!.isEmpty)
                           return LocaleKeys.PleaseEnterName.tr();
                         else
                           return null;
@@ -578,7 +578,7 @@ class _RegisterState extends State<Register> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               border:
-                                  Border.all(color: myColor[100], width: 2)),
+                                  Border.all(color: myColor[100]!, width: 2)),
                           child: ElevatedButton(
                             child: _selectedCountry == null
                                 ? Text('+',
@@ -602,7 +602,7 @@ class _RegisterState extends State<Register> {
                                 FilteringTextInputFormatter.digitsOnly
                               ],
                               validator: (name) {
-                                if (name.isEmpty) {
+                                if (name!.isEmpty) {
                                   return LocaleKeys.Pleaseenterphonenumber.tr();
                                 } else
                                   return null;
@@ -643,7 +643,7 @@ class _RegisterState extends State<Register> {
                       ],
                     ),
                   ),
-                  error == null ? Container() : Text(error),
+                  error == null ? Container() : Text(error!),
                   AnimatedContainer(
                     duration: Duration(milliseconds: 1000),
                     margin: EdgeInsets.only(
@@ -657,7 +657,7 @@ class _RegisterState extends State<Register> {
                     child: TextButton(
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        if (rkey.currentState.validate()) {
+                        if (rkey.currentState!.validate()) {
                           if (_selectedCountry != null) {
                             register(
                               name: name,
@@ -666,7 +666,7 @@ class _RegisterState extends State<Register> {
                               address2: address2,
                               city: city,
                               province: province,
-                              countrycode: _selectedCountry.callingCode,
+                              countrycode: _selectedCountry!.callingCode,
                               phonenumber: phone,
                               postalcode: postalcode,
                               referralcode: referralcode,

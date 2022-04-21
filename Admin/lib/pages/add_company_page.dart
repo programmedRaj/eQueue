@@ -11,17 +11,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddCompanyPage extends StatefulWidget {
-  final CompanyDets companyDets;
-  final CompEmailStatus compEmailStatus;
+  final CompanyDets? companyDets;
+  final CompEmailStatus? compEmailStatus;
   AddCompanyPage({this.compEmailStatus, this.companyDets});
   @override
   _AddCompanyPageState createState() => _AddCompanyPageState();
 }
 
 class _AddCompanyPageState extends State<AddCompanyPage> {
-  Uint8List uploadedImage;
-  String profileUrl;
-  CompanyEnum selectedType;
+  Uint8List? uploadedImage;
+  String? profileUrl;
+  CompanyEnum? selectedType;
   bool edit = false;
   bool _isChecked = false;
 
@@ -45,23 +45,23 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
 
   fillDets() {
     setState(() {
-      _nameC.value = TextEditingValue(text: widget.companyDets.name ?? "");
+      _nameC.value = TextEditingValue(text: widget.companyDets!.name ?? "");
       _emailC.value =
-          TextEditingValue(text: widget.compEmailStatus.email ?? "");
-      _descC.value = TextEditingValue(text: widget.companyDets.desc ?? "");
+          TextEditingValue(text: widget.compEmailStatus!.email ?? "");
+      _descC.value = TextEditingValue(text: widget.companyDets!.desc ?? "");
       _bankNameC.value =
-          TextEditingValue(text: widget.companyDets.bankName ?? "");
+          TextEditingValue(text: widget.companyDets!.bankName ?? "");
 
       _accNoC.value =
-          TextEditingValue(text: widget.companyDets.accountNo ?? "");
+          TextEditingValue(text: widget.companyDets!.accountNo ?? "");
       _accNameC.value =
-          TextEditingValue(text: widget.companyDets.accountName ?? "");
+          TextEditingValue(text: widget.companyDets!.accountName ?? "");
       _ifscCodeC.value =
-          TextEditingValue(text: widget.companyDets.ifscCode ?? "");
+          TextEditingValue(text: widget.companyDets!.ifscCode ?? "");
       _onleLinerC.value =
-          TextEditingValue(text: widget.companyDets.onleLiner ?? "");
-      selectedType = widget.companyDets.accType;
-      profileUrl = widget.companyDets.profileUrl;
+          TextEditingValue(text: widget.companyDets!.onleLiner ?? "");
+      selectedType = widget.companyDets!.accType;
+      profileUrl = widget.companyDets!.profileUrl;
       edit = true;
     });
   }
@@ -88,7 +88,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     children: [
                       uploadedImage != null
                           ? Image.memory(
-                              uploadedImage,
+                              uploadedImage!,
                               height: _height * 0.3,
                               width: _width * 0.2,
                               fit: BoxFit.fill,
@@ -172,19 +172,19 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
   }
 
   _startFilePicker() async {
-    InputElement uploadInput = FileUploadInputElement();
+    InputElement uploadInput = FileUploadInputElement() as InputElement;
     uploadInput.click();
 
     uploadInput.onChange.listen((e) {
       // read file content as dataURL
-      final files = uploadInput.files;
+      final files = uploadInput.files!;
       if (files.length == 1) {
         final file = files[0];
         FileReader reader = FileReader();
 
         reader.onLoadEnd.listen((e) {
           setState(() {
-            uploadedImage = reader.result;
+            uploadedImage = reader.result as Uint8List?;
           });
         });
 
@@ -199,7 +199,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
     });
   }
 
-  Widget radioButton(String text, {CompanyEnum type}) {
+  Widget radioButton(String text, {CompanyEnum? type}) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -293,7 +293,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         onleLiner: _onleLinerC.text,
         email: _emailC.text,
         password: _passwordC.text,
-        companyId: widget?.companyDets?.id);
+        companyId: widget.companyDets?.id);
   }
 
   Widget createButton() {

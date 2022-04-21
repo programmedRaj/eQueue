@@ -9,16 +9,16 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class SelectService extends StatefulWidget {
-  final int id;
-  final int bid;
-  final String type;
-  final String branchname;
-  final String companyname;
-  final String wk;
-  final String book;
-  final String perday;
-  final String ins;
-  final String compid;
+  final int? id;
+  final int? bid;
+  final String? type;
+  final String? branchname;
+  final String? companyname;
+  final String? wk;
+  final String? book;
+  final String? perday;
+  final String? ins;
+  final String? compid;
   SelectService(
       {this.id,
       this.compid,
@@ -35,10 +35,10 @@ class SelectService extends StatefulWidget {
 }
 
 class _SelectServiceState extends State<SelectService> {
-  String dropval;
-  String service;
-  String serdes;
-  String serrate;
+  String? dropval;
+  String? service;
+  String? serdes;
+  String? serrate;
 
   @override
   void didChangeDependencies() {
@@ -81,7 +81,7 @@ class _SelectServiceState extends State<SelectService> {
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey[300],
+                          color: Colors.grey[300]!,
                           blurRadius: 4,
                         )
                       ],
@@ -170,15 +170,15 @@ class _SelectServiceState extends State<SelectService> {
                                         ).tr(),
                                       )
                                     : Text(
-                                        dropval,
+                                        dropval!,
                                         style: TextStyle(
                                             color: Theme.of(context)
                                                 .highlightColor,
                                             fontSize: 20,
                                             fontWeight: FontWeight.w800),
                                       ),
-                                onChanged: (Service newVal) {
-                                  dropval = '${newVal.service} ';
+                                onChanged: (Service? newVal) {
+                                  dropval = '${newVal!.service} ';
                                   this.setState(() {
                                     service = newVal.service;
                                     serrate = newVal.servicerates;
@@ -205,7 +205,7 @@ class _SelectServiceState extends State<SelectService> {
                             child: ListView(
                               children: [
                                 serdes != null
-                                    ? Text(serdes)
+                                    ? Text(serdes!)
                                     : Text(LocaleKeys.NoDescription).tr(),
                               ],
                             ))

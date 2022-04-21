@@ -10,14 +10,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EmpProv extends ChangeNotifier {
-  List<EmpDets> employeeDetsList;
+  List<EmpDets>? employeeDetsList;
   bool isLoading = true;
   bool isError = false;
   bool isEmpty = false;
 
-  getEmployees(int branchId) async {
+  getEmployees(int? branchId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     var header = {"Authorization": token, 'Content-Type': 'application/json'};
     try {
       var resp = await httpPostRequest(
@@ -26,7 +26,7 @@ class EmpProv extends ChangeNotifier {
         var decodedResp = jsonDecode(resp.body);
         employeeDetsList = [];
         for (var item in decodedResp['employees_details']) {
-          employeeDetsList.add(EmpDets.fromJson(item));
+          employeeDetsList!.add(EmpDets.fromJson(item));
         }
         isLoading = false;
         notifyListeners();

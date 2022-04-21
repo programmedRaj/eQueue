@@ -8,19 +8,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CompFullDetsProv extends ChangeNotifier {
-  CompanyFullDetails companyFullDetails;
+  CompanyFullDetails? companyFullDetails;
   bool isLoading = true;
   bool isError = false;
   bool isEmpty = false;
 
   getCompanyDets() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     try {
       var resp = await httpGetRequest(CompanyApi.compfullDets,
           {"Authorization": token, 'Content-Type': 'application/json'});
+      print('res res ${resp.body}');
       if (resp.statusCode == 200) {
         var decodedResp = jsonDecode(resp.body);
+        print('aa ${decodedResp['comp_emails_status']}');
         companyFullDetails = CompanyFullDetails.fromJson(decodedResp);
         isLoading = false;
         notifyListeners();

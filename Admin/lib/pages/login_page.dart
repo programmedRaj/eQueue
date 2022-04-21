@@ -15,9 +15,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailControler = TextEditingController();
   TextEditingController passwordControler = TextEditingController();
-  String lang;
-  String email;
-  String pass;
+  String? lang;
+  String? email;
+  String? pass;
   bool procAutoLogin = true;
 
   @override
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
             );
           }
           if (value.success) {
-            SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+            SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

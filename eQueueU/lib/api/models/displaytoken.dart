@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 class DisplayToken {
-  final String token;
-  final String branchtable;
-  final String createdon;
-  final String status;
-  final String userid;
-  final String employeeid;
-  final String slots;
-  final String comp;
-  final String empr;
-  final String countnum;
-  final String waitlist;
+  final String? token;
+  final String? branchtable;
+  final String? createdon;
+  final String? status;
+  final String? userid;
+  final String? employeeid;
+  final String? slots;
+  final String? comp;
+  final String? empr;
+  final String? countnum;
+  final String? waitlist;
   DisplayToken({
     this.token,
     this.branchtable,
@@ -27,17 +27,17 @@ class DisplayToken {
   });
 
   DisplayToken copyWith({
-    String token,
-    String branchtable,
-    String createdon,
-    String status,
-    String userid,
-    String employeeid,
-    String slots,
-    String comp,
-    String empr,
-    String countnum,
-    String waitlist,
+    String? token,
+    String? branchtable,
+    String? createdon,
+    String? status,
+    String? userid,
+    String? employeeid,
+    String? slots,
+    String? comp,
+    String? empr,
+    String? countnum,
+    String? waitlist,
   }) {
     return DisplayToken(
       token: token ?? this.token,
@@ -86,8 +86,8 @@ class DisplayToken {
     };
   }
 
-  factory DisplayToken.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory DisplayToken.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return DisplayToken();
 
     return DisplayToken(
       token: map['token'],

@@ -8,12 +8,12 @@ part 'emp_dets.g.dart';
 @JsonSerializable()
 class EmpDets {
   @JsonKey(name: 'email')
-  final String email;
+  final String? email;
   @JsonKey(name: 'id', defaultValue: 000)
-  final int empId;
+  final int? empId;
   @JsonKey(name: 'status')
-  final int status;
-  final String name;
+  final int? status;
+  final String? name;
 
   EmpDets({this.status, this.email, this.empId, this.name});
 

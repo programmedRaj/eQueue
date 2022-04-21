@@ -21,7 +21,7 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   Set<Marker> _marker = {};
-  LocationData initLoc;
+  LocationData? initLoc;
 
   @override
   void initState() {
@@ -46,14 +46,14 @@ class MapSampleState extends State<MapSample> {
     if (branch.length > 0) {
       for (int i = 0; i < branch.length; i++) {
         print(branch[i].geolocation);
-        var geo = branch[i].geolocation.split(',');
+        var geo = branch[i].geolocation!.split(',');
         var lat = geo[0];
         var long = geo[1];
         setState(() {
           _marker.add(
             Marker(
                 onTap: () {
-                  branch[i].type.toLowerCase() == "booking"
+                  branch[i].type!.toLowerCase() == "booking"
                       ? Navigator.of(context).push(MaterialPageRoute(
                           builder: (ctx) => SelectService(
                                 companyname: branch[i].company,
@@ -113,7 +113,7 @@ class MapSampleState extends State<MapSample> {
                       markers: _marker,
                       myLocationEnabled: true,
                       initialCameraPosition: CameraPosition(
-                        target: LatLng(loc.locp.latitude, loc.locp.longitude),
+                        target: LatLng(loc.locp!.latitude, loc.locp!.longitude),
                         zoom: 14.4746,
                       ),
                       onMapCreated: (v) {

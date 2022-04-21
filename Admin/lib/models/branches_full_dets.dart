@@ -8,12 +8,12 @@ part 'branches_full_dets.g.dart';
 @JsonSerializable()
 class BranchFullDetails {
   @JsonKey(name: 'bname')
-  final String name;
+  final String? name;
   @JsonKey(name: 'money_earned', defaultValue: '0')
-  final String moneyEarned;
+  final String? moneyEarned;
   @JsonKey(name: 'phone_number')
-  final String contact;
-  final int id;
+  final String? contact;
+  final int? id;
 
   BranchFullDetails({this.contact, this.moneyEarned, this.name, this.id});
 

@@ -8,10 +8,10 @@ part of 'counts_model.dart';
 
 CountsModel _$CountsModelFromJson(Map<String, dynamic> json) {
   return CountsModel(
-    branchCount: json['branch_count'] as int,
-    compCount: json['comp_count'] as int,
-    empCount: json['emp_count'] as int,
-    userCount: json['users_count'] as int,
+    branchCount: json['branch_count'] as int?,
+    compCount: json['comp_count'] as int?,
+    empCount: json['emp_count'] as int?,
+    userCount: json['users_count'] as int?,
   );
 }
 

@@ -18,7 +18,7 @@ class TransactionProvider with ChangeNotifier {
     var response = await retry(
       () => http.get(
         Uri.parse(baseUrl.transactions),
-        headers: {"Authorization": token},
+        headers: {"Authorization": token!},
       ).timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
@@ -40,11 +40,11 @@ class TransactionProvider with ChangeNotifier {
   List<TransactionModel> get trans => tran;
 
   void addtoken({
-    String amount,
-    String color,
-    int tid,
-    String status,
-    int userid,
+    String? amount,
+    String? color,
+    int? tid,
+    String? status,
+    int? userid,
   }) {
     trans.add(TransactionModel(
       amount: amount,

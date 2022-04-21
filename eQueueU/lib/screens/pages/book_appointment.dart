@@ -13,18 +13,18 @@ import 'package:eQueue/constants/apptoast.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Calen extends StatefulWidget {
-  final String wk;
-  final String book;
-  final String perday;
-  final String companyname;
-  final String branchname;
-  final int branchid;
-  final String servicename;
-  final String servicerate;
-  final String servicedess;
-  final String type;
-  final String ins;
-  final String compid;
+  final String? wk;
+  final String? book;
+  final String? perday;
+  final String? companyname;
+  final String? branchname;
+  final int? branchid;
+  final String? servicename;
+  final String? servicerate;
+  final String? servicedess;
+  final String? type;
+  final String? ins;
+  final String? compid;
   const Calen({
     this.compid,
     this.ins,
@@ -45,17 +45,16 @@ class Calen extends StatefulWidget {
 }
 
 class _CalenState extends State<Calen> {
-  CalendarController _c = CalendarController();
   List<Working> wk = [];
-  int whichday;
+  int? whichday;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-    var wh = json.decode(widget.wk);
-    var book = json.decode(widget.book);
-    var perdayy = json.decode(widget.perday);
+    var wh = json.decode(widget.wk!);
+    var book = json.decode(widget.book!);
+    var perdayy = json.decode(widget.perday!);
 
     print(book);
 
@@ -79,9 +78,11 @@ class _CalenState extends State<Calen> {
               width: width,
               child: TableCalendar(
                 // calendarStyle: CalendarStyle(holidayStyle: ),
-                initialSelectedDay: DateTime.now(),
+                firstDay: DateTime.now(),
+                focusedDay: DateTime.now(),
+                lastDay: DateTime(2100, 9, 7),
 
-                onDaySelected: (day, events, holidays) {
+                onDaySelected: (day, holidays) {
                   String dateFormat = DateFormat('EEEE', 'en').format(day);
                   String dayy = dateFormat.toLowerCase();
 
@@ -121,7 +122,7 @@ class _CalenState extends State<Calen> {
                       .replaceAll('}', '');
                   print('wk -- $workday');
 
-                  String bookday = book[whichday];
+                  String? bookday = book[whichday];
                   // .toString()
                   // .replaceAll('{', '')
                   // .replaceAll('}', '');
@@ -138,8 +139,8 @@ class _CalenState extends State<Calen> {
 
                   print('pr --- $perday');
                   print(perday.length);
-                  if (perday.length > 0 && bookday.length > 0 ||
-                      perday.isNotEmpty && bookday.isNotEmpty) {
+                  if (perday.length > 0 && bookday!.length > 0 ||
+                      perday.isNotEmpty && bookday!.isNotEmpty) {
                     print('open');
                     var slot = (int.parse(perday) * 60) / int.parse(bookday);
                     var slots = slot.floor();
@@ -176,7 +177,6 @@ class _CalenState extends State<Calen> {
                     AppToast.showErr(LocaleKeys.Branchisclosed.tr());
                   }
                 },
-                calendarController: _c,
                 availableGestures: AvailableGestures.horizontalSwipe,
               ),
             )

@@ -16,14 +16,14 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String address1;
-  String address2;
-  String city;
-  String postalcode;
-  String province;
-  File _image;
+  String? address1;
+  String? address2;
+  String? city;
+  String? postalcode;
+  String? province;
+  File? _image;
   final picker = ImagePicker();
-  UserDets userDets;
+  UserDets? userDets;
 
   @override
   void didChangeDependencies() {
@@ -96,7 +96,7 @@ class _ProfileState extends State<Profile> {
                                 )
                           : CircleAvatar(
                               radius: 60,
-                              backgroundImage: FileImage(_image),
+                              backgroundImage: FileImage(_image!),
                             ),
                       Container(
                         child: FlatButton(
@@ -140,12 +140,12 @@ class _ProfileState extends State<Profile> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
-                                          color: myColor[50], width: 2.0),
+                                          color: myColor[50]!, width: 2.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
-                                          color: myColor[250], width: 2.0),
+                                          color: myColor[250]!, width: 2.0),
                                     ),
                                   ),
                                   onChanged: (v) {},
@@ -174,12 +174,12 @@ class _ProfileState extends State<Profile> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
-                                          color: myColor[50], width: 2.0),
+                                          color: myColor[50]!, width: 2.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
-                                          color: myColor[250], width: 2.0),
+                                          color: myColor[250]!, width: 2.0),
                                     ),
                                   ),
                                   onChanged: (v) {},
@@ -211,12 +211,12 @@ class _ProfileState extends State<Profile> {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[50], width: 2.0),
+                                        color: myColor[50]!, width: 2.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[250], width: 2.0),
+                                        color: myColor[250]!, width: 2.0),
                                   ),
                                 ),
                                 onChanged: (v) {
@@ -251,12 +251,12 @@ class _ProfileState extends State<Profile> {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[50], width: 2.0),
+                                        color: myColor[50]!, width: 2.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[250], width: 2.0),
+                                        color: myColor[250]!, width: 2.0),
                                   ),
                                 ),
                                 onChanged: (v) {
@@ -291,12 +291,12 @@ class _ProfileState extends State<Profile> {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[50], width: 2.0),
+                                        color: myColor[50]!, width: 2.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[250], width: 2.0),
+                                        color: myColor[250]!, width: 2.0),
                                   ),
                                 ),
                                 onChanged: (v) {
@@ -330,12 +330,12 @@ class _ProfileState extends State<Profile> {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[50], width: 2.0),
+                                        color: myColor[50]!, width: 2.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[250], width: 2.0),
+                                        color: myColor[250]!, width: 2.0),
                                   ),
                                 ),
                                 onChanged: (v) {
@@ -370,12 +370,12 @@ class _ProfileState extends State<Profile> {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[50], width: 2.0),
+                                        color: myColor[50]!, width: 2.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: myColor[250], width: 2.0),
+                                        color: myColor[250]!, width: 2.0),
                                   ),
                                 ),
                                 onChanged: (v) {

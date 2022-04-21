@@ -13,14 +13,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProv extends ChangeNotifier {
-  List<UserDets> userDetsList;
+  List<UserDets>? userDetsList;
   bool isLoading = true;
   bool isError = false;
   bool isEmpty = false;
 
   getUsers() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     var header = {"Authorization": token, 'Content-Type': 'application/json'};
     try {
       var resp = await httpGetRequest(UsersApi.getUsers, header);
@@ -31,7 +31,7 @@ class UserProv extends ChangeNotifier {
           UserDets temp;
           temp = UserDets.fromJson(decodedResp['userdetails'][i]);
 
-          userDetsList.add(temp);
+          userDetsList!.add(temp);
         }
         isLoading = false;
         notifyListeners();
@@ -55,7 +55,7 @@ class UserProv extends ChangeNotifier {
 
   Future<bool> deleteUser(UserDets userDets) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     var header = {"Authorization": token, 'Content-Type': 'application/json'};
     try {
       AppToast.showSucc("Deleting user ${userDets.name}");

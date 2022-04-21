@@ -13,9 +13,9 @@ class CompanyProvider extends ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
 
   Future getCompanies(
-      {bool sort, String sortby, String ascdsc, String type}) async {
+      {required bool sort, String? sortby, String? ascdsc, String? type}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     print(token);
     print(sortby);
     print(ascdsc);
@@ -29,9 +29,9 @@ class CompanyProvider extends ChangeNotifier {
     var sortreq = new http.MultipartRequest("POST", Uri.parse(baseUrl.sorting))
       ..headers.addAll(header);
     if (sort) {
-      sortreq.fields['sortby'] = sortby;
-      sortreq.fields['asc_desc'] = ascdsc;
-      sortreq.fields['sorting'] = type;
+      sortreq.fields['sortby'] = sortby!;
+      sortreq.fields['asc_desc'] = ascdsc!;
+      sortreq.fields['sorting'] = type!;
     }
 
     var res = sort ? await sortreq.send() : await request.send();
@@ -88,19 +88,19 @@ class CompanyProvider extends ChangeNotifier {
   List<CompanyModel> get companies => company;
 
   void companyadd({
-    String acname,
-    String acnum,
-    String bankname,
-    String descr,
-    String earnedtilldate,
-    int id,
-    String ifsc,
-    String moneyearned,
-    String name,
-    String onliner,
-    String profileurl,
-    String type,
-    String insurance,
+    String? acname,
+    String? acnum,
+    String? bankname,
+    String? descr,
+    String? earnedtilldate,
+    int? id,
+    String? ifsc,
+    String? moneyearned,
+    String? name,
+    String? onliner,
+    String? profileurl,
+    String? type,
+    String? insurance,
   }) {
     companies.add(CompanyModel(
         insurance: insurance,

@@ -7,11 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginProv extends ChangeNotifier {
-  String jwtToken;
+  String? jwtToken;
   bool isError = false;
   bool success = false;
 
-  Future<bool> executeLogin(String email, String password) async {
+  Future<bool> executeLogin(String? email, String? password) async {
     try {
       isError = false;
       success = false;
@@ -26,10 +26,10 @@ class LoginProv extends ChangeNotifier {
         var decodedResp = jsonDecode(resp.body);
         if (decodedResp["message"] == true) {
           jwtToken = decodedResp["token"];
-          SP().storeEmail(email);
-          SP().storePass(password);
+          SP().storeEmail(email!);
+          SP().storePass(password!);
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('token', jwtToken);
+          prefs.setString('token', jwtToken!);
           print(jwtToken);
           success = true;
           notifyListeners();

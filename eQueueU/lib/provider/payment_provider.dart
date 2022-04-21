@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PayProvider with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
   getPayment(
-      double amount, double bonus, String tokenbooking, String compid) async {
+      double amount, double bonus, String tokenbooking, String? compid) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
@@ -24,7 +24,7 @@ class PayProvider with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.payment),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );

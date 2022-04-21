@@ -24,11 +24,11 @@ class _LoginState extends State<Login> {
   final lkey = GlobalKey<FormState>();
   var w = 0.8;
   int type = 0;
-  String phone;
-  String password;
-  String error;
-  Country _selectedCountry;
-  String lang;
+  late String phone;
+  String? password;
+  String? error;
+  Country? _selectedCountry;
+  String? lang;
   int sizz = 0;
   BaseUrl baseUrl = BaseUrl();
 
@@ -151,7 +151,7 @@ class _LoginState extends State<Login> {
                                 FilteringTextInputFormatter.digitsOnly
                               ],
                               validator: (name) {
-                                if (name.isEmpty) {
+                                if (name!.isEmpty) {
                                   return LocaleKeys.Pleaseenterphonenumber.tr();
                                 } else
                                   return null;
@@ -195,7 +195,7 @@ class _LoginState extends State<Login> {
                   error == null
                       ? Container()
                       : Container(
-                          child: Text(error),
+                          child: Text(error!),
                         ),
                   AnimatedContainer(
                     duration: Duration(milliseconds: 1000),
@@ -213,9 +213,9 @@ class _LoginState extends State<Login> {
                           borderRadius: new BorderRadius.circular(30.0)),
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        var code = _selectedCountry.callingCode.substring(1);
+                        var code = _selectedCountry!.callingCode.substring(1);
 
-                        if (lkey.currentState.validate()) {
+                        if (lkey.currentState!.validate()) {
                           if (_selectedCountry != null) {
                             login_otp(phone, code);
                           }

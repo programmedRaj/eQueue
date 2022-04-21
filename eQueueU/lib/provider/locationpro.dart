@@ -5,8 +5,8 @@ import 'package:location/location.dart';
 class LocationProvider with ChangeNotifier {
   Location location = Location();
   Location get loc => location;
-  LatLng lp;
-  LatLng get locp => lp;
+  LatLng? lp;
+  LatLng? get locp => lp;
 
   bool locationService = true;
   LocationProvider() {
@@ -39,7 +39,7 @@ class LocationProvider with ChangeNotifier {
     var loca = await location.getLocation();
     print('pppp${loca.longitude}');
     location.onLocationChanged.listen((event) {
-      lp = LatLng(event.latitude, event.longitude);
+      lp = LatLng(event.latitude!, event.longitude!);
       print(lp);
       notifyListeners();
     });

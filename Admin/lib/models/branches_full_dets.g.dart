@@ -8,10 +8,10 @@ part of 'branches_full_dets.dart';
 
 BranchFullDetails _$BranchFullDetailsFromJson(Map<String, dynamic> json) {
   return BranchFullDetails(
-    contact: json['phone_number'] as String,
-    moneyEarned: json['money_earned'] as String ?? '0',
-    name: json['bname'] as String,
-    id: json['id'] as int,
+    contact: json['phone_number'] as String?,
+    moneyEarned: json['money_earned'] as String? ?? '0',
+    name: json['bname'] as String?,
+    id: json['id'] as int?,
   );
 }
 

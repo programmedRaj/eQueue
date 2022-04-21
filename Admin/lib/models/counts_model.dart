@@ -5,13 +5,13 @@ part 'counts_model.g.dart';
 @JsonSerializable()
 class CountsModel {
   @JsonKey(name: 'comp_count')
-  int compCount;
+  int? compCount;
   @JsonKey(name: 'branch_count')
-  int branchCount;
+  int? branchCount;
   @JsonKey(name: 'emp_count')
-  int empCount;
+  int? empCount;
   @JsonKey(name: 'users_count')
-  int userCount;
+  int? userCount;
 
   CountsModel(
       {this.branchCount, this.compCount, this.empCount, this.userCount});

@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class DepProvider extends ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
 
-  Future getdep({int id, int bid, String type}) async {
+  Future getdep({int? id, int? bid, String? type}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
@@ -21,7 +21,7 @@ class DepProvider extends ChangeNotifier {
           .post(Uri.parse(baseUrl.departments),
               headers: {
                 "Content-Type": "application/json",
-                "Authorization": token
+                "Authorization": token!
               },
               body: bodymsg)
           .timeout(Duration(seconds: 5)),
@@ -39,12 +39,12 @@ class DepProvider extends ChangeNotifier {
       }
   }
 
-  List<String> depart = [];
+  List<String?> depart = [];
 
-  List<String> get departs => depart;
+  List<String?> get departs => depart;
 
   void branchesadd({
-    String deps,
+    String? deps,
   }) {
     departs.add(deps);
     notifyListeners();

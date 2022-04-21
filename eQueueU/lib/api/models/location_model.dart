@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 class LocationM {
-  final double lat;
-  final double long;
+  final double? lat;
+  final double? long;
   LocationM({
-    @required this.lat,
-    @required this.long,
+    required this.lat,
+    required this.long,
   });
 }

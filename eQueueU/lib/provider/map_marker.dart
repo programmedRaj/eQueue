@@ -18,7 +18,7 @@ class MapMarker with ChangeNotifier {
     var response = await retry(
       () => http.get(Uri.parse(baseUrl.addmap), headers: {
         // "Content-Type": "application/json",
-        "Authorization": token
+        "Authorization": token!
       }).timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
@@ -61,29 +61,29 @@ class MapMarker with ChangeNotifier {
   List<BranchModelwithcompany> get branches => branch;
 
   void branchesadd({
-    int id,
-    int companyid,
-    String address1,
-    String address2,
-    String bname,
-    String bookingperday,
-    String city,
-    String countercount,
-    String department,
-    String geolocation,
-    String moneyearned,
-    String notifytime,
-    String perdayhours,
-    String phonenumber,
-    String postalcode,
-    String profilephotourl,
-    String province,
-    String services,
-    String threshold,
-    String timezone,
-    String workinghours,
-    String company,
-    String type,
+    int? id,
+    int? companyid,
+    String? address1,
+    String? address2,
+    String? bname,
+    String? bookingperday,
+    String? city,
+    String? countercount,
+    String? department,
+    String? geolocation,
+    String? moneyearned,
+    String? notifytime,
+    String? perdayhours,
+    String? phonenumber,
+    String? postalcode,
+    String? profilephotourl,
+    String? province,
+    String? services,
+    String? threshold,
+    String? timezone,
+    String? workinghours,
+    String? company,
+    String? type,
   }) {
     branches.add(BranchModelwithcompany(
         company: company,

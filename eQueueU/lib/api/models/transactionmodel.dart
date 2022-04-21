@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class TransactionModel {
-  String amount;
-  String color;
-  String status;
-  int tid;
-  int uid;
+  String? amount;
+  String? color;
+  String? status;
+  int? tid;
+  int? uid;
   TransactionModel({
     this.amount,
     this.color,
@@ -15,11 +15,11 @@ class TransactionModel {
   });
 
   TransactionModel copyWith({
-    String amount,
-    String color,
-    String status,
-    int tid,
-    int uid,
+    String? amount,
+    String? color,
+    String? status,
+    int? tid,
+    int? uid,
   }) {
     return TransactionModel(
       amount: amount ?? this.amount,
@@ -50,8 +50,8 @@ class TransactionModel {
     };
   }
 
-  factory TransactionModel.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory TransactionModel.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return TransactionModel();
 
     return TransactionModel(
       amount: map['amount'],

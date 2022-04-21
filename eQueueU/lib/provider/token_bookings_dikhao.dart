@@ -24,7 +24,7 @@ class DisplayTokenBook with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.displaytokenbooking),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
@@ -77,16 +77,16 @@ class DisplayTokenBook with ChangeNotifier {
   List<DisplayBookings> get bookings => booking;
 
   void addtoken({
-    String token,
-    String branchtable,
-    String createdon,
-    String status,
-    String userid,
-    String slots,
-    String employeeid,
-    String comp,
-    String empr,
-    String countnum,
+    String? token,
+    String? branchtable,
+    String? createdon,
+    String? status,
+    String? userid,
+    String? slots,
+    String? employeeid,
+    String? comp,
+    String? empr,
+    String? countnum,
   }) {
     tokens.add(DisplayToken(
       branchtable: branchtable,
@@ -104,16 +104,16 @@ class DisplayTokenBook with ChangeNotifier {
   }
 
   void addbooking({
-    String empr,
-    String slots,
-    String employeeid,
-    String booking,
-    String branchtable,
-    String createdon,
-    String status,
-    String userid,
-    String comp,
-    String countnum,
+    String? empr,
+    String? slots,
+    String? employeeid,
+    String? booking,
+    String? branchtable,
+    String? createdon,
+    String? status,
+    String? userid,
+    String? comp,
+    String? countnum,
   }) {
     bookings.add(DisplayBookings(
       comp: comp,
@@ -130,12 +130,12 @@ class DisplayTokenBook with ChangeNotifier {
     notifyListeners();
   }
 
-  void removetokenone({String token}) {
+  void removetokenone({String? token}) {
     tokens.removeWhere((element) => element.token == token);
     notifyListeners();
   }
 
-  void removebookinone({String token}) {
+  void removebookinone({String? token}) {
     bookings.removeWhere((element) => element.bookings == token);
     notifyListeners();
   }

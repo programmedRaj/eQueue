@@ -1,19 +1,19 @@
 import 'dart:convert';
 
 class CompanyModel {
-  String acname;
-  String acnum;
-  String bankname;
-  String descr;
-  String earnedtilldate;
-  int id;
-  String ifsc;
-  String moneyearned;
-  String name;
-  String onliner;
-  String profileurl;
-  String type;
-  String insurance;
+  String? acname;
+  String? acnum;
+  String? bankname;
+  String? descr;
+  String? earnedtilldate;
+  int? id;
+  String? ifsc;
+  String? moneyearned;
+  String? name;
+  String? onliner;
+  String? profileurl;
+  String? type;
+  String? insurance;
   CompanyModel({
     this.acname,
     this.acnum,
@@ -31,19 +31,19 @@ class CompanyModel {
   });
 
   CompanyModel copyWith({
-    String acname,
-    String acnum,
-    String bankname,
-    String descr,
-    String earnedtilldate,
-    int id,
-    String ifsc,
-    String moneyearned,
-    String name,
-    String onliner,
-    String profileurl,
-    String type,
-    String insurance,
+    String? acname,
+    String? acnum,
+    String? bankname,
+    String? descr,
+    String? earnedtilldate,
+    int? id,
+    String? ifsc,
+    String? moneyearned,
+    String? name,
+    String? onliner,
+    String? profileurl,
+    String? type,
+    String? insurance,
   }) {
     return CompanyModel(
       acname: acname ?? this.acname,
@@ -98,8 +98,8 @@ class CompanyModel {
     };
   }
 
-  factory CompanyModel.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory CompanyModel.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return CompanyModel();
 
     return CompanyModel(
       acname: map['acname'],

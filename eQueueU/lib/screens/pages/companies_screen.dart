@@ -5,7 +5,7 @@ import 'package:eQueue/provider/company_provider.dart';
 import 'package:eQueue/screens/pages/branch_screen.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:grouped_buttons_ns/grouped_buttons_ns.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -15,11 +15,11 @@ class Company extends StatefulWidget {
 }
 
 class _CompanyState extends State<Company> {
-  int sizz;
-  List<CompanyModel> companylist;
+  int? sizz;
+  List<CompanyModel>? companylist;
   String searchval = "";
   List<CompanyModel> companysearch = [];
-  String noprod;
+  String? noprod;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -50,12 +50,12 @@ class _CompanyState extends State<Company> {
       if (v != null) {
         companysearch.clear();
         for (int i = 0; i < company.length; i++) {
-          if (company[i].name.toLowerCase().contains(v) ||
-              company[i].name.toUpperCase().contains(v) ||
-              company[i].name.contains(v) ||
-              company[i].descr.toLowerCase().contains(v) ||
-              company[i].descr.toUpperCase().contains(v) ||
-              company[i].descr.contains(v)) {
+          if (company[i].name!.toLowerCase().contains(v) ||
+              company[i].name!.toUpperCase().contains(v) ||
+              company[i].name!.contains(v) ||
+              company[i].descr!.toLowerCase().contains(v) ||
+              company[i].descr!.toUpperCase().contains(v) ||
+              company[i].descr!.contains(v)) {
             companysearch.add(CompanyModel(
               acname: company[i].acname,
               acnum: company[i].acnum,
@@ -300,9 +300,9 @@ class _CompanyState extends State<Company> {
                                                             0 ||
                                                         companysearch.isNotEmpty
                                                     ? Text(
-                                                        '${companysearch[i].type[0].toUpperCase()}')
+                                                        '${companysearch[i].type![0].toUpperCase()}')
                                                     : Text(
-                                                        '${comp[i].type[0].toUpperCase()}'),
+                                                        '${comp[i].type![0].toUpperCase()}'),
                                               ),
                                             )),
                                       ),
@@ -329,7 +329,7 @@ class _CompanyState extends State<Company> {
                                                           companysearch
                                                               .isNotEmpty
                                                       ? Text(
-                                                          companysearch[i].name,
+                                                          companysearch[i].name!,
                                                           style: TextStyle(
                                                               color:
                                                                   myColor[50],
@@ -341,7 +341,7 @@ class _CompanyState extends State<Company> {
                                                               .ellipsis,
                                                         )
                                                       : Text(
-                                                          comp[i].name,
+                                                          comp[i].name!,
                                                           style: TextStyle(
                                                               color:
                                                                   myColor[50],

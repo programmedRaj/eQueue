@@ -13,13 +13,13 @@ class DeletetokenProvider with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
 
   Future delettoken({
-    String type,
-    String tokennumber,
-    String branchid,
-    String tokenstatus,
-    String amount,
-    String branchname,
-    String price,
+    String? type,
+    String? tokennumber,
+    String? branchid,
+    String? tokenstatus,
+    String? amount,
+    String? branchname,
+    String? price,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
@@ -34,7 +34,7 @@ class DeletetokenProvider with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.deletetokenbooking),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );

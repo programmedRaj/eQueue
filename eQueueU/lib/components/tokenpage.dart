@@ -2,14 +2,14 @@ import 'package:eQueue/components/color.dart';
 import 'package:flutter/material.dart';
 
 class TokenPage extends StatefulWidget {
-  final List depa;
+  final List? depa;
   TokenPage({this.depa});
   @override
   _TokenPageState createState() => _TokenPageState();
 }
 
 class _TokenPageState extends State<TokenPage> {
-  String dropval;
+  String? dropval;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -26,7 +26,7 @@ class _TokenPageState extends State<TokenPage> {
           padding: EdgeInsets.all(10),
           child: DropdownButtonHideUnderline(
             child: DropdownButton(
-                items: widget.depa.map((val) {
+                items: widget.depa!.map((val) {
                   return new DropdownMenuItem<String>(
                     value: val,
                     child: new Text(val),
@@ -44,13 +44,13 @@ class _TokenPageState extends State<TokenPage> {
                         ),
                       )
                     : Text(
-                        dropval,
+                        dropval!,
                         style: TextStyle(
                             color: Theme.of(context).highlightColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w800),
                       ),
-                onChanged: (newVal) {
+                onChanged: (dynamic newVal) {
                   dropval = newVal;
                   this.setState(() {});
                 }),

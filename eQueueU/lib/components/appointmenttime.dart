@@ -8,19 +8,19 @@ import 'package:eQueue/screens/pages/payforbooking.dart';
 import 'package:provider/provider.dart';
 
 class AppTime extends StatefulWidget {
-  final DateTime day;
-  final int slots;
-  final String starttime;
-  final String endtime;
-  final String companyname;
-  final String branchname;
-  final int branchid;
-  final String servicename;
-  final String servicerate;
-  final String servicedess;
-  final String type;
-  final String i;
-  final String compid;
+  final DateTime? day;
+  final int? slots;
+  final String? starttime;
+  final String? endtime;
+  final String? companyname;
+  final String? branchname;
+  final int? branchid;
+  final String? servicename;
+  final String? servicerate;
+  final String? servicedess;
+  final String? type;
+  final String? i;
+  final String? compid;
   const AppTime({
     this.compid,
     this.i,
@@ -77,14 +77,14 @@ class _AppTimeState extends State<AppTime> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-    List starttime = widget.starttime.split(':');
-    List endtime = widget.endtime.split(':');
+    List starttime = widget.starttime!.split(':');
+    List endtime = widget.endtime!.split(':');
 
     final startTime = TimeOfDay(
         hour: int.parse(starttime[0]), minute: int.parse(starttime[1]));
     final endTime =
         TimeOfDay(hour: int.parse(endtime[0]), minute: int.parse(endtime[1]));
-    final step = Duration(minutes: widget.slots.toInt());
+    final step = Duration(minutes: widget.slots!.toInt());
 
     final times = getTimes(startTime, endTime, step)
         .map((tod) => tod.format(context))
@@ -97,15 +97,15 @@ class _AppTimeState extends State<AppTime> {
         if (value.bookings.length != 0) {
           datet = value.booking
               .where((element) =>
-                  element.date.replaceAll(new RegExp(r"\s+"), "") ==
+                  element.date!.replaceAll(new RegExp(r"\s+"), "") ==
                   datefrommob.replaceAll(new RegExp(r"\s+"), ""))
               .toList();
 
           tlist.clear();
           for (int j = 0; j < times.length; j++) {
             for (int i = 0; i < datet.length; i++) {
-              if (datet[i].time.contains(times[j].substring(0, 4))) {
-                tlist.add(datet[i].time.substring(0, 4));
+              if (datet[i].time!.contains(times[j].substring(0, 4))) {
+                tlist.add(datet[i].time!.substring(0, 4));
               }
 
               // print(times[i]
@@ -156,7 +156,7 @@ class _AppTimeState extends State<AppTime> {
                           decoration: BoxDecoration(
                             color: myColor[150],
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: myColor[50]),
+                            border: Border.all(color: myColor[50]!),
                           ),
                           child: Center(
                               child: Text(
@@ -190,7 +190,7 @@ class _AppTimeState extends State<AppTime> {
                           decoration: BoxDecoration(
                             color: myColor[100],
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: myColor[50]),
+                            border: Border.all(color: myColor[50]!),
                           ),
                           child: Center(child: Text(times[i])),
                         ),

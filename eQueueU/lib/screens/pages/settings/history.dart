@@ -116,7 +116,7 @@ class _HistoryState extends State<History> {
             child: ListTile(
               trailing: circle(tob[i].status),
               title: Text(
-                tob[i].branchtable.split('_')[0],
+                tob[i].branchtable!.split('_')[0],
                 style:
                     TextStyle(color: myColor[250], fontWeight: FontWeight.bold),
               ),
@@ -129,7 +129,7 @@ class _HistoryState extends State<History> {
                   Text('${tob[i].status}'),
                   tob[i].employeeid == null || tob[i].status == 'cancelled'
                       ? Container()
-                      : int.parse(tob[i].empr) == 1
+                      : int.parse(tob[i].empr!) == 1
                           ? Container()
                           : ElevatedButton(
                               onPressed: () {
@@ -212,7 +212,7 @@ class _HistoryState extends State<History> {
             child: ListTile(
               trailing: circle(tob[i].status),
               title: Text(
-                tob[i].branchtable.split('_')[0],
+                tob[i].branchtable!.split('_')[0],
                 style:
                     TextStyle(color: myColor[250], fontWeight: FontWeight.bold),
               ),
@@ -225,7 +225,7 @@ class _HistoryState extends State<History> {
                   Text('${tob[i].status}'),
                   tob[i].employeeid == null || tob[i].status == 'cancelled'
                       ? Container()
-                      : int.parse(tob[i].empr) == 1
+                      : int.parse(tob[i].empr!) == 1
                           ? Container()
                           : ElevatedButton(
                               onPressed: () {
@@ -286,7 +286,7 @@ class _HistoryState extends State<History> {
         });
   }
 
-  Widget circle(status) {
+  Widget? circle(status) {
     if (status == 'completed') {
       return CircleAvatar(
         radius: 10,

@@ -9,14 +9,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BranchDetsProv extends ChangeNotifier {
-  List<BranchFullDetails> branchFullDetails;
+  List<BranchFullDetails>? branchFullDetails;
   bool isLoading = true;
   bool isError = false;
   bool isEmpty = false;
 
-  getBranches(int compId) async {
+  getBranches(int? compId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     var header = {"Authorization": token, 'Content-Type': 'application/json'};
     try {
       var resp = await httpPostRequest(
@@ -25,7 +25,7 @@ class BranchDetsProv extends ChangeNotifier {
         var decodedResp = jsonDecode(resp.body);
         branchFullDetails = [];
         for (var item in decodedResp['branches']) {
-          branchFullDetails.add(BranchFullDetails.fromJson(item));
+          branchFullDetails!.add(BranchFullDetails.fromJson(item));
         }
         isLoading = false;
         notifyListeners();

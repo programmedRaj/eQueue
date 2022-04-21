@@ -1,28 +1,28 @@
 import 'dart:convert';
 
 class BranchModel {
-  int id;
-  int companyid;
-  String address1;
-  String address2;
-  String bname;
-  String bdesc;
-  String bookingperday;
-  String city;
-  String countercount;
-  String department;
-  String geolocation;
-  String moneyearned;
-  String notifytime;
-  String perdayhours;
-  String phonenumber;
-  String postalcode;
-  String profilephotourl;
-  String province;
-  String services;
-  String threshold;
-  String timezone;
-  String workinghours;
+  int? id;
+  int? companyid;
+  String? address1;
+  String? address2;
+  String? bname;
+  String? bdesc;
+  String? bookingperday;
+  String? city;
+  String? countercount;
+  String? department;
+  String? geolocation;
+  String? moneyearned;
+  String? notifytime;
+  String? perdayhours;
+  String? phonenumber;
+  String? postalcode;
+  String? profilephotourl;
+  String? province;
+  String? services;
+  String? threshold;
+  String? timezone;
+  String? workinghours;
   BranchModel(
       {this.id,
       this.companyid,
@@ -48,27 +48,27 @@ class BranchModel {
       this.bdesc});
 
   BranchModel copyWith({
-    int id,
-    int companyid,
-    String address1,
-    String address2,
-    String bname,
-    String bookingperday,
-    String city,
-    String countercount,
-    String department,
-    String geolocation,
-    String moneyearned,
-    String notifytime,
-    String perdayhours,
-    String phonenumber,
-    String postalcode,
-    String profilephotourl,
-    String province,
-    String services,
-    String threshold,
-    String timezone,
-    String workinghours,
+    int? id,
+    int? companyid,
+    String? address1,
+    String? address2,
+    String? bname,
+    String? bookingperday,
+    String? city,
+    String? countercount,
+    String? department,
+    String? geolocation,
+    String? moneyearned,
+    String? notifytime,
+    String? perdayhours,
+    String? phonenumber,
+    String? postalcode,
+    String? profilephotourl,
+    String? province,
+    String? services,
+    String? threshold,
+    String? timezone,
+    String? workinghours,
   }) {
     return BranchModel(
       id: id ?? this.id,
@@ -148,8 +148,8 @@ class BranchModel {
     };
   }
 
-  factory BranchModel.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory BranchModel.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return BranchModel();
 
     return BranchModel(
       id: map['id'],

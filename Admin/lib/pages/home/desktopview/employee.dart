@@ -13,16 +13,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Employees extends StatefulWidget {
-  final int branchId;
-  Employees({@required this.branchId});
+  final int? branchId;
+  Employees({required this.branchId});
   @override
   _EmployeesState createState() => _EmployeesState();
 }
 
 class _EmployeesState extends State<Employees> {
-  int _rowperpage = PaginatedDataTable.defaultRowsPerPage;
+  int? _rowperpage = PaginatedDataTable.defaultRowsPerPage;
   List searchlist = [];
-  LoginProv loginProv;
+  LoginProv? loginProv;
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _EmployeesState extends State<Employees> {
                                     _rowperpage = val;
                                   });
                                 },
-                                rowsPerPage: _rowperpage,
+                                rowsPerPage: _rowperpage!,
                               ),
                             ),
                           ],
@@ -113,15 +113,15 @@ class _EmployeesState extends State<Employees> {
 class Dts extends DataTableSource {
   double width;
   double height;
-  int size;
-  List srno;
+  int? size;
+  List? srno;
   BuildContext context;
-  List<EmpDets> empDets;
-  LoginProv loginProv;
+  List<EmpDets>? empDets;
+  LoginProv? loginProv;
   Dts(this.width, this.height, this.context, this.empDets, this.loginProv);
-  String password;
-  String password2;
-  String error;
+  String? password;
+  String? password2;
+  String? error;
   final passwordkey = GlobalKey<FormState>();
 
   @override
@@ -143,13 +143,13 @@ class Dts extends DataTableSource {
         cells: [
           DataCell(Container(width: width * 0.1, child: Text("${index + 1}"))),
           DataCell(
-              Container(width: width * 0.1, child: Text(empDets[index].email))),
+              Container(width: width * 0.1, child: Text(empDets![index].email!))),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.2,
-              child: Text(empDets[index].empId.toString()))),
+              child: Text(empDets![index].empId.toString()))),
           DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.1,
-              child: Text(empDets[index].status.toString()))),
+              child: Text(empDets![index].status.toString()))),
           /* DataCell(Container(
               width: size == 1 ? width * 0.15 : width * 0.1,
               child: actionsRow(companyFullDetails.companyDetsList[index],
@@ -161,7 +161,7 @@ class Dts extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => empDets.length;
+  int get rowCount => empDets!.length;
 
   @override
   int get selectedRowCount => 0;

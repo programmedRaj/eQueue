@@ -14,10 +14,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Rateemp with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
   Future displayratempboth(
-      {String tokenbooking,
-      String tokboknum,
-      String empid,
-      String ratingstar}) async {
+      {String? tokenbooking,
+      String? tokboknum,
+      String? empid,
+      String? ratingstar}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     print(token);
@@ -30,7 +30,7 @@ class Rateemp with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.ratemp),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );

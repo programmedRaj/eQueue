@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:eQueue/check.dart';
 import 'package:eQueue/constants/apptoast.dart';
 import 'package:eQueue/provider/payment_provider.dart';
@@ -8,23 +10,23 @@ import 'package:eQueue/screens/home_screen.dart';
 import 'package:eQueue/screens/pages/home.dart';
 import 'package:eQueue/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:grouped_buttons_ns/grouped_buttons_ns.dart';
 
 import 'package:eQueue/components/color.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class PayFor extends StatefulWidget {
-  final String companyname;
-  final String branchname;
-  final int branchid;
-  final String servicename;
-  final String servicerate;
-  final String servicedess;
-  final String time;
-  final String ins;
-  final String date;
-  final String compid;
+  final String? companyname;
+  final String? branchname;
+  final int? branchid;
+  final String? servicename;
+  final String? servicerate;
+  final String? servicedess;
+  final String? time;
+  final String? ins;
+  final String? date;
+  final String? compid;
   PayFor({
     this.compid,
     this.ins,
@@ -44,8 +46,8 @@ class PayFor extends StatefulWidget {
 
 class _PayForState extends State<PayFor> {
   bool isinsu = false;
-  String insno;
-  String transid;
+  String? insno;
+  String? transid;
   bool onepress = false;
 
   @override
@@ -100,12 +102,12 @@ class _PayForState extends State<PayFor> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                BorderSide(color: myColor[150], width: 2.0),
+                                BorderSide(color: myColor[150]!, width: 2.0),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                BorderSide(color: myColor[150], width: 2.0),
+                                BorderSide(color: myColor[150]!, width: 2.0),
                           ),
                         ),
                       ),
@@ -120,7 +122,7 @@ class _PayForState extends State<PayFor> {
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey[300],
+                      color: Colors.grey[300]!,
                       blurRadius: 4,
                     )
                   ],
@@ -432,14 +434,14 @@ class _PayForState extends State<PayFor> {
     );
   }
 
-  Future monbon(String money, String bonus, String compid) {
-    var totalbonus = (int.parse(widget.servicerate) * 10) / 100;
+  Future monbon(String? money, String bonus, String? compid) async {
+    var totalbonus = (int.parse(widget.servicerate!) * 10) / 100;
     var totalbonustoint = double.parse(totalbonus.toStringAsFixed(2));
 
     if (double.parse(bonus) >= totalbonustoint) {
       var totalservicecharge =
-          (int.parse(widget.servicerate) - totalbonustoint);
-      if (double.parse(money) >= totalservicecharge) {
+          (int.parse(widget.servicerate!) - totalbonustoint);
+      if (double.parse(money!) >= totalservicecharge) {
         print('1. $totalservicecharge');
         var transid = Provider.of<PayProvider>(context, listen: false)
             .getPayment(
@@ -450,8 +452,8 @@ class _PayForState extends State<PayFor> {
       }
     } else if (totalbonustoint < double.parse(bonus)) {
       var totalservicecharge =
-          (int.parse(widget.servicerate) - double.parse(bonus));
-      if (double.parse(money) >= totalservicecharge) {
+          (int.parse(widget.servicerate!) - double.parse(bonus));
+      if (double.parse(money!) >= totalservicecharge) {
         print('2. $totalservicecharge');
         var transid = Provider.of<PayProvider>(context, listen: false)
             .getPayment(
@@ -462,9 +464,9 @@ class _PayForState extends State<PayFor> {
         AppToast.showErr(LocaleKeys.InsufficientBalance.tr());
       }
     } else if (double.parse(bonus) == 0) {
-      if (double.parse(money) >= double.parse(widget.servicerate)) {
+      if (double.parse(money!) >= double.parse(widget.servicerate!)) {
         var transid = Provider.of<PayProvider>(context, listen: false)
-            .getPayment(double.parse(widget.servicerate), double.parse(bonus),
+            .getPayment(double.parse(widget.servicerate!), double.parse(bonus),
                 'booking', compid);
         return transid;
       } else {

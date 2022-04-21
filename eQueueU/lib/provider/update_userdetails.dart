@@ -12,15 +12,15 @@ import 'dart:io';
 class UpUserDetails with ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
   Future upUserDet(
-    File images,
-    String address1,
-    String address2,
-    String city,
-    String postalcode,
-    String province,
+    File? images,
+    String? address1,
+    String? address2,
+    String? city,
+    String? postalcode,
+    String? province,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     Uri registeruri = Uri.parse(baseUrl.updateuserdetails);
     var header = {
       'Content-Type': 'multipart/form-data',

@@ -54,7 +54,7 @@ class CompMoreOptsProv extends ChangeNotifier {
   Future<bool> deleteCompany(
       CompanyDets companyDets, CompEmailStatus compEmailStatus) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     var header = {'Content-Type': 'application/json', 'Authorization': token};
     var body = {
       "company_id": companyDets.id,

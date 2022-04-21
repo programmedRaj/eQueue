@@ -24,8 +24,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int sizz;
-  String token;
+  int? sizz;
+  String? token;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -241,7 +241,7 @@ class _HomeState extends State<Home> {
                         alignment: Alignment.centerLeft,
                         child: token != null
                             ? Text(
-                                '${LocaleKeys.hello.tr()}, ${JwtDecoder.decode(token)["name"]}',
+                                '${LocaleKeys.hello.tr()}, ${JwtDecoder.decode(token!)["name"]}',
                                 style: TextStyle(
                                     fontSize: 25, fontWeight: FontWeight.w700),
                               )
@@ -256,7 +256,7 @@ class _HomeState extends State<Home> {
                       Container(
                         decoration: BoxDecoration(boxShadow: [
                           BoxShadow(
-                            color: myColor[50].withOpacity(0.4),
+                            color: myColor[50]!.withOpacity(0.4),
                           )
                         ]),
                         child: Column(
@@ -329,7 +329,7 @@ class _HomeState extends State<Home> {
                                                               BoxShadow(
                                                                   color: Colors
                                                                           .grey[
-                                                                      600],
+                                                                      600]!,
                                                                   blurRadius: 4)
                                                             ]),
                                                         margin:
@@ -357,14 +357,14 @@ class _HomeState extends State<Home> {
                                                                         //     .status),
                                                                         circle(value
                                                                             .bookings[index]
-                                                                            .status),
+                                                                            .status)!,
                                                                         SizedBox(
                                                                           width:
                                                                               10,
                                                                         ),
                                                                         Container(
                                                                           child:
-                                                                              Text('${LocaleKeys.Booking.tr()} : ${value.bookings[index].branchtable.split("_")[0]}'),
+                                                                              Text('${LocaleKeys.Booking.tr()} : ${value.bookings[index].branchtable!.split("_")[0]}'),
                                                                         ),
                                                                       ],
                                                                     ),
@@ -389,7 +389,7 @@ class _HomeState extends State<Home> {
                                                                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: myColor[150]),
                                                                                 child: Center(
                                                                                   child: Text(
-                                                                                    value.bookings[index].bookings,
+                                                                                    value.bookings[index].bookings!,
                                                                                     style: TextStyle(color: myColor[100], fontSize: 18, letterSpacing: 15, fontWeight: FontWeight.bold),
                                                                                   ),
                                                                                 ),
@@ -421,7 +421,7 @@ class _HomeState extends State<Home> {
                                                                                                 } else {
                                                                                                   Provider.of<DeletetokenProvider>(context, listen: false).delettoken(
                                                                                                     branchname: value.bookings[index].branchtable,
-                                                                                                    branchid: value.bookings[index].branchtable.split('_')[1],
+                                                                                                    branchid: value.bookings[index].branchtable!.split('_')[1],
                                                                                                     tokennumber: value.bookings[index].bookings,
                                                                                                     tokenstatus: value.bookings[index].status,
                                                                                                     type: 'booking',
@@ -471,7 +471,7 @@ class _HomeState extends State<Home> {
                       Container(
                         decoration: BoxDecoration(boxShadow: [
                           BoxShadow(
-                            color: myColor[50].withOpacity(0.4),
+                            color: myColor[50]!.withOpacity(0.4),
                           )
                         ]),
                         child: Column(
@@ -585,7 +585,7 @@ class _HomeState extends State<Home> {
                                                                 branchid: value
                                                                     .tokens[
                                                                         index]
-                                                                    .branchtable
+                                                                    .branchtable!
                                                                     .split(
                                                                         '_')[1],
                                                                 tokennumber: value
@@ -627,7 +627,7 @@ class _HomeState extends State<Home> {
                                                                 BoxShadow(
                                                                     color: Colors
                                                                             .grey[
-                                                                        600],
+                                                                        600]!,
                                                                     blurRadius:
                                                                         4)
                                                               ]),
@@ -651,7 +651,7 @@ class _HomeState extends State<Home> {
                                                                     circle(value
                                                                         .tokens[
                                                                             index]
-                                                                        .status),
+                                                                        .status)!,
                                                                     SizedBox(
                                                                       width: 10,
                                                                     ),
@@ -659,7 +659,7 @@ class _HomeState extends State<Home> {
                                                                       child: Text(value
                                                                           .tokens[
                                                                               index]
-                                                                          .comp),
+                                                                          .comp!),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -667,7 +667,7 @@ class _HomeState extends State<Home> {
                                                                   child: Text(value
                                                                       .tokens[
                                                                           index]
-                                                                      .branchtable
+                                                                      .branchtable!
                                                                       .split(
                                                                           '_')[0]),
                                                                 ),
@@ -702,7 +702,7 @@ class _HomeState extends State<Home> {
                                                                             Text(
                                                                           value
                                                                               .tokens[index]
-                                                                              .token,
+                                                                              .token!,
                                                                           style: TextStyle(
                                                                               color: myColor[100],
                                                                               fontSize: 18,
@@ -745,7 +745,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget circle(status) {
+  Widget? circle(status) {
     if (status == 'onqueue') {
       return CircleAvatar(
         radius: 10,

@@ -12,12 +12,12 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddCompanyProv extends ChangeNotifier {
-  List<int> comlogoint;
-  Future<bool> execCreateComppany(Uint8List companyLogo, AddCompany addCompany,
+  List<int>? comlogoint;
+  Future<bool> execCreateComppany(Uint8List? companyLogo, AddCompany addCompany,
       bool edit, bool _isCheck) async {
     var postUri = Uri.parse(edit ? CompanyApi.edit : CompanyApi.create);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('token')!;
     var header = {
       'Content-Type': 'multipart/form-data',
       'Authorization': token,
@@ -34,17 +34,17 @@ class AddCompanyProv extends ChangeNotifier {
             ? ""
             : "${addCompany.name}_${DateTime.now().millisecondsSinceEpoch}_logo.png"));
 
-    request.fields['acc_type'] = companyEnumToString(addCompany.accType);
-    request.fields['email'] = addCompany.email;
-    request.fields['password'] = addCompany.password;
+    request.fields['acc_type'] = companyEnumToString(addCompany.accType)!;
+    request.fields['email'] = addCompany.email!;
+    request.fields['password'] = addCompany.password!;
     request.fields['insurance'] = ins == null ? '' : ins.toString();
-    request.fields['name'] = addCompany.name;
-    request.fields['desc'] = addCompany.desc;
-    request.fields['bankname'] = addCompany.bankName;
-    request.fields['ifsc_code'] = addCompany.ifscCode;
-    request.fields['accountnumber'] = addCompany.accountNo;
-    request.fields['accountname'] = addCompany.accountName;
-    request.fields['oneliner'] = addCompany.onleLiner;
+    request.fields['name'] = addCompany.name!;
+    request.fields['desc'] = addCompany.desc!;
+    request.fields['bankname'] = addCompany.bankName!;
+    request.fields['ifsc_code'] = addCompany.ifscCode!;
+    request.fields['accountnumber'] = addCompany.accountNo!;
+    request.fields['accountname'] = addCompany.accountName!;
+    request.fields['oneliner'] = addCompany.onleLiner!;
     request.fields['company_id'] = addCompany.companyId.toString();
 
     var resp = await request.send();

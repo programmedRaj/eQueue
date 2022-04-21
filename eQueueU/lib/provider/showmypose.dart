@@ -19,7 +19,7 @@ class ShowmyPose with ChangeNotifier {
     var response = await retry(
       () => http
           .post(Uri.parse(baseUrl.displaytokenbooking),
-              headers: {"Authorization": token}, body: map)
+              headers: {"Authorization": token!}, body: map)
           .timeout(Duration(seconds: 5)),
       retryIf: (e) => e is SocketException || e is TimeoutException,
     );
