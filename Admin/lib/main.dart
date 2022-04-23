@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<CountsProv>(create: (context) => CountsProv()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           iconTheme: IconThemeData(color: myColor[400]),
           primaryColor: myColor[300], //light indigo

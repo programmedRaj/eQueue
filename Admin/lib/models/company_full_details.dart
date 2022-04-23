@@ -58,6 +58,9 @@ class CompanyDets {
   String? moneyEarned;
   @JsonKey(name: "earned_till_date")
   String? earnedTillDate;
+  @JsonKey(name: "paid_ranking")
+  int? paidranking;
+
   @JsonKey(name: "id")
   int? id;
 
@@ -73,7 +76,8 @@ class CompanyDets {
       this.moneyEarned,
       this.name,
       this.onleLiner,
-      this.profileUrl});
+      this.profileUrl,
+      this.paidranking});
 
   factory CompanyDets.fromJson(Map<String, dynamic> json) =>
       _$CompanyDetsFromJson(json);

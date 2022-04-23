@@ -55,6 +55,7 @@ CompanyDets _$CompanyDetsFromJson(Map<String, dynamic> json) {
     name: json['name'] as String?,
     onleLiner: json['oneliner'] as String?,
     profileUrl: json['profile_url'] as String?,
+    paidranking: json['paid_ranking'] as int?,
   );
 }
 
@@ -72,6 +73,7 @@ Map<String, dynamic> _$CompanyDetsToJson(CompanyDets instance) =>
       'money_earned': instance.moneyEarned,
       'earned_till_date': instance.earnedTillDate,
       'id': instance.id,
+      'paidranking': instance.paidranking,
     };
 
 T? _$enumDecode<T>(

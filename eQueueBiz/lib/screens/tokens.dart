@@ -125,11 +125,11 @@ class _TokensState extends State<Tokens> {
         //elevation: 5,
         style: TextStyle(color: Colors.white),
         iconEnabledColor: Colors.black,
-        items: depList.map<DropdownMenuItem<String>>((String value) {
+        items: depList.map<DropdownMenuItem<String>>((String? value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
-              value,
+              value!,
               style: TextStyle(color: Colors.black),
             ),
           );

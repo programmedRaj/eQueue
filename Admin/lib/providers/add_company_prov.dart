@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AddCompanyProv extends ChangeNotifier {
   List<int>? comlogoint;
   Future<bool> execCreateComppany(Uint8List? companyLogo, AddCompany addCompany,
-      bool edit, bool _isCheck) async {
+      String paidranking, bool edit, bool _isCheck) async {
     var postUri = Uri.parse(edit ? CompanyApi.edit : CompanyApi.create);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token')!;
@@ -46,6 +46,7 @@ class AddCompanyProv extends ChangeNotifier {
     request.fields['accountname'] = addCompany.accountName!;
     request.fields['oneliner'] = addCompany.onleLiner!;
     request.fields['company_id'] = addCompany.companyId.toString();
+    request.fields['paid_ranking'] = paidranking;
 
     var resp = await request.send();
     if (resp.statusCode == 200) {

@@ -34,6 +34,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
   TextEditingController _onleLinerC = TextEditingController();
   TextEditingController _emailC = TextEditingController();
   TextEditingController _passwordC = TextEditingController();
+  TextEditingController _comrank = TextEditingController();
 
   @override
   void initState() {
@@ -62,6 +63,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
           TextEditingValue(text: widget.companyDets!.onleLiner ?? "");
       selectedType = widget.companyDets!.accType;
       profileUrl = widget.companyDets!.profileUrl;
+      _comrank.text = widget.companyDets!.paidranking.toString();
       edit = true;
     });
   }
@@ -143,6 +145,12 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                           decoration: InputDecoration(hintText: "Password"),
                         )
                       : Container(),
+                  edit != true
+                      ? Container()
+                      : TextField(
+                          controller: _comrank,
+                          decoration: InputDecoration(hintText: "Company Rank"),
+                        ),
                   SizedBox(
                     height: 20,
                   ),
@@ -303,10 +311,10 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
         onPressed: () async {
-          bool success =
-              await Provider.of<AddCompanyProv>(context, listen: false)
-                  .execCreateComppany(
-                      uploadedImage, getDetails(), edit, _isChecked);
+          bool success = await Provider.of<AddCompanyProv>(context,
+                  listen: false)
+              .execCreateComppany(
+                  uploadedImage, getDetails(), _comrank.text, edit, _isChecked);
           if (success) {
             Navigator.pop(context);
           }
