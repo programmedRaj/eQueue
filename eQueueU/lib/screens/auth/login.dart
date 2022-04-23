@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:country_calling_code_picker/picker.dart';
@@ -95,175 +96,203 @@ class _LoginState extends State<Login> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: AppColor.mainBlue,
-      body: SafeArea(
-          child: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(30),
-          child: Form(
-            key: lkey,
-            child: Center(
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: height * 0.1, bottom: 30),
-                    child: Image.asset(
-                      'lib/assets/logo.png',
-                      height: height * 0.2,
-                      width: width * 0.3,
+    return WillPopScope(
+      onWillPop: onWillPopp,
+      child: Scaffold(
+        backgroundColor: AppColor.mainBlue,
+        body: SafeArea(
+            child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(30),
+            child: Form(
+              key: lkey,
+              child: Center(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: height * 0.1, bottom: 30),
+                      child: Image.asset(
+                        'lib/assets/logo.png',
+                        height: height * 0.2,
+                        width: width * 0.3,
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          height: sizz == 2 ? height * 0.12 : height * 0.06,
-                          width: width / 5.5,
-                          decoration: BoxDecoration(
-                              borderRadius: new BorderRadius.circular(10.0),
-                              border:
-                                  Border.all(color: Colors.white, width: 2.0)),
-                          child: RaisedButton(
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                            ),
-                            child: _selectedCountry == null
-                                ? Text('+')
-                                : Text(
-                                    '${_selectedCountry?.callingCode ?? '+code'}',
-                                    style: TextStyle(color: myColor[100]),
-                                  ),
-                            color: Theme.of(context).accentColor,
-                            onPressed: _onPressedShowBottomSheet,
-                          ),
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin:
-                                EdgeInsets.only(top: height * 0.01, left: 15),
-                            height: height * 0.1,
-                            width: width,
-                            child: TextFormField(
-                              style: TextStyle(color: Colors.white),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              validator: (name) {
-                                if (name!.isEmpty) {
-                                  return LocaleKeys.Pleaseenterphonenumber.tr();
-                                } else
-                                  return null;
-                              },
-                              decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.security,
-                                    color: Colors.white,
-                                  ),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.bold),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context).errorColor,
-                                        width: 2.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors.white, width: 2.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors.white, width: 2.0),
-                                  ),
-                                  hintText: LocaleKeys.Phone.tr(),
-                                  hintStyle: TextStyle(color: Colors.white)),
-                              onChanged: (v) {
-                                setState(() {
-                                  phone = v;
-                                });
-                              },
+                    Container(
+                      child: Row(
+                        children: [
+                          Container(
+                            height: sizz == 2 ? height * 0.12 : height * 0.06,
+                            width: width / 5.5,
+                            decoration: BoxDecoration(
+                                borderRadius: new BorderRadius.circular(10.0),
+                                border: Border.all(
+                                    color: Colors.white, width: 2.0)),
+                            child: RaisedButton(
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0),
+                              ),
+                              child: _selectedCountry == null
+                                  ? Text('+')
+                                  : Text(
+                                      '${_selectedCountry?.callingCode ?? '+code'}',
+                                      style: TextStyle(color: myColor[100]),
+                                    ),
+                              color: Theme.of(context).accentColor,
+                              onPressed: _onPressedShowBottomSheet,
                             ),
                           ),
-                        ),
-                      ],
+                          Flexible(
+                            child: Container(
+                              margin:
+                                  EdgeInsets.only(top: height * 0.01, left: 15),
+                              height: height * 0.1,
+                              width: width,
+                              child: TextFormField(
+                                style: TextStyle(color: Colors.white),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                validator: (name) {
+                                  if (name!.isEmpty) {
+                                    return LocaleKeys.Pleaseenterphonenumber
+                                        .tr();
+                                  } else
+                                    return null;
+                                },
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.security,
+                                      color: Colors.white,
+                                    ),
+                                    errorStyle:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                          color: Theme.of(context).errorColor,
+                                          width: 2.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                          color: Colors.white, width: 2.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                          color: Colors.white, width: 2.0),
+                                    ),
+                                    hintText: LocaleKeys.Phone.tr(),
+                                    hintStyle: TextStyle(color: Colors.white)),
+                                onChanged: (v) {
+                                  setState(() {
+                                    phone = v;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  error == null
-                      ? Container()
-                      : Container(
-                          child: Text(error!),
-                        ),
-                  AnimatedContainer(
-                    duration: Duration(milliseconds: 1000),
-                    margin: EdgeInsets.only(
-                        left: 25, right: 25, top: height * 0.02, bottom: 2),
-                    height: height * 0.08,
-                    width: width * w,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 4, color: Theme.of(context).primaryColor),
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: FlatButton(
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)),
-                      onPressed: () async {
-                        FocusScope.of(context).unfocus();
-                        var code = _selectedCountry!.callingCode.substring(1);
+                    error == null
+                        ? Container()
+                        : Container(
+                            child: Text(error!),
+                          ),
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 1000),
+                      margin: EdgeInsets.only(
+                          left: 25, right: 25, top: height * 0.02, bottom: 2),
+                      height: height * 0.08,
+                      width: width * w,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 4, color: Theme.of(context).primaryColor),
+                          color: Theme.of(context).accentColor,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: FlatButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0)),
+                        onPressed: () async {
+                          FocusScope.of(context).unfocus();
+                          var code = _selectedCountry!.callingCode.substring(1);
 
-                        if (lkey.currentState!.validate()) {
-                          if (_selectedCountry != null) {
-                            login_otp(phone, code);
+                          if (lkey.currentState!.validate()) {
+                            if (_selectedCountry != null) {
+                              login_otp(phone, code);
+                            }
                           }
-                        }
-                      },
-                      child: type == 0
-                          ? Text(
-                              LocaleKeys.GetOtp,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 20),
-                            ).tr()
-                          : type == 1
-                              ? CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white),
-                                )
-                              : Icon(
-                                  Icons.done,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 28,
-                                ),
+                        },
+                        child: type == 0
+                            ? Text(
+                                LocaleKeys.GetOtp,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 20),
+                              ).tr()
+                            : type == 1
+                                ? CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  )
+                                : Icon(
+                                    Icons.done,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 28,
+                                  ),
+                      ),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: FlatButton(
-                      child: Text(
-                        LocaleKeys.Createaccount,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ).tr(),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Register(),
-                            ));
-                      },
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      child: FlatButton(
+                        child: Text(
+                          LocaleKeys.Createaccount,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ).tr(),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Register(),
+                              ));
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
+  }
+
+  Future<bool> onWillPopp() async {
+    return showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text(LocaleKeys.Are_you_sure).tr(),
+            content: new Text(LocaleKeys.Do_you_want_to_exit_an_App).tr(),
+            actions: <Widget>[
+              new GestureDetector(
+                onTap: () => Navigator.of(context).pop(false),
+                child: Text(LocaleKeys.NO).tr(),
+              ),
+              SizedBox(height: 16),
+              new GestureDetector(
+                onTap: () {
+                  SystemNavigator.pop();
+                },
+                child: Text(LocaleKeys.YES).tr(),
+              ),
+            ],
+          ),
+        ) as FutureOr<bool>? ??
+        false;
   }
 }
