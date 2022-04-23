@@ -582,6 +582,7 @@ def edit_company():
     conn = mysql.connect()
     # email = request.form["email"]
     emp_id = request.form["company_id"]
+    paid_ranking = request.form["paid_ranking"]
 
     cur = conn.cursor(pymysql.cursors.DictCursor)
     try:
@@ -620,7 +621,9 @@ def edit_company():
                     + str(account_number)
                     + "',account_name='"
                     + str(account_name)
-                    + "' WHERE id ="
+                    + "',paid_ranking = "
+                    + str(paid_ranking)
+                    + " WHERE id ="
                     + str(emp_id)
                     + ";"
                 )
@@ -634,7 +637,9 @@ def edit_company():
                     + str(filename)
                     + "',descr = '"
                     + str(desc)
-                    + "' WHERE id ="
+                    + "',paid_ranking = "
+                    + str(paid_ranking)
+                    + " WHERE id ="
                     + str(emp_id)
                     + ";"
                 )
@@ -651,7 +656,9 @@ def edit_company():
                     + str(desc)
                     + "',oneliner = '"
                     + str(oneliner)
-                    + "' WHERE id ="
+                    + "',paid_ranking = "
+                    + str(paid_ranking)
+                    + " WHERE id ="
                     + str(emp_id)
                     + ";"
                 )
