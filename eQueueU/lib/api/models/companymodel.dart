@@ -14,6 +14,7 @@ class CompanyModel {
   String? profileurl;
   String? type;
   String? insurance;
+  int? paidrank;
   CompanyModel({
     this.acname,
     this.acnum,
@@ -28,57 +29,8 @@ class CompanyModel {
     this.profileurl,
     this.type,
     this.insurance,
+    this.paidrank,
   });
-
-  CompanyModel copyWith({
-    String? acname,
-    String? acnum,
-    String? bankname,
-    String? descr,
-    String? earnedtilldate,
-    int? id,
-    String? ifsc,
-    String? moneyearned,
-    String? name,
-    String? onliner,
-    String? profileurl,
-    String? type,
-    String? insurance,
-  }) {
-    return CompanyModel(
-      acname: acname ?? this.acname,
-      acnum: acnum ?? this.acnum,
-      bankname: bankname ?? this.bankname,
-      descr: descr ?? this.descr,
-      earnedtilldate: earnedtilldate ?? this.earnedtilldate,
-      id: id ?? this.id,
-      ifsc: ifsc ?? this.ifsc,
-      moneyearned: moneyearned ?? this.moneyearned,
-      name: name ?? this.name,
-      onliner: onliner ?? this.onliner,
-      profileurl: profileurl ?? this.profileurl,
-      type: type ?? this.type,
-      insurance: insurance ?? this.insurance,
-    );
-  }
-
-  CompanyModel merge(CompanyModel model) {
-    return CompanyModel(
-      acname: model.acname ?? this.acname,
-      acnum: model.acnum ?? this.acnum,
-      bankname: model.bankname ?? this.bankname,
-      descr: model.descr ?? this.descr,
-      earnedtilldate: model.earnedtilldate ?? this.earnedtilldate,
-      id: model.id ?? this.id,
-      ifsc: model.ifsc ?? this.ifsc,
-      moneyearned: model.moneyearned ?? this.moneyearned,
-      name: model.name ?? this.name,
-      onliner: model.onliner ?? this.onliner,
-      profileurl: model.profileurl ?? this.profileurl,
-      type: model.type ?? this.type,
-      insurance: model.insurance ?? this.insurance,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -95,6 +47,7 @@ class CompanyModel {
       'profileurl': profileurl,
       'type': type,
       'insurance': insurance,
+      "paidrank": paidrank
     };
   }
 
@@ -102,30 +55,20 @@ class CompanyModel {
     if (map == null) return CompanyModel();
 
     return CompanyModel(
-      acname: map['acname'],
-      acnum: map['acnum'],
-      bankname: map['bankname'],
-      descr: map['descr'],
-      earnedtilldate: map['earnedtilldate'],
-      id: map['id'],
-      ifsc: map['ifsc'],
-      moneyearned: map['moneyearned'],
-      name: map['name'],
-      onliner: map['onliner'],
-      profileurl: map['profileurl'],
-      type: map['type'],
-      insurance: map['insurance'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory CompanyModel.fromJson(String source) =>
-      CompanyModel.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'CompanyModel(acname: $acname, acnum: $acnum, bankname: $bankname, descr: $descr, earnedtilldate: $earnedtilldate, id: $id, ifsc: $ifsc, moneyearned: $moneyearned, name: $name, onliner: $onliner, profileurl: $profileurl, type: $type, insurance: $insurance)';
+        acname: map['acname'],
+        acnum: map['acnum'],
+        bankname: map['bankname'],
+        descr: map['descr'],
+        earnedtilldate: map['earnedtilldate'],
+        id: map['id'],
+        ifsc: map['ifsc'],
+        moneyearned: map['moneyearned'],
+        name: map['name'],
+        onliner: map['onliner'],
+        profileurl: map['profileurl'],
+        type: map['type'],
+        insurance: map['insurance'],
+        paidrank: map['paidrank']);
   }
 
   @override
@@ -145,6 +88,7 @@ class CompanyModel {
         o.onliner == onliner &&
         o.profileurl == profileurl &&
         o.type == type &&
+        o.paidrank == paidrank &&
         o.insurance == insurance;
   }
 
@@ -162,6 +106,7 @@ class CompanyModel {
         onliner.hashCode ^
         profileurl.hashCode ^
         type.hashCode ^
+        paidrank.hashCode ^
         insurance.hashCode;
   }
 }

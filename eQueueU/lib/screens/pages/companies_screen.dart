@@ -56,21 +56,22 @@ class _CompanyState extends State<Company> {
               company[i].descr!.toLowerCase().contains(v) ||
               company[i].descr!.toUpperCase().contains(v) ||
               company[i].descr!.contains(v)) {
+            print('com com ${company[i].paidrank}');
             companysearch.add(CompanyModel(
-              acname: company[i].acname,
-              acnum: company[i].acnum,
-              bankname: company[i].bankname,
-              descr: company[i].descr,
-              earnedtilldate: company[i].earnedtilldate,
-              id: company[i].id,
-              ifsc: company[i].ifsc,
-              moneyearned: company[i].moneyearned,
-              name: company[i].name,
-              onliner: company[i].onliner,
-              profileurl: company[i].profileurl,
-              type: company[i].type,
-              insurance: company[i].insurance,
-            ));
+                acname: company[i].acname,
+                acnum: company[i].acnum,
+                bankname: company[i].bankname,
+                descr: company[i].descr,
+                earnedtilldate: company[i].earnedtilldate,
+                id: company[i].id,
+                ifsc: company[i].ifsc,
+                moneyearned: company[i].moneyearned,
+                name: company[i].name,
+                onliner: company[i].onliner,
+                profileurl: company[i].profileurl,
+                type: company[i].type,
+                insurance: company[i].insurance,
+                paidrank: company[i].paidrank));
           } else {
             setState(() {
               noprod = LocaleKeys.nocompanies.tr();
@@ -83,6 +84,9 @@ class _CompanyState extends State<Company> {
     return Consumer<CompanyProvider>(
       builder: (context, value, child) {
         var comp = value.companies;
+        comp.sort(
+          (a, b) => a.paidrank!.compareTo(b.paidrank!),
+        );
         return SafeArea(
           child: Scaffold(
               body: Container(
@@ -291,19 +295,69 @@ class _CompanyState extends State<Company> {
                                                     //   'lib/assets/imagecomp.jpg',
                                                     // ),
                                                     fit: BoxFit.contain)),
-                                            child: Container(
-                                              margin: EdgeInsets.all(10),
-                                              child: CircleAvatar(
-                                                radius: 10,
-                                                backgroundColor: myColor[100],
-                                                child: companysearch.length >
-                                                            0 ||
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                companysearch.length > 0 ||
                                                         companysearch.isNotEmpty
-                                                    ? Text(
-                                                        '${companysearch[i].type![0].toUpperCase()}')
-                                                    : Text(
-                                                        '${comp[i].type![0].toUpperCase()}'),
-                                              ),
+                                                    ? Container(
+                                                        margin:
+                                                            EdgeInsets.all(10),
+                                                        child: companysearch[i]
+                                                                    .paidrank !=
+                                                                10000
+                                                            ? CircleAvatar(
+                                                                radius: 20,
+                                                                backgroundColor:
+                                                                    myColor[
+                                                                        100],
+                                                                child: Text(
+                                                                  'AD',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .grey),
+                                                                ))
+                                                            : Container(),
+                                                      )
+                                                    : Container(
+                                                        margin:
+                                                            EdgeInsets.all(10),
+                                                        child: comp[i]
+                                                                    .paidrank !=
+                                                                10000
+                                                            ? CircleAvatar(
+                                                                radius: 20,
+                                                                backgroundColor:
+                                                                    myColor[
+                                                                        100],
+                                                                child: Text(
+                                                                  'AD',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .grey),
+                                                                ))
+                                                            : Container(),
+                                                      ),
+                                                Container(
+                                                  margin: EdgeInsets.all(10),
+                                                  child: CircleAvatar(
+                                                    radius: 10,
+                                                    backgroundColor:
+                                                        myColor[100],
+                                                    child: companysearch
+                                                                    .length >
+                                                                0 ||
+                                                            companysearch
+                                                                .isNotEmpty
+                                                        ? Text(
+                                                            '${companysearch[i].type![0].toUpperCase()}')
+                                                        : Text(
+                                                            '${comp[i].type![0].toUpperCase()}'),
+                                                  ),
+                                                ),
+                                              ],
                                             )),
                                       ),
                                       Container(
@@ -329,7 +383,8 @@ class _CompanyState extends State<Company> {
                                                           companysearch
                                                               .isNotEmpty
                                                       ? Text(
-                                                          companysearch[i].name!,
+                                                          companysearch[i]
+                                                              .name!,
                                                           style: TextStyle(
                                                               color:
                                                                   myColor[50],
@@ -600,6 +655,7 @@ class _MyDState extends State<MyD> {
                                 sortby: _picked.toLowerCase(),
                                 type: 'company')
                             .then((value) => Navigator.of(context).pop());
+                        setState(() {});
                       },
                       child: Text(LocaleKeys.Ok).tr()),
                   SizedBox(

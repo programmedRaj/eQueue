@@ -13,7 +13,10 @@ class CompanyProvider extends ChangeNotifier {
   BaseUrl baseUrl = BaseUrl();
 
   Future getCompanies(
-      {required bool sort, String? sortby, String? ascdsc, String? type}) async {
+      {required bool sort,
+      String? sortby,
+      String? ascdsc,
+      String? type}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token')!;
     print(token);
@@ -39,7 +42,7 @@ class CompanyProvider extends ChangeNotifier {
     var response = await http.Response.fromStream(res);
 
     var n = jsonDecode(response.body);
-    print(n);
+    print('sorted $n');
     removeedu();
 
     if (sort) {
@@ -59,6 +62,7 @@ class CompanyProvider extends ChangeNotifier {
             id: n['comp_details'][i]['id'],
             type: n['comp_details'][i]['type'],
             insurance: n['comp_details'][i]['insurance'].toString(),
+            paidrank: n['comp_details'][i]['paid_ranking'],
           );
         }
     } else {
@@ -78,6 +82,7 @@ class CompanyProvider extends ChangeNotifier {
           id: n['comp_details'][i]['id'],
           type: n['comp_details'][i]['type'],
           insurance: n['comp_details'][i]['insurance'].toString(),
+          paidrank: n['comp_details'][i]['paid_ranking'],
         );
       }
     }
@@ -101,6 +106,7 @@ class CompanyProvider extends ChangeNotifier {
     String? profileurl,
     String? type,
     String? insurance,
+    int? paidrank,
   }) {
     companies.add(CompanyModel(
         insurance: insurance,
@@ -115,8 +121,9 @@ class CompanyProvider extends ChangeNotifier {
         name: name,
         onliner: onliner,
         profileurl: profileurl,
+        paidrank: paidrank,
         type: type));
-    print(companies);
+    print('aaa ${companies[0].paidrank}');
     notifyListeners();
   }
 
