@@ -1,4 +1,4 @@
-package bido.equeue.com
+package eq.user.com
 
 import io.flutter.embedding.android.FlutterActivity
 
